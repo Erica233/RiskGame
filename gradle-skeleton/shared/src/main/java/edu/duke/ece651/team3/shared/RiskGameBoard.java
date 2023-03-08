@@ -1,9 +1,11 @@
 package edu.duke.ece651.team3.shared;
 
+import java.io.Serializable;
+
 /**
  * A Risk Game Board
  */
-public class RiskGameBoard implements Board {
+public class RiskGameBoard implements Board, Serializable {
     private final Territory aTerritory;
 
     /**

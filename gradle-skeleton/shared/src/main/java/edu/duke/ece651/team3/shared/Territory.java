@@ -1,9 +1,11 @@
 package edu.duke.ece651.team3.shared;
 
+import java.io.Serializable;
+
 /**
  * A class for Territory
  */
-public class Territory {
+public class Territory implements Serializable {
     private final String name;
     private int numUnits;
 
