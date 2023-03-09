@@ -1,10 +1,12 @@
 package edu.duke.ece651.team3.shared;
 
+import java.util.ArrayList;
+
 /**
  * A Risk Game Board
  */
 public class RiskGameBoard implements Board {
-    private final Territory aTerritory;
+    private final ArrayList<Territory> allTerritories;
 
     /**
      * Constructs a RiskGameBoard, given a Territory
