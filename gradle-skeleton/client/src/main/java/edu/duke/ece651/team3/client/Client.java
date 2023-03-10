@@ -3,6 +3,7 @@ import edu.duke.ece651.team3.shared.*;
 
 import java.io.*;
 import java.net.Socket;
+import java.net.SocketException;
 
 import static java.lang.System.out;
 
@@ -93,7 +94,10 @@ public class Client implements Serializable {
         BoardTextView v1 = new BoardTextView(b1);
         Client c = new Client(input, v1);
 
-        c.tryConnectServer();
+        boolean isClientConnected = c.tryConnectServer();
+        if(isClientConnected == false){
+            throw new SocketException();
+        }
         c.transData(b1);
         c.clientS.close();
     }

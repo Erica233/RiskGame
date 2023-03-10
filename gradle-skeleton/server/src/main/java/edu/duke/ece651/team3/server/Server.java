@@ -5,6 +5,7 @@ import edu.duke.ece651.team3.shared.*;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
 
 import static java.lang.System.out; //out.println()
 
@@ -15,7 +16,8 @@ public class Server implements Serializable{
     private RiskGameBoard riskGameBoard;
     Socket socket;
 
-    public Server(){
+    public Server(RiskGameBoard _riskGameBoard){
+        this.riskGameBoard = _riskGameBoard;
     }
 
     /**
@@ -91,9 +93,12 @@ public class Server implements Serializable{
     public static void main(String[] args) throws IOException, ClassNotFoundException {
         Territory t1 = new Territory("Hogwarts", 10);
         RiskGameBoard riskGameBoard = new RiskGameBoard(t1);
-        Server s = new Server();
+        Server s = new Server(riskGameBoard);
 
-        s.tryConnectClient();
+        boolean isConnected =  s.tryConnectClient();
+        if(isConnected == false){
+            throw new SocketException();
+        }
         s.transData(riskGameBoard);
         s.socket.close();
 
