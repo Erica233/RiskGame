@@ -70,12 +70,27 @@ public class Territory {
     }
 
     /**
-     * Displays the Territory information, including name and number of units
+     * Displays the Territory information, including its name, number of units and neighbors
      *
-     * @return a String about number of units and name of the territory
+     * @return a String about its name, number of units and the neighbor territories
      */
     public String displayTerritory() {
-        return numUnits + " units in " + name + "\n";
+        StringBuilder output = new StringBuilder();
+        output.append(numUnits).append(" units in ").append(name);
+        if (neighbors.isEmpty()) {
+            output.append(" (no neighbors)\n");
+        } else {
+            output.append(" (next to: ");
+            for (int i = 0; i < neighbors.size(); i++) {
+                if (i < neighbors.size() - 1) {
+                    output.append(neighbors.get(i).getName()).append(", ");
+                } else {
+                    output.append(neighbors.get(i).getName());
+                }
+            }
+            output.append(")\n");
+        }
+        return String.valueOf(output);
     }
 
     /** getters and setters **/

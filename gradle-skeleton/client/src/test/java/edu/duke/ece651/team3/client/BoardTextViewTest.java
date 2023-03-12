@@ -16,7 +16,12 @@ class BoardTextViewTest {
         BoardTextView v1 = new BoardTextView(m1);
         m1.tryAddTerritory(t1);
         m1.tryAddTerritory(t2);
-        String expected = "3 units in Narnia\n4 units in Mordor\n";
+        String expected = "3 units in Narnia (no neighbors)\n4 units in Mordor (no neighbors)\n";
         assertEquals(expected, v1.displayBoard());
+
+        t1.tryAddANeighbor(t2);
+        t2.tryAddANeighbor(t1);
+        String expected2 = "3 units in Narnia (next to: Mordor)\n4 units in Mordor (next to: Narnia)\n";
+        assertEquals(expected2, v1.displayBoard());
     }
 }

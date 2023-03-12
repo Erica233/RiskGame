@@ -36,10 +36,19 @@ class RiskGameBoardTest {
     public void test_displayBoard() {
         Territory t1 = new Territory("Narnia", 3);
         Territory t2 = new Territory("Mordor", 4);
+        Territory t3 = new Territory("Oz", 5);
         Board m1 = new RiskGameBoard();
         m1.tryAddTerritory(t1);
         m1.tryAddTerritory(t2);
-        String expected = "3 units in Narnia\n4 units in Mordor\n";
+        m1.tryAddTerritory(t3);
+        String expected = "3 units in Narnia (no neighbors)\n4 units in Mordor (no neighbors)\n5 units in Oz (no neighbors)\n";
         assertEquals(expected, m1.displayBoard());
+
+        t1.tryAddANeighbor(t2);
+        t2.tryAddANeighbor(t1);
+        t2.tryAddANeighbor(t3);
+        t3.tryAddANeighbor(t2);
+        String expected2 = "3 units in Narnia (next to: Mordor)\n4 units in Mordor (next to: Narnia, Oz)\n5 units in Oz (next to: Mordor)\n";
+        assertEquals(expected2, m1.displayBoard());
     }
 }
