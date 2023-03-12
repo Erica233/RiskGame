@@ -9,6 +9,7 @@ import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.Random;
 
+import static java.lang.System.in;
 import static java.lang.System.out; //out.println()
 
 
@@ -86,14 +87,17 @@ public class Server implements Serializable{
         String playerColor = PlayerNames.get(rand);
 
         //Send data to the client
-        this.sendToClient = new PrintStream(socket_1.getOutputStream());
-        sendToClient.println(info);
-        sendToClient.println(playerColor);
+//        this.sendToClient = new PrintStream(socket_1.getOutputStream());
+        this.sendObjToClient = new ObjectOutputStream(socket_1.getOutputStream());
+        sendObjToClient.writeObject(info);
+        sendObjToClient.writeObject(playerColor);
+//        sendToClient.println(info);
+//        sendToClient.println(playerColor);
     }
 
     public void transObject(RiskGameBoard riskGameBoard_toClient) throws IOException, ClassNotFoundException {
         out.println("Sending the RiskGameBoard class to client");
-        this.sendObjToClient = new ObjectOutputStream(socket_1.getOutputStream());
+//        this.sendObjToClient = new ObjectOutputStream(socket_1.getOutputStream());
         sendObjToClient.writeObject(riskGameBoard_toClient);
         out.println("sending risk game board successfully");
 
@@ -109,7 +113,7 @@ public class Server implements Serializable{
 
 
     void closePipe() throws IOException {
-        sendToClient.close();
+//        sendToClient.close();
         sendObjToClient.close();
         readObjFromClient.close();
         serverS.close();

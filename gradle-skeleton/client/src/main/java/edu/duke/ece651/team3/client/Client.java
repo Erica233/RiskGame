@@ -40,20 +40,24 @@ public class Client implements Serializable {
         return true;
     }
 
-    public void transData() throws IOException{
+    public void transData() throws IOException, ClassNotFoundException {
         //To get the data from the server
-        this.dataFromServer = new BufferedReader(new InputStreamReader(clientS.getInputStream()));
-        String receivedMsg = dataFromServer.readLine();
+        this.readFromServer = new ObjectInputStream(clientS.getInputStream()); //TODO: does not build successfully
+//        this.dataFromServer = new BufferedReader(new InputStreamReader(clientS.getInputStream()));
+        String receivedMsg = (String) readFromServer.readObject();
+
+
+//        String receivedMsg = readFromServer.readLine();
         out.println(receivedMsg);
         out.println("Received the string successfully from the server");
 
-        String playerColor = dataFromServer.readLine();
+        String playerColor = (String)readFromServer.readObject();
         out.println(playerColor);
         out.println("Received the random number successfully from the server");
 
     }
     public void transObject(RiskGameBoard riskGameBoard_toSerer) throws IOException, ClassNotFoundException{
-        this.readFromServer = new ObjectInputStream(clientS.getInputStream()); //TODO: does not build successfully
+//        this.readFromServer = new ObjectInputStream(clientS.getInputStream()); //TODO: does not build successfully
         out.println("Build up the object stream");
         RiskGameBoard riskGameBoard = (RiskGameBoard) readFromServer.readObject();
 
@@ -69,7 +73,7 @@ public class Client implements Serializable {
     }
 
     public void closePipe() throws IOException {
-        dataFromServer.close();
+//        dataFromServer.close();
         sendObjToServer.close();
         readFromServer.close();
         clientS.close();
@@ -81,7 +85,6 @@ public class Client implements Serializable {
      * @return String, to test whether the info is correct
      */
     public String displayTerritory(){
-//        if()
         String displayInfo = mtv.displayBoard();
         return displayInfo;
     }
@@ -103,7 +106,7 @@ public class Client implements Serializable {
         BoardTextView v1 = new BoardTextView(b1);
         Client c = new Client(input, v1);
 
-//        connect with The first client
+        //connect with The first client
         boolean isClientConnected1 = c.tryConnectServer1();
         if(isClientConnected1 == false){
             throw new SocketException();
@@ -112,16 +115,6 @@ public class Client implements Serializable {
         c.transData();
         c.transObject(b1);
         c.closePipe();
-        //Connect with the second client
-        boolean isClientConnected2 = c.tryConnectServer1();
-        if(isClientConnected2 == false){
-            throw new SocketException();
-        }
-
-        c.transData();
-        c.transObject(b1);
-        c.closePipe();
-
     }
 
 
