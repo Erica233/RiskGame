@@ -11,9 +11,12 @@ class BoardTextViewTest {
     @Test
     public void test_displayBoard() {
         Territory t1 = new Territory("Narnia", 3);
-        Board m1 = new RiskGameBoard(t1);
+        Territory t2 = new Territory("Mordor", 4);
+        Board m1 = new RiskGameBoard();
         BoardTextView v1 = new BoardTextView(m1);
-        String expected = "3 units in Narnia\n";
+        m1.tryAddTerritory(t1);
+        m1.tryAddTerritory(t2);
+        String expected = "3 units in Narnia\n4 units in Mordor\n";
         assertEquals(expected, v1.displayBoard());
     }
 }

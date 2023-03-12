@@ -13,5 +13,10 @@ public class TerritoryTest {
         assertEquals(3, t1.getNumUnits());
         assertNotEquals(4, t1.getNumUnits());
     }
+    @Test
+    public void test_isValidToAdd() {
+        Territory t1 = new Territory("Narnia", 3);
+        assertTrue(t1.isValidToAdd());
+    }
 
 }

@@ -1,5 +1,7 @@
 package edu.duke.ece651.team3.shared;
 
+import java.util.ArrayList;
+
 /**
  * A Board
  */
@@ -11,7 +13,9 @@ public interface Board {
      */
     String displayBoard();
 
+    boolean tryAddTerritory(Territory territoryToAdd);
+
     /** getters and setters **/
-    Territory getaTerritory();
+    ArrayList<Territory> getAllTerritories();
 
 }

@@ -5,7 +5,7 @@ package edu.duke.ece651.team3.shared;
  */
 public class Territory {
     private final String name;
-    private int numUnits;
+    private final int numUnits;
 
     /**
      * Constructs a Territory with specified name
@@ -16,6 +16,15 @@ public class Territory {
     public Territory(String _name, int _numUnits) {
         this.name = _name;
         this.numUnits = _numUnits;
+    }
+
+    /**
+     * Checks whether the Territory is valid to add to the Board
+     *
+     * @return true if it is valid to add to the Board, otherwise false
+     */
+    public boolean isValidToAdd() {
+        return true;
     }
 
     /**
