@@ -40,6 +40,7 @@ public class Territory {
      *
      * @return true if it is valid to add to the Board, otherwise false
      */
+    //TODO: unfinished
     public boolean isValidToAdd() {
         return true;
     }
@@ -65,6 +66,7 @@ public class Territory {
      *
      * @return true if it is valid to add to the neighbors, otherwise false
      */
+    //TODO: unfinished
     public boolean isAValidNeighbor() {
         return true;
     }
