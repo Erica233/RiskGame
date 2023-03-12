@@ -103,7 +103,7 @@ public class Client implements Serializable {
         BoardTextView v1 = new BoardTextView(b1);
         Client c = new Client(input, v1);
 
-//        connect with one client
+//        connect with The first client
         boolean isClientConnected1 = c.tryConnectServer1();
         if(isClientConnected1 == false){
             throw new SocketException();
@@ -112,15 +112,15 @@ public class Client implements Serializable {
         c.transData();
         c.transObject(b1);
         c.closePipe();
-//
-//        boolean isClientConnected2 = c.tryConnectServer1();
-//        if(isClientConnected2 == false){
-//            throw new SocketException();
-//        }
-//
-//        c.transData();
-//        c.transObject(b1);
-//        c.closePipe();
+        //Connect with the second client
+        boolean isClientConnected2 = c.tryConnectServer1();
+        if(isClientConnected2 == false){
+            throw new SocketException();
+        }
+
+        c.transData();
+        c.transObject(b1);
+        c.closePipe();
 
     }
 
