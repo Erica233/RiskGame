@@ -13,6 +13,14 @@ public interface Board {
      */
     String displayBoard();
 
+    /**
+     * Add a Territory to the Board,
+     * if the Territory is valid, add and returns true,
+     * otherwise, return false
+     *
+     * @param territoryToAdd the Territory to add to the Board
+     * @return true if the Territory is valid to add, otherwise false
+     */
     boolean tryAddTerritory(Territory territoryToAdd);
 
     /** getters and setters **/
