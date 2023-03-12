@@ -10,46 +10,51 @@ import static java.lang.System.out;
 public class Client implements Serializable {
     public BoardTextView mtv;
     public final BufferedReader inputReader; //Get the input
+    public Socket clientS; //The unique ID for each client
     public int clientID; //The unique ID for each client
-    private Socket clientS;
+    ObjectInputStream readFromServer;
+    BufferedReader dataFromServer;
+    ObjectOutputStream sendObjToServer;
 
     public Client(BufferedReader inputReader,BoardTextView mtv){
         this.inputReader = inputReader;
         this.mtv = mtv;
     }
+    public void setUpReadObjFromServer() throws IOException{
+        this.readFromServer = new ObjectInputStream(this.clientS.getInputStream());
+    }
 
-    /**
-     * This method connects to the server
-     * @return boolean, true if successfully connected; false if not
-     */
-    //TODO: UNFINISHED!
-    public boolean tryConnectServer() throws IOException, ClassNotFoundException {
+    public boolean tryConnectServer1() throws IOException, ClassNotFoundException {
+        Territory t1 = new Territory("Mordor", 8);
+        RiskGameBoard b1 = new RiskGameBoard(t1);
         //Create the local host
         out.println("try connect to the server");
+
+        //The first player responses
         clientS = new Socket("localhost", 12345);
+        out.println("The current connected socket is: ");
+        out.println(clientS);
         out.println("Build up the connection to server!");
         out.println("The client's port is: " + clientS.getLocalPort());
         clientID = clientS.getLocalPort();
-
         return true;
     }
 
-    /**
-     * This method transits information between client and server
-     * @param riskGameBoard_toSerer
-     * @return true if it successfully sends
-     * @throws IOException
-     * @throws ClassNotFoundException
-     */
-    public boolean transData(RiskGameBoard riskGameBoard_toSerer) throws IOException, ClassNotFoundException {
+    public void transData() throws IOException{
         //To get the data from the server
-        BufferedReader dataFromServer = new BufferedReader(new InputStreamReader(clientS.getInputStream()));
+        this.dataFromServer = new BufferedReader(new InputStreamReader(clientS.getInputStream()));
         String receivedMsg = dataFromServer.readLine();
         out.println(receivedMsg);
-        out.println("Received the the string successfully from the server");
+        out.println("Received the string successfully from the server");
 
-        //To get the object from the server
-        ObjectInputStream readFromServer = new ObjectInputStream(clientS.getInputStream());
+        String playerColor = dataFromServer.readLine();
+        out.println(playerColor);
+        out.println("Received the random number successfully from the server");
+
+    }
+    public void transObject(RiskGameBoard riskGameBoard_toSerer) throws IOException, ClassNotFoundException{
+        this.readFromServer = new ObjectInputStream(clientS.getInputStream()); //TODO: does not build successfully
+        out.println("Build up the object stream");
         RiskGameBoard riskGameBoard = (RiskGameBoard) readFromServer.readObject();
 
         //Checks whether the object successfully passed
@@ -58,13 +63,16 @@ public class Client implements Serializable {
         out.println(test);
 
         //Sending the object to server
-        ObjectOutputStream sendObjToServer = new ObjectOutputStream(clientS.getOutputStream());
+        this.sendObjToServer = new ObjectOutputStream(clientS.getOutputStream());
         sendObjToServer.writeObject(riskGameBoard_toSerer);
         out.println("sending risk game board successfully");
+    }
 
-        sendObjToServer.close();
+    public void closePipe() throws IOException {
         dataFromServer.close();
-        return true;
+        sendObjToServer.close();
+        readFromServer.close();
+        clientS.close();
     }
 
     /**
@@ -72,7 +80,8 @@ public class Client implements Serializable {
      * TODO: check do we really need this method in Client
      * @return String, to test whether the info is correct
      */
-    public String display(){
+    public String displayTerritory(){
+//        if()
         String displayInfo = mtv.displayBoard();
         return displayInfo;
     }
@@ -94,12 +103,25 @@ public class Client implements Serializable {
         BoardTextView v1 = new BoardTextView(b1);
         Client c = new Client(input, v1);
 
-        boolean isClientConnected = c.tryConnectServer();
-        if(isClientConnected == false){
+//        connect with one client
+        boolean isClientConnected1 = c.tryConnectServer1();
+        if(isClientConnected1 == false){
             throw new SocketException();
         }
-        c.transData(b1);
-        c.clientS.close();
+
+        c.transData();
+        c.transObject(b1);
+        c.closePipe();
+//
+//        boolean isClientConnected2 = c.tryConnectServer1();
+//        if(isClientConnected2 == false){
+//            throw new SocketException();
+//        }
+//
+//        c.transData();
+//        c.transObject(b1);
+//        c.closePipe();
+
     }
 
 
