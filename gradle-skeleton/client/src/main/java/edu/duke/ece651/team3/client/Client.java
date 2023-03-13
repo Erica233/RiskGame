@@ -4,21 +4,27 @@ import edu.duke.ece651.team3.shared.*;
 import java.io.*;
 import java.net.Socket;
 import java.net.SocketException;
+import java.util.ArrayList;
 
 import static java.lang.System.out;
 
 public class Client implements Serializable {
     public BoardTextView mtv;
+    public RiskGameBoard riskGameBoard;
     public final BufferedReader inputReader; //Get the input
     public Socket clientS; //The unique ID for each client
     public int clientID; //The unique ID for each client
     ObjectInputStream readFromServer;
-    BufferedReader dataFromServer;
     ObjectOutputStream sendObjToServer;
 
-    public Client(BufferedReader inputReader,BoardTextView mtv){
-        this.inputReader = inputReader;
-        this.mtv = mtv;
+    Player player;
+
+
+
+    public Client(BufferedReader _inputReader,RiskGameBoard _riskGameBoard, BoardTextView _mtv){
+        this.inputReader = _inputReader;
+        this.riskGameBoard = _riskGameBoard;
+        this.mtv = _mtv;
     }
     public void setUpReadObjFromServer() throws IOException{
         this.readFromServer = new ObjectInputStream(this.clientS.getInputStream());
@@ -26,7 +32,8 @@ public class Client implements Serializable {
 
     public boolean tryConnectServer1() throws IOException, ClassNotFoundException {
         Territory t1 = new Territory("Mordor", 8);
-        RiskGameBoard b1 = new RiskGameBoard(t1);
+        RiskGameBoard b1 = new RiskGameBoard();
+        b1.tryAddTerritory(t1);
         //Create the local host
         out.println("try connect to the server");
 
@@ -81,12 +88,21 @@ public class Client implements Serializable {
 
     /**
      * This method displays the textview to the output
-     * TODO: check do we really need this method in Client
-     * @return String, to test whether the info is correct
+     * TODO: check do we really need this method in Client, player needs name, neighbor
      */
-    public String displayTerritory(){
-        String displayInfo = mtv.displayBoard();
-        return displayInfo;
+    public void displayTerritory(){
+        ArrayList<Territory> owenedTerritories = player.getOwnedTerritories();
+        out.println("Player: ");
+        for(int i = 0; i < owenedTerritories.size(); i++) {
+            owenedTerritories.get(i).displayTerritory();
+        }
+    }
+
+    /**
+     * This method will base on the map for the whole. Here it
+     */
+    public void displayNeighbor(){
+//        player.displayNeighbor();
     }
 
 
@@ -102,9 +118,10 @@ public class Client implements Serializable {
     public static void main(String[] args) throws IOException, ClassNotFoundException {
         BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
         Territory t1 = new Territory("Mordor", 8);
-        RiskGameBoard b1 = new RiskGameBoard(t1);
+        RiskGameBoard b1 = new RiskGameBoard();
+        b1.tryAddTerritory(t1);
         BoardTextView v1 = new BoardTextView(b1);
-        Client c = new Client(input, v1);
+        Client c = new Client(input, b1, v1);
 
         //connect with The first client
         boolean isClientConnected1 = c.tryConnectServer1();

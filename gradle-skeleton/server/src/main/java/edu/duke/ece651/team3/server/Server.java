@@ -42,7 +42,8 @@ public class Server implements Serializable{
                 throw new SocketException();
             }
             Territory t1 = new Territory("Hogwarts", 10);
-            RiskGameBoard riskGameBoard = new RiskGameBoard(t1);
+            RiskGameBoard riskGameBoard = new RiskGameBoard();
+            riskGameBoard.tryAddTerritory(t1);
             transData();
             transObject(riskGameBoard);
         }
@@ -67,7 +68,8 @@ public class Server implements Serializable{
      */
     public boolean tryConnectClient() throws IOException{
         Territory t1 = new Territory("Hogwarts", 10);
-        RiskGameBoard riskGameBoard = new RiskGameBoard(t1);
+        RiskGameBoard riskGameBoard = new RiskGameBoard();
+        riskGameBoard.tryAddTerritory(t1);
         out.println("Server starts");
 
 //        ServerSocket serverS = new ServerSocket(12345); //Build up the server
@@ -123,7 +125,8 @@ public class Server implements Serializable{
     public static void main(String[] args) throws IOException, ClassNotFoundException {
         BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
         Territory t1 = new Territory("Hogwarts", 10);
-        RiskGameBoard riskGameBoard = new RiskGameBoard(t1);
+        RiskGameBoard riskGameBoard = new RiskGameBoard();
+        riskGameBoard.tryAddTerritory(t1);
         int numPlayer = 2;
 
         Server s = new Server(riskGameBoard, input);
@@ -137,7 +140,7 @@ public class Server implements Serializable{
 //        s.transObject(riskGameBoard);
 
         //connect with multiple clients
-        boolean isClientConnected1 = s.tryConnectMulClient(2);
+        boolean isClientConnected1 = s.tryConnectMulClient(numPlayer);
         if(isClientConnected1 == false){
             throw new SocketException();
         }
