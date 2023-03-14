@@ -14,7 +14,7 @@ class BoardTextViewTest {
         RiskGameBoard m1 = new RiskGameBoard();
         m1.tryAddTerritory(t1);
         BoardTextView v1 = new BoardTextView(m1);
-        String expected = "3 units in Narnia\n";
+        String expected = "3 units in Narnia (no neighbors)\n";
         assertEquals(expected, v1.displayBoard());
     }
 }
