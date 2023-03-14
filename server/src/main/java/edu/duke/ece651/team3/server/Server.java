@@ -119,6 +119,7 @@ public class Server implements Serializable{
         sendObjToClient.close();
         readObjFromClient.close();
         serverS.close();
+        socket_1.close();
     }
 
     //For testing the Serve.java
