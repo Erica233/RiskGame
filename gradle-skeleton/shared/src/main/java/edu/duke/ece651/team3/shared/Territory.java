@@ -1,11 +1,12 @@
 package edu.duke.ece651.team3.shared;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * A class for Territory
  */
-public class Territory {
+public class Territory implements Serializable {
     private final String name;
     private final int numUnits;
     private final ArrayList<Territory> neighbors;

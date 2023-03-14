@@ -1,11 +1,12 @@
 package edu.duke.ece651.team3.shared;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * A Risk Game Board
  */
-public class RiskGameBoard implements Board {
+public class RiskGameBoard implements Board, Serializable {
     private final ArrayList<Territory> allTerritories;
 
     /**
