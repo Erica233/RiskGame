@@ -2,10 +2,9 @@ package edu.duke.ece651.team3.client;
 import edu.duke.ece651.team3.shared.*;
 
 import static org.junit.jupiter.api.Assertions.*;
-
+import org.junit.jupiter.api.Test;
 
 import java.io.*;
-
 public class ClientTest {
 
     void test_file_helper(String inFile, String outFile) throws IOException, InterruptedException, ClassNotFoundException {

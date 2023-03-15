@@ -5,6 +5,7 @@ import java.io.*;
 import java.net.Socket;
 import java.net.SocketException;
 import java.util.ArrayList;
+//import static org.mockito.Mockito.*;
 
 import static java.lang.System.out;
 
@@ -18,8 +19,6 @@ public class Client implements Serializable {
     ObjectOutputStream sendObjToServer;
 
     Player player;
-
-
 
     public Client(BufferedReader _inputReader,RiskGameBoard _riskGameBoard, BoardTextView _mtv){
         this.inputReader = _inputReader;
@@ -52,8 +51,6 @@ public class Client implements Serializable {
         this.readFromServer = new ObjectInputStream(clientS.getInputStream()); //TODO: does not build successfully
 //        this.dataFromServer = new BufferedReader(new InputStreamReader(clientS.getInputStream()));
         String receivedMsg = (String) readFromServer.readObject();
-
-
 //        String receivedMsg = readFromServer.readLine();
         out.println(receivedMsg);
         out.println("Received the string successfully from the server");

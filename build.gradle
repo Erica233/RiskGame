@@ -92,3 +92,6 @@ tasks.register("resolveDependencies") {
     group = 'Build'
     description = 'Resolve/Download Dependencies'
 }
+
+repositories { mavenCentral() }
+dependencies { testImplementation "org.mockito:mockito-core:3.+" }
