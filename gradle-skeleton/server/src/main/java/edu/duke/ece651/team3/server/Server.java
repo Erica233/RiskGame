@@ -24,15 +24,17 @@ public class Server implements Serializable{
     public BufferedReader receiveFromClient; //Get the string from the client
     ObjectOutputStream sendObjToClient;
     ObjectInputStream readObjFromClient;
+    int ind;
 //    ArrayList<>
 
-    public Server(RiskGameBoard _riskGameBoard, BufferedReader inputReader) throws IOException{
+    public Server(RiskGameBoard _riskGameBoard, BufferedReader _inputReader, int _portNum) throws IOException{
         this.riskGameBoard = _riskGameBoard;
-        this.receiveFromClient = inputReader;
-        this.serverS = new ServerSocket(12345); //Build up the server
+        this.receiveFromClient = _inputReader;
+        this.serverS = new ServerSocket(_portNum); //Build up the server
         PlayerNames = new ArrayList<String>();
-        this.PlayerNames.add( "Red");
+        this.PlayerNames.add("Red");
         this.PlayerNames.add("Green");
+        this.ind = 0;
     }
 
     public boolean tryConnectMulClient(int numPlayer) throws IOException, ClassNotFoundException {
@@ -47,20 +49,22 @@ public class Server implements Serializable{
             transData();
             transObject(riskGameBoard);
         }
+        closePipe();
         return true;
     }
 
-    /**
-     * This method generates a random number based on the number of players
-     * @param numPlayer
-     * @return
-     */
-    int getRandomNum(int numPlayer){
-        Random rand = new Random();
-        int randomNum = rand.nextInt(numPlayer);
-        System.out.println("Random Number: " + randomNum);
-        return randomNum;
-    }
+//
+//    /**
+//     * This method generates a random number based on the number of players
+//     * @param numPlayer
+//     * @return
+//     */
+//    int getRandomNum(int numPlayer){
+//        Random rand = new Random();
+//        int randomNum = rand.nextInt(numPlayer);
+//        System.out.println("Random Number: " + randomNum);
+//        return randomNum;
+//    }
 
     /**
      * This method tries to connect the server to the client
@@ -85,8 +89,10 @@ public class Server implements Serializable{
     }
     public void transData() throws IOException {
         String info = "Hi, This is Server!! I am connecting with you";
-        int rand = getRandomNum(2);
-        String playerColor = PlayerNames.get(rand);
+//        int rand = getRandomNum(2);
+//        String playerColor = PlayerNames.get(rand);
+        String playerColor = PlayerNames.get(ind);
+        ++ ind;
 
         //Send data to the client
 //        this.sendToClient = new PrintStream(socket_1.getOutputStream());
@@ -128,23 +134,15 @@ public class Server implements Serializable{
         RiskGameBoard riskGameBoard = new RiskGameBoard();
         riskGameBoard.tryAddTerritory(t1);
         int numPlayer = 2;
+        int portNum = 12345;
 
-        Server s = new Server(riskGameBoard, input);
-
-        //Server connecting with one client
-//        boolean isConnected1 = s.tryConnectClient();
-//        if(isConnected1 == false){
-//            throw new SocketException();
-//        }
-//        s.transData();
-//        s.transObject(riskGameBoard);
-
+        Server s = new Server(riskGameBoard, input, portNum);
         //connect with multiple clients
         boolean isClientConnected1 = s.tryConnectMulClient(numPlayer);
         if(isClientConnected1 == false){
             throw new SocketException();
         }
-        s.closePipe();
+//        s.closePipe();
     }
 
 }

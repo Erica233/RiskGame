@@ -1,5 +1,6 @@
 package edu.duke.ece651.team3.client;
 import edu.duke.ece651.team3.shared.*;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -50,6 +51,21 @@ public class ClientTest {
         assertEquals(expected, actual);
     }
 
+    @Test
+    void testDisplayTerritoried(){
+
+    }
+    @Test
+    void checkValidation(){
+        BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
+        Territory t1 = new Territory("Mordor", 8);
+        RiskGameBoard b1 = new RiskGameBoard();
+        b1.tryAddTerritory(t1);
+        BoardTextView v1 = new BoardTextView(b1);
+        Client c = new Client(input, b1, v1);
+        assertEquals(true, c.checkValidation());
+
+    }
 
 
 }

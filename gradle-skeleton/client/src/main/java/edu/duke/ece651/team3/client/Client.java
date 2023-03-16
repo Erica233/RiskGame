@@ -30,7 +30,7 @@ public class Client implements Serializable {
         this.readFromServer = new ObjectInputStream(this.clientS.getInputStream());
     }
 
-    public boolean tryConnectServer1() throws IOException, ClassNotFoundException {
+    public boolean tryConnectServer() throws IOException, ClassNotFoundException {
         Territory t1 = new Territory("Mordor", 8);
         RiskGameBoard b1 = new RiskGameBoard();
         b1.tryAddTerritory(t1);
@@ -124,8 +124,8 @@ public class Client implements Serializable {
         Client c = new Client(input, b1, v1);
 
         //connect with The first client
-        boolean isClientConnected1 = c.tryConnectServer1();
-        if(isClientConnected1 == false){
+        boolean isClientConnected = c.tryConnectServer();
+        if(isClientConnected == false){
             throw new SocketException();
         }
 
