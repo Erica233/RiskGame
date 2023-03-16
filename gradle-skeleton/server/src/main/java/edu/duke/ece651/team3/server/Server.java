@@ -114,9 +114,9 @@ public class Server implements Serializable{
         out.println("Getting the info from the client");
         this.readObjFromClient = new ObjectInputStream(socket_1.getInputStream());
         RiskGameBoard riskGameBoard = (RiskGameBoard) readObjFromClient.readObject();
-        String test = riskGameBoard.displayBoard();
-        out.println(test);
-        out.println("Sending the object successfully");
+//        String test = riskGameBoard.displayBoard();
+//        out.println(test);
+//        out.println("Sending the object successfully");
     }
 
 

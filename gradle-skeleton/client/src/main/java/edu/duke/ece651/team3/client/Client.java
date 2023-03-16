@@ -127,8 +127,8 @@ public class Client implements Serializable {
         boolean isClientConnected = c.tryConnectServer();
         if(isClientConnected == false){
             throw new SocketException();
-        }
 
+        }
         c.transData();
         c.transObject(b1);
         c.closePipe();

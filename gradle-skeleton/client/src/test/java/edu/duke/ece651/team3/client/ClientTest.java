@@ -1,62 +1,19 @@
 package edu.duke.ece651.team3.client;
 import edu.duke.ece651.team3.shared.*;
+import org.checkerframework.checker.units.qual.C;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
+import java.net.ServerSocket;
 
 
 import java.io.*;
+import java.net.Socket;
 
 public class ClientTest {
 
-    void test_file_helper(String inFile, String outFile) throws IOException, InterruptedException, ClassNotFoundException {
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        PrintStream out = new PrintStream(bytes, true);
-
-        //Getting InputStream for input.txt file
-        InputStream input = getClass().getClassLoader().getResourceAsStream(inFile);
-        assertNotNull(input);
-
-        //Getting the expected output
-        InputStream expectedStream = getClass().getClassLoader().getResourceAsStream(outFile);
-        assertNotNull(expectedStream);
-
-        //Remember the current System.in and System.out
-        InputStream oldIn = System.in;
-        PrintStream oldOut = System.out;
-
-        //We'll do this inside a try...finally to ensure
-        //we restore System.in and System.out
-        try {
-            System.setIn(input);
-            System.setOut(out);
-            edu.duke.ece651.team3.client.Client.main(new String[0]);
-        }
-//    } catch (InterruptedException e) {
-//      throw new RuntimeException(e);
-//    } catch (ClassNotFoundException e) {
-//      throw new RuntimeException(e);
-//    }
-        finally {
-            System.setIn(oldIn);
-            System.setOut(oldOut);
-        }
-
-        //read all the data from our expectedStream (output.txt)
-        String expected = new String(expectedStream.readAllBytes());
-
-        //we get the String out of bytes
-        String actual = bytes.toString();
-        //compare them
-        assertEquals(expected, actual);
-    }
-
     @Test
-    void testDisplayTerritoried(){
-
-    }
-    @Test
-    void checkValidation(){
+    void checkValidation() {
         BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
         Territory t1 = new Territory("Mordor", 8);
         RiskGameBoard b1 = new RiskGameBoard();
@@ -67,5 +24,112 @@ public class ClientTest {
 
     }
 
+//    @Test
+//    void test_client() throws IOException, ClassNotFoundException, InterruptedException {
+//        BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
+//        Territory t1 = new Territory("Mordor", 8);
+//        RiskGameBoard b1 = new RiskGameBoard();
+//        b1.tryAddTerritory(t1);
+//        BoardTextView v1 = new BoardTextView(b1);
+//
+//        Thread th1 = new Thread() {
+//            @Override()
+//            public void run() {
+//                try {
+//                    Client.main(new String[0]);
+////                    Server s = new Server(riskGameBoard, input, 12345);
+////                    s.tryConnectMulClient(1);
+////                    s.closePipe();
+//                } catch (Exception e) {
+//                }
+//            }
+//        };
+//        th1.start();
+//        Thread.sleep(100);
+//        Socket s1 = new Socket("localhost", 12345);
+//        ObjectOutputStream out = new ObjectOutputStream(s1.getOutputStream());
+//        Client c = new Client(input, b1, v1);
+////        s.tryConnectClient();
+////        s.closePipe();
+////        assertEquals("Red", out);
+//        //ObjectInputStream in = new ObjectInputStream(s1.getInputStream());
+//
+//
+//    }
+      @Test
+      public void test_main() throws IOException, ClassNotFoundException, InterruptedException {
+          BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
+        Territory t1 = new Territory("Mordor", 8);
+        RiskGameBoard b1 = new RiskGameBoard();
+        b1.tryAddTerritory(t1);
+        BoardTextView v1 = new BoardTextView(b1);
+        int portNum = 12345;
+        ServerSocket ss = new ServerSocket(portNum);
 
+//        ServerSocket ss = new ServerSocket(portNum);
+        Thread th = new Thread() {
+          @Override()
+          public void run() {
+            try {
+                Client c = new Client(input, b1, v1);
+                c.tryConnectServer();
+                c.transObject(b1);
+//                Client.main(new String[0]);
+            } catch (Exception e) {
+
+            }
+          }
+        };
+        th.start();
+        Thread.sleep(100);
+        Socket acceptedSocekt = ss.accept();
+//        ObjectOutputStream out = new ObjectOutputStream(acceptedSocekt.getOutputStream());
+//        ss.close();
+//         ObjectInputStream in = new
+//         ObjectInputStream(acceptedSocekt.getInputStream());
+//         RiskGameBoard riskGameBoard = (RiskGameBoard) in.readObject();
+//
+//         new ObjectInputStream(acceptedSocekt.getInputStream());
+//         assertNotNull(riskGameBoard);
+      }
+    @Test
+    public void test_trans() throws IOException, ClassNotFoundException, InterruptedException {
+        BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
+        Territory t1 = new Territory("Mordor", 8);
+        RiskGameBoard b1 = new RiskGameBoard();
+        b1.tryAddTerritory(t1);
+        BoardTextView v1 = new BoardTextView(b1);
+        int portNum = 12345;
+        ServerSocket ss = new ServerSocket(portNum);
+
+//        ServerSocket ss = new ServerSocket(portNum);
+        Thread th = new Thread() {
+            @Override()
+            public void run() {
+                try {
+                    Client c = new Client(input, b1, v1);
+                    c.tryConnectServer();
+                    c.transObject(b1);
+//                Client.main(new String[0]);
+                } catch (Exception e) {
+
+                }
+            }
+        };
+        th.start();
+        Thread.sleep(100);
+        Socket acceptedSocekt = ss.accept();
+        ObjectOutputStream out = new ObjectOutputStream(acceptedSocekt.getOutputStream());
+        out.writeObject(b1);
+        // ObjectInputStream in = new
+        // ObjectInputStream(acceptedSocekt.getInputStream());
+        // Player myDisplay = (BasicPlayer) in.readObject();
+
+        // Socket acceptedSocekt = ss.accept();
+        // Thread.sleep(100);
+        // ObjectInputStream in = new
+        // ObjectInputStream(acceptedSocekt.getInputStream());
+        // Player serverGameplayer = (Player) in.readObject();
+        // assertNotNull(acceptedSocekt);
+    }
 }
