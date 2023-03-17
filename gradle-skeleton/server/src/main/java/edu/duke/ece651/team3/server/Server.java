@@ -39,6 +39,9 @@ public class Server implements Serializable{
 
     public boolean tryConnectMulClient(int numPlayer) throws IOException, ClassNotFoundException {
         for(int i = 0; i < numPlayer; i++){
+//            if(i == 1){
+//                out.println("Say 1");
+//            }
             tryConnectClient();
             Territory t1 = new Territory("Hogwarts", 10);
             RiskGameBoard riskGameBoard = new RiskGameBoard();
@@ -46,23 +49,9 @@ public class Server implements Serializable{
             transData();
             transObject(riskGameBoard);
         }
-//        out.println("say try");
         closePipe();
         return true;
     }
-
-//
-//    /**
-//     * This method generates a random number based on the number of players
-//     * @param numPlayer
-//     * @return
-//     */
-//    int getRandomNum(int numPlayer){
-//        Random rand = new Random();
-//        int randomNum = rand.nextInt(numPlayer);
-//        System.out.println("Random Number: " + randomNum);
-//        return randomNum;
-//    }
 
     /**
      * This method tries to connect the server to the client
@@ -129,7 +118,7 @@ public class Server implements Serializable{
         Territory t1 = new Territory("Hogwarts", 10);
         RiskGameBoard riskGameBoard = new RiskGameBoard();
         riskGameBoard.tryAddTerritory(t1);
-        int numPlayer = 2;
+        int numPlayer = 1;
         int portNum = 12345;
 
         Server s = new Server(riskGameBoard, input, portNum);

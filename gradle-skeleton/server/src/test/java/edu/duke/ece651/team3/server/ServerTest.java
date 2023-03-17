@@ -42,6 +42,7 @@ public class ServerTest {
             }
         };
         th1.start();
+        out.println("here");
         Thread.sleep(100);
         Socket s1 = new Socket("localhost", 12345);
         ObjectOutputStream out = new ObjectOutputStream(s1.getOutputStream());
@@ -49,17 +50,30 @@ public class ServerTest {
         ObjectInputStream in = new ObjectInputStream(s1.getInputStream());
         in.readObject();
 
-        Socket mockClientSocket = mock(Socket.class);
+        Socket mockClientSocket1 = mock(Socket.class);
         System.out.println("Building the mock class");
-        InputStream inputStream = mock(InputStream.class);
-        ObjectOutputStream objectOutputStream = mock(ObjectOutputStream.class);
+        InputStream inputStream1 = mock(InputStream.class);
+        ObjectOutputStream objectOutputStream1 = mock(ObjectOutputStream.class);
 
 
-        Mockito.when(mockClientSocket.getInputStream()).thenReturn(inputStream);
-        Mockito.when(mockClientSocket.getOutputStream()).thenReturn(objectOutputStream);
+        Mockito.when(mockClientSocket1.getInputStream()).thenReturn(inputStream1);
+        Mockito.when(mockClientSocket1.getOutputStream()).thenReturn(objectOutputStream1);
 //        ObjectOutputStream sendObjToServer = new ObjectOutputStream(mockClientSocket.getOutputStream());
 //        sendObjToServer.writeObject(riskGameBoard);
-        objectOutputStream.writeObject(riskGameBoard);
+        objectOutputStream1.writeObject(riskGameBoard);
+//
+//        Socket mockClientSocket2 = mock(Socket.class);
+//        System.out.println("Building the mock class");
+//        InputStream inputStream2 = mock(InputStream.class);
+//        ObjectOutputStream objectOutputStream2 = mock(ObjectOutputStream.class);
+//
+//
+//        Mockito.when(mockClientSocket2.getInputStream()).thenReturn(inputStream2);
+//        Mockito.when(mockClientSocket2.getOutputStream()).thenReturn(objectOutputStream2);
+////        ObjectOutputStream sendObjToServer = new ObjectOutputStream(mockClientSocket.getOutputStream());
+////        sendObjToServer.writeObject(riskGameBoard);
+//        objectOutputStream2.writeObject(riskGameBoard);
+//        assertEquals(true, false);
 
     }
 
