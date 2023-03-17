@@ -16,7 +16,7 @@ import static java.lang.System.out; //out.println()
 
 //implements Serialize
 public class Server implements Serializable{
-    private RiskGameBoard riskGameBoard;
+    int numOfPlayer;
     Socket clientSocket;
     public ServerSocket serverS;
     public ArrayList<String> PlayerNames;
@@ -27,8 +27,7 @@ public class Server implements Serializable{
     int ind;
 //    ArrayList<>
 
-    public Server(RiskGameBoard _riskGameBoard, BufferedReader _inputReader, int _portNum) throws IOException{
-        this.riskGameBoard = _riskGameBoard;
+    public Server(BufferedReader _inputReader, int _portNum) throws IOException{
         this.receiveFromClient = _inputReader;
         this.serverS = new ServerSocket(_portNum); //Build up the server
         PlayerNames = new ArrayList<String>();
@@ -38,10 +37,8 @@ public class Server implements Serializable{
     }
 
     public boolean tryConnectMulClient(int numPlayer) throws IOException, ClassNotFoundException {
+        this.numOfPlayer = numPlayer;
         for(int i = 0; i < numPlayer; i++){
-//            if(i == 1){
-//                out.println("Say 1");
-//            }
             tryConnectClient();
             Territory t1 = new Territory("Hogwarts", 10);
             RiskGameBoard riskGameBoard = new RiskGameBoard();
@@ -57,32 +54,34 @@ public class Server implements Serializable{
      * This method tries to connect the server to the client
      * @return true if the connection is successful, false if failed
      */
-    public boolean tryConnectClient() throws IOException{
-        Territory t1 = new Territory("Hogwarts", 10);
-        RiskGameBoard riskGameBoard = new RiskGameBoard();
-        riskGameBoard.tryAddTerritory(t1);
-        out.println("Server starts");
+    public void tryConnectClient() throws IOException{
+        try{
+            Territory t1 = new Territory("Hogwarts", 10);
+            RiskGameBoard riskGameBoard = new RiskGameBoard();
+            riskGameBoard.tryAddTerritory(t1);
+            out.println("Server starts");
 
 //        ServerSocket serverS = new ServerSocket(12345); //Build up the server
-        out.println("Build up the server");
+            out.println("Build up the server");
 
-        //Connecting with the first player
-        clientSocket = serverS.accept(); //Accept the connection from the client
-        out.println("Server accept socket is: ");
-        out.println(clientSocket);
-        out.println("The connection is established!");
-        out.println("The server is connecting to the client with the port: " +  clientSocket.getPort());
-        return true;
+            //Connecting with the first player
+            clientSocket = serverS.accept(); //Accept the connection from the client
+            out.println("Server accept socket is: ");
+            out.println(clientSocket);
+            out.println("The connection is established!");
+            out.println("The server is connecting to the client with the port: " +  clientSocket.getPort());
+        }
+        catch (IOException e){
+            System.err.println("Exception caught when trying to establish connection: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
     public void transData() throws IOException {
         String info = "Hi, This is Server!! I am connecting with you";
-//        int rand = getRandomNum(2);
-//        String playerColor = PlayerNames.get(rand);
         String playerColor = PlayerNames.get(ind);
         ++ ind;
 
         //Send data to the client
-//        this.sendToClient = new PrintStream(clientSocket.getOutputStream());
         this.sendObjToClient = new ObjectOutputStream(clientSocket.getOutputStream());
         sendObjToClient.writeObject(info);
         sendObjToClient.writeObject(playerColor);
@@ -90,7 +89,6 @@ public class Server implements Serializable{
 
     public void transObject(RiskGameBoard riskGameBoard_toClient) throws IOException, ClassNotFoundException {
         out.println("Sending the RiskGameBoard class to client");
-//        this.sendObjToClient = new ObjectOutputStream(clientSocket.getOutputStream());
         sendObjToClient.writeObject(riskGameBoard_toClient);
         out.println("sending risk game board successfully");
 
@@ -121,7 +119,7 @@ public class Server implements Serializable{
         int numPlayer = 1;
         int portNum = 12345;
 
-        Server s = new Server(riskGameBoard, input, portNum);
+        Server s = new Server(input, portNum);
         //connect with multiple clients
         s.tryConnectMulClient(numPlayer);
     }
