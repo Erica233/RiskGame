@@ -1,5 +1,12 @@
 # ECE651_RISCGame
 
+[![pipeline status](https://gitlab.oit.duke.edu/lz211/ece651_riscgame/badges/main/pipeline.svg)](https://gitlab.oit.duke.edu/lz211/ece651_riscgame/-/commits/main)
+
+[![coverage report](https://gitlab.oit.duke.edu/lz211/ece651_riscgame/badges/main/coverage.svg)](https://gitlab.oit.duke.edu/lz211/ece651_riscgame/-/commits/main)
+
+## Coverage
+
+[Detailed coverage](https://lz211.pages.oit.duke.edu/ece651_riscgame/dashboard.html)
 
 
 ## Getting started
