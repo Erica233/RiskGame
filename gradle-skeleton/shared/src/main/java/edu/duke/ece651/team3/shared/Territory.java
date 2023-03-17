@@ -7,7 +7,7 @@ import java.util.ArrayList;
  * A class for Territory
  */
 public class Territory implements Serializable {
-    private final String name;
+    private final String territoryName;
     private final int numUnits;
     private final ArrayList<Territory> neighbors;
 
@@ -18,7 +18,7 @@ public class Territory implements Serializable {
      * @param _numUnits the number of units in the Territory
      */
     public Territory(String _name, int _numUnits) {
-        this.name = _name;
+        this.territoryName = _name;
         this.numUnits = _numUnits;
         this.neighbors = new ArrayList<>();
     }
@@ -31,7 +31,7 @@ public class Territory implements Serializable {
      * @param _neighbors the neighbors of the Territory
      */
     public Territory(String _name, int _numUnits, ArrayList<Territory> _neighbors) {
-        this.name = _name;
+        this.territoryName = _name;
         this.numUnits = _numUnits;
         this.neighbors = _neighbors;
     }
@@ -79,16 +79,16 @@ public class Territory implements Serializable {
      */
     public String displayTerritory() {
         StringBuilder output = new StringBuilder();
-        output.append(numUnits).append(" units in ").append(name);
+        output.append(numUnits).append(" units in ").append(territoryName);
         if (neighbors.isEmpty()) {
             output.append(" (no neighbors)\n");
         } else {
             output.append(" (next to: ");
             for (int i = 0; i < neighbors.size(); i++) {
                 if (i < neighbors.size() - 1) {
-                    output.append(neighbors.get(i).getName()).append(", ");
+                    output.append(neighbors.get(i).getTerritoryName()).append(", ");
                 } else {
-                    output.append(neighbors.get(i).getName());
+                    output.append(neighbors.get(i).getTerritoryName());
                 }
             }
             output.append(")\n");
@@ -97,8 +97,8 @@ public class Territory implements Serializable {
     }
 
     /** getters and setters **/
-    public String getName() {
-        return name;
+    public String getTerritoryName() {
+        return territoryName;
     }
 
     public int getNumUnits() {

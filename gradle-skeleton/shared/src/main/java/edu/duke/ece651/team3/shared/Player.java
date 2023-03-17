@@ -1,14 +1,26 @@
 package edu.duke.ece651.team3.shared;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Player {
-    private final int id;
+public class Player implements Serializable {
+    private final int playerId;
+    private final String color;
+    private final int totNumUnits;
     private final ArrayList<Territory> ownedTerritories;
 
-    public Player(int _id) {
-        this.id = _id;
+    public Player(int _id, String _color, int _totNumUnits) {
+        this.playerId = _id;
+        this.color = _color;
+        this.totNumUnits = _totNumUnits;
         this.ownedTerritories = new ArrayList<>();
+    }
+
+    public Player(int _id, String _color, int _totNumUnits, ArrayList<Territory> _ownedTerritories) {
+        this.playerId = _id;
+        this.color = _color;
+        this.totNumUnits = _totNumUnits;
+        this.ownedTerritories = _ownedTerritories;
     }
 
     /**
@@ -37,11 +49,20 @@ public class Player {
         return true;
     }
 
-    public int getId() {
-        return id;
+    /** getters and setters **/
+    public int getPlayerId() {
+        return playerId;
     }
 
     public ArrayList<Territory> getOwnedTerritories() {
         return ownedTerritories;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public int getTotNumUnits() {
+        return totNumUnits;
     }
 }

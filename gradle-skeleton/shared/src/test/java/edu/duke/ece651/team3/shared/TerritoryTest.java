@@ -10,8 +10,8 @@ public class TerritoryTest {
     @Test
     public void test_name_numUnits() {
         Territory t1 = new Territory("Narnia", 3);
-        assertEquals("Narnia", t1.getName());
-        assertNotEquals("Narnias", t1.getName());
+        assertEquals("Narnia", t1.getTerritoryName());
+        assertNotEquals("Narnias", t1.getTerritoryName());
         assertEquals(3, t1.getNumUnits());
         assertNotEquals(4, t1.getNumUnits());
     }
