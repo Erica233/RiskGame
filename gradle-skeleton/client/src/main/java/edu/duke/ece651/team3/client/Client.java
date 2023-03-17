@@ -43,8 +43,8 @@ public class Client implements Serializable {
             clientID = clientS.getLocalPort();
         }
         catch (IOException e){
-            System.err.println("Exception caught when trying to establish connection: " + e.getMessage());
-            e.printStackTrace();
+//            System.err.println("Exception caught when trying to establish connection: " + e.getMessage());
+//            e.printStackTrace();
         }
     }
 
@@ -52,17 +52,14 @@ public class Client implements Serializable {
         //To get the data from the server
         this.readFromServer = new ObjectInputStream(clientS.getInputStream()); //TODO: does not build successfully
         String receivedMsg = (String) readFromServer.readObject();
-
-
-//        String receivedMsg = readFromServer.readLine();
         out.println(receivedMsg);
         out.println("Received the string successfully from the server");
-
         String playerColor = (String)readFromServer.readObject();
         out.println(playerColor);
         out.println("Received the Player's color successfully from the server");
-
     }
+
+
     public void transObject(RiskGameBoard riskGameBoard_toSerer) throws IOException, ClassNotFoundException{
         RiskGameBoard riskGameBoard = (RiskGameBoard) readFromServer.readObject();
 
@@ -98,13 +95,6 @@ public class Client implements Serializable {
         for(int i = 0; i < owenedTerritories.size(); i++) {
             owenedTerritories.get(i).displayTerritory();
         }
-    }
-
-    /**
-     * This method will base on the map for the whole. Here it
-     */
-    public void displayNeighbor(){
-//        player.displayNeighbor();
     }
 
 

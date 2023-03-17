@@ -23,6 +23,8 @@ import java.util.ArrayList;
 
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.*;
 
 public class ServerTest {
@@ -56,4 +58,12 @@ public class ServerTest {
         Mockito.when(mockClientSocket1.getInputStream()).thenReturn(inputStream1);
 
     }
+//    @Test
+//    void test_serverExcep(){
+//        given(otherServiceMock.bar()).willThrow(new MyException());
+//
+//        when(myService).foo();
+//
+//        then(caughtException()).isInstanceOf(MyException.class);
+//    }
 }

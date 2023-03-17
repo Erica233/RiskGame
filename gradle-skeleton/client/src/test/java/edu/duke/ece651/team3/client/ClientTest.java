@@ -61,6 +61,8 @@ public class ClientTest {
           sendObjToClient.writeObject(playerColor);
 
       sendObjToClient.writeObject(b1);
+      ObjectInputStream readObjFromClient = new ObjectInputStream(acceptedSocekt.getInputStream());
+      RiskGameBoard riskGameBoard = (RiskGameBoard) readObjFromClient.readObject();
       ss.close();
       acceptedSocekt.close();
       }

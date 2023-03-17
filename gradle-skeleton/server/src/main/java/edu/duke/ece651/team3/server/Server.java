@@ -17,20 +17,19 @@ import static java.lang.System.out; //out.println()
 //implements Serialize
 public class Server implements Serializable{
     int numOfPlayer;
+    int ind;
     Socket clientSocket;
     public ServerSocket serverS;
     public ArrayList<String> PlayerNames;
-    PrintStream sendToClient; //Set the string to the client
     public BufferedReader receiveFromClient; //Get the string from the client
     ObjectOutputStream sendObjToClient;
     ObjectInputStream readObjFromClient;
-    int ind;
-//    ArrayList<>
+
 
     public Server(BufferedReader _inputReader, int _portNum) throws IOException{
         this.receiveFromClient = _inputReader;
         this.serverS = new ServerSocket(_portNum); //Build up the server
-        PlayerNames = new ArrayList<String>();
+        PlayerNames = new ArrayList<>();
         this.PlayerNames.add("Red");
         this.PlayerNames.add("Green");
         this.ind = 0;
@@ -54,15 +53,12 @@ public class Server implements Serializable{
      * This method tries to connect the server to the client
      * @return true if the connection is successful, false if failed
      */
-    public void tryConnectClient() throws IOException{
+    public void tryConnectClient(){
         try{
             Territory t1 = new Territory("Hogwarts", 10);
             RiskGameBoard riskGameBoard = new RiskGameBoard();
             riskGameBoard.tryAddTerritory(t1);
-            out.println("Server starts");
-
-//        ServerSocket serverS = new ServerSocket(12345); //Build up the server
-            out.println("Build up the server");
+            out.println("Build up the Server");
 
             //Connecting with the first player
             clientSocket = serverS.accept(); //Accept the connection from the client
@@ -72,8 +68,8 @@ public class Server implements Serializable{
             out.println("The server is connecting to the client with the port: " +  clientSocket.getPort());
         }
         catch (IOException e){
-            System.err.println("Exception caught when trying to establish connection: " + e.getMessage());
-            e.printStackTrace();
+//            System.err.println("Exception caught when trying to establish connection: " + e.getMessage());
+//            e.printStackTrace();
         }
     }
     public void transData() throws IOException {
@@ -104,7 +100,6 @@ public class Server implements Serializable{
 
 
     void closePipe() throws IOException {
-//        sendToClient.close();
         sendObjToClient.close();
         readObjFromClient.close();
         serverS.close();
