@@ -26,21 +26,16 @@ public class Client implements Serializable {
         this.riskGameBoard = _riskGameBoard;
         this.mtv = _mtv;
     }
-    public void setUpReadObjFromServer() throws IOException{
-        this.readFromServer = new ObjectInputStream(this.clientS.getInputStream());
-    }
 
     public boolean tryConnectServer() throws IOException, ClassNotFoundException {
         Territory t1 = new Territory("Mordor", 8);
         RiskGameBoard b1 = new RiskGameBoard();
         b1.tryAddTerritory(t1);
         //Create the local host
-        out.println("try connect to the server");
 
         //The first player responses
         clientS = new Socket("localhost", 12345);
-        out.println("The current connected socket is: ");
-        out.println(clientS);
+        out.println("The current connected socket is: " + clientS);
         out.println("Build up the connection to server!");
         out.println("The client's port is: " + clientS.getLocalPort());
         clientID = clientS.getLocalPort();
@@ -50,7 +45,6 @@ public class Client implements Serializable {
     public void transData() throws IOException, ClassNotFoundException {
         //To get the data from the server
         this.readFromServer = new ObjectInputStream(clientS.getInputStream()); //TODO: does not build successfully
-//        this.dataFromServer = new BufferedReader(new InputStreamReader(clientS.getInputStream()));
         String receivedMsg = (String) readFromServer.readObject();
 
 
@@ -60,12 +54,10 @@ public class Client implements Serializable {
 
         String playerColor = (String)readFromServer.readObject();
         out.println(playerColor);
-        out.println("Received the random number successfully from the server");
+        out.println("Received the Player's color successfully from the server");
 
     }
     public void transObject(RiskGameBoard riskGameBoard_toSerer) throws IOException, ClassNotFoundException{
-//        this.readFromServer = new ObjectInputStream(clientS.getInputStream()); //TODO: does not build successfully
-        out.println("Build up the object stream");
         RiskGameBoard riskGameBoard = (RiskGameBoard) readFromServer.readObject();
 
         //Checks whether the object successfully passed
@@ -80,7 +72,6 @@ public class Client implements Serializable {
     }
 
     public void closePipe() throws IOException {
-//        dataFromServer.close();
         sendObjToServer.close();
         readFromServer.close();
         clientS.close();

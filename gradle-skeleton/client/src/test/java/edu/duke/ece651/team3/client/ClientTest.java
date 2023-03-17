@@ -99,8 +99,9 @@ public class ClientTest {
         RiskGameBoard b1 = new RiskGameBoard();
         b1.tryAddTerritory(t1);
         BoardTextView v1 = new BoardTextView(b1);
-        int portNum = 12345;
+        int portNum = 12349;
         ServerSocket ss = new ServerSocket(portNum);
+        Socket s1 = new Socket("localhost", 12345);
 
 //        ServerSocket ss = new ServerSocket(portNum);
         Thread th = new Thread() {
