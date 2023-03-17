@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Player {
     private final int id;
-    private final ArrayList<Territory> ownedTerritories;
+    public final ArrayList<Territory> ownedTerritories;
 
     public Player(int _id) {
         this.id = _id;
