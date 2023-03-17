@@ -12,15 +12,15 @@ do
         echo "Giving up after 20 attempts to connect!"
         exit 1
     fi
-    x=`netcat -N -w 1 localhost 1651 < /dev/null`
+    x=`netcat -N -w 1 localhost 12345 < /dev/null`
     let count=count+1
     sleep 5
 done
 
+echo "Connected after $count attempts"
 
 
-
-nc -N localhost 1651 > testoutput <<EOF
+nc -N localhost 12345 > testoutput <<EOF
 2
 99
 123456
