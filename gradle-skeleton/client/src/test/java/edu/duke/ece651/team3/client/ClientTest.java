@@ -93,7 +93,7 @@ public class ClientTest {
 
       }
       @Test
-      void test_displayTerritory(){
+      void test_displays(){
           BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
           Territory t1 = new Territory("Mordor", 8);
           RiskGameBoard b1 = new RiskGameBoard();
@@ -102,6 +102,7 @@ public class ClientTest {
           Client c = new Client(input, b1, v1);
           c.addTerritories();
           c.displayTerritory();
+          c.displayNeighbor();
       }
 
 }

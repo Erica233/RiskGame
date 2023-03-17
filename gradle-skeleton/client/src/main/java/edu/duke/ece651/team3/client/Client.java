@@ -97,6 +97,21 @@ public class Client implements Serializable {
         }
     }
 
+    /**
+     * This method will base on the map for the whole. Here it
+     */
+    public void displayNeighbor(){
+        Territory t1 = new Territory("Mordor", 8);
+        RiskGameBoard b1 = new RiskGameBoard();
+        b1.tryAddTerritory(t1);
+
+        ArrayList<Territory> ownTerritories = player.getOwnedTerritories();
+        for(int i = 0; i < ownTerritories.size(); i++){
+            out.println(ownTerritories.get(i).displayTerritory());
+        }
+        t1.getNeighbors();
+    }
+
 
     /**
      * This method checks the validation of the board right after the information passed to client
