@@ -86,7 +86,20 @@ public class Server implements Serializable{
         sendObjToClient.writeObject(info);
         sendObjToClient.writeObject(playerColor);
     }
-
+//    public void transObject(RiskGameBoard riskGameBoard_toClient) throws IOException, ClassNotFoundException {
+//        out.println("Sending the RiskGameBoard class to client");
+//        sendObjToClient.writeObject(riskGameBoard_toClient);
+//        out.println("sending risk game board successfully");
+//
+//        //Checks whether the server gets the client's object
+//        // Read data from the client
+//        out.println("Getting the info from the client");
+//        this.readObjFromClient = new ObjectInputStream(clientSocket.getInputStream());
+//        Action action = (Action) readObjFromClient.readObject();
+//        String test = action.getActionType();
+//        out.println(test);
+//        out.println("Sending the object successfully");
+//    }
     /**
      * This method is currently the testing method. It transits the class
      * @param riskGameBoard_toClient

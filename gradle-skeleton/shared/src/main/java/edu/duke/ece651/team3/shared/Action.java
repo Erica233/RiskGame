@@ -1,8 +1,9 @@
 package edu.duke.ece651.team3.shared;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Action {
+public class Action implements Serializable {
     private String actionType;
 
     public String getActionType() {

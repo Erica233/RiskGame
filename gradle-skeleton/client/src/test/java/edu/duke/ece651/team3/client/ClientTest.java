@@ -1,7 +1,9 @@
 package edu.duke.ece651.team3.client;
 import edu.duke.ece651.team3.shared.*;
+import edu.duke.ece651.team3.shared.Action;
 import org.checkerframework.checker.units.qual.C;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 
 import static java.lang.System.in;
@@ -114,7 +116,6 @@ public class ClientTest {
         BufferedReader mockInput = Mockito.mock(BufferedReader.class);
         when(mockInput.readLine()).thenReturn("M", "Narnia", "Oz", "3");
 
-
         Client c = new Client(input);
         c.inputReader = mockInput;
         c.readAction();
@@ -127,5 +128,18 @@ public class ClientTest {
 
 
     }
+
+    @Test
+    void test_transData() throws IOException, ClassNotFoundException {
+        //Initialize
+        Territory src = new Territory("Space", 11);
+        Territory dst = new Territory("Mordor", 4);
+        String actionType = "Move";
+        int actionUnits = 5;
+        Action action = new Action(actionType, src, dst, actionUnits);
+        ObjectInputStream mockObjectInput = Mockito.mock(ObjectInputStream.class);
+        when(mockObjectInput.readObject()).thenReturn(action);
+    }
+
 
 }

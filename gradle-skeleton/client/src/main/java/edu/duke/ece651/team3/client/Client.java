@@ -62,6 +62,24 @@ public class Client implements Serializable {
         out.println("Received the Player's color successfully from the server");
     }
 
+//    public void transObject(RiskGameBoard riskGameBoard_toSerer) throws IOException, ClassNotFoundException{
+//        RiskGameBoard riskGameBoard = (RiskGameBoard) readFromServer.readObject();
+//        //Checks whether the object successfully passed
+//        String test = riskGameBoard.displayBoard();
+//        out.println("Received the object from server successfully");
+//        out.println(test);
+//
+//        //Sending the Action to server
+//        Territory src = new Territory("Space", 11);
+//        Territory dst = new Territory("Mordor", 4);
+//        String actionType = "Move";
+//        int actionUnits = 5;
+//        edu.duke.ece651.team3.shared.Action action = new edu.duke.ece651.team3.shared.Action(actionType, src, dst, actionUnits);
+//        this.sendObjToServer = new ObjectOutputStream(clientS.getOutputStream());
+//        sendObjToServer.writeObject(action);
+//        out.println("sending risk game board successfully");
+//    }
+
     /**
      * This method is currently the testing method. It transits the class
      * @param riskGameBoard_toSerer
