@@ -69,12 +69,19 @@ public class RiskGameBoard implements Board, Serializable {
         return true;
     }
 
+//    public void executeMove(){
+//
+//    }
+
     public String displayBoard() {
         StringBuilder output = new StringBuilder();
         for (Territory aTerritory: allTerritories) {
             output.append(aTerritory.displayTerritory());
         }
         return output.toString();
+    }
+    public ArrayList<Player> getAllPlayers() {
+        return allPlayers;
     }
 
     public ArrayList<Territory> getAllTerritories() {

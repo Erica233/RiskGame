@@ -2,7 +2,7 @@ package edu.duke.ece651.team3.shared;
 
 import java.io.Serializable;
 
-public class Action implements Serializable {
+public abstract class Action implements Serializable {
     private String actionType;
     private Territory src; //The FROM territory
     private Territory dst; //The TO territory

@@ -4,18 +4,14 @@ import edu.duke.ece651.team3.shared.Action;
 
 import java.io.*;
 import java.net.Socket;
-import java.net.SocketException;
 import java.util.ArrayList;
-//import static org.mockito.Mockito.*;
-
-import static java.lang.System.in;
 import static java.lang.System.out;
 
 public class Client implements Serializable {
     private final Socket clientS; //The unique ID for each client
     private final ObjectInputStream readFromServer;
     private final ObjectOutputStream sendObjToServer;
-    private int playerID;
+    private int playerID; //The current player's ID
     private RiskGameBoard riskGameBoard;
     public BufferedReader inputReader;
 
@@ -31,25 +27,11 @@ public class Client implements Serializable {
     }
 
     public void printConnectInfo() {
-//        try{
-            //Create the local host
-
-            //The first player responses
-            //clientS = new Socket("localhost", 12345);
             out.println("The current connected socket is: " + clientS);
             out.println("Build up the connection to server!");
             out.println("The client's port is: " + clientS.getLocalPort());
-//            clientID = clientS.getLocalPort();
-//        }
-//        catch (SocketException e){
-//            System.err.println("Exception caught when trying to establish connection: " + e.getMessage());
-//        }
     }
 
-//    void initialStreams() throws IOException {
-//        this.readFromServer = new ObjectInputStream(clientS.getInputStream());
-//        this.sendObjToServer = new ObjectOutputStream(clientS.getOutputStream());
-//    }
     /**
      * This method is currently the testing method. It transits String
      * @throws IOException
@@ -57,16 +39,19 @@ public class Client implements Serializable {
 
     public void transData() throws IOException, ClassNotFoundException {
         //To get the data from the server
-//        this.readFromServer = new ObjectInputStream(clientS.getInputStream()); //TODO: does not build successfully
         String receivedMsg = (String) readFromServer.readObject();
         out.println(receivedMsg);
         out.println("Received the string successfully from the server");
         String playerColor = (String) readFromServer.readObject();
         out.println(playerColor);
-//        if(playerColor)
+        if(playerColor.equals("Red")){
+            playerID = 0;
+        }
+        if(playerColor.equals("Green")){
+            playerID = 1;
+        }
         out.println("Received the Player's color successfully from the server");
     }
-
 
     /**
      * This method is currently the testing method. It transits the class
@@ -75,15 +60,13 @@ public class Client implements Serializable {
      * @throws ClassNotFoundException
      */
     public void transBoard(RiskGameBoard riskGameBoard_toSerer) throws IOException, ClassNotFoundException{
-        RiskGameBoard riskGameBoard = (RiskGameBoard) readFromServer.readObject();
-
         //Checks whether the object successfully passed
+        RiskGameBoard riskGameBoard = (RiskGameBoard) readFromServer.readObject();
         String test = riskGameBoard.displayBoard();
         out.println("Received the object from server successfully");
         out.println(test);
 
         //Sending the object to server
-//        this.sendObjToServer = new ObjectOutputStream(clientS.getOutputStream());
         sendObjToServer.writeObject(riskGameBoard_toSerer);
         this.riskGameBoard = riskGameBoard;
         out.println("sending risk game board successfully");
@@ -97,7 +80,7 @@ public class Client implements Serializable {
         Territory dst = new Territory("Mordor", 4);
         String actionType = "Move";
         int actionUnits = 5;
-        Action action = new Action(actionType, src, dst, actionUnits);
+        Action action = new MoveAction(actionType, src, dst, actionUnits);
         sendObjToServer.writeObject(action);
         out.println("sending Action successfully");
     }
@@ -124,14 +107,10 @@ public class Client implements Serializable {
      * This method displays the textview to the output
      * TODO: check do we really need this method in Client, player needs name, neighbor
      */
-    public void displayTerritory(){
+    public String displayTerritoryAndNeighbor(){
         Territory t = new Territory("Mordor", 8);
-        player.tryOwnTerritory(t);
-        ArrayList<Territory> owenedTerritories = player.getOwnedTerritories();
-        out.println("Player: ");
-        for(int i = 0; i < owenedTerritories.size(); i++) {
-            owenedTerritories.get(i).displayTerritory();
-        }
+        String display = t.displayTerritory();
+        return display;
     }
 
     /**

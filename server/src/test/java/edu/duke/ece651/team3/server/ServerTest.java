@@ -1,5 +1,6 @@
 package edu.duke.ece651.team3.server;
 import edu.duke.ece651.team3.shared.Action;
+import edu.duke.ece651.team3.shared.MoveAction;
 import edu.duke.ece651.team3.shared.RiskGameBoard;
 import edu.duke.ece651.team3.shared.Territory;
 import java.io.*;
@@ -23,7 +24,7 @@ public class ServerTest {
         Territory dst = new Territory("Mordor", 4);
         String actionType = "Move";
         int actionUnits =   5;
-        Action action = new Action(actionType, src, dst, actionUnits);
+        Action action = new MoveAction(actionType, src, dst, actionUnits);
 
         Thread th1 = new Thread() {
             @Override()
@@ -70,37 +71,37 @@ public class ServerTest {
 //        s.closePipe();
 //
 //    }
-//    @Test
-//    void test_recAction() throws IOException, ClassNotFoundException {
-//        ServerSocket mockServerSocket = Mockito.mock(ServerSocket.class);
-//        Socket mockClientSocket = Mockito.mock(Socket.class);
-//        Socket mockTestClientSocket = Mockito.mock(Socket.class);
-//        ObjectInputStream mockObjectInput = Mockito.mock(ObjectInputStream.class);
+    @Test
+    void test_recAction() throws Exception {
+        ServerSocket mockServerSocket = Mockito.mock(ServerSocket.class);
+        Socket mockClientSocket = Mockito.mock(Socket.class);
+        Socket mockTestClientSocket = Mockito.mock(Socket.class);
+        ObjectInputStream mockObjectInput = Mockito.mock(ObjectInputStream.class);
 //        Server s = new Server(mockServerSocket);
-//
-//        //Action
-//        Territory src = new Territory("Space", 11);
-//        Territory dst = new Territory("Mordor", 4);
-//        String actionType = "Move";
-//        int actionUnits =   5;
-//        Action action = new Action(actionType, src, dst, actionUnits);
-//
-//        // Risk Game Board
-//        Territory t1 = new Territory("Hogwarts", 10);
-//        RiskGameBoard riskGameBoard = new RiskGameBoard();
-//        riskGameBoard.tryAddTerritory(t1);
-//
-//
-//        when(mockServerSocket.accept()).thenReturn(mockTestClientSocket);
+
+        //Action
+        Territory src = new Territory("Space", 11);
+        Territory dst = new Territory("Mordor", 4);
+        String actionType = "Move";
+        int actionUnits =   5;
+        Action action = new MoveAction(actionType, src, dst, actionUnits);
+
+        // Risk Game Board
+        Territory t1 = new Territory("Hogwarts", 10);
+        RiskGameBoard riskGameBoard = new RiskGameBoard();
+        riskGameBoard.tryAddTerritory(t1);
+
+
+        when(mockServerSocket.accept()).thenReturn(mockTestClientSocket);
 //        s.tryConnectClient();
-//
-//
-//        when(mockObjectInput.readObject()).thenReturn(action);
+
+
+        when(mockObjectInput.readObject()).thenReturn(action);
 //        s.readObjFromClient = mockObjectInput;
-////        s.recvAction();
-////
+//        s.recvAction();
 //
-//
-//    }
+
+
+    }
 
 }

@@ -5,9 +5,10 @@ import org.junit.jupiter.api.Test;
 
 public class MoveRuleCheckerTest {
   @Test
-  public void test_checkSrcDst() {
+  public void test_checkSrcDst() throws Exception {
     Player p1 = new Player(1, "Red", 5);
     Territory t1 = new Territory("Oz", 8);
+    RiskGameBoard r1 = new RiskGameBoard();
     p1.tryOwnTerritory(t1);
 
     Player p2 = new Player(2, "Green", 8);
@@ -20,8 +21,8 @@ public class MoveRuleCheckerTest {
     int actionUnits = 2;
     int test_less0 = -1;
     int test_greaterThanMax = 200;
-    Action a = new Action(actionType, src, dst, actionUnits);
-    MoveRuleChecker moveRuleChecker = new MoveRuleChecker(a);
+    Action a = new MoveAction(actionType, src, dst, actionUnits);
+    MoveRuleChecker moveRuleChecker = new MoveRuleChecker(a, r1);
     assertEquals(false,  moveRuleChecker.checkSrc(src, p1));
     assertEquals(true,  moveRuleChecker.checkDst(dst, p1));
 
