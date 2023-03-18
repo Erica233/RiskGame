@@ -1,23 +1,30 @@
 package edu.duke.ece651.team3.client;
 import edu.duke.ece651.team3.shared.*;
+import edu.duke.ece651.team3.shared.Action;
 
 import java.io.*;
 import java.net.Socket;
 import java.net.SocketException;
 import java.util.ArrayList;
 
+import static java.lang.System.in;
 import static java.lang.System.out;
 
 public class Client implements Serializable {
     private RiskGameBoard riskGameBoard;
-    private Socket clientS; //The unique ID for each client
+    Socket clientS; //The unique ID for each client
     private int clientID; //The unique ID for each client
     ObjectInputStream readFromServer;
     ObjectOutputStream sendObjToServer;
+    public BufferedReader inputReader;
 
     Player player;
+    String playerColor;
 
-    public Client(){
+    Action action;
+
+    public Client(BufferedReader _inputReader){
+        this.inputReader = _inputReader;
         this.player = new Player(1);
     }
 
@@ -39,6 +46,11 @@ public class Client implements Serializable {
             System.err.println("Exception caught when trying to establish connection: " + e.getMessage());
         }
     }
+
+//    void initialStreams() throws IOException {
+//        this.readFromServer = new ObjectInputStream(clientS.getInputStream());
+//        this.sendObjToServer = new ObjectOutputStream(clientS.getOutputStream());
+//    }
     /**
      * This method is currently the testing method. It transits String
      * @throws IOException
@@ -47,13 +59,16 @@ public class Client implements Serializable {
     public void transData() throws IOException, ClassNotFoundException {
         //To get the data from the server
         this.readFromServer = new ObjectInputStream(clientS.getInputStream()); //TODO: does not build successfully
-        String receivedMsg = (String) readFromServer.readObject();
-        out.println(receivedMsg);
+        out.println("oooo");
+//        String receivedMsg = (String) readFromServer.readObject();
+//        out.println(receivedMsg);
         out.println("Received the string successfully from the server");
         String playerColor = (String)readFromServer.readObject();
+        this.playerColor = playerColor;
         out.println(playerColor);
         out.println("Received the Player's color successfully from the server");
     }
+
 
     /**
      * This method is currently the testing method. It transits the class
@@ -61,7 +76,7 @@ public class Client implements Serializable {
      * @throws IOException
      * @throws ClassNotFoundException
      */
-    public void transObject(RiskGameBoard riskGameBoard_toSerer) throws IOException, ClassNotFoundException{
+    public void transBoard(RiskGameBoard riskGameBoard_toSerer) throws IOException, ClassNotFoundException{
         RiskGameBoard riskGameBoard = (RiskGameBoard) readFromServer.readObject();
 
         //Checks whether the object successfully passed
@@ -77,6 +92,20 @@ public class Client implements Serializable {
 
     public void sendAction(){
 
+    }
+
+    /**
+     * This method trans action to the Server
+     */
+    public void transAction() throws IOException {
+        Territory src = new Territory("Space", 11);
+        Territory dst = new Territory("Mordor", 4);
+        String actionType = "Move";
+        int actionUnits = 5;
+        Action action = new Action(actionType, src, dst, actionUnits);
+        this.sendObjToServer = new ObjectOutputStream(clientS.getOutputStream());
+        sendObjToServer.writeObject(action);
+        out.println("sending Action successfully");
     }
 
     /**
@@ -136,21 +165,58 @@ public class Client implements Serializable {
         return isValid;
     }
 
+    /**
+     * This method reads the action from the user using bufferReader
+     * @throws IOException
+     */
+    public void readAction() throws IOException {
+        String prompt = "You are the " + playerColor + " player, what would you like to do?\n(M)ove\n(A)ttack\n(D)one";
+        String errorInput = "The input is invalid, choose from \n(M)ove\n(A)ttack\n(D)one";
+        out.println(prompt);
+        String s = inputReader.readLine();
+        s.toUpperCase();
+        //If the user's input is invalid, prompt the user to retype it
+        while (s.charAt(0) != 'M' && s.charAt(0) != 'A' && s.charAt(0) != 'D') {
+            out.println(errorInput);
+            s = inputReader.readLine();
+            s.toUpperCase();
+        }
+    }
+    public void promptEnter() throws IOException{
+        String srcPrompt = "Ok, you choose to move. Which Type the name of the territory you want to move from";
+        out.println(srcPrompt);
+        String src = inputReader.readLine();
+        Territory srcTerritory = new Territory(src, 0);
+
+        String dstPrompt = "Ok, you choose to move. Which Type the name of the territory you want to move to";
+        out.println(dstPrompt);
+        String dst = inputReader.readLine();
+
+        String unitPrompt = "Enter the units that you want to move";
+        out.println(unitPrompt);
+        String unitStr = inputReader.readLine();
+
+    }
 
 
 
 
 
     public static void main(String[] args) throws IOException, ClassNotFoundException {
+        BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
         Territory t1 = new Territory("Mordor", 8);
         RiskGameBoard b1 = new RiskGameBoard();
         b1.tryAddTerritory(t1);
-        Client c = new Client();
+        Client c = new Client(input);
 
         //connect with The first client
         c.tryConnectServer();
+//        c.initialStreams();
         c.transData();
-        c.transObject(b1);
+        c.transBoard(b1);
+        c.transAction();
+
+        //Choose when to close
         c.closePipe();
     }
 

@@ -13,12 +13,35 @@ public class Player {
 
     /**
      * Checks whether the Territory is valid to own by the player
-     *
+     * @param territoryToOwn territory to be tested validation
      * @return true if it is valid to be owned, otherwise false
      */
-    //TODO: unfinished
     public boolean isValidToOwn(Territory territoryToOwn) {
-        return true;
+        for(int i = 0; i < ownedTerritories.size(); i++){
+            if(territoryToOwn == ownedTerritories.get(i)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * This method checks whether the territory is owned be the player when the user inputs its name
+     * @param inputTerritory
+     * @return true if it is owned by a player, false if not
+     */
+    public boolean checkTerritoryByName(Territory inputTerritory){
+        String territoryName = inputTerritory.getName();
+        territoryName.toUpperCase();
+        ArrayList<Territory> ownTerritories = getOwnedTerritories();
+        for(int i = 0; i < ownTerritories.size(); i++){
+            String currName = ownTerritories.get(i).getName();
+            currName.toUpperCase();
+            if(territoryName.equals(currName)){
+                return true;
+            }
+        }
+        return false;
     }
 
     /**

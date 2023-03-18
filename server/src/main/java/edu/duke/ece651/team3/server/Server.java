@@ -14,11 +14,11 @@ import static java.lang.System.out; //out.println()
 public class Server implements Serializable{
     private int numOfPlayer; //The total number of players
     private int ind;
-    private Socket clientSocket;
-    private final ServerSocket serverS;
+    Socket clientSocket;
+    ServerSocket serverS;
     private final ArrayList<String> PlayerNames;
-    private ObjectOutputStream sendObjToClient;
-    private ObjectInputStream readObjFromClient;
+    ObjectOutputStream sendObjToClient;
+    ObjectInputStream readObjFromClient;
 
 
     public Server(ServerSocket _serverS) throws IOException{
@@ -39,11 +39,13 @@ public class Server implements Serializable{
         this.numOfPlayer = numPlayer;
         for(int i = 0; i < numPlayer; i++){
             tryConnectClient();
+//            initialStreams();
             Territory t1 = new Territory("Hogwarts", 10);
             RiskGameBoard riskGameBoard = new RiskGameBoard();
             riskGameBoard.tryAddTerritory(t1);
             transData();
-            transObject(riskGameBoard);
+            transBoard(riskGameBoard);
+            recvAction();
         }
         closePipe();
         return true;
@@ -72,40 +74,54 @@ public class Server implements Serializable{
             e.printStackTrace();
         }
     }
+
+    void initialStreams() throws IOException {
+        this.sendObjToClient = new ObjectOutputStream(clientSocket.getOutputStream());
+        this.readObjFromClient = new ObjectInputStream(clientSocket.getInputStream());
+    }
     /**
      * This method is currently the testing method. It transits String
      * @throws IOException
      */
     public void transData() throws IOException {
-        String info = "Hi, This is Server!! I am connecting with you";
+//        String info = "Hi, This is Server!! I am connecting with you";
+        out.println("here");
         String playerColor = PlayerNames.get(ind);
         ++ ind;
 
         //Send data to the client
         this.sendObjToClient = new ObjectOutputStream(clientSocket.getOutputStream());
-        sendObjToClient.writeObject(info);
+//        sendObjToClient.writeObject(info);
         sendObjToClient.writeObject(playerColor);
     }
 
+    public void recvAction() throws IOException, ClassNotFoundException {
+        this.readObjFromClient = new ObjectInputStream(clientSocket.getInputStream());
+        Action action = (Action) readObjFromClient.readObject();
+        String test = action.getActionType();
+        out.println(test);
+        out.println("Getting the action from the client successfully");
+
+    }
     /**
      * This method is currently the testing method. It transits the class
      * @param riskGameBoard_toClient
      * @throws IOException
      * @throws ClassNotFoundException
      */
-    public void transObject(RiskGameBoard riskGameBoard_toClient) throws IOException, ClassNotFoundException {
+    public void transBoard(RiskGameBoard riskGameBoard_toClient) throws IOException, ClassNotFoundException {
         out.println("Sending the RiskGameBoard class to client");
         sendObjToClient.writeObject(riskGameBoard_toClient);
         out.println("sending risk game board successfully");
 
         //Checks whether the server gets the client's object
         // Read data from the client
-        out.println("Getting the info from the client");
+        out.println("Getting the RiskGameBoard from the client: ");
         this.readObjFromClient = new ObjectInputStream(clientSocket.getInputStream());
         RiskGameBoard riskGameBoard = (RiskGameBoard) readObjFromClient.readObject();
         String test = riskGameBoard.displayBoard();
         out.println(test);
-        out.println("Sending the object successfully");
+        out.println("Sending the RiskGameBoard successfully");
     }
 
     /**

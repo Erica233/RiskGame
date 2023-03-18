@@ -86,7 +86,6 @@ public class Territory implements Serializable {
         }
         updateNumUnits();
     }
-
     /**
      * Checks whether the Territory is valid to add to the Board
      *
