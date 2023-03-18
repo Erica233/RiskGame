@@ -49,6 +49,19 @@ public class Player implements Serializable {
         return true;
     }
 
+    public String displayPlayer() {
+        StringBuilder output = new StringBuilder();
+        output.append(color).append(" player:\n---------------\n");
+        if (ownedTerritories.size() == 0) {
+            output.append("no territories\n");
+        } else {
+            for (Territory territory: ownedTerritories) {
+                output.append(territory.displayTerritory());
+            }
+        }
+        return output.toString();
+    }
+
     /** getters and setters **/
     public int getPlayerId() {
         return playerId;

@@ -6,6 +6,9 @@ import java.util.ArrayList;
  * A Board
  */
 public interface Board {
+
+    String initMap();
+
     /**
      * Displays the information on the Risk Game Board
      *

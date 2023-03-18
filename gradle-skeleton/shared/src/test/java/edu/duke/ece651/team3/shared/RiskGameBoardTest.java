@@ -51,4 +51,29 @@ class RiskGameBoardTest {
         String expected2 = "3 units in Narnia (next to: Mordor)\n4 units in Mordor (next to: Narnia, Oz)\n5 units in Oz (next to: Mordor)\n";
         assertEquals(expected2, m1.displayBoard());
     }
+
+    @Test
+    public void test_initMap() {
+        Board b1 = new RiskGameBoard();
+
+        String expected = "red player:\n" +
+                "---------------\n" +
+                "5 units in a (next to: b, c)\n" +
+                "5 units in c (next to: a, b, d, e, l)\n" +
+                "5 units in g (next to: h, i, l)\n" +
+                "5 units in h (next to: g, i, l)\n" +
+                "5 units in i (next to: g, h, j, l)\n" +
+                "5 units in l (next to: c, e, f, g, h, i)\n" +
+                "\n" +
+                "blue player:\n" +
+                "---------------\n" +
+                "5 units in b (next to: a, c, d)\n" +
+                "5 units in d (next to: b, c, e)\n" +
+                "5 units in e (next to: c, d, f, l)\n" +
+                "5 units in f (next to: e, k, l)\n" +
+                "5 units in j (next to: i, k)\n" +
+                "5 units in k (next to: f, j)\n" +
+                "\n";
+        assertEquals(expected, b1.initMap());
+    }
 }

@@ -62,6 +62,16 @@ public class Territory implements Serializable {
         return true;
     }
 
+    public boolean tryAddANeighbors(Territory... territories) {
+        for (Territory aNeighbor: territories) {
+            if (!aNeighbor.isAValidNeighbor()) {
+                return false;
+            }
+            neighbors.add(aNeighbor);
+        }
+        return true;
+    }
+
     /**
      * Checks whether the Territory is valid to add as a neighbor
      *
