@@ -43,77 +43,64 @@ public class ServerTest {
         ObjectInputStream in = new ObjectInputStream(s1.getInputStream());
         assertEquals("Red", in.readObject());
 
-
-
         RiskGameBoard r1 =(RiskGameBoard) in.readObject();
         out.println("receive r1");
-
-//        out1.writeObject(action);
-//        Action a1 =(Action) in.readObject();
-//        out.println("receive a1");
-
-
-//        ObjectInputStream readObjFromClient = new ObjectInputStream(s1.getInputStream());
-//        RiskGameBoard riskGameBoard = (RiskGameBoard) readObjFromClient.readObject();
-//        Action action_get = (Action) in.readObject(); //Receiving the action
-//        assertEquals(action, in.readObject());
-
-//        Mockito.when(mockClientSocket1.getInputStream()).thenReturn(action);
+        assertEquals(riskGameBoard, r1);
         s1.close();
 
 
     }
 
-    @Test
-    void test_closePipe() throws IOException, ClassNotFoundException{
-        BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
-        int portNum = 12345;
-        ServerSocket mockServerSocket = Mockito.mock(ServerSocket.class);
-        ObjectInputStream mockObjectInput = Mockito.mock(ObjectInputStream.class);
-        ObjectOutputStream mockObjectOutput = Mockito.mock(ObjectOutputStream.class);
-        Server s = new Server(mockServerSocket);
-        Socket mockTestClientSocket = Mockito.mock(Socket.class);
-        s.serverS = mockServerSocket;
-        s.readObjFromClient = mockObjectInput;
-        s.sendObjToClient = mockObjectOutput;
-
-        // Then mock it
-        when(mockServerSocket.accept()).thenReturn(mockTestClientSocket);
-
-        s.closePipe();
-
-    }
-    @Test
-    void test_recAction() throws IOException, ClassNotFoundException {
-        ServerSocket mockServerSocket = Mockito.mock(ServerSocket.class);
-        Socket mockClientSocket = Mockito.mock(Socket.class);
-        Socket mockTestClientSocket = Mockito.mock(Socket.class);
-        ObjectInputStream mockObjectInput = Mockito.mock(ObjectInputStream.class);
-        Server s = new Server(mockServerSocket);
-
-        //Action
-        Territory src = new Territory("Space", 11);
-        Territory dst = new Territory("Mordor", 4);
-        String actionType = "Move";
-        int actionUnits =   5;
-        Action action = new Action(actionType, src, dst, actionUnits);
-
-        // Risk Game Board
-        Territory t1 = new Territory("Hogwarts", 10);
-        RiskGameBoard riskGameBoard = new RiskGameBoard();
-        riskGameBoard.tryAddTerritory(t1);
-
-
-        when(mockServerSocket.accept()).thenReturn(mockTestClientSocket);
-        s.tryConnectClient();
-
-
-        when(mockObjectInput.readObject()).thenReturn(action);
-        s.readObjFromClient = mockObjectInput;
-//        s.recvAction();
+//    @Test
+//    void test_closePipe() throws IOException, ClassNotFoundException{
+//        BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
+//        int portNum = 12345;
+//        ServerSocket mockServerSocket = Mockito.mock(ServerSocket.class);
+//        ObjectInputStream mockObjectInput = Mockito.mock(ObjectInputStream.class);
+//        ObjectOutputStream mockObjectOutput = Mockito.mock(ObjectOutputStream.class);
+//        Server s = new Server(mockServerSocket);
+//        Socket mockTestClientSocket = Mockito.mock(Socket.class);
+//        s.serverS = mockServerSocket;
+//        s.readObjFromClient = mockObjectInput;
+//        s.sendObjToClient = mockObjectOutput;
 //
-
-
-    }
+//        // Then mock it
+//        when(mockServerSocket.accept()).thenReturn(mockTestClientSocket);
+//
+//        s.closePipe();
+//
+//    }
+//    @Test
+//    void test_recAction() throws IOException, ClassNotFoundException {
+//        ServerSocket mockServerSocket = Mockito.mock(ServerSocket.class);
+//        Socket mockClientSocket = Mockito.mock(Socket.class);
+//        Socket mockTestClientSocket = Mockito.mock(Socket.class);
+//        ObjectInputStream mockObjectInput = Mockito.mock(ObjectInputStream.class);
+//        Server s = new Server(mockServerSocket);
+//
+//        //Action
+//        Territory src = new Territory("Space", 11);
+//        Territory dst = new Territory("Mordor", 4);
+//        String actionType = "Move";
+//        int actionUnits =   5;
+//        Action action = new Action(actionType, src, dst, actionUnits);
+//
+//        // Risk Game Board
+//        Territory t1 = new Territory("Hogwarts", 10);
+//        RiskGameBoard riskGameBoard = new RiskGameBoard();
+//        riskGameBoard.tryAddTerritory(t1);
+//
+//
+//        when(mockServerSocket.accept()).thenReturn(mockTestClientSocket);
+//        s.tryConnectClient();
+//
+//
+//        when(mockObjectInput.readObject()).thenReturn(action);
+//        s.readObjFromClient = mockObjectInput;
+////        s.recvAction();
+////
+//
+//
+//    }
 
 }

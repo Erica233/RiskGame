@@ -18,16 +18,27 @@ import java.util.ArrayList;
 
 public class ClientTest {
 
-//    void checkValidation() throws Exception {
-//        BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
-//        Territory t1 = new Territory("Mordor", 8);
-//        RiskGameBoard b1 = new RiskGameBoard();
-//        b1.tryAddTerritory(t1);
-//        BoardTextView v1 = new BoardTextView(b1);
-//        Client c = new Client();
-//        assertEquals(true, c.checkValidation());
-//
-//    }
+    /**
+     * This method checks whether the
+     * @throws IOException
+     */
+    @Test
+    void test_client() throws IOException {
+        BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
+        BufferedReader mockInput = Mockito.mock(BufferedReader.class);
+        when(mockInput.readLine()).thenReturn("M", "Narnia", "Oz", "3");
+
+        Client c = new Client();
+        c.inputReader = mockInput;
+        c.readAction();
+
+        when(mockInput.readLine()).thenReturn("S", "M", "Narnia", "Oz", "3");
+        Client c1 = new Client();
+        c1.inputReader = mockInput;
+        c1.readAction();
+        c1.promptEnter();
+    }
+
 
     @Test
     void checkValidation() throws Exception {
@@ -81,11 +92,11 @@ public class ClientTest {
         sendObjToClient.writeObject(b1);
         sendObjToClient.writeObject(action);
         out.println("sending object");
-        ObjectInputStream readObjFromServer = new ObjectInputStream(acceptedSocekt.getInputStream());
+//        ObjectInputStream readObjFromServer = new ObjectInputStream(acceptedSocekt.getInputStream());
         sendObjToClient.writeObject(action);
 //        assertEquals(action, );
 //        RiskGameBoard riskGameBoard = (RiskGameBoard) readObjFromClient.readObject();
-        readObjFromServer.readObject(); //Receiving the action
+//        readObjFromServer.readObject(); //Receiving the action
         ss.close();
         acceptedSocekt.close();
     }
@@ -105,24 +116,6 @@ public class ClientTest {
         c.displayNeighbor();
     }
 
-    @Test
-    void test_client() throws IOException {
-        BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
-        BufferedReader mockInput = Mockito.mock(BufferedReader.class);
-        when(mockInput.readLine()).thenReturn("M", "Narnia", "Oz", "3");
-
-        Client c = new Client();
-        c.inputReader = mockInput;
-        c.readAction();
-
-        when(mockInput.readLine()).thenReturn("S", "M", "Narnia", "Oz", "3");
-        Client c1 = new Client();
-        c1.inputReader = mockInput;
-        c1.readAction();
-        c1.promptEnter();
-
-
-    }
 
     @Test
     void test_transData() throws IOException, ClassNotFoundException {

@@ -206,7 +206,6 @@ public class Client implements Serializable {
 
         //connect with The first client
         c.printConnectInfo();
-//        c.initialStreams();
         c.transData();
         c.transBoard(b1);
         c.transAction();
