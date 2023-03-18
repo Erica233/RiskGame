@@ -1,20 +1,16 @@
 package edu.duke.ece651.team3.shared;
-
 import static org.junit.jupiter.api.Assertions.*;
-
-import org.checkerframework.checker.units.qual.A;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
 
 public class MoveRuleCheckerTest {
   @Test
   public void test_checkSrcDst() {
-    Player p1 = new Player(1);
+    Player p1 = new Player(1, "Red", 5);
     Territory t1 = new Territory("Oz", 8);
     p1.tryOwnTerritory(t1);
 
-    Player p2 = new Player(1);
+    Player p2 = new Player(2, "Green", 8);
     Territory t2 = new Territory("Narnia", 10);
     p2.tryOwnTerritory(t2);
 

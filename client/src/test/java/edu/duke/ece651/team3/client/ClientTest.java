@@ -19,7 +19,7 @@ import java.util.ArrayList;
 public class ClientTest {
 
     @Test
-    void checkValidation() {
+    void checkValidation() throws Exception {
         BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
         Territory t1 = new Territory("Mordor", 8);
         RiskGameBoard b1 = new RiskGameBoard();
@@ -31,7 +31,7 @@ public class ClientTest {
     }
 
     @Test
-    public void test_main() throws IOException, ClassNotFoundException, InterruptedException {
+    public void test_main() throws Exception {
         BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
         Territory t1 = new Territory("Mordor", 8);
         RiskGameBoard b1 = new RiskGameBoard();
@@ -72,14 +72,15 @@ public class ClientTest {
         out.println("sending object");
         ObjectInputStream readObjFromServer = new ObjectInputStream(acceptedSocekt.getInputStream());
         sendObjToClient.writeObject(action);
+//        assertEquals(action, );
 //        RiskGameBoard riskGameBoard = (RiskGameBoard) readObjFromClient.readObject();
         readObjFromServer.readObject(); //Receiving the action
         ss.close();
         acceptedSocekt.close();
     }
     @Test
-    void test_displays(){
-        Player p1 = new Player(1);
+    void test_displays() throws Exception {
+//        Player p1 = new Player(1);
         ArrayList<Territory> ts1 = new ArrayList<>();
         Territory t1 = new Territory("Mordor", 8);
         ts1.add(t1);
@@ -87,7 +88,7 @@ public class ClientTest {
         b1.tryAddTerritory(t1);
         BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
         Client c = new Client(input);
-        c.addPlayer(p1);
+//        c.addPlayer(p1);
         c.displayTerritory();
         c.displayNeighbor();
     }

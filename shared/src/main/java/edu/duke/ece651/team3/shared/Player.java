@@ -43,11 +43,11 @@ public class Player implements Serializable {
      * @return true if it is owned by a player, false if not
      */
     public boolean checkTerritoryByName(Territory inputTerritory){
-        String territoryName = inputTerritory.getName();
+        String territoryName = inputTerritory.getTerritoryName();
         territoryName.toUpperCase();
         ArrayList<Territory> ownTerritories = getOwnedTerritories();
         for(int i = 0; i < ownTerritories.size(); i++){
-            String currName = ownTerritories.get(i).getName();
+            String currName = ownTerritories.get(i).getTerritoryName();
             currName.toUpperCase();
             if(territoryName.equals(currName)){
                 return true;

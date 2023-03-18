@@ -26,7 +26,7 @@ public class Client implements Serializable {
 
     public Client(BufferedReader _inputReader){
         this.inputReader = _inputReader;
-        this.player = new Player(1);
+//        this.player = new Player(1);
     }
 
     public void tryConnectServer() throws IOException {
@@ -43,7 +43,7 @@ public class Client implements Serializable {
             out.println("The client's port is: " + clientS.getLocalPort());
             clientID = clientS.getLocalPort();
         }
-        catch (SocketException e){
+        catch (Exception e){
             System.err.println("Exception caught when trying to establish connection: " + e.getMessage());
         }
     }
@@ -56,7 +56,6 @@ public class Client implements Serializable {
      * This method is currently the testing method. It transits String
      * @throws IOException
      */
-
     public void transData() throws IOException, ClassNotFoundException {
         //To get the data from the server
         this.readFromServer = new ObjectInputStream(clientS.getInputStream()); //TODO: does not build successfully
@@ -140,7 +139,7 @@ public class Client implements Serializable {
     /**
      * This method will base on the map for the whole. Here it
      */
-    public void displayNeighbor(){
+    public void displayNeighbor() throws Exception {
         Territory t1 = new Territory("Mordor", 8);
         RiskGameBoard b1 = new RiskGameBoard();
         b1.tryAddTerritory(t1);
@@ -184,10 +183,15 @@ public class Client implements Serializable {
         out.println(srcPrompt);
         String src = inputReader.readLine();
         Territory srcTerritory = new Territory(src, 0);
+        action.setSrc(srcTerritory);
+        player.checkTerritoryByName(srcTerritory);
 
         String dstPrompt = "Ok, you choose to move. Which Type the name of the territory you want to move to";
         out.println(dstPrompt);
         String dst = inputReader.readLine();
+        Territory dstTerritory = new Territory(dst, 0);
+        action.setDst(dstTerritory);
+        player.checkTerritoryByName(dstTerritory);
 
         String unitPrompt = "Enter the units that you want to move";
         out.println(unitPrompt);
@@ -195,7 +199,7 @@ public class Client implements Serializable {
 
     }
 
-    public static void main(String[] args) throws IOException, ClassNotFoundException {
+    public static void main(String[] args) throws Exception {
         BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
         Territory t1 = new Territory("Mordor", 8);
         RiskGameBoard b1 = new RiskGameBoard();

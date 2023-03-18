@@ -1,10 +1,12 @@
 package edu.duke.ece651.team3.shared;
 
 import java.io.Serializable;
-import java.util.Objects;
 
 public class Action implements Serializable {
     private String actionType;
+    private Territory src; //The FROM territory
+    private Territory dst; //The TO territory
+    private int actionUnits; //The units to move
 
     public String getActionType() {
         return actionType;
@@ -21,14 +23,6 @@ public class Action implements Serializable {
     public int getActionUnits() {
         return actionUnits;
     }
-
-    private Territory src; //The FROM territory
-    private Territory dst; //The TO territory
-
-
-
-
-    private int actionUnits; //The units to move
 
     public Action(String _actionType, Territory _src, Territory _dst, int _actionUnits){
         this.actionType = _actionType;
