@@ -64,12 +64,4 @@ public class Action {
                 '}';
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Action action = (Action) o;
-        return actionUnits == action.actionUnits && Objects.equals(actionType, action.actionType) && Objects.equals(src, action.src) && Objects.equals(dst, action.dst);
-    }
-
 }

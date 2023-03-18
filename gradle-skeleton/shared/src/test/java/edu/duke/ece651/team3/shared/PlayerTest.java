@@ -36,6 +36,10 @@ class PlayerTest {
     void test_isValidToOwn() {
         Player p1 = new Player(1);
         Territory t1 = new Territory("Oz", 2);
+        Territory t2 = new Territory("Mordor", 5);
+        Territory t3 = new Territory("Roshar", 7);
+        p1.tryOwnTerritory(t2);
+        p1.tryOwnTerritory(t3);
         assertFalse(p1.isValidToOwn(t1));
     }
 }
