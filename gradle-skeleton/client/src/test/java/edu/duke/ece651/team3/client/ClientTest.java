@@ -9,6 +9,7 @@ import static java.lang.System.out;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.refEq;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.net.ServerSocket;
 
@@ -81,7 +82,6 @@ public class ClientTest {
             @Override()
             public void run() {
                 try {
-                    BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
                     Client c = new Client(input);
                     c.tryConnectServer();
                 } catch (Exception e) {
@@ -106,6 +106,26 @@ public class ClientTest {
         c.addPlayer(p1);
         c.displayTerritory();
         c.displayNeighbor();
+    }
+
+    @Test
+    void test_client() throws IOException {
+        BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
+        BufferedReader mockInput = Mockito.mock(BufferedReader.class);
+        when(mockInput.readLine()).thenReturn("M", "Narnia", "Oz", "3");
+
+
+        Client c = new Client(input);
+        c.inputReader = mockInput;
+        c.readAction();
+
+        when(mockInput.readLine()).thenReturn("S", "M", "Narnia", "Oz", "3");
+        Client c1 = new Client(input);
+        c1.inputReader = mockInput;
+        c1.readAction();
+        c1.promptEnter();
+
+
     }
 
 }

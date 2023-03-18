@@ -15,7 +15,7 @@ public class Client implements Serializable {
     private int clientID; //The unique ID for each client
     ObjectInputStream readFromServer;
     ObjectOutputStream sendObjToServer;
-    public final BufferedReader inputReader;
+    public BufferedReader inputReader;
 
     Player player;
     String playerColor;
@@ -144,7 +144,7 @@ public class Client implements Serializable {
      * @throws IOException
      */
     public void readAction() throws IOException {
-        String prompt = "You are the \" + playerColor + \"player, what would you like to do?\n(M)ove\n(A)ttack\n(D)one";
+        String prompt = "You are the " + playerColor + " player, what would you like to do?\n(M)ove\n(A)ttack\n(D)one";
         String errorInput = "The input is invalid, choose from \n(M)ove\n(A)ttack\n(D)one";
         out.println(prompt);
         String s = inputReader.readLine();
@@ -169,13 +169,6 @@ public class Client implements Serializable {
         String unitPrompt = "Enter the units that you want to move";
         out.println(unitPrompt);
         String unitStr = inputReader.readLine();
-
-
-
-
-
-
-
 
     }
 
