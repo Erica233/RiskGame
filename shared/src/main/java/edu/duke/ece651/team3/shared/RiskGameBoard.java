@@ -2,6 +2,7 @@ package edu.duke.ece651.team3.shared;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * A Risk Game Board
@@ -33,18 +34,18 @@ public class RiskGameBoard implements Board, Serializable {
         Territory t10 = new Territory("j", 5);
         Territory t11 = new Territory("k", 5);
         Territory t12 = new Territory("l", 5);
-        t1.addANeighbors(t2, t3);
-        t2.addANeighbors(t1, t3, t4);
-        t3.addANeighbors(t1, t2, t4, t5, t12);
-        t4.addANeighbors(t2, t3, t5);
-        t5.addANeighbors(t3, t4, t6, t12);
-        t6.addANeighbors(t5, t11, t12);
-        t7.addANeighbors(t8, t9, t12);
-        t8.addANeighbors(t7, t9, t12);
-        t9.addANeighbors(t7, t8, t10, t12);
-        t10.addANeighbors(t9, t11);
-        t11.addANeighbors(t6, t10);
-        t12.addANeighbors(t3, t5, t6, t7, t8, t9);
+        t1.addNeighbors(t2, t3);
+        t2.addNeighbors(t1, t3, t4);
+        t3.addNeighbors(t1, t2, t4, t5, t12);
+        t4.addNeighbors(t2, t3, t5);
+        t5.addNeighbors(t3, t4, t6, t12);
+        t6.addNeighbors(t5, t11, t12);
+        t7.addNeighbors(t8, t9, t12);
+        t8.addNeighbors(t7, t9, t12);
+        t9.addNeighbors(t7, t8, t10, t12);
+        t10.addNeighbors(t9, t11);
+        t11.addNeighbors(t6, t10);
+        t12.addNeighbors(t3, t5, t6, t7, t8, t9);
 
         ArrayList<Territory> territoriesOwnedByPlayer1 = new ArrayList<>();
         Collections.addAll(territoriesOwnedByPlayer1, t1, t3, t7, t8, t9, t12);

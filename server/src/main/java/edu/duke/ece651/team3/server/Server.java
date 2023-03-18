@@ -11,22 +11,25 @@ import static java.lang.System.out; //out.println()
 
 
 //implements Serialize
-public class Server implements Serializable{
-    private int numOfPlayer; //The total number of players
+public class Server implements Serializable {
     private int ind;
-    private Socket clientSocket;
+    private final Socket clientSocket;
     private final ServerSocket serverS;
+    private final ObjectOutputStream sendObjToClient;
+    private final ObjectInputStream readObjFromClient;
     private final ArrayList<String> PlayerNames;
-    private ObjectOutputStream sendObjToClient;
-    private ObjectInputStream readObjFromClient;
 
 
-    public Server(ServerSocket _serverS) throws IOException{
+    public Server(int portNum) throws IOException{
         PlayerNames = new ArrayList<>();
         this.PlayerNames.add("Red");
         this.PlayerNames.add("Green");
         this.ind = 0;
-        this.serverS = _serverS;
+
+        this.serverS = new ServerSocket(portNum);;
+        this.clientSocket = serverS.accept();
+        this.sendObjToClient = new ObjectOutputStream(clientSocket.getOutputStream());
+        this.readObjFromClient = new ObjectInputStream(clientSocket.getInputStream());
     }
     /**
      * This function tries to connect the multi client
@@ -35,10 +38,10 @@ public class Server implements Serializable{
      * @throws IOException
      * @throws ClassNotFoundException
      */
-    public boolean tryConnectMulClient(int numPlayer) throws IOException, ClassNotFoundException {
-        this.numOfPlayer = numPlayer;
+    public boolean tryConnectMulClient(int numPlayer) throws Exception {
+        //this.numOfPlayer = numPlayer;
         for(int i = 0; i < numPlayer; i++){
-            tryConnectClient();
+            printConnectInfo();
             Territory t1 = new Territory("Hogwarts", 10);
             RiskGameBoard riskGameBoard = new RiskGameBoard();
             riskGameBoard.tryAddTerritory(t1);
@@ -53,7 +56,7 @@ public class Server implements Serializable{
      * This method tries to connect the server to the client
      * @return true if the connection is successful, false if failed
      */
-    public void tryConnectClient() throws  IOException{
+    public void printConnectInfo() throws Exception {
         try{
             Territory t1 = new Territory("Hogwarts", 10);
             RiskGameBoard riskGameBoard = new RiskGameBoard();
@@ -61,7 +64,7 @@ public class Server implements Serializable{
             out.println("Build up the Server");
 
             //Connecting with the first player
-            clientSocket = serverS.accept(); //Accept the connection from the client
+//            clientSocket = serverS.accept(); //Accept the connection from the client
             out.println("Server accept socket is: ");
             out.println(clientSocket);
             out.println("The connection is established!");
@@ -82,7 +85,7 @@ public class Server implements Serializable{
         ++ ind;
 
         //Send data to the client
-        this.sendObjToClient = new ObjectOutputStream(clientSocket.getOutputStream());
+//        this.sendObjToClient = new ObjectOutputStream(clientSocket.getOutputStream());
         sendObjToClient.writeObject(info);
         sendObjToClient.writeObject(playerColor);
     }
@@ -101,7 +104,7 @@ public class Server implements Serializable{
         //Checks whether the server gets the client's object
         // Read data from the client
         out.println("Getting the info from the client");
-        this.readObjFromClient = new ObjectInputStream(clientSocket.getInputStream());
+//        this.readObjFromClient = new ObjectInputStream(clientSocket.getInputStream());
         RiskGameBoard riskGameBoard = (RiskGameBoard) readObjFromClient.readObject();
         String test = riskGameBoard.displayBoard();
         out.println(test);
@@ -119,14 +122,14 @@ public class Server implements Serializable{
     }
 
     //For testing the Serve.java
-    public static void main(String[] args) throws IOException, ClassNotFoundException {
+    public static void main(String[] args) throws Exception {
         Territory t1 = new Territory("Hogwarts", 10);
         RiskGameBoard riskGameBoard = new RiskGameBoard();
         riskGameBoard.tryAddTerritory(t1);
         int numPlayer = 1;
         int portNum = 12345;
-        ServerSocket serverS = new ServerSocket(portNum);
-        Server s = new Server(serverS);
+
+        Server s = new Server(portNum);
 
         //connect with multiple clients
         s.tryConnectMulClient(numPlayer);

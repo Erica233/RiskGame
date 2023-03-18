@@ -3,56 +3,55 @@ import edu.duke.ece651.team3.shared.*;
 
 import java.io.*;
 import java.net.Socket;
-import java.net.SocketException;
 import java.util.ArrayList;
 //import static org.mockito.Mockito.*;
 
 import static java.lang.System.out;
 
 public class Client implements Serializable {
+    private final Socket clientS; //The unique ID for each client
+    private final ObjectInputStream readFromServer;
+    private final ObjectOutputStream sendObjToServer;
+    private int playerID;
     private RiskGameBoard riskGameBoard;
-    private Socket clientS; //The unique ID for each client
-    private int clientID; //The unique ID for each client
-    ObjectInputStream readFromServer;
-    ObjectOutputStream sendObjToServer;
 
     Player player;
 
-    public Client(){
-        this.player = new Player(1);
+    public Client() throws IOException {
+//        this.player = new Player(1);
+        this.clientS = new Socket("localhost", 12345);
+        this.readFromServer = new ObjectInputStream(clientS.getInputStream()); //TODO: does not build successfully
+        this.sendObjToServer = new ObjectOutputStream(clientS.getOutputStream());
     }
 
-    public void tryConnectServer() throws IOException {
-        try{
-            Territory t1 = new Territory("Mordor", 8);
-            RiskGameBoard b1 = new RiskGameBoard();
-            b1.tryAddTerritory(t1);
+    public void printConnectInfo() {
+//        try{
             //Create the local host
 
             //The first player responses
-            clientS = new Socket("localhost", 12345);
+            //clientS = new Socket("localhost", 12345);
             out.println("The current connected socket is: " + clientS);
             out.println("Build up the connection to server!");
             out.println("The client's port is: " + clientS.getLocalPort());
-            clientID = clientS.getLocalPort();
-        }
-        catch (SocketException e){
-            System.err.println("Exception caught when trying to establish connection: " + e.getMessage());
-        }
+//            clientID = clientS.getLocalPort();
+//        }
+//        catch (SocketException e){
+//            System.err.println("Exception caught when trying to establish connection: " + e.getMessage());
+//        }
     }
     /**
      * This method is currently the testing method. It transits String
      * @throws IOException
      */
-
     public void transData() throws IOException, ClassNotFoundException {
         //To get the data from the server
-        this.readFromServer = new ObjectInputStream(clientS.getInputStream()); //TODO: does not build successfully
+//        this.readFromServer = new ObjectInputStream(clientS.getInputStream()); //TODO: does not build successfully
         String receivedMsg = (String) readFromServer.readObject();
         out.println(receivedMsg);
         out.println("Received the string successfully from the server");
-        String playerColor = (String)readFromServer.readObject();
+        String playerColor = (String) readFromServer.readObject();
         out.println(playerColor);
+//        if(playerColor)
         out.println("Received the Player's color successfully from the server");
     }
 
@@ -71,8 +70,9 @@ public class Client implements Serializable {
         out.println(test);
 
         //Sending the object to server
-        this.sendObjToServer = new ObjectOutputStream(clientS.getOutputStream());
+//        this.sendObjToServer = new ObjectOutputStream(clientS.getOutputStream());
         sendObjToServer.writeObject(riskGameBoard_toSerer);
+        this.riskGameBoard = riskGameBoard;
         out.println("sending risk game board successfully");
     }
 
@@ -111,7 +111,7 @@ public class Client implements Serializable {
     /**
      * This method will base on the map for the whole. Here it
      */
-    public void displayNeighbor(){
+    public void displayNeighbor() throws Exception {
         Territory t1 = new Territory("Mordor", 8);
         RiskGameBoard b1 = new RiskGameBoard();
         b1.tryAddTerritory(t1);
@@ -134,14 +134,15 @@ public class Client implements Serializable {
     }
 
 
-    public static void main(String[] args) throws IOException, ClassNotFoundException {
+    public static void main(String[] args) throws Exception {
         Territory t1 = new Territory("Mordor", 8);
         RiskGameBoard b1 = new RiskGameBoard();
         b1.tryAddTerritory(t1);
+
         Client c = new Client();
 
         //connect with The first client
-        c.tryConnectServer();
+        c.printConnectInfo();
         c.transData();
         c.transObject(b1);
         c.closePipe();

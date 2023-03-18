@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ServerTest {
     @Test
-    void test_transData() throws IOException, ClassNotFoundException, InterruptedException {
+    void test_transData() throws Exception {
         Territory t1 = new Territory("Hogwarts", 10);
         RiskGameBoard riskGameBoard = new RiskGameBoard();
         riskGameBoard.tryAddTerritory(t1);
