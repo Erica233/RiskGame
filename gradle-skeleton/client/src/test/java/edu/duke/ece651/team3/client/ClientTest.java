@@ -1,16 +1,12 @@
 package edu.duke.ece651.team3.client;
 import edu.duke.ece651.team3.shared.*;
 import edu.duke.ece651.team3.shared.Action;
-import org.checkerframework.checker.units.qual.C;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 
-import static java.lang.System.in;
 import static java.lang.System.out;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.refEq;
-import static org.mockito.Mockito.mock;
+import static org.mockito.ArgumentMatchers.anyChar;
 import static org.mockito.Mockito.when;
 
 import java.net.ServerSocket;
@@ -62,38 +58,23 @@ public class ClientTest {
         ObjectOutputStream sendObjToClient = new ObjectOutputStream(acceptedSocekt.getOutputStream());
         String info = "Hi, This is Server!! I am connecting with you";
         String playerColor = "Green";
-        sendObjToClient.writeObject(info);
+//        sendObjToClient.writeObject(info);
         sendObjToClient.writeObject(playerColor);
 
+        Territory src = new Territory("Space", 11);
+        Territory dst = new Territory("Mordor", 4);
+        String actionType = "Move";
+        int actionUnits = 5;
+        Action action = new Action(actionType, src, dst, actionUnits);
+
         sendObjToClient.writeObject(b1);
+        sendObjToClient.writeObject(action);
+        out.println("sending object");
         ObjectInputStream readObjFromClient = new ObjectInputStream(acceptedSocekt.getInputStream());
-        RiskGameBoard riskGameBoard = (RiskGameBoard) readObjFromClient.readObject();
+//        RiskGameBoard riskGameBoard = (RiskGameBoard) readObjFromClient.readObject();
+        readObjFromClient.readObject(); //Receiving the action
         ss.close();
         acceptedSocekt.close();
-    }
-    @Test
-    void test_tryConnectServer() throws IOException, InterruptedException {
-        BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
-        Territory t1 = new Territory("Mordor", 8);
-        RiskGameBoard b1 = new RiskGameBoard();
-        b1.tryAddTerritory(t1);
-        int portNum = 12345;
-        ServerSocket ss = new ServerSocket(portNum);
-
-        Thread th = new Thread() {
-            @Override()
-            public void run() {
-                try {
-                    Client c = new Client(input);
-                    c.tryConnectServer();
-                } catch (Exception e) {
-
-                }
-            }
-        };
-        th.start();
-        Thread.sleep(100);
-
     }
     @Test
     void test_displays(){
@@ -139,6 +120,38 @@ public class ClientTest {
         Action action = new Action(actionType, src, dst, actionUnits);
         ObjectInputStream mockObjectInput = Mockito.mock(ObjectInputStream.class);
         when(mockObjectInput.readObject()).thenReturn(action);
+    }
+
+    @Test
+    void test_closePipe() throws IOException, ClassNotFoundException{
+        BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
+        Client c = new Client(input);
+        ServerSocket mockServerSocket = Mockito.mock(ServerSocket.class);
+        Socket mockTestClientSocket = Mockito.mock(Socket.class);
+        c.tryConnectServer();
+
+        // Then mock it
+        when(mockServerSocket.accept()).thenReturn(mockTestClientSocket);
+        ObjectInputStream mockObjectInput = Mockito.mock(ObjectInputStream.class);
+        ObjectOutputStream mockObjectOutput = Mockito.mock(ObjectOutputStream.class);
+        c.sendObjToServer = mockObjectOutput;
+        c.readFromServer = mockObjectInput;
+        c.clientS = mockTestClientSocket;
+        c.closePipe();
+    }
+    @Test
+    void test_trans() throws IOException {
+        Territory src = new Territory("Space", 11);
+        Territory dst = new Territory("Mordor", 4);
+        String actionType = "Move";
+        int actionUnits =   5;
+        Action action = new Action(actionType, src, dst, actionUnits);
+        BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
+        ObjectOutputStream mockObjectOutput = Mockito.mock(ObjectOutputStream.class);
+        Client c = new Client(input);
+
+//        when(mockObjectOutput.writeObject(action)).thenReturn(action);
+        c.sendObjToServer = mockObjectOutput;
     }
 
 
