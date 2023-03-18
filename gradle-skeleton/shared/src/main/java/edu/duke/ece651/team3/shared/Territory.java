@@ -2,14 +2,16 @@ package edu.duke.ece651.team3.shared;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * A class for Territory
  */
 public class Territory implements Serializable {
     private final String name;
-    private final int numUnits;
+    private int numUnits;
     private final ArrayList<Territory> neighbors;
+    private final HashMap<Class<?>, Integer> units;
 
     /**
      * Constructs a Territory with specified name, and number of units
@@ -21,19 +23,68 @@ public class Territory implements Serializable {
         this.name = _name;
         this.numUnits = _numUnits;
         this.neighbors = new ArrayList<>();
+        this.units = new HashMap<>();
     }
 
     /**
      * Constructs a Territory with specified name, number of units, and neighbor territories
-     *
      * @param _name the name of the Territory
      * @param _numUnits the number of units in the Territory
      * @param _neighbors the neighbors of the Territory
+     * @param _units units in this Territory
      */
-    public Territory(String _name, int _numUnits, ArrayList<Territory> _neighbors) {
+    //TODO: input: units?
+    public Territory(String _name, int _numUnits, ArrayList<Territory> _neighbors, HashMap<Class<?>, Integer> _units) {
         this.name = _name;
         this.numUnits = _numUnits;
         this.neighbors = _neighbors;
+        this.units = _units;
+    }
+
+    /**
+     * Update the number of units in Territory
+     */
+    public void updateNumUnits(){
+        int num = 0;
+        for(Class<?> c : units.keySet()){
+            System.out.println(c);
+            num += units.get(c);
+        }
+        numUnits = num;
+    }
+
+    /**
+     * Add specific type and number of unit to units
+     * @param unitToAdd specific type of unit to add
+     * @param num number of this type of unit
+     */
+    public void increaseUnit(Unit unitToAdd, int num) {
+        if (units.containsKey(unitToAdd.getClass())) {
+            int value = units.get(unitToAdd.getClass()) + num;
+            units.put(unitToAdd.getClass(), value);
+        } else {
+            units.put(unitToAdd.getClass(), num);
+        }
+        updateNumUnits();
+    }
+
+    /**
+     * Delete specific type and number of unit to units
+     * @param unitToRemove specific type of unit to remove
+     * @param num number of this type of unit
+     */
+    public void decreaseUnit(Unit unitToRemove, int num) {
+        if (units.containsKey(unitToRemove.getClass())) {
+            int value = units.get(unitToRemove.getClass()) - num;
+            System.out.println(unitToRemove.getClass());
+            if (value < 0) {
+                throw new IllegalArgumentException("Can't delete too much num of unit");
+            }
+            units.put(unitToRemove.getClass(), value);
+        } else {
+            throw new IllegalArgumentException("Can't delete non-existing unit");
+        }
+        updateNumUnits();
     }
 
     /**
