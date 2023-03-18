@@ -7,7 +7,7 @@ import java.util.ArrayList;
  */
 public interface Board {
 
-    String initMap();
+    String initMap() throws Exception;
 
     /**
      * Displays the information on the Risk Game Board

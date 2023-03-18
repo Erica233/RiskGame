@@ -47,29 +47,31 @@ public class Territory implements Serializable {
     }
 
     /**
-     * Add a Territory to the neighbors,
-     * if the Territory is valid, add and returns true,
-     * otherwise, return false
+     * Add a valid Territory to the neighbors
      *
      * @param aNeighbor the Territory to add to the neighbors
-     * @return true if the Territory is valid to add, otherwise false
+     * @throws Exception if the Territory to add is invalid
      */
-    public boolean tryAddANeighbor(Territory aNeighbor) {
+    public void addANeighbor(Territory aNeighbor) throws Exception {
         if (!aNeighbor.isAValidNeighbor()) {
-            return false;
+            throw new Exception("addANeighbor(): invalid neighbor to add!");
         }
         neighbors.add(aNeighbor);
-        return true;
     }
 
-    public boolean tryAddANeighbors(Territory... territories) {
+    /**
+     * Add multiple valid Territories to the neighbors
+     *
+     * @param territories the Territories to add to the neighbors
+     * @throws Exception if a Territory to add is invalid
+     */
+    public void addANeighbors(Territory... territories) throws Exception {
         for (Territory aNeighbor: territories) {
             if (!aNeighbor.isAValidNeighbor()) {
-                return false;
+                throw new Exception("addANeighbors(): invalid neighbor to add!");
             }
             neighbors.add(aNeighbor);
         }
-        return true;
     }
 
     /**

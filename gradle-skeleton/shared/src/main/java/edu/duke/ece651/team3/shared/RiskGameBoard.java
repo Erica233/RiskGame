@@ -15,13 +15,13 @@ public class RiskGameBoard implements Board, Serializable {
      * Constructs an empty RiskGameBoard
      *
      */
-    public RiskGameBoard() {
+    public RiskGameBoard() throws Exception {
         this.allTerritories = new ArrayList<>();
         this.allPlayers = new ArrayList<>();
         initMap();
     }
 
-    public String initMap() {
+    public String initMap() throws Exception {
         Territory t1 = new Territory("a", 5);
         Territory t2 = new Territory("b", 5);
         Territory t3 = new Territory("c", 5);
@@ -34,18 +34,18 @@ public class RiskGameBoard implements Board, Serializable {
         Territory t10 = new Territory("j", 5);
         Territory t11 = new Territory("k", 5);
         Territory t12 = new Territory("l", 5);
-        t1.tryAddANeighbors(t2, t3);
-        t2.tryAddANeighbors(t1, t3, t4);
-        t3.tryAddANeighbors(t1, t2, t4, t5, t12);
-        t4.tryAddANeighbors(t2, t3, t5);
-        t5.tryAddANeighbors(t3, t4, t6, t12);
-        t6.tryAddANeighbors(t5, t11, t12);
-        t7.tryAddANeighbors(t8, t9, t12);
-        t8.tryAddANeighbors(t7, t9, t12);
-        t9.tryAddANeighbors(t7, t8, t10, t12);
-        t10.tryAddANeighbors(t9, t11);
-        t11.tryAddANeighbors(t6, t10);
-        t12.tryAddANeighbors(t3, t5, t6, t7, t8, t9);
+        t1.addANeighbors(t2, t3);
+        t2.addANeighbors(t1, t3, t4);
+        t3.addANeighbors(t1, t2, t4, t5, t12);
+        t4.addANeighbors(t2, t3, t5);
+        t5.addANeighbors(t3, t4, t6, t12);
+        t6.addANeighbors(t5, t11, t12);
+        t7.addANeighbors(t8, t9, t12);
+        t8.addANeighbors(t7, t9, t12);
+        t9.addANeighbors(t7, t8, t10, t12);
+        t10.addANeighbors(t9, t11);
+        t11.addANeighbors(t6, t10);
+        t12.addANeighbors(t3, t5, t6, t7, t8, t9);
 
         ArrayList<Territory> territoriesOwnedByPlayer1 = new ArrayList<>();
         Collections.addAll(territoriesOwnedByPlayer1, t1, t3, t7, t8, t9, t12);

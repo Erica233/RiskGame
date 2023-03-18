@@ -28,7 +28,7 @@ public class TerritoryTest {
     }
 
     @Test
-    public void test_tryAddANeighbor() {
+    public void test_tryAddANeighbor() throws Exception {
         ArrayList<Territory> n1 = new ArrayList<>();
         Territory t1 = new Territory("Oz", 12);
         assertEquals(n1, t1.getNeighbors());
@@ -39,7 +39,7 @@ public class TerritoryTest {
         ArrayList<Territory> n3 = new ArrayList<>();
         n3.add(t2);
         Territory t3 = new Territory("Morder", 9, n3);
-        assertTrue(t2.tryAddANeighbor(t3));
+        t2.addANeighbor(t3);
         n2.add(t3);
         assertEquals(n2, t2.getNeighbors());
     }
