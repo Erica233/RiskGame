@@ -7,6 +7,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import org.mockito.Mockito;
 import org.junit.jupiter.api.Test;
+
+import static java.lang.System.out;
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -16,6 +18,13 @@ public class ServerTest {
         Territory t1 = new Territory("Hogwarts", 10);
         RiskGameBoard riskGameBoard = new RiskGameBoard();
         riskGameBoard.tryAddTerritory(t1);
+
+        Territory src = new Territory("Space", 11);
+        Territory dst = new Territory("Mordor", 4);
+        String actionType = "Move";
+        int actionUnits =   5;
+        Action action = new Action(actionType, src, dst, actionUnits);
+
         Thread th1 = new Thread() {
             @Override()
             public void run() {
@@ -28,18 +37,30 @@ public class ServerTest {
         th1.start();
         Thread.sleep(100);
         Socket s1 = new Socket("localhost", 12345);
-        ObjectOutputStream out = new ObjectOutputStream(s1.getOutputStream());
-        out.writeObject(riskGameBoard);
+        ObjectOutputStream out1 = new ObjectOutputStream(s1.getOutputStream());
+        out1.writeObject(riskGameBoard);
+        out1.writeObject(action);
         ObjectInputStream in = new ObjectInputStream(s1.getInputStream());
-        assertEquals("Hi, This is Server!! I am connecting with you", in.readObject());
+        assertEquals("Red", in.readObject());
 
-        Territory src = new Territory("Space", 11);
-        Territory dst = new Territory("Mordor", 4);
-        String actionType = "Move";
-        int actionUnits =   5;
-        Action action = new Action(actionType, src, dst, actionUnits);
+
+
+        RiskGameBoard r1 =(RiskGameBoard) in.readObject();
+        out.println("receive r1");
+
+//        out1.writeObject(action);
+//        Action a1 =(Action) in.readObject();
+//        out.println("receive a1");
+
+
+//        ObjectInputStream readObjFromClient = new ObjectInputStream(s1.getInputStream());
+//        RiskGameBoard riskGameBoard = (RiskGameBoard) readObjFromClient.readObject();
+//        Action action_get = (Action) in.readObject(); //Receiving the action
+//        assertEquals(action, in.readObject());
+
 //        Mockito.when(mockClientSocket1.getInputStream()).thenReturn(action);
         s1.close();
+
 
     }
 
@@ -82,25 +103,15 @@ public class ServerTest {
         RiskGameBoard riskGameBoard = new RiskGameBoard();
         riskGameBoard.tryAddTerritory(t1);
 
+
         when(mockServerSocket.accept()).thenReturn(mockTestClientSocket);
         s.tryConnectClient();
-        when(mockObjectInput.readObject()).thenReturn(action);
-        s.readObjFromClient = mockObjectInput;
-        s.recvAction();
-
-
-
-
-        when(mockServerSocket.accept()).thenReturn(mockTestClientSocket);
-        when(mockObjectInput.readObject()).thenReturn(riskGameBoard);
-        when(mockObjectInput.readObject()).thenReturn(action);
-//        s.clientSocket = mockClientSocket;
-        s.readObjFromClient = mockObjectInput;
-        s.tryConnectMulClient(1);
 
 
         when(mockObjectInput.readObject()).thenReturn(action);
         s.readObjFromClient = mockObjectInput;
+//        s.recvAction();
+//
 
 
     }

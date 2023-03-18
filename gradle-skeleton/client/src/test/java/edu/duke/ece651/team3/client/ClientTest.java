@@ -70,9 +70,10 @@ public class ClientTest {
         sendObjToClient.writeObject(b1);
         sendObjToClient.writeObject(action);
         out.println("sending object");
-        ObjectInputStream readObjFromClient = new ObjectInputStream(acceptedSocekt.getInputStream());
+        ObjectInputStream readObjFromServer = new ObjectInputStream(acceptedSocekt.getInputStream());
+        sendObjToClient.writeObject(action);
 //        RiskGameBoard riskGameBoard = (RiskGameBoard) readObjFromClient.readObject();
-        readObjFromClient.readObject(); //Receiving the action
+        readObjFromServer.readObject(); //Receiving the action
         ss.close();
         acceptedSocekt.close();
     }

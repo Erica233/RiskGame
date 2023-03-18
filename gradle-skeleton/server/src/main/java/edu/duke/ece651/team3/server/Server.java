@@ -100,7 +100,7 @@ public class Server implements Serializable{
         Action action = (Action) readObjFromClient.readObject();
         String test = action.getActionType();
         out.println(test);
-        out.println("Sending the object successfully");
+        out.println("Getting the action from the client successfully");
 
     }
     /**
