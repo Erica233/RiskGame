@@ -27,6 +27,25 @@ public class Player {
     }
 
     /**
+     * This method checks whether the territory is owned be the player when the user inputs its name
+     * @param inputTerritory
+     * @return true if it is owned by a player, false if not
+     */
+    public boolean checkTerritoryByName(Territory inputTerritory){
+        String territoryName = inputTerritory.getName();
+        territoryName.toUpperCase();
+        ArrayList<Territory> ownTerritories = getOwnedTerritories();
+        for(int i = 0; i < ownTerritories.size(); i++){
+            String currName = ownTerritories.get(i).getName();
+            currName.toUpperCase();
+            if(territoryName.equals(currName)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
      * Add a Territory owned by the player,
      * if the Territory is valid, add and returns true,
      * otherwise, return false

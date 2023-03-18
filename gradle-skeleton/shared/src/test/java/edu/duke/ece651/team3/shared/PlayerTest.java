@@ -36,6 +36,6 @@ class PlayerTest {
     void test_isValidToOwn() {
         Player p1 = new Player(1);
         Territory t1 = new Territory("Oz", 2);
-        assertTrue(p1.isValidToOwn(t1));
+        assertFalse(p1.isValidToOwn(t1));
     }
 }

@@ -6,6 +6,7 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.util.ArrayList;
 
+import static java.lang.System.in;
 import static java.lang.System.out;
 
 public class Client implements Serializable {
@@ -14,10 +15,15 @@ public class Client implements Serializable {
     private int clientID; //The unique ID for each client
     ObjectInputStream readFromServer;
     ObjectOutputStream sendObjToServer;
+    public final BufferedReader inputReader;
 
     Player player;
+    String playerColor;
 
-    public Client(){
+    Action action;
+
+    public Client(BufferedReader _inputReader){
+        this.inputReader = _inputReader;
         this.player = new Player(1);
     }
 
@@ -51,6 +57,7 @@ public class Client implements Serializable {
         out.println(receivedMsg);
         out.println("Received the string successfully from the server");
         String playerColor = (String)readFromServer.readObject();
+        this.playerColor = playerColor;
         out.println(playerColor);
         out.println("Received the Player's color successfully from the server");
     }
@@ -132,17 +139,59 @@ public class Client implements Serializable {
         return isValid;
     }
 
+    /**
+     * This method reads the action from the user using bufferReader
+     * @throws IOException
+     */
+    public void readAction() throws IOException {
+        String prompt = "You are the \" + playerColor + \"player, what would you like to do?\n(M)ove\n(A)ttack\n(D)one";
+        String errorInput = "The input is invalid, choose from \n(M)ove\n(A)ttack\n(D)one";
+        out.println(prompt);
+        String s = inputReader.readLine();
+        s.toUpperCase();
+        //If the user's input is invalid, prompt the user to retype it
+        while (s.charAt(0) != 'M' && s.charAt(0) != 'A' && s.charAt(0) != 'D') {
+            out.println(errorInput);
+            s = inputReader.readLine();
+            s.toUpperCase();
+        }
+    }
+    public void promptEnter() throws IOException{
+        String srcPrompt = "Ok, you choose to move. Which Type the name of the territory you want to move from";
+        out.println(srcPrompt);
+        String src = inputReader.readLine();
+        Territory srcTerritory = new Territory(src, 0);
+
+        String dstPrompt = "Ok, you choose to move. Which Type the name of the territory you want to move to";
+        out.println(dstPrompt);
+        String dst = inputReader.readLine();
+
+        String unitPrompt = "Enter the units that you want to move";
+        out.println(unitPrompt);
+        String unitStr = inputReader.readLine();
+
+
+
+
+
+
+
+
+    }
 
     public static void main(String[] args) throws IOException, ClassNotFoundException {
+        BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
         Territory t1 = new Territory("Mordor", 8);
         RiskGameBoard b1 = new RiskGameBoard();
         b1.tryAddTerritory(t1);
-        Client c = new Client();
+        Client c = new Client(input);
 
         //connect with The first client
         c.tryConnectServer();
         c.transData();
         c.transObject(b1);
+
+        //Choose when to close
         c.closePipe();
     }
 

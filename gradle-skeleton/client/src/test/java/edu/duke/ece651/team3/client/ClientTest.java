@@ -4,6 +4,7 @@ import org.checkerframework.checker.units.qual.C;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import static java.lang.System.in;
 import static java.lang.System.out;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.refEq;
@@ -25,7 +26,7 @@ public class ClientTest {
         RiskGameBoard b1 = new RiskGameBoard();
         b1.tryAddTerritory(t1);
         BoardTextView v1 = new BoardTextView(b1);
-        Client c = new Client();
+        Client c = new Client(input);
         assertEquals(true, c.checkValidation());
 
     }
@@ -80,7 +81,8 @@ public class ClientTest {
             @Override()
             public void run() {
                 try {
-                    Client c = new Client();
+                    BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
+                    Client c = new Client(input);
                     c.tryConnectServer();
                 } catch (Exception e) {
 
@@ -99,7 +101,8 @@ public class ClientTest {
         ts1.add(t1);
         RiskGameBoard b1 = new RiskGameBoard();
         b1.tryAddTerritory(t1);
-        Client c = new Client();
+        BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
+        Client c = new Client(input);
         c.addPlayer(p1);
         c.displayTerritory();
         c.displayNeighbor();

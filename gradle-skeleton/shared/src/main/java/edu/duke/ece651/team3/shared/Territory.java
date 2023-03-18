@@ -35,7 +35,6 @@ public class Territory implements Serializable {
         this.numUnits = _numUnits;
         this.neighbors = _neighbors;
     }
-
     /**
      * Checks whether the Territory is valid to add to the Board
      *
