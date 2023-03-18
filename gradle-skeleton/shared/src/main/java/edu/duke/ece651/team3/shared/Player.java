@@ -14,12 +14,16 @@ public class Player {
 
     /**
      * Checks whether the Territory is valid to own by the player
-     *
+     * @param territoryToOwn territory to be tested validation
      * @return true if it is valid to be owned, otherwise false
      */
-    //TODO: unfinished
     public boolean isValidToOwn(Territory territoryToOwn) {
-        return true;
+        for(int i = 0; i < ownedTerritories.size(); i++){
+            if(territoryToOwn == ownedTerritories.get(i)){
+                return true;
+            }
+        }
+        return false;
     }
 
     /**

@@ -2,38 +2,32 @@ package edu.duke.ece651.team3.shared;
 
 public abstract class RuleChecker {
 
-    /**
-     * This method checks whether the source territory is valid
-     * @return The string contains the information
-     */
-    public String checkSrc(){
-        String info = null;
-        return info;
-    }
-    /**
-     * This method checks whether the Destination territory is valid
-     * @return The string contains the information
-     */
-    public String checkDes(){
-        String info = null;
-        return info;
+    private final Action action;
+    public RuleChecker(Action _action){
+        this.action = _action;
     }
 
     /**
-     * This method checks whether the check the Unit is still valid
-     * @return The string contains the information
+     * This method checks whether the source territory is correct
+     * @param src
+     * @param dst
+     * @return
      */
-    public String checkUnits(){
-        String info = null;
-        return info;
-    }
+    public abstract boolean checkSrcDst(Territory src, Territory dst);
 
     /**
-     * This method checks whether the path from src to des is valid
-     * @return The string contains the information
+     * This method checks whether the action number Units is correct
+     * @param actionUnits
+     * @param currPlayer
+     * @return
      */
-    public String checkPath(){
-        String info = null;
-        return info;
-    }
+    public abstract boolean checkNumUnits(int actionUnits, Player currPlayer);
+
+    /**
+     * This method checks whether the path is correct
+     * @param src
+     * @param dst
+     * @return
+     */
+    public abstract boolean checkPath(Territory src, Territory dst);
 }
