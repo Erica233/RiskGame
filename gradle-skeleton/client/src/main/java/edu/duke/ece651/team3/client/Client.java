@@ -9,26 +9,19 @@ import java.util.ArrayList;
 import static java.lang.System.out;
 
 public class Client implements Serializable {
-    public BoardTextView mtv;
-    public RiskGameBoard riskGameBoard;
-    public final BufferedReader inputReader; //Get the input
-    public Socket clientS; //The unique ID for each client
-    public int clientID; //The unique ID for each client
+    private RiskGameBoard riskGameBoard;
+    private Socket clientS; //The unique ID for each client
+    private int clientID; //The unique ID for each client
     ObjectInputStream readFromServer;
     ObjectOutputStream sendObjToServer;
 
     Player player;
 
-
-
-    public Client(BufferedReader _inputReader,RiskGameBoard _riskGameBoard, BoardTextView _mtv){
-        this.inputReader = _inputReader;
-        this.riskGameBoard = _riskGameBoard;
-        this.mtv = _mtv;
+    public Client(){
         this.player = new Player(1);
     }
 
-    public void tryConnectServer() throws IOException, ClassNotFoundException {
+    public void tryConnectServer() throws IOException {
         try{
             Territory t1 = new Territory("Mordor", 8);
             RiskGameBoard b1 = new RiskGameBoard();
@@ -42,9 +35,8 @@ public class Client implements Serializable {
             out.println("The client's port is: " + clientS.getLocalPort());
             clientID = clientS.getLocalPort();
         }
-        catch (IOException e){
-//            System.err.println("Exception caught when trying to establish connection: " + e.getMessage());
-//            e.printStackTrace();
+        catch (SocketException e){
+            System.err.println("Exception caught when trying to establish connection: " + e.getMessage());
         }
     }
 
@@ -80,9 +72,8 @@ public class Client implements Serializable {
         clientS.close();
     }
 
-    public void addTerritories(){
-        Territory t = new Territory("Mordor", 8);
-        player.tryOwnTerritory(t);
+    public void addPlayer(Player _player){
+        player = _player;
     }
 
     /**
@@ -90,6 +81,8 @@ public class Client implements Serializable {
      * TODO: check do we really need this method in Client, player needs name, neighbor
      */
     public void displayTerritory(){
+        Territory t = new Territory("Mordor", 8);
+        player.tryOwnTerritory(t);
         ArrayList<Territory> owenedTerritories = player.getOwnedTerritories();
         out.println("Player: ");
         for(int i = 0; i < owenedTerritories.size(); i++) {
@@ -124,12 +117,10 @@ public class Client implements Serializable {
 
 
     public static void main(String[] args) throws IOException, ClassNotFoundException {
-        BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
         Territory t1 = new Territory("Mordor", 8);
         RiskGameBoard b1 = new RiskGameBoard();
         b1.tryAddTerritory(t1);
-        BoardTextView v1 = new BoardTextView(b1);
-        Client c = new Client(input, b1, v1);
+        Client c = new Client();
 
         //connect with The first client
         c.tryConnectServer();
