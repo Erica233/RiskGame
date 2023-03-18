@@ -28,7 +28,13 @@ public class Server implements Serializable{
         this.ind = 0;
         this.serverS = _serverS;
     }
-
+    /**
+     * This function tries to connect the multi client
+     * @param numPlayer the total number of players
+     * @return true if everything works well
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
     public boolean tryConnectMulClient(int numPlayer) throws IOException, ClassNotFoundException {
         this.numOfPlayer = numPlayer;
         for(int i = 0; i < numPlayer; i++){
@@ -66,6 +72,10 @@ public class Server implements Serializable{
             e.printStackTrace();
         }
     }
+    /**
+     * This method is currently the testing method. It transits String
+     * @throws IOException
+     */
     public void transData() throws IOException {
         String info = "Hi, This is Server!! I am connecting with you";
         String playerColor = PlayerNames.get(ind);
@@ -77,6 +87,12 @@ public class Server implements Serializable{
         sendObjToClient.writeObject(playerColor);
     }
 
+    /**
+     * This method is currently the testing method. It transits the class
+     * @param riskGameBoard_toClient
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
     public void transObject(RiskGameBoard riskGameBoard_toClient) throws IOException, ClassNotFoundException {
         out.println("Sending the RiskGameBoard class to client");
         sendObjToClient.writeObject(riskGameBoard_toClient);
@@ -92,7 +108,10 @@ public class Server implements Serializable{
         out.println("Sending the object successfully");
     }
 
-
+    /**
+     * This method closes all pipes
+     * @throws IOException
+     */
     void closePipe() throws IOException {
         sendObjToClient.close();
         readObjFromClient.close();

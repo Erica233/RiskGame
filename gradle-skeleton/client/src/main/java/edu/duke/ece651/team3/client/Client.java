@@ -39,6 +39,10 @@ public class Client implements Serializable {
             System.err.println("Exception caught when trying to establish connection: " + e.getMessage());
         }
     }
+    /**
+     * This method is currently the testing method. It transits String
+     * @throws IOException
+     */
 
     public void transData() throws IOException, ClassNotFoundException {
         //To get the data from the server
@@ -51,7 +55,12 @@ public class Client implements Serializable {
         out.println("Received the Player's color successfully from the server");
     }
 
-
+    /**
+     * This method is currently the testing method. It transits the class
+     * @param riskGameBoard_toSerer
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
     public void transObject(RiskGameBoard riskGameBoard_toSerer) throws IOException, ClassNotFoundException{
         RiskGameBoard riskGameBoard = (RiskGameBoard) readFromServer.readObject();
 
@@ -66,12 +75,20 @@ public class Client implements Serializable {
         out.println("sending risk game board successfully");
     }
 
+    /**
+     * This method closes all pipes
+     * @throws IOException
+     */
     public void closePipe() throws IOException {
         sendObjToServer.close();
         readFromServer.close();
         clientS.close();
     }
 
+    /**
+     * This method adds the player into the field
+     * @param _player
+     */
     public void addPlayer(Player _player){
         player = _player;
     }
