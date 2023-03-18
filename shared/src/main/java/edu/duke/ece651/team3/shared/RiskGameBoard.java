@@ -8,6 +8,10 @@ import java.util.ArrayList;
  */
 public class RiskGameBoard implements Board, Serializable {
     private final ArrayList<Territory> allTerritories;
+    ArrayList<Player> allPlayers;
+
+
+
 
     /**
      * Constructs a RiskGameBoard, given a Territory

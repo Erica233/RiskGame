@@ -10,59 +10,59 @@ import java.util.ArrayList;
 import static java.lang.System.out;
 
 public class Client implements Serializable {
-    public BoardTextView mtv;
-    public RiskGameBoard riskGameBoard;
-    public final BufferedReader inputReader; //Get the input
-    public Socket clientS; //The unique ID for each client
-    public int clientID; //The unique ID for each client
+    private RiskGameBoard riskGameBoard;
+    private Socket clientS; //The unique ID for each client
+    private int clientID; //The unique ID for each client
     ObjectInputStream readFromServer;
     ObjectOutputStream sendObjToServer;
 
     Player player;
 
-    public Client(BufferedReader _inputReader,RiskGameBoard _riskGameBoard, BoardTextView _mtv){
-        this.inputReader = _inputReader;
-        this.riskGameBoard = _riskGameBoard;
-        this.mtv = _mtv;
-    }
-    public void setUpReadObjFromServer() throws IOException{
-        this.readFromServer = new ObjectInputStream(this.clientS.getInputStream());
+    public Client(){
+        this.player = new Player(1);
     }
 
-    public boolean tryConnectServer1() throws IOException, ClassNotFoundException {
-        Territory t1 = new Territory("Mordor", 8);
-        RiskGameBoard b1 = new RiskGameBoard();
-        b1.tryAddTerritory(t1);
-        //Create the local host
-        out.println("try connect to the server");
+    public void tryConnectServer() throws IOException {
+        try{
+            Territory t1 = new Territory("Mordor", 8);
+            RiskGameBoard b1 = new RiskGameBoard();
+            b1.tryAddTerritory(t1);
+            //Create the local host
 
-        //The first player responses
-        clientS = new Socket("localhost", 12345);
-        out.println("The current connected socket is: ");
-        out.println(clientS);
-        out.println("Build up the connection to server!");
-        out.println("The client's port is: " + clientS.getLocalPort());
-        clientID = clientS.getLocalPort();
-        return true;
+            //The first player responses
+            clientS = new Socket("localhost", 12345);
+            out.println("The current connected socket is: " + clientS);
+            out.println("Build up the connection to server!");
+            out.println("The client's port is: " + clientS.getLocalPort());
+            clientID = clientS.getLocalPort();
+        }
+        catch (SocketException e){
+            System.err.println("Exception caught when trying to establish connection: " + e.getMessage());
+        }
     }
+    /**
+     * This method is currently the testing method. It transits String
+     * @throws IOException
+     */
 
     public void transData() throws IOException, ClassNotFoundException {
         //To get the data from the server
         this.readFromServer = new ObjectInputStream(clientS.getInputStream()); //TODO: does not build successfully
-//        this.dataFromServer = new BufferedReader(new InputStreamReader(clientS.getInputStream()));
         String receivedMsg = (String) readFromServer.readObject();
-//        String receivedMsg = readFromServer.readLine();
         out.println(receivedMsg);
         out.println("Received the string successfully from the server");
-
         String playerColor = (String)readFromServer.readObject();
         out.println(playerColor);
-        out.println("Received the random number successfully from the server");
-
+        out.println("Received the Player's color successfully from the server");
     }
+
+    /**
+     * This method is currently the testing method. It transits the class
+     * @param riskGameBoard_toSerer
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
     public void transObject(RiskGameBoard riskGameBoard_toSerer) throws IOException, ClassNotFoundException{
-//        this.readFromServer = new ObjectInputStream(clientS.getInputStream()); //TODO: does not build successfully
-        out.println("Build up the object stream");
         RiskGameBoard riskGameBoard = (RiskGameBoard) readFromServer.readObject();
 
         //Checks whether the object successfully passed
@@ -76,11 +76,22 @@ public class Client implements Serializable {
         out.println("sending risk game board successfully");
     }
 
+    /**
+     * This method closes all pipes
+     * @throws IOException
+     */
     public void closePipe() throws IOException {
-//        dataFromServer.close();
         sendObjToServer.close();
         readFromServer.close();
         clientS.close();
+    }
+
+    /**
+     * This method adds the player into the field
+     * @param _player
+     */
+    public void addPlayer(Player _player){
+        player = _player;
     }
 
     /**
@@ -88,6 +99,8 @@ public class Client implements Serializable {
      * TODO: check do we really need this method in Client, player needs name, neighbor
      */
     public void displayTerritory(){
+        Territory t = new Territory("Mordor", 8);
+        player.tryOwnTerritory(t);
         ArrayList<Territory> owenedTerritories = player.getOwnedTerritories();
         out.println("Player: ");
         for(int i = 0; i < owenedTerritories.size(); i++) {
@@ -99,7 +112,15 @@ public class Client implements Serializable {
      * This method will base on the map for the whole. Here it
      */
     public void displayNeighbor(){
-//        player.displayNeighbor();
+        Territory t1 = new Territory("Mordor", 8);
+        RiskGameBoard b1 = new RiskGameBoard();
+        b1.tryAddTerritory(t1);
+
+        ArrayList<Territory> ownTerritories = player.getOwnedTerritories();
+        for(int i = 0; i < ownTerritories.size(); i++){
+            out.println(ownTerritories.get(i).displayTerritory());
+        }
+        t1.getNeighbors();
     }
 
 
@@ -112,20 +133,15 @@ public class Client implements Serializable {
         return isValid;
     }
 
+
     public static void main(String[] args) throws IOException, ClassNotFoundException {
-        BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
         Territory t1 = new Territory("Mordor", 8);
         RiskGameBoard b1 = new RiskGameBoard();
         b1.tryAddTerritory(t1);
-        BoardTextView v1 = new BoardTextView(b1);
-        Client c = new Client(input, b1, v1);
+        Client c = new Client();
 
         //connect with The first client
-        boolean isClientConnected1 = c.tryConnectServer1();
-        if(isClientConnected1 == false){
-            throw new SocketException();
-        }
-
+        c.tryConnectServer();
         c.transData();
         c.transObject(b1);
         c.closePipe();
