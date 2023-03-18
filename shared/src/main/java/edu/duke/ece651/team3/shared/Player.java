@@ -5,7 +5,6 @@ import java.util.ArrayList;
 public class Player {
     private final int id;
     private final ArrayList<Territory> ownedTerritories;
-    private ArrayList<Territory> neighbors;
 
     public Player(int _id) {
         this.id = _id;
