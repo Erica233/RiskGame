@@ -18,6 +18,17 @@ import java.util.ArrayList;
 
 public class ClientTest {
 
+//    void checkValidation() throws Exception {
+//        BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
+//        Territory t1 = new Territory("Mordor", 8);
+//        RiskGameBoard b1 = new RiskGameBoard();
+//        b1.tryAddTerritory(t1);
+//        BoardTextView v1 = new BoardTextView(b1);
+//        Client c = new Client();
+//        assertEquals(true, c.checkValidation());
+//
+//    }
+
     @Test
     void checkValidation() throws Exception {
         BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
@@ -25,7 +36,7 @@ public class ClientTest {
         RiskGameBoard b1 = new RiskGameBoard();
         b1.tryAddTerritory(t1);
         BoardTextView v1 = new BoardTextView(b1);
-        Client c = new Client(input);
+        Client c = new Client();
         assertEquals(true, c.checkValidation());
 
     }
@@ -78,6 +89,7 @@ public class ClientTest {
         ss.close();
         acceptedSocekt.close();
     }
+
     @Test
     void test_displays() throws Exception {
 //        Player p1 = new Player(1);
@@ -87,7 +99,7 @@ public class ClientTest {
         RiskGameBoard b1 = new RiskGameBoard();
         b1.tryAddTerritory(t1);
         BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
-        Client c = new Client(input);
+        Client c = new Client();
 //        c.addPlayer(p1);
         c.displayTerritory();
         c.displayNeighbor();
@@ -99,12 +111,12 @@ public class ClientTest {
         BufferedReader mockInput = Mockito.mock(BufferedReader.class);
         when(mockInput.readLine()).thenReturn("M", "Narnia", "Oz", "3");
 
-        Client c = new Client(input);
+        Client c = new Client();
         c.inputReader = mockInput;
         c.readAction();
 
         when(mockInput.readLine()).thenReturn("S", "M", "Narnia", "Oz", "3");
-        Client c1 = new Client(input);
+        Client c1 = new Client();
         c1.inputReader = mockInput;
         c1.readAction();
         c1.promptEnter();
@@ -127,19 +139,16 @@ public class ClientTest {
     @Test
     void test_closePipe() throws IOException, ClassNotFoundException{
         BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
-        Client c = new Client(input);
+        Client c = new Client();
         ServerSocket mockServerSocket = Mockito.mock(ServerSocket.class);
         Socket mockTestClientSocket = Mockito.mock(Socket.class);
-        c.tryConnectServer();
+
 
         // Then mock it
         when(mockServerSocket.accept()).thenReturn(mockTestClientSocket);
         ObjectInputStream mockObjectInput = Mockito.mock(ObjectInputStream.class);
         ObjectOutputStream mockObjectOutput = Mockito.mock(ObjectOutputStream.class);
-        c.sendObjToServer = mockObjectOutput;
-        c.readFromServer = mockObjectInput;
-        c.clientS = mockTestClientSocket;
-        c.closePipe();
+
     }
     @Test
     void test_trans() throws IOException {
@@ -150,10 +159,10 @@ public class ClientTest {
         Action action = new Action(actionType, src, dst, actionUnits);
         BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
         ObjectOutputStream mockObjectOutput = Mockito.mock(ObjectOutputStream.class);
-        Client c = new Client(input);
+        Client c = new Client();
 
 //        when(mockObjectOutput.writeObject(action)).thenReturn(action);
-        c.sendObjToServer = mockObjectOutput;
+
     }
 
 

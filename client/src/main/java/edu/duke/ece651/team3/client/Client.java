@@ -12,40 +12,38 @@ import static java.lang.System.in;
 import static java.lang.System.out;
 
 public class Client implements Serializable {
+    private final Socket clientS; //The unique ID for each client
+    private final ObjectInputStream readFromServer;
+    private final ObjectOutputStream sendObjToServer;
+    private int playerID;
     private RiskGameBoard riskGameBoard;
-    Socket clientS; //The unique ID for each client
-    private int clientID; //The unique ID for each client
-    ObjectInputStream readFromServer;
-    ObjectOutputStream sendObjToServer;
     public BufferedReader inputReader;
 
     Player player;
     String playerColor;
-
     Action action;
 
-    public Client(BufferedReader _inputReader){
-        this.inputReader = _inputReader;
+    public Client() throws IOException {
 //        this.player = new Player(1);
+        this.clientS = new Socket("localhost", 12345);
+        this.readFromServer = new ObjectInputStream(clientS.getInputStream()); //TODO: does not build successfully
+        this.sendObjToServer = new ObjectOutputStream(clientS.getOutputStream());
     }
 
-    public void tryConnectServer() throws IOException {
-        try{
-            Territory t1 = new Territory("Mordor", 8);
-            RiskGameBoard b1 = new RiskGameBoard();
-            b1.tryAddTerritory(t1);
+    public void printConnectInfo() {
+//        try{
             //Create the local host
 
             //The first player responses
-            clientS = new Socket("localhost", 12345);
+            //clientS = new Socket("localhost", 12345);
             out.println("The current connected socket is: " + clientS);
             out.println("Build up the connection to server!");
             out.println("The client's port is: " + clientS.getLocalPort());
-            clientID = clientS.getLocalPort();
-        }
-        catch (Exception e){
-            System.err.println("Exception caught when trying to establish connection: " + e.getMessage());
-        }
+//            clientID = clientS.getLocalPort();
+//        }
+//        catch (SocketException e){
+//            System.err.println("Exception caught when trying to establish connection: " + e.getMessage());
+//        }
     }
 
 //    void initialStreams() throws IOException {
@@ -56,16 +54,16 @@ public class Client implements Serializable {
      * This method is currently the testing method. It transits String
      * @throws IOException
      */
+
     public void transData() throws IOException, ClassNotFoundException {
         //To get the data from the server
-        this.readFromServer = new ObjectInputStream(clientS.getInputStream()); //TODO: does not build successfully
-        out.println("oooo");
-//        String receivedMsg = (String) readFromServer.readObject();
-//        out.println(receivedMsg);
+//        this.readFromServer = new ObjectInputStream(clientS.getInputStream()); //TODO: does not build successfully
+        String receivedMsg = (String) readFromServer.readObject();
+        out.println(receivedMsg);
         out.println("Received the string successfully from the server");
-        String playerColor = (String)readFromServer.readObject();
-        this.playerColor = playerColor;
+        String playerColor = (String) readFromServer.readObject();
         out.println(playerColor);
+//        if(playerColor)
         out.println("Received the Player's color successfully from the server");
     }
 
@@ -85,8 +83,9 @@ public class Client implements Serializable {
         out.println(test);
 
         //Sending the object to server
-        this.sendObjToServer = new ObjectOutputStream(clientS.getOutputStream());
+//        this.sendObjToServer = new ObjectOutputStream(clientS.getOutputStream());
         sendObjToServer.writeObject(riskGameBoard_toSerer);
+        this.riskGameBoard = riskGameBoard;
         out.println("sending risk game board successfully");
     }
 
@@ -99,7 +98,6 @@ public class Client implements Serializable {
         String actionType = "Move";
         int actionUnits = 5;
         Action action = new Action(actionType, src, dst, actionUnits);
-        this.sendObjToServer = new ObjectOutputStream(clientS.getOutputStream());
         sendObjToServer.writeObject(action);
         out.println("sending Action successfully");
     }
@@ -204,10 +202,10 @@ public class Client implements Serializable {
         Territory t1 = new Territory("Mordor", 8);
         RiskGameBoard b1 = new RiskGameBoard();
         b1.tryAddTerritory(t1);
-        Client c = new Client(input);
+        Client c = new Client();
 
         //connect with The first client
-        c.tryConnectServer();
+        c.printConnectInfo();
 //        c.initialStreams();
         c.transData();
         c.transBoard(b1);

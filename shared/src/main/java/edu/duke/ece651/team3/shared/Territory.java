@@ -64,7 +64,7 @@ public class Territory implements Serializable {
      * @param territories the Territories to add to the neighbors
      * @throws Exception if a Territory to add is invalid
      */
-    public void addANeighbors(Territory... territories) throws Exception {
+    public void addNeighbors(Territory... territories) throws Exception {
         for (Territory aNeighbor: territories) {
             if (!aNeighbor.isAValidNeighbor()) {
                 throw new Exception("addANeighbors(): invalid neighbor to add!");
