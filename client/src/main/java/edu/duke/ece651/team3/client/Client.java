@@ -84,24 +84,25 @@ public class Client implements Serializable {
     /**
      * This method checks the move order
      */
-    void checkActionOrder(String moveOrAttack){
+    boolean checkActionOrder(String moveOrAttack){
         MoveRuleChecker mrc = new MoveRuleChecker(this.action, this.riskGameBoard);
         if (moveOrAttack.equals("M")) {
             for(int i = 0; i < moveActions.size(); i++){
                 Action currAction = moveActions.get(i);
-                mrc.checkSrcDst(currAction, this.player);
-                mrc.checkNumUnits(currAction, player);
-                mrc.checkPath(currAction, player);
+                if(!mrc.checkSrcDst(currAction, this.player)) return false;
+                if(!mrc.checkNumUnits(currAction, player)) return false;
+                if(!mrc.checkPath(currAction, player)) return false;
             }
         }
         else{
             for(int i = 0; i < attackActions.size(); i++){
                 Action currAction = attackActions.get(i);
-                mrc.checkSrcDst(currAction, this.player);
-                mrc.checkNumUnits(currAction, player);
-                mrc.checkPath(currAction, player);
+                if(!mrc.checkSrcDst(currAction, this.player)) return false;
+                if(!mrc.checkNumUnits(currAction, player)) return false;
+                if(!mrc.checkPath(currAction, player)) return false;
             }
         }
+        return true;
     }
 
 
@@ -278,7 +279,7 @@ public class Client implements Serializable {
         if(c.promptAction().equals("M")){
             c.enterAction("M");
         }
-//        c.checkActionOrder("M");
+        c.checkActionOrder("M");
         c.multipleMoves(); //checking
 
         //Choose when to close
