@@ -3,6 +3,8 @@ package edu.duke.ece651.team3.shared;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import static java.lang.System.out;
+
 public class Player implements Serializable {
     private final int playerId;
     private final String color;
@@ -44,11 +46,12 @@ public class Player implements Serializable {
      */
     public boolean checkTerrOwner(String territoryName){
         territoryName.toLowerCase();
+//        out.println("The territory name is: " + territoryName);
         int length = ownedTerritories.size();
         for (int i = 0; i < length; i++) {
             String currName = ownedTerritories.get(i).getTerritoryName();
-            currName.toLowerCase();
-            if(territoryName.equals(currName)){
+//            String currName1 = currName.toLowerCase();
+            if(territoryName.equalsIgnoreCase(currName)){
                 return true;
             }
         }
