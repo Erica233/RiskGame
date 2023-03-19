@@ -180,19 +180,24 @@ public class Client implements Serializable {
      * @param prompt
      * @throws IOException
      */
-    public void enterSrcOrDst(String prompt) throws IOException {
+    public void enterSrcOrDst(String prompt, String srcOrDst) throws IOException {
         out.println(prompt);
-        String srcOrDst = inputReader.readLine();
+        String name = inputReader.readLine();
 
-        boolean isValid = player.checkTerrOwner(srcOrDst);
+        boolean isValid = player.checkTerrOwner(name);
         while (!isValid) {
             out.println("The source Territory does not exist, please enter again!");
-            srcOrDst = inputReader.readLine();
-            isValid = player.checkTerrOwner(srcOrDst);
+            name = inputReader.readLine();
+            isValid = player.checkTerrOwner(name);
         }
-        Territory srcOrDstTerritory = new Territory(srcOrDst, 0);
-        action.setSrc(srcOrDstTerritory);
-        player.checkTerrOwner(srcOrDst);
+        Territory srcOrDstTerritory = new Territory(name, 0);
+        if(srcOrDst.equals("S")){
+            action.setSrc(srcOrDstTerritory);
+        }
+        if(srcOrDst.equals("D")){
+            action.setDst(srcOrDstTerritory);
+        }
+        player.checkTerrOwner(name);
     }
 
     /**
@@ -203,10 +208,10 @@ public class Client implements Serializable {
      */
     public Action enterAction(String moveOrAttack) throws IOException{
         String srcPrompt = "Ok, you choose to move. Which Type the name of the territory you want to move FROM";
-        enterSrcOrDst(srcPrompt);
+        enterSrcOrDst(srcPrompt, "S");
 
         String dstPrompt = "Which Type the name of the territory you want to move TO";
-        enterSrcOrDst(dstPrompt);
+        enterSrcOrDst(dstPrompt, "D");
 
         String unitPrompt = "Enter the units that you want to move";
 
@@ -278,7 +283,7 @@ public class Client implements Serializable {
         if(c.promptAction().equals("M")){
             c.enterAction("M");
         }
-//        c.checkActionOrder("M");
+        c.checkActionOrder("M");
         c.multipleMoves(); //checking
 
         //Choose when to close
