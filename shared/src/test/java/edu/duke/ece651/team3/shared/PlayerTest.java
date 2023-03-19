@@ -15,10 +15,21 @@ class PlayerTest {
         Player p3 = new Player(1, "blue", 10);
         Player p4 = new Player(1, "red", 11);
         assertEquals(p0, p1);
+        assertNotEquals(p0, "(1, red, 10)"); //different objects
         assertNotEquals(p0, p2); // different id
         assertNotEquals(p0, p3); // different color
         assertNotEquals(p0, p4); // different totNumUnits
-
+        Territory t1 = new Territory("a", 4);
+        Territory t2 = new Territory("b", 5);
+        Territory t3 = new Territory("c", 6);
+        p0.tryOwnTerritory(t1);
+        p0.tryOwnTerritory(t2);
+        p0.tryOwnTerritory(t3);
+        assertNotEquals(p0, p1); //different ownedTerritories
+        p1.tryOwnTerritory(t1);
+        p1.tryOwnTerritory(t3);
+        p1.tryOwnTerritory(t2);
+        assertNotEquals(p0, p1); //ownedTerritories different orders
     }
 
     @Test

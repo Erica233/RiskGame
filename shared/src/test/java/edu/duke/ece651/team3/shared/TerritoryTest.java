@@ -15,7 +15,7 @@ public class TerritoryTest {
         Territory t3 = new Territory("b", 2);
         Territory t4 = new Territory("a", 3);
         Territory t5 = new Territory("A", 2);
-        assertNotEquals(t1, "(a, 2)");
+        assertNotEquals(t1, "(a, 2)"); //different objects
         assertEquals(t1, t2); //different address
         assertNotEquals(t1, t3); //different name
         assertNotEquals(t1, t4); //different numUnits

@@ -26,19 +26,11 @@ public class Player implements Serializable {
 
     @Override
     public boolean equals(Object other) {
-        if (this == other) {
-            return true;
+        if (other.getClass().equals(getClass())) {
+            Player player = (Player) other;
+            return playerId == player.playerId && totNumUnits == player.totNumUnits && color.equals(player.color) && ownedTerritories.equals(player.ownedTerritories);
         }
-        if (other == null || getClass() != other.getClass()) {
-            return false;
-        }
-        Player player = (Player) other;
-        return playerId == player.playerId && totNumUnits == player.totNumUnits && color.equals(player.color) && ownedTerritories.equals(player.ownedTerritories);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(playerId, color, totNumUnits, ownedTerritories);
+        return false;
     }
 
     /**
