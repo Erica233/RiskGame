@@ -78,7 +78,7 @@ public class Client implements Serializable {
     /**
      * This method checks the move order
      */
-    void checkMoveOrder(){
+    void checkActionOrder(String moveOrAttack){
         MoveRuleChecker mrc = new MoveRuleChecker(this.action, this.riskGameBoard);
         for(int i = 0; i < moveActions.size(); i++){
             Action currAction = moveActions.get(i);
@@ -173,6 +173,14 @@ public class Client implements Serializable {
         out.println(srcPrompt);
         String src = inputReader.readLine();
         Territory srcTerritory = new Territory(src, 0);
+        boolean isValidSrc = player.checkTerritoryByName(srcTerritory);
+        while (!isValidSrc) {
+            out.println("The source Territory does not exist, please enter again!");
+            src = inputReader.readLine();
+            srcTerritory = new Territory(src, 0);
+            isValidSrc = player.checkTerritoryByName(srcTerritory);
+        }
+
         action.setSrc(srcTerritory);
         player.checkTerritoryByName(srcTerritory);
 
@@ -180,6 +188,14 @@ public class Client implements Serializable {
         out.println(dstPrompt);
         String dst = inputReader.readLine();
         Territory dstTerritory = new Territory(dst, 0);
+        boolean isValidDst = player.checkTerritoryByName(srcTerritory);
+        while (!isValidDst) {
+            out.println("The destination Territory does not exist, please enter again!");
+            dst = inputReader.readLine();
+            dstTerritory = new Territory(dst, 0);
+            isValidDst = player.checkTerritoryByName(dstTerritory);
+        }
+
         action.setDst(dstTerritory);
         player.checkTerritoryByName(dstTerritory);
 
@@ -187,6 +203,12 @@ public class Client implements Serializable {
         out.println(unitPrompt);
         String unitStr = inputReader.readLine();
         int units = Integer.parseInt(unitStr);
+
+        while (units < 0) {
+            out.println("The source Territory does not exist, please enter again!");
+            unitStr = inputReader.readLine();
+            units = Integer.parseInt(unitStr);
+        }
         action.setActionUnits(units);
 
         if(moveOrAttack.equals("M")){

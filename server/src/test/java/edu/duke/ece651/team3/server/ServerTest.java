@@ -71,37 +71,37 @@ public class ServerTest {
 //        s.closePipe();
 //
 //    }
-    @Test
-    void test_recAction() throws Exception {
-        ServerSocket mockServerSocket = Mockito.mock(ServerSocket.class);
-        Socket mockClientSocket = Mockito.mock(Socket.class);
-        Socket mockTestClientSocket = Mockito.mock(Socket.class);
-        ObjectInputStream mockObjectInput = Mockito.mock(ObjectInputStream.class);
-//        Server s = new Server(mockServerSocket);
-
-        //Action
-        Territory src = new Territory("Space", 11);
-        Territory dst = new Territory("Mordor", 4);
-        String actionType = "Move";
-        int actionUnits =   5;
-        Action action = new MoveAction(actionType, src, dst, actionUnits);
-
-        // Risk Game Board
-        Territory t1 = new Territory("Hogwarts", 10);
-        RiskGameBoard riskGameBoard = new RiskGameBoard();
-        riskGameBoard.tryAddTerritory(t1);
-
-
-        when(mockServerSocket.accept()).thenReturn(mockTestClientSocket);
-//        s.tryConnectClient();
-
-
-        when(mockObjectInput.readObject()).thenReturn(action);
-//        s.readObjFromClient = mockObjectInput;
-//        s.recvAction();
+//    @Test
+//    void test_recAction() throws Exception {
+//        ServerSocket mockServerSocket = Mockito.mock(ServerSocket.class);
+//        Socket mockClientSocket = Mockito.mock(Socket.class);
+//        Socket mockTestClientSocket = Mockito.mock(Socket.class);
+//        ObjectInputStream mockObjectInput = Mockito.mock(ObjectInputStream.class);
+////        Server s = new Server(mockServerSocket);
 //
+//        //Action
+//        Territory src = new Territory("Space", 11);
+//        Territory dst = new Territory("Mordor", 4);
+//        String actionType = "Move";
+//        int actionUnits =   5;
+//        Action action = new MoveAction(actionType, src, dst, actionUnits);
+//
+//        // Risk Game Board
+//        Territory t1 = new Territory("Hogwarts", 10);
+//        RiskGameBoard riskGameBoard = new RiskGameBoard();
+//        riskGameBoard.tryAddTerritory(t1);
+//
+//
+//        when(mockServerSocket.accept()).thenReturn(mockTestClientSocket);
+////        s.tryConnectClient();
+//
+//
+//        when(mockObjectInput.readObject()).thenReturn(action);
+////        s.readObjFromClient = mockObjectInput;
+////        s.recvAction();
+////
 
 
-    }
+//    }
 
 }
