@@ -122,13 +122,15 @@ public class Client implements Serializable {
         String action = "";
         while (!action.equals("D")) {
             action = promptAction();
+            sendObjToServer.writeObject(action);
             if(action.equals("M")) {
                 Action newAction = enterAction("M");
                 transAction(newAction);
-                sendObjToServer.writeObject(action);
             }
         }
         sendObjToServer.writeObject("Done");
+        String info =(String) readFromServer.readObject();
+        out.println(info);
     }
     /**
      * This method closes all pipes
@@ -215,7 +217,7 @@ public class Client implements Serializable {
         while (!isValidDst) {
             out.println("The destination Territory does not exist, please enter again!");
             dst = inputReader.readLine();
-            isValidDst = player.checkTerrOwner(src);
+            isValidDst = player.checkTerrOwner(dst);
         }
         Territory dstTerritory = new Territory(dst, 0);
 
@@ -244,10 +246,11 @@ public class Client implements Serializable {
     }
 
     public static void main(String[] args) throws Exception {
-        BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
+        //Initialize RiskGameBoard
         RiskGameBoard b1 = new RiskGameBoard();
         int portNum = 12345;
 
+        //Initialize player and its neighbors
         Territory t = new Territory("Oz", 2);
         Territory t1 = new Territory("Mordor", 8);
         Territory t2 = new Territory("Gondor", 5);
@@ -258,6 +261,7 @@ public class Client implements Serializable {
         ts2.add(t2);
         Player p1 = new Player(1, "yellow", 3, ts2);
 
+        //Initialize Action
         Territory src = new Territory("Space", 11);
         Territory dst = new Territory("Mordor", 4);
         String actionType = "Move";
@@ -270,13 +274,16 @@ public class Client implements Serializable {
         c.printConnectInfo();
         c.transData();
         c.transBoard(b1);
-        c.transAction(action);
+
+        //Adding player
         c.addPlayer(p1);
+        //Enter the action and check
         if(c.promptAction().equals("M")){
             c.enterAction("M");
         }
         c.checkActionOrder("M");
-//        c.multipleMoves(); //checking
+        c.transAction(action);
+        c.multipleMoves(); //checking
 
         //Choose when to close
         c.closePipe();

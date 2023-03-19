@@ -48,7 +48,7 @@ public class Server implements Serializable {
             transData();
             transBoard(riskGameBoard);
             recvAction();
-//            recvMultipleAction(); //checking
+            recvMultipleAction(); //checking
         }
         closePipe();
         return true;
@@ -112,11 +112,14 @@ public class Server implements Serializable {
     public void recvMultipleAction() throws IOException, ClassNotFoundException {
         String commitInfo = "";
         while(!commitInfo.equals("Done")){
-            recvAction();
             commitInfo = (String) readObjFromClient.readObject();
-            out.println(commitInfo);
+            out.println("receiving: " + commitInfo);
+            if(!commitInfo.equals("D") && !commitInfo.equals("Done")){
+                out.println("Done?");
+                recvAction();
+            }
         }
-        sendObjToClient.writeObject("Commit");
+        sendObjToClient.writeObject("Please wait the other player finish enter");
 
     }
     /**

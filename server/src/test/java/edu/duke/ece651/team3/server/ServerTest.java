@@ -53,10 +53,13 @@ public class ServerTest {
         assertEquals(originAllTs.get(0).getNumUnits(), passedAllTs.get(0).getNumUnits());
 
         ObjectInputStream mockObjInput = Mockito.mock(ObjectInputStream.class);
-        when(mockObjInput.readObject()).thenReturn(action, action, "Done");
+//        when(mockObjInput.readObject()).thenReturn("", action, "Done");
+        out1.writeObject("M");
         out1.writeObject(action);
+        out1.writeObject("M");
         out1.writeObject(action);
         out1.writeObject("Done");
+        in.readObject();
 
 //        Action action1 = (Action) in.readObject();
 //        Action action2 = (Action) in.readObject();
