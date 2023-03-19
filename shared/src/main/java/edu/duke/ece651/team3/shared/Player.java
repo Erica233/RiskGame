@@ -38,23 +38,24 @@ public class Player implements Serializable {
     }
 
     /**
-     * This method checks whether the territory is owned be the player when the user inputs its name
-     * @param inputTerritory
-     * @return true if it is owned by a player, false if not
+     * Find the expected owner whether it has the territory
+     * @param territoryName territory name
+     * @return if owned by expected owner return true, else return false
      */
-    public boolean checkTerritoryByName(Territory inputTerritory){
-        String territoryName = inputTerritory.getTerritoryName();
-        territoryName.toUpperCase();
-        ArrayList<Territory> ownTerritories = getOwnedTerritories();
-        for(int i = 0; i < ownTerritories.size(); i++){
-            String currName = ownTerritories.get(i).getTerritoryName();
-            currName.toUpperCase();
+    public boolean checkTerrOwner(String territoryName){
+        territoryName.toLowerCase();
+        int length = ownedTerritories.size();
+        for (int i = 0; i < length; i++) {
+            String currName = ownedTerritories.get(i).getTerritoryName();
+            currName.toLowerCase();
             if(territoryName.equals(currName)){
                 return true;
             }
         }
         return false;
     }
+
+
 
     /**
      * Add a Territory owned by the player,

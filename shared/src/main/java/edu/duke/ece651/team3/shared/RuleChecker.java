@@ -8,31 +8,26 @@ public abstract class RuleChecker {
     }
 
     /**
-     * This method checks whether the source territory is correct
-     * @param src
-     * @return
+     * Check whether the current player and enemy have the territory from attack's information
+     * @param myAction attack information
+     * @param currPlayer current player
+     * @return if valid return true, invalid return false
      */
-    public abstract boolean checkSrc(Territory src, Player currentPlayer);
-
-    /**
-     * This method checks whether the destination territory is correct
-     * @param dst
-     * @return
-     */
-    public abstract boolean checkDst(Territory dst, Player currentPlayer);
+    public abstract boolean checkSrcDst(Action myAction, Player currPlayer);
 
     /**
      * This method checks whether the action number Units is correct
-     * @param actionUnits
-     * @return
+     * @param myAction action information
+     * @param currPlayer current player
+     * @return if valid return true, invalid return false
      */
-    public abstract boolean checkNumUnits(int actionUnits);
+    public abstract boolean checkNumUnits(Action myAction, Player currPlayer);
 
     /**
      * This method checks whether the path is correct
-     * @param src
-     * @param dst
-     * @return
+     * @param myAction action information
+     * @param currPlayer current player
+     * @return if valid return true, invalid return false
      */
-    public abstract boolean checkPath(Territory src, Territory dst);
+    public abstract boolean checkPath(Action myAction, Player currPlayer);
 }

@@ -9,7 +9,7 @@ import java.util.HashMap;
  */
 public class Territory implements Serializable {
     private final String territoryName;
-    private final int numUnits;
+    private int numUnits;
     private final ArrayList<Territory> neighbors;
     private final HashMap<Class<?>, Integer> units;
 
