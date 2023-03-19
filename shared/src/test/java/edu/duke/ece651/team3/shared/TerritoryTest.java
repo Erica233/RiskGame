@@ -39,7 +39,7 @@ public class TerritoryTest {
         assertEquals(n2, t2.getNeighbors());
         ArrayList<Territory> n3 = new ArrayList<>();
         n3.add(t2);
-        Territory t3 = new Territory("Morder", 9, n3, , new HashMap<>());
+        Territory t3 = new Territory("Morder", 9, n3, new HashMap<>());
         t2.addANeighbor(t3);
         n2.add(t3);
         assertEquals(n2, t2.getNeighbors());
