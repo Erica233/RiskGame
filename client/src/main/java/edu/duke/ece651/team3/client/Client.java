@@ -1,6 +1,7 @@
 package edu.duke.ece651.team3.client;
 import edu.duke.ece651.team3.shared.*;
 import edu.duke.ece651.team3.shared.Action;
+import org.checkerframework.checker.units.qual.A;
 
 import java.io.*;
 import java.net.Socket;
@@ -22,11 +23,14 @@ public class Client implements Serializable {
     ArrayList<Action> attackActions;
 
 
-    public Client(int portNum) throws IOException {
-//        this.player = new Player(1);
+    public Client(int portNum, Action _action) throws IOException {
+        this.action = _action;
+        this.inputReader = new BufferedReader(new InputStreamReader(System.in));
         this.clientS = new Socket("localhost", portNum);
         this.readFromServer = new ObjectInputStream(clientS.getInputStream()); //TODO: does not build successfully
         this.sendObjToServer = new ObjectOutputStream(clientS.getOutputStream());
+        this.moveActions = new ArrayList<>();
+        this.attackActions = new ArrayList<>();
     }
 
     public void printConnectInfo() {
@@ -46,6 +50,7 @@ public class Client implements Serializable {
         out.println(receivedMsg);
         out.println("Received the string successfully from the server");
         String playerColor = (String) readFromServer.readObject();
+        this.playerColor = playerColor;
         out.println(playerColor);
         if(playerColor.equals("Red")){
             playerID = 0;
@@ -105,12 +110,16 @@ public class Client implements Serializable {
      * @throws ClassNotFoundException
      */
     public void multipleMoves() throws IOException, ClassNotFoundException {
-        String finishInfo = "";
-        while (finishInfo != "Finish passing all moves") {
-            Action newAction = enterAction("M");
-            transAction(newAction);
-            finishInfo = (String) readFromServer.readObject();
+        String action = "";
+        while (!action.equals("D")) {
+            action = promptAction();
+            if(action.equals("M")) {
+                Action newAction = enterAction("M");
+                transAction(newAction);
+            }
+            sendObjToServer.writeObject(action);
         }
+        sendObjToServer.writeObject("Done");
     }
     /**
      * This method closes all pipes
@@ -161,13 +170,20 @@ public class Client implements Serializable {
         String s = inputReader.readLine();
         s.toUpperCase();
         //If the user's input is invalid, prompt the user to retype it
-        while (s.charAt(0) != 'M' && s.charAt(0) != 'A' && s.charAt(0) != 'D') {
+        while (!s.equals("M")  && !s.equals("A") && !s.equals("D")) {
             out.println(errorInput);
             s = inputReader.readLine();
             s.toUpperCase();
         }
         return s;
     }
+
+    /**
+     * This method enters the action from the user
+     * @param moveOrAttack M if it is move, A if it is attack
+     * @return
+     * @throws IOException
+     */
     public Action enterAction(String moveOrAttack) throws IOException{
         String srcPrompt = "Ok, you choose to move. Which Type the name of the territory you want to move from";
         out.println(srcPrompt);
@@ -205,7 +221,7 @@ public class Client implements Serializable {
         int units = Integer.parseInt(unitStr);
 
         while (units < 0) {
-            out.println("The source Territory does not exist, please enter again!");
+            out.println("The number of action units should be greater than 0, please enter again!");
             unitStr = inputReader.readLine();
             units = Integer.parseInt(unitStr);
         }
@@ -222,10 +238,18 @@ public class Client implements Serializable {
 
     public static void main(String[] args) throws Exception {
         BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
-        Territory t1 = new Territory("Mordor", 8);
         RiskGameBoard b1 = new RiskGameBoard();
         int portNum = 12345;
+
+        Territory t = new Territory("Oz", 2);
+        Territory t1 = new Territory("Mordor", 8);
+        Territory t2 = new Territory("Gondor", 5);
+        ArrayList<Territory> ts2 = new ArrayList<>();
         b1.tryAddTerritory(t1);
+        ts2.add(t);
+        ts2.add(t1);
+        ts2.add(t2);
+        Player p1 = new Player(1, "yellow", 3, ts2);
 
         Territory src = new Territory("Space", 11);
         Territory dst = new Territory("Mordor", 4);
@@ -233,15 +257,19 @@ public class Client implements Serializable {
         int actionUnits = 5;
         Action action = new MoveAction(actionType, src, dst, actionUnits);
 
-        Client c = new Client(portNum);
-
-
+        Client c = new Client(portNum, action);
 
         //connect with The first client
         c.printConnectInfo();
         c.transData();
         c.transBoard(b1);
         c.transAction(action);
+        c.addPlayer(p1);
+//        if(c.promptAction().equals("M")){
+//            c.enterAction("M");
+//        }
+        c.checkActionOrder("M");
+        c.multipleMoves();
 
         //Choose when to close
         c.closePipe();

@@ -48,6 +48,7 @@ public class Server implements Serializable {
             transData();
             transBoard(riskGameBoard);
             recvAction();
+            recvMultipleAction();
         }
         closePipe();
         return true;
@@ -114,6 +115,7 @@ public class Server implements Serializable {
             recvAction();
             commitInfo = (String) readObjFromClient.readObject();
         }
+        sendObjToClient.writeObject("Commit");
 
     }
     /**

@@ -44,11 +44,11 @@ public class Player implements Serializable {
      */
     public boolean checkTerritoryByName(Territory inputTerritory){
         String territoryName = inputTerritory.getTerritoryName();
-        territoryName.toUpperCase();
+        territoryName.toLowerCase();
         ArrayList<Territory> ownTerritories = getOwnedTerritories();
         for(int i = 0; i < ownTerritories.size(); i++){
             String currName = ownTerritories.get(i).getTerritoryName();
-            currName.toUpperCase();
+            currName.toLowerCase();
             if(territoryName.equals(currName)){
                 return true;
             }
