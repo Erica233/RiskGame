@@ -47,8 +47,7 @@ public class Server implements Serializable {
             riskGameBoard.tryAddTerritory(t1);
             transData();
             transBoard(riskGameBoard);
-            recvAction();
-            recvMultipleAction(); //checking
+            recvMultipleAction();
         }
         closePipe();
         return true;
@@ -132,15 +131,6 @@ public class Server implements Serializable {
         out.println("Sending the RiskGameBoard class to client");
         sendObjToClient.writeObject(riskGameBoard_toClient);
         out.println("sending risk game board successfully");
-
-        //Checks whether the server gets the client's object
-        // Read data from the client
-        out.println("Getting the RiskGameBoard from the client: ");
-//        this.readObjFromClient = new ObjectInputStream(clientSocket.getInputStream());
-        RiskGameBoard riskGameBoard = (RiskGameBoard) readObjFromClient.readObject();
-        String test = riskGameBoard.displayBoard();
-        out.println(test);
-        out.println("Sending the RiskGameBoard successfully");
     }
 
     /**

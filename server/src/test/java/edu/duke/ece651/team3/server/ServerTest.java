@@ -36,8 +36,11 @@ public class ServerTest {
         };
         th1.start();
         Thread.sleep(100);
+        //To mock the client socket
         Socket s1 = new Socket("localhost", 12345);
+        //For the output stream
         ObjectOutputStream out1 = new ObjectOutputStream(s1.getOutputStream());
+        //Sending the riskgame board and action to server
         out1.writeObject(riskGameBoard);
         out1.writeObject(action);
         ObjectInputStream in = new ObjectInputStream(s1.getInputStream());

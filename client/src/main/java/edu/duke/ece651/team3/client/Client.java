@@ -32,11 +32,15 @@ public class Client implements Serializable {
         this.attackActions = new ArrayList<>();
     }
 
+    /**
+     * This method is formerly tested method
+     */
     public void printConnectInfo() {
             out.println("The current connected socket is: " + clientS);
             out.println("Build up the connection to server!");
             out.println("The client's port is: " + clientS.getLocalPort());
     }
+
 
     /**
      * This method is currently the testing method. It transits String
@@ -44,10 +48,12 @@ public class Client implements Serializable {
      */
 
     public void transData() throws IOException, ClassNotFoundException {
-        //To get the data from the server
+        //To get the info from the server
         String receivedMsg = (String) readFromServer.readObject();
         out.println(receivedMsg);
         out.println("Received the string successfully from the server");
+
+        //To get the Player Identifier from the server
         String playerColor = (String) readFromServer.readObject();
         this.playerColor = playerColor;
         out.println(playerColor);
@@ -60,24 +66,20 @@ public class Client implements Serializable {
         out.println("Received the Player's color successfully from the server");
     }
 
+
     /**
-     * This method is currently the testing method. It transits the class
-     * @param riskGameBoard_toSerer
+     * This method is now receiving the RiskGameBoard from the server
      * @throws IOException
      * @throws ClassNotFoundException
      */
-    public void transBoard(RiskGameBoard riskGameBoard_toSerer) throws IOException, ClassNotFoundException{
-        //Checks whether the object successfully passed
+    public void transBoard() throws IOException, ClassNotFoundException{
         RiskGameBoard riskGameBoard = (RiskGameBoard) readFromServer.readObject();
+        this.riskGameBoard = riskGameBoard;
         String test = riskGameBoard.displayBoard();
         out.println("Received the object from server successfully");
         out.println(test);
-
-        //Sending the object to server
-        sendObjToServer.writeObject(riskGameBoard_toSerer);
-        this.riskGameBoard = riskGameBoard;
-        out.println("sending risk game board successfully");
     }
+
 
     /**
      * This method checks the move order
@@ -100,8 +102,8 @@ public class Client implements Serializable {
                 mrc.checkPath(currAction, player);
             }
         }
-
     }
+
 
     /**
      * This method transit single Action to the server
@@ -112,6 +114,7 @@ public class Client implements Serializable {
         sendObjToServer.writeObject(action);
         out.println("sending Action successfully");
     }
+
 
     /**
      * This method passes multiple Actions to the server
@@ -132,15 +135,8 @@ public class Client implements Serializable {
         String info =(String) readFromServer.readObject();
         out.println(info);
     }
-    /**
-     * This method closes all pipes
-     * @throws IOException
-     */
-    public void closePipe() throws IOException {
-        sendObjToServer.close();
-        readFromServer.close();
-        clientS.close();
-    }
+
+
 
     /**
      * This method adds the player into the field
@@ -190,41 +186,40 @@ public class Client implements Serializable {
     }
 
     /**
+     * This method works as a helper function for entering the source and destination territory
+     * @param prompt
+     * @throws IOException
+     */
+    public void enterSrcOrDst(String prompt) throws IOException {
+        out.println(prompt);
+        String srcOrDst = inputReader.readLine();
+
+        boolean isValid = player.checkTerrOwner(srcOrDst);
+        while (!isValid) {
+            out.println("The source Territory does not exist, please enter again!");
+            srcOrDst = inputReader.readLine();
+            isValid = player.checkTerrOwner(srcOrDst);
+        }
+        Territory srcOrDstTerritory = new Territory(srcOrDst, 0);
+        action.setSrc(srcOrDstTerritory);
+        player.checkTerrOwner(srcOrDst);
+    }
+
+    /**
      * This method enters the action from the user
      * @param moveOrAttack M if it is move, A if it is attack
      * @return
      * @throws IOException
      */
     public Action enterAction(String moveOrAttack) throws IOException{
-        String srcPrompt = "Ok, you choose to move. Which Type the name of the territory you want to move from";
-        out.println(srcPrompt);
-        String src = inputReader.readLine();
+        String srcPrompt = "Ok, you choose to move. Which Type the name of the territory you want to move FROM";
+        enterSrcOrDst(srcPrompt);
 
-        boolean isValidSrc = player.checkTerrOwner(src);
-        while (!isValidSrc) {
-            out.println("The source Territory does not exist, please enter again!");
-            src = inputReader.readLine();
-            isValidSrc = player.checkTerrOwner(src);
-        }
-        Territory srcTerritory = new Territory(src, 0);
-        action.setSrc(srcTerritory);
-        player.checkTerrOwner(src);
-
-        String dstPrompt = "Ok, you choose to move. Which Type the name of the territory you want to move to";
-        out.println(dstPrompt);
-        String dst = inputReader.readLine();
-        boolean isValidDst = player.checkTerrOwner(dst);
-        while (!isValidDst) {
-            out.println("The destination Territory does not exist, please enter again!");
-            dst = inputReader.readLine();
-            isValidDst = player.checkTerrOwner(dst);
-        }
-        Territory dstTerritory = new Territory(dst, 0);
-
-        action.setDst(dstTerritory);
-        player.checkTerrOwner(src);
+        String dstPrompt = "Which Type the name of the territory you want to move TO";
+        enterSrcOrDst(dstPrompt);
 
         String unitPrompt = "Enter the units that you want to move";
+
         out.println(unitPrompt);
         String unitStr = inputReader.readLine();
         int units = Integer.parseInt(unitStr);
@@ -236,6 +231,7 @@ public class Client implements Serializable {
         }
         action.setActionUnits(units);
 
+        //Adding the move or attack into the Arraylist
         if(moveOrAttack.equals("M")){
             moveActions.add(action);
         }
@@ -243,6 +239,17 @@ public class Client implements Serializable {
             attackActions.add(action);
         }
         return action;
+    }
+
+
+    /**
+     * This method closes all pipes
+     * @throws IOException
+     */
+    public void closePipe() throws IOException {
+        sendObjToServer.close();
+        readFromServer.close();
+        clientS.close();
     }
 
     public static void main(String[] args) throws Exception {
@@ -273,7 +280,7 @@ public class Client implements Serializable {
         //connect with The first client
         c.printConnectInfo();
         c.transData();
-        c.transBoard(b1);
+        c.transBoard();
 
         //Adding player
         c.addPlayer(p1);
@@ -282,7 +289,6 @@ public class Client implements Serializable {
             c.enterAction("M");
         }
         c.checkActionOrder("M");
-        c.transAction(action);
         c.multipleMoves(); //checking
 
         //Choose when to close
