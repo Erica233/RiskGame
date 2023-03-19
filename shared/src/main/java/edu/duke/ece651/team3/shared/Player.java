@@ -2,6 +2,7 @@ package edu.duke.ece651.team3.shared;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class Player implements Serializable {
     private final int playerId;
@@ -21,6 +22,23 @@ public class Player implements Serializable {
         this.color = _color;
         this.totNumUnits = _totNumUnits;
         this.ownedTerritories = _ownedTerritories;
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (this == other) {
+            return true;
+        }
+        if (other == null || getClass() != other.getClass()) {
+            return false;
+        }
+        Player player = (Player) other;
+        return playerId == player.playerId && totNumUnits == player.totNumUnits && color.equals(player.color) && ownedTerritories.equals(player.ownedTerritories);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(playerId, color, totNumUnits, ownedTerritories);
     }
 
     /**

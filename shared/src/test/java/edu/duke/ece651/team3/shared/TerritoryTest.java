@@ -1,12 +1,36 @@
 package edu.duke.ece651.team3.shared;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 
 public class TerritoryTest {
+    @Test
+    public void test_equals() throws Exception {
+        Territory t1 = new Territory("a", 2);
+        Territory t2 = new Territory("a", 2);
+        Territory t3 = new Territory("b", 2);
+        Territory t4 = new Territory("a", 3);
+        Territory t5 = new Territory("A", 2);
+        assertNotEquals(new Object(), t1);
+        assertEquals(t1, t2); //different address
+        assertNotEquals(t1, t3); //different name
+        assertNotEquals(t1, t4); //different numUnits
+        //assertEquals(t1, t5); // upper & lower case name
+        Territory t6 = new Territory("x", 6);
+        Territory t7 = new Territory("y", 7);
+        Territory t8 = new Territory("z", 8);
+        t1.addNeighbors(t6, t7, t8);
+        assertNotEquals(t1, t2); //different neighbors
+        t2.addNeighbors(t7, t6, t8);
+        assertNotEquals(t1, t2); //neighbors different order
+
+
+    }
+
     @Test
     public void test_name_numUnits() {
         Territory t1 = new Territory("Narnia", 3);

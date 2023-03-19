@@ -2,6 +2,7 @@ package edu.duke.ece651.team3.shared;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  * A class for Territory
@@ -34,6 +35,15 @@ public class Territory implements Serializable {
         this.territoryName = _name;
         this.numUnits = _numUnits;
         this.neighbors = _neighbors;
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other.getClass().equals(getClass())) {
+            Territory territory = (Territory) other;
+            return numUnits == territory.getNumUnits() && territoryName.equals(territory.getTerritoryName()) && neighbors.equals(territory.getNeighbors());
+        }
+        return false;
     }
 
     /**
