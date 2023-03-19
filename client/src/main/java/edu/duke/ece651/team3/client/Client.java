@@ -116,10 +116,11 @@ public class Client implements Serializable {
             if(action.equals("M")) {
                 Action newAction = enterAction("M");
                 transAction(newAction);
+                sendObjToServer.writeObject(action);
             }
-            sendObjToServer.writeObject(action);
         }
         sendObjToServer.writeObject("Done");
+//        out.
     }
     /**
      * This method closes all pipes
@@ -204,7 +205,7 @@ public class Client implements Serializable {
         out.println(dstPrompt);
         String dst = inputReader.readLine();
         Territory dstTerritory = new Territory(dst, 0);
-        boolean isValidDst = player.checkTerritoryByName(srcTerritory);
+        boolean isValidDst = player.checkTerritoryByName(dstTerritory);
         while (!isValidDst) {
             out.println("The destination Territory does not exist, please enter again!");
             dst = inputReader.readLine();
@@ -265,11 +266,11 @@ public class Client implements Serializable {
         c.transBoard(b1);
         c.transAction(action);
         c.addPlayer(p1);
-//        if(c.promptAction().equals("M")){
-//            c.enterAction("M");
-//        }
+        if(c.promptAction().equals("M")){
+            c.enterAction("M");
+        }
         c.checkActionOrder("M");
-        c.multipleMoves();
+//        c.multipleMoves(); //checking
 
         //Choose when to close
         c.closePipe();
