@@ -1,7 +1,6 @@
 package edu.duke.ece651.team3.client;
 import edu.duke.ece651.team3.shared.*;
 import edu.duke.ece651.team3.shared.Action;
-import org.checkerframework.checker.units.qual.A;
 
 import java.io.*;
 import java.net.Socket;
@@ -85,13 +84,23 @@ public class Client implements Serializable {
      */
     void checkActionOrder(String moveOrAttack){
         MoveRuleChecker mrc = new MoveRuleChecker(this.action, this.riskGameBoard);
-        for(int i = 0; i < moveActions.size(); i++){
-            Action currAction = moveActions.get(i);
-            mrc.checkSrc(currAction.getSrc(), this.player);
-            mrc.checkDst(currAction.getDst(), this.player);
-            mrc.checkNumUnits(currAction.getActionUnits());
-            mrc.checkPath(currAction.getSrc(), currAction.getDst());
+        if (moveOrAttack.equals("M")) {
+            for(int i = 0; i < moveActions.size(); i++){
+                Action currAction = moveActions.get(i);
+                mrc.checkSrcDst(currAction, this.player);
+                mrc.checkNumUnits(currAction, player);
+                mrc.checkPath(currAction, player);
+            }
         }
+        else{
+            for(int i = 0; i < attackActions.size(); i++){
+                Action currAction = attackActions.get(i);
+                mrc.checkSrcDst(currAction, this.player);
+                mrc.checkNumUnits(currAction, player);
+                mrc.checkPath(currAction, player);
+            }
+        }
+
     }
 
     /**
@@ -120,7 +129,6 @@ public class Client implements Serializable {
             }
         }
         sendObjToServer.writeObject("Done");
-//        out.
     }
     /**
      * This method closes all pipes
@@ -189,32 +197,30 @@ public class Client implements Serializable {
         String srcPrompt = "Ok, you choose to move. Which Type the name of the territory you want to move from";
         out.println(srcPrompt);
         String src = inputReader.readLine();
-        Territory srcTerritory = new Territory(src, 0);
-        boolean isValidSrc = player.checkTerritoryByName(srcTerritory);
+
+        boolean isValidSrc = player.checkTerrOwner(src);
         while (!isValidSrc) {
             out.println("The source Territory does not exist, please enter again!");
             src = inputReader.readLine();
-            srcTerritory = new Territory(src, 0);
-            isValidSrc = player.checkTerritoryByName(srcTerritory);
+            isValidSrc = player.checkTerrOwner(src);
         }
-
+        Territory srcTerritory = new Territory(src, 0);
         action.setSrc(srcTerritory);
-        player.checkTerritoryByName(srcTerritory);
+        player.checkTerrOwner(src);
 
         String dstPrompt = "Ok, you choose to move. Which Type the name of the territory you want to move to";
         out.println(dstPrompt);
         String dst = inputReader.readLine();
-        Territory dstTerritory = new Territory(dst, 0);
-        boolean isValidDst = player.checkTerritoryByName(dstTerritory);
+        boolean isValidDst = player.checkTerrOwner(dst);
         while (!isValidDst) {
             out.println("The destination Territory does not exist, please enter again!");
             dst = inputReader.readLine();
-            dstTerritory = new Territory(dst, 0);
-            isValidDst = player.checkTerritoryByName(dstTerritory);
+            isValidDst = player.checkTerrOwner(src);
         }
+        Territory dstTerritory = new Territory(dst, 0);
 
         action.setDst(dstTerritory);
-        player.checkTerritoryByName(dstTerritory);
+        player.checkTerrOwner(src);
 
         String unitPrompt = "Enter the units that you want to move";
         out.println(unitPrompt);

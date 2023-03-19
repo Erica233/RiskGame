@@ -21,54 +21,56 @@ public class MoveRuleChecker extends RuleChecker{
     }
 
     /**
-     * This method checks whether the source territory is correct
-     * @param src the source territory
-     * @param player the current player
-     * @return
+     * Check whether the current player has the territory from attack's information
+     * @param myAttack move information
+     * @param currPlayer current player
+     * @return if valid return true, invalid return false
      */
-    public boolean checkSrc(Territory src, Player player){
-        if(!player.checkTerritoryByName(src)){
-            out.println("The src is invalid!");
-            return false;
-        }
-        return true;
+    public boolean checkSrcDst(Action myAttack, Player currPlayer){
+        return currPlayer.checkTerrOwner(myAttack.getSrc().getTerritoryName()) && currPlayer.checkTerrOwner(myAttack.getDst().getTerritoryName());
     }
+
+    /**t
+     * Find the territory owned by current player and return the territory
+     * @param myMove move information
+     * @param currPlayer current player
+     * @return territory owned by current player
+     */
+    public Territory findTerritory(Action myMove, Player currPlayer){
+        int length = currPlayer.getOwnedTerritories().size();
+        Territory t = null;
+        for (int i = 0; i < length; i++) {
+            if (currPlayer.getOwnedTerritories().get(i).getTerritoryName().equals(myMove.getSrc().getTerritoryName())) {
+                t = currPlayer.getOwnedTerritories().get(i);
+            }
+        }
+        return t;
+    }
+
     /**
-     * This method checks whether the source territory is correct
-     * @param dst the destination territory
-     * @param player the current player
-     * @return
+     * Check whether the attack's num of units is valid, if valid return true if invalid return false
+     * @param myMove move information
+     * @param currPlayer current player
+     * @return if valid return true, invalid return false
      */
-    public boolean checkDst(Territory dst, Player player){
-        if(!player.checkTerritoryByName(dst)){
-            out.println("The dst is invalid!");
+    public boolean checkNumUnits(Action myMove, Player currPlayer){
+        Territory t = findTerritory(myMove, currPlayer);
+        if(myMove.getActionUnits() > t.getNumUnits() || myMove.getActionUnits() < 0){
             return false;
         }
         return true;
     }
-
-
-    /**
-     * This method checks whether the action number Units is correct
-     * @param actionUnits
-     * @return
-     */
-    public boolean checkNumUnits(int actionUnits){
-        if(actionUnits < 0 || actionUnits > src.getNumUnits()){
-            return false;
-        }
-        return true;
-    }
-
 
     /**
      * This method checks whether the path is correct
      * It uses DFS to check whether the territory belongs to the self player
-     * @param src
-     * @param dst
-     * @return
+     * @param myMove move information
+     * @param currPlayer current player
+     * @return true if valid false if invalid
      */
-    public boolean checkPath(Territory src, Territory dst){
+    public boolean checkPath(Action myMove, Player currPlayer){
+        Territory src = myMove.getSrc();
+        Territory dst = myMove.getDst();
         HashMap<Integer, Territory> allNeighbors = new HashMap<>();
         ArrayList<Territory> Neighbors = src.getNeighbors();
         for(int i = 0; i < Neighbors.size(); i++){
