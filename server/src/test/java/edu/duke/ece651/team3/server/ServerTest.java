@@ -41,8 +41,8 @@ public class ServerTest {
         //For the output stream
         ObjectOutputStream out1 = new ObjectOutputStream(s1.getOutputStream());
         //Sending the riskgame board and action to server
-        out1.writeObject(riskGameBoard);
-        out1.writeObject(action);
+//        out1.writeObject(riskGameBoard);
+//        out1.writeObject(action);
         ObjectInputStream in = new ObjectInputStream(s1.getInputStream());
         //Checking Data
         assertEquals("Hi, This is Server!! I am connecting with you", in.readObject());

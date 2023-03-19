@@ -36,9 +36,9 @@ public class Client implements Serializable {
      * This method is formerly tested method
      */
     public void printConnectInfo() {
-            out.println("The current connected socket is: " + clientS);
-            out.println("Build up the connection to server!");
-            out.println("The client's port is: " + clientS.getLocalPort());
+        out.println("The current connected socket is: " + clientS);
+        out.println("Build up the connection to server!");
+        out.println("The client's port is: " + clientS.getLocalPort());
     }
 
 
@@ -288,7 +288,7 @@ public class Client implements Serializable {
         if(c.promptAction().equals("M")){
             c.enterAction("M");
         }
-        c.checkActionOrder("M");
+//        c.checkActionOrder("M");
         c.multipleMoves(); //checking
 
         //Choose when to close
