@@ -151,20 +151,10 @@ public class Client implements Serializable {
      * TODO: check do we really need this method in Client, player needs name, neighbor
      */
     public String displayTerritoryAndNeighbor(){
-        Territory t = new Territory("Mordor", 8);
-        String display = t.displayTerritory();
+        String display = this.player.displayPlayer();
         return display;
     }
 
-
-    /**
-     * This method checks the validation of the board right after the information passed to client
-     * @return true if valid, false if not
-     */
-    public boolean checkValidation(){
-        boolean isValid = true;
-        return isValid;
-    }
 
     /**
      * This method reads the action from the user using bufferReader
