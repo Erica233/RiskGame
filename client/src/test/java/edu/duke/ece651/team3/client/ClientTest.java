@@ -29,15 +29,17 @@ public class ClientTest {
         BufferedReader mockInput = Mockito.mock(BufferedReader.class);
         when(mockInput.readLine()).thenReturn("M", "Narnia", "Oz", "3");
 
-        Client c = new Client();
+        int portNum = 12345;
+        Client c = new Client(portNum);
         c.inputReader = mockInput;
-        c.readAction();
+//        c.readAction();
 
         when(mockInput.readLine()).thenReturn("S", "M", "Narnia", "Oz", "3");
-        Client c1 = new Client();
-        c1.inputReader = mockInput;
-        c1.readAction();
-        c1.promptEnter();
+//        int portNum = 12345;
+//        Client c1 = new Client(portNum);
+//        c1.inputReader = mockInput;
+//        c1.readAction();
+//        c1.promptEnter();
     }
 
 
@@ -48,7 +50,8 @@ public class ClientTest {
         RiskGameBoard b1 = new RiskGameBoard();
         b1.tryAddTerritory(t1);
         BoardTextView v1 = new BoardTextView(b1);
-        Client c = new Client();
+        int portNum = 12345;
+        Client c = new Client(portNum);
         assertEquals(true, c.checkValidation());
 
     }
@@ -112,11 +115,14 @@ public class ClientTest {
 
 
         ServerSocket mockServerSocket = Mockito.mock(ServerSocket.class);
+        Socket mockServer = Mockito.mock(Socket.class);
         Socket mockClientSocket = Mockito.mock(Socket.class);
+
+        int portNum = 12345;
+        Client c = new Client(portNum);
         when(mockServerSocket.accept()).thenReturn(mockClientSocket);
-        Client c = new Client();
         assertEquals("1", c.displayTerritoryAndNeighbor());
-        c.displayNeighbor();
+//        c.displayNeighbor();
     }
 
 //

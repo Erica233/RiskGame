@@ -26,7 +26,7 @@ public class Server implements Serializable {
         this.PlayerNames.add("Green");
         this.ind = 0;
 
-        this.serverS = new ServerSocket(portNum);;
+        this.serverS = new ServerSocket(portNum);
         this.clientSocket = serverS.accept();
         this.sendObjToClient = new ObjectOutputStream(clientSocket.getOutputStream());
         this.readObjFromClient = new ObjectInputStream(clientSocket.getInputStream());
@@ -91,12 +91,29 @@ public class Server implements Serializable {
         sendObjToClient.writeObject(playerColor);
     }
 
+    /**
+     * This method receives single actions from the client
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
     public void recvAction() throws IOException, ClassNotFoundException {
 //        this.readObjFromClient = new ObjectInputStream(clientSocket.getInputStream());
         Action action = (Action) readObjFromClient.readObject();
         String test = action.getActionType();
         out.println(test);
         out.println("Getting the action from the client successfully");
+
+    }
+
+    /**
+     * This method receives multiple actions from the client
+     */
+    public void recvMultipleAction() throws IOException, ClassNotFoundException {
+        String commitInfo = "";
+        while(!commitInfo.equals("Done")){
+            recvAction();
+            commitInfo = (String) readObjFromClient.readObject();
+        }
 
     }
     /**

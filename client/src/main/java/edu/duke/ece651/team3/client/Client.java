@@ -18,10 +18,13 @@ public class Client implements Serializable {
     Player player;
     String playerColor;
     Action action;
+    ArrayList<Action> moveActions;
+    ArrayList<Action> attackActions;
 
-    public Client() throws IOException {
+
+    public Client(int portNum) throws IOException {
 //        this.player = new Player(1);
-        this.clientS = new Socket("localhost", 12345);
+        this.clientS = new Socket("localhost", portNum);
         this.readFromServer = new ObjectInputStream(clientS.getInputStream()); //TODO: does not build successfully
         this.sendObjToServer = new ObjectOutputStream(clientS.getOutputStream());
     }
@@ -73,18 +76,42 @@ public class Client implements Serializable {
     }
 
     /**
-     * This method trans action to the Server
+     * This method checks the move order
      */
-    public void transAction() throws IOException {
-        Territory src = new Territory("Space", 11);
-        Territory dst = new Territory("Mordor", 4);
-        String actionType = "Move";
-        int actionUnits = 5;
-        Action action = new MoveAction(actionType, src, dst, actionUnits);
+    void checkMoveOrder(){
+        MoveRuleChecker mrc = new MoveRuleChecker(this.action, this.riskGameBoard);
+        for(int i = 0; i < moveActions.size(); i++){
+            Action currAction = moveActions.get(i);
+            mrc.checkSrc(currAction.getSrc(), this.player);
+            mrc.checkDst(currAction.getDst(), this.player);
+            mrc.checkNumUnits(currAction.getActionUnits());
+            mrc.checkPath(currAction.getSrc(), currAction.getDst());
+        }
+    }
+
+    /**
+     * This method transit single Action to the server
+     * @param action the action to pass
+     * @throws IOException
+     */
+    public void transAction(Action action) throws IOException {
         sendObjToServer.writeObject(action);
         out.println("sending Action successfully");
     }
 
+    /**
+     * This method passes multiple Actions to the server
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
+    public void multipleMoves() throws IOException, ClassNotFoundException {
+        String finishInfo = "";
+        while (finishInfo != "Finish passing all moves") {
+            Action newAction = enterAction("M");
+            transAction(newAction);
+            finishInfo = (String) readFromServer.readObject();
+        }
+    }
     /**
      * This method closes all pipes
      * @throws IOException
@@ -113,21 +140,6 @@ public class Client implements Serializable {
         return display;
     }
 
-    /**
-     * This method will base on the map for the whole. Here it
-     */
-    public void displayNeighbor() throws Exception {
-        Territory t1 = new Territory("Mordor", 8);
-        RiskGameBoard b1 = new RiskGameBoard();
-        b1.tryAddTerritory(t1);
-
-        ArrayList<Territory> ownTerritories = player.getOwnedTerritories();
-        for(int i = 0; i < ownTerritories.size(); i++){
-            out.println(ownTerritories.get(i).displayTerritory());
-        }
-        t1.getNeighbors();
-    }
-
 
     /**
      * This method checks the validation of the board right after the information passed to client
@@ -142,7 +154,7 @@ public class Client implements Serializable {
      * This method reads the action from the user using bufferReader
      * @throws IOException
      */
-    public void readAction() throws IOException {
+    public String promptAction() throws IOException {
         String prompt = "You are the " + playerColor + " player, what would you like to do?\n(M)ove\n(A)ttack\n(D)one";
         String errorInput = "The input is invalid, choose from \n(M)ove\n(A)ttack\n(D)one";
         out.println(prompt);
@@ -154,8 +166,9 @@ public class Client implements Serializable {
             s = inputReader.readLine();
             s.toUpperCase();
         }
+        return s;
     }
-    public void promptEnter() throws IOException{
+    public Action enterAction(String moveOrAttack) throws IOException{
         String srcPrompt = "Ok, you choose to move. Which Type the name of the territory you want to move from";
         out.println(srcPrompt);
         String src = inputReader.readLine();
@@ -173,21 +186,40 @@ public class Client implements Serializable {
         String unitPrompt = "Enter the units that you want to move";
         out.println(unitPrompt);
         String unitStr = inputReader.readLine();
+        int units = Integer.parseInt(unitStr);
+        action.setActionUnits(units);
 
+        if(moveOrAttack.equals("M")){
+            moveActions.add(action);
+        }
+        if(moveOrAttack.equals("A")){
+            attackActions.add(action);
+        }
+        return action;
     }
 
     public static void main(String[] args) throws Exception {
         BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
         Territory t1 = new Territory("Mordor", 8);
         RiskGameBoard b1 = new RiskGameBoard();
+        int portNum = 12345;
         b1.tryAddTerritory(t1);
-        Client c = new Client();
+
+        Territory src = new Territory("Space", 11);
+        Territory dst = new Territory("Mordor", 4);
+        String actionType = "Move";
+        int actionUnits = 5;
+        Action action = new MoveAction(actionType, src, dst, actionUnits);
+
+        Client c = new Client(portNum);
+
+
 
         //connect with The first client
         c.printConnectInfo();
         c.transData();
         c.transBoard(b1);
-        c.transAction();
+        c.transAction(action);
 
         //Choose when to close
         c.closePipe();
