@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class RiskGameBoardTest {
     @Test
-    public void test_allTerritories() {
+    public void test_allTerritories() throws Exception {
         Territory t1 = new Territory("Narnia", 3);
         Territory t2 = new Territory("Oz", 2);
         Board m1 = new RiskGameBoard();
@@ -21,7 +21,7 @@ class RiskGameBoardTest {
         assertEquals(expected, m1.getAllTerritories());
     }
     @Test
-    public void test_tryAddTerritory() {
+    public void test_tryAddTerritory() throws Exception {
         Territory t1 = new Territory("Narnia", 3);
         Territory t2 = new Territory("Mordor", 4);
         Board m1 = new RiskGameBoard();
@@ -33,7 +33,7 @@ class RiskGameBoardTest {
         assertEquals(expected, m1.getAllTerritories());
     }
     @Test
-    public void test_displayBoard() {
+    public void test_displayBoard() throws Exception {
         Territory t1 = new Territory("Narnia", 3);
         Territory t2 = new Territory("Mordor", 4);
         Territory t3 = new Territory("Oz", 5);
@@ -44,11 +44,36 @@ class RiskGameBoardTest {
         String expected = "3 units in Narnia (no neighbors)\n4 units in Mordor (no neighbors)\n5 units in Oz (no neighbors)\n";
         assertEquals(expected, m1.displayBoard());
 
-        t1.tryAddANeighbor(t2);
-        t2.tryAddANeighbor(t1);
-        t2.tryAddANeighbor(t3);
-        t3.tryAddANeighbor(t2);
+        t1.addANeighbor(t2);
+        t2.addANeighbor(t1);
+        t2.addANeighbor(t3);
+        t3.addANeighbor(t2);
         String expected2 = "3 units in Narnia (next to: Mordor)\n4 units in Mordor (next to: Narnia, Oz)\n5 units in Oz (next to: Mordor)\n";
         assertEquals(expected2, m1.displayBoard());
+    }
+
+    @Test
+    public void test_initMap() throws Exception {
+        Board b1 = new RiskGameBoard();
+
+        String expected = "red player:\n" +
+                "---------------\n" +
+                "5 units in a (next to: b, c)\n" +
+                "5 units in c (next to: a, b, d, e, l)\n" +
+                "5 units in g (next to: h, i, l)\n" +
+                "5 units in h (next to: g, i, l)\n" +
+                "5 units in i (next to: g, h, j, l)\n" +
+                "5 units in l (next to: c, e, f, g, h, i)\n" +
+                "\n" +
+                "blue player:\n" +
+                "---------------\n" +
+                "5 units in b (next to: a, c, d)\n" +
+                "5 units in d (next to: b, c, e)\n" +
+                "5 units in e (next to: c, d, f, l)\n" +
+                "5 units in f (next to: e, k, l)\n" +
+                "5 units in j (next to: i, k)\n" +
+                "5 units in k (next to: f, j)\n" +
+                "\n";
+        assertEquals(expected, b1.initMap());
     }
 }

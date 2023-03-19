@@ -1,14 +1,26 @@
 package edu.duke.ece651.team3.shared;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Player {
-    private final int id;
-    public final ArrayList<Territory> ownedTerritories;
+public class Player implements Serializable {
+    private final int playerId;
+    private final String color;
+    private final int totNumUnits;
+    private final ArrayList<Territory> ownedTerritories;
 
-    public Player(int _id) {
-        this.id = _id;
+    public Player(int _id, String _color, int _totNumUnits) {
+        this.playerId = _id;
+        this.color = _color;
+        this.totNumUnits = _totNumUnits;
         this.ownedTerritories = new ArrayList<>();
+    }
+
+    public Player(int _id, String _color, int _totNumUnits, ArrayList<Territory> _ownedTerritories) {
+        this.playerId = _id;
+        this.color = _color;
+        this.totNumUnits = _totNumUnits;
+        this.ownedTerritories = _ownedTerritories;
     }
 
     /**
@@ -31,11 +43,11 @@ public class Player {
      * @return true if it is owned by a player, false if not
      */
     public boolean checkTerritoryByName(Territory inputTerritory){
-        String territoryName = inputTerritory.getName();
+        String territoryName = inputTerritory.getTerritoryName();
         territoryName.toUpperCase();
         ArrayList<Territory> ownTerritories = getOwnedTerritories();
         for(int i = 0; i < ownTerritories.size(); i++){
-            String currName = ownTerritories.get(i).getName();
+            String currName = ownTerritories.get(i).getTerritoryName();
             currName.toUpperCase();
             if(territoryName.equals(currName)){
                 return true;
@@ -60,11 +72,33 @@ public class Player {
         return true;
     }
 
-    public int getId() {
-        return id;
+    public String displayPlayer() {
+        StringBuilder output = new StringBuilder();
+        output.append(color).append(" player:\n---------------\n");
+        if (ownedTerritories.size() == 0) {
+            output.append("no territories\n");
+        } else {
+            for (Territory territory: ownedTerritories) {
+                output.append(territory.displayTerritory());
+            }
+        }
+        return output.toString();
+    }
+
+    /** getters and setters **/
+    public int getPlayerId() {
+        return playerId;
     }
 
     public ArrayList<Territory> getOwnedTerritories() {
         return ownedTerritories;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public int getTotNumUnits() {
+        return totNumUnits;
     }
 }

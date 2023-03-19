@@ -8,14 +8,16 @@ import java.util.List;
 import static java.lang.System.out;
 
 public class MoveRuleChecker extends RuleChecker{
+    private final RiskGameBoard riskGameBoard;
     private final Action action;
     Territory src;
     Territory dst;
-    public MoveRuleChecker(Action _action){
+    public MoveRuleChecker(Action _action, RiskGameBoard _riskGameBoard){
         super(_action);
         this.action = _action;
         this.src = this.action.getSrc();
         this.dst = this.action.getDst();
+        this.riskGameBoard = _riskGameBoard;
     }
 
     /**
@@ -44,7 +46,6 @@ public class MoveRuleChecker extends RuleChecker{
         }
         return true;
     }
-
 
 
     /**

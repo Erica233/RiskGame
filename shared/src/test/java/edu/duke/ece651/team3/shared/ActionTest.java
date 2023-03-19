@@ -11,7 +11,7 @@ public class ActionTest {
     Territory dst = new Territory("Mordor", 4);
     String actionType = "Move";
     int actionUnits = 5;
-    Action act = new Action(actionType, src, dst, actionUnits);
+    Action act = new MoveAction(actionType, src, dst, actionUnits);
 
     assertEquals("Move", act.getActionType());
     assertEquals(actionUnits, act.getActionUnits());

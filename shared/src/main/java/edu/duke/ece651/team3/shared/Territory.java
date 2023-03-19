@@ -8,8 +8,8 @@ import java.util.HashMap;
  * A class for Territory
  */
 public class Territory implements Serializable {
-    private final String name;
-    private int numUnits;
+    private final String territoryName;
+    private final int numUnits;
     private final ArrayList<Territory> neighbors;
     private final HashMap<Class<?>, Integer> units;
 
@@ -20,7 +20,7 @@ public class Territory implements Serializable {
      * @param _numUnits the number of units in the Territory
      */
     public Territory(String _name, int _numUnits) {
-        this.name = _name;
+        this.territoryName = _name;
         this.numUnits = _numUnits;
         this.neighbors = new ArrayList<>();
         this.units = new HashMap<>();
@@ -28,14 +28,14 @@ public class Territory implements Serializable {
 
     /**
      * Constructs a Territory with specified name, number of units, and neighbor territories
+     *
      * @param _name the name of the Territory
      * @param _numUnits the number of units in the Territory
      * @param _neighbors the neighbors of the Territory
      * @param _units units in this Territory
      */
-    //TODO: input: units?
     public Territory(String _name, int _numUnits, ArrayList<Territory> _neighbors, HashMap<Class<?>, Integer> _units) {
-        this.name = _name;
+        this.territoryName = _name;
         this.numUnits = _numUnits;
         this.neighbors = _neighbors;
         this.units = _units;
@@ -97,19 +97,31 @@ public class Territory implements Serializable {
     }
 
     /**
-     * Add a Territory to the neighbors,
-     * if the Territory is valid, add and returns true,
-     * otherwise, return false
+     * Add a valid Territory to the neighbors
      *
      * @param aNeighbor the Territory to add to the neighbors
-     * @return true if the Territory is valid to add, otherwise false
+     * @throws Exception if the Territory to add is invalid
      */
-    public boolean tryAddANeighbor(Territory aNeighbor) {
+    public void addANeighbor(Territory aNeighbor) throws Exception {
         if (!aNeighbor.isAValidNeighbor()) {
-            return false;
+            throw new Exception("addANeighbor(): invalid neighbor to add!");
         }
         neighbors.add(aNeighbor);
-        return true;
+    }
+
+    /**
+     * Add multiple valid Territories to the neighbors
+     *
+     * @param territories the Territories to add to the neighbors
+     * @throws Exception if a Territory to add is invalid
+     */
+    public void addNeighbors(Territory... territories) throws Exception {
+        for (Territory aNeighbor: territories) {
+            if (!aNeighbor.isAValidNeighbor()) {
+                throw new Exception("addANeighbors(): invalid neighbor to add!");
+            }
+            neighbors.add(aNeighbor);
+        }
     }
 
     /**
@@ -129,16 +141,16 @@ public class Territory implements Serializable {
      */
     public String displayTerritory() {
         StringBuilder output = new StringBuilder();
-        output.append(numUnits).append(" units in ").append(name);
+        output.append(numUnits).append(" units in ").append(territoryName);
         if (neighbors.isEmpty()) {
             output.append(" (no neighbors)\n");
         } else {
             output.append(" (next to: ");
             for (int i = 0; i < neighbors.size(); i++) {
                 if (i < neighbors.size() - 1) {
-                    output.append(neighbors.get(i).getName()).append(", ");
+                    output.append(neighbors.get(i).getTerritoryName()).append(", ");
                 } else {
-                    output.append(neighbors.get(i).getName());
+                    output.append(neighbors.get(i).getTerritoryName());
                 }
             }
             output.append(")\n");
@@ -147,8 +159,8 @@ public class Territory implements Serializable {
     }
 
     /** getters and setters **/
-    public String getName() {
-        return name;
+    public String getTerritoryName() {
+        return territoryName;
     }
 
     public int getNumUnits() {
