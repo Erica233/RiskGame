@@ -1,10 +1,11 @@
 package edu.duke.ece651.team3.client;
 
+import edu.duke.ece651.team3.shared.Board;
+import edu.duke.ece651.team3.shared.RiskGameBoard;
 import edu.duke.ece651.team3.shared.Territory;
 
 import java.io.*;
 import java.net.Socket;
-import java.util.ArrayList;
 
 public class Client {
 //    private final Socket clientS; //The unique ID for each client
@@ -23,6 +24,7 @@ public class Client {
     private final Socket socket;
     private final ObjectInputStream objectFromServer;
     private final ObjectOutputStream objectToServer;
+    private RiskGameBoard riskGameBoard = null;
 
     public Client(String hostname, int _portNum) throws IOException {
         this.socket = new Socket(hostname, _portNum);
@@ -36,9 +38,7 @@ public class Client {
         try {
             Client client = new Client(hostname, portNum);
             System.out.println(client + " connect to the Server successfully!");
-            Territory t1 = client.recvTerritory();
-            System.out.println("received " + t1.displayTerritory() + "from server!");
-            client.sendTerritory();
+            client.recvStoreBoard();
 
 
             client.closePipes();
@@ -62,8 +62,10 @@ public class Client {
         objectToServer.writeObject(t1);
     }
 
-    public void recvBoard() {
-
+    public Board recvStoreBoard() throws IOException, ClassNotFoundException {
+        riskGameBoard = (RiskGameBoard) objectFromServer.readObject();
+        System.out.println("receive "+riskGameBoard.displayBoard()+"from server!");
+        return riskGameBoard;
     }
 
     public void sendActions() {

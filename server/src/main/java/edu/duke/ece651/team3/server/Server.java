@@ -1,5 +1,7 @@
 package edu.duke.ece651.team3.server;
 
+import edu.duke.ece651.team3.shared.Board;
+import edu.duke.ece651.team3.shared.RiskGameBoard;
 import edu.duke.ece651.team3.shared.Territory;
 
 import java.io.*;
@@ -14,6 +16,7 @@ public class Server {
     private final ArrayList<Socket> clientSockets;
     private ArrayList<ObjectOutputStream> objectsToClients;
     private ArrayList<ObjectInputStream> objectsFromClients;
+    private final Board riscBoard;
 
 //    private final DataInputStream input;
 //    private final DataOutputStream out;
@@ -22,11 +25,12 @@ public class Server {
 //    private HashMap<Integer, ObjectOutputStream> sendObjToClients;
 //    private HashMap<Integer, ObjectInputStream> receiveObjFromClients;
 
-    public Server(int _portNum) throws IOException {
+    public Server(int _portNum) throws Exception {
         this.serverSock = new ServerSocket(_portNum);
         this.clientSockets = new ArrayList<>();
         this.objectsToClients = new ArrayList<>();
         this.objectsFromClients = new ArrayList<>();
+        this.riscBoard = new RiskGameBoard();
     }
 
     public static void main(String[] args) {
@@ -36,15 +40,16 @@ public class Server {
             System.out.println("Create Server successfully!");
             server.connectClients();
             System.out.println("Both clients connect to the Server successfully!");
-            server.sendTerritory();
-            server.recvTerritory(0);
-            server.recvTerritory(1);
+            server.sendBoardToAllClients();
+
 
 
             server.closePipes();
         } catch (IOException e) {
             System.err.println(e.getMessage());
         } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -61,9 +66,10 @@ public class Server {
         return t1;
     }
 
-
-    public void sendBoard() {
-
+    public void sendBoardToAllClients() throws IOException {
+        objectsToClients.get(0).writeObject(riscBoard);
+        objectsToClients.get(1).writeObject(riscBoard);
+        System.out.println("send boards to all clients!");
     }
 
     public void recvActions() {
