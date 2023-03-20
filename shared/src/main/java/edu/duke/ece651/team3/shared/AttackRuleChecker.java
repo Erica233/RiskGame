@@ -48,7 +48,7 @@ public class AttackRuleChecker extends RuleChecker{
     //TODO: if t == null needed? if already finish the checkSrcDst, it is needed
     public boolean checkPath(Action myAttack, Player currPlayer){
         Territory t = findTerritory(myAttack, currPlayer);
-        return t.isAValidNeighbor();
+        return t.checkValidNeighbor(myAttack.getDst());
     }
 
     /**t

@@ -93,7 +93,4 @@ public class RiskGameBoard implements Board, Serializable {
 //        return allTerritories;
 //    }
 
-    public ArrayList<Player> getAllPlayers() {
-        return allPlayers;
-    }
 }

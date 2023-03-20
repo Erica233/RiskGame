@@ -145,6 +145,55 @@ public class Territory implements Serializable, Comparable<Territory> {
         return String.valueOf(output);
     }
 
+    /**
+     * Update the number of units in Territory
+     */
+    public void updateNumUnits(){
+        int num = 0;
+        for(Class<?> c : units.keySet()){
+            System.out.println(c);
+            num += units.get(c);
+        }
+        numUnits = num;
+    }
+
+
+
+    /**
+     * Add specific type and number of unit to units
+     * @param unitToAdd specific type of unit to add
+     * @param num number of this type of unit
+     */
+    public void increaseUnit(Unit unitToAdd, int num) {
+        if (units.containsKey(unitToAdd.getClass())) {
+            int value = units.get(unitToAdd.getClass()) + num;
+            units.put(unitToAdd.getClass(), value);
+        } else {
+            units.put(unitToAdd.getClass(), num);
+        }
+        updateNumUnits();
+    }
+
+    /**
+     * Delete specific type and number of unit to units
+     * @param unitToRemove specific type of unit to remove
+     * @param num number of this type of unit
+     */
+    public void decreaseUnit(Unit unitToRemove, int num) {
+        if (units.containsKey(unitToRemove.getClass())) {
+            int value = units.get(unitToRemove.getClass()) - num;
+            System.out.println(unitToRemove.getClass());
+            if (value < 0) {
+                throw new IllegalArgumentException("Can't delete too much num of unit");
+            }
+            units.put(unitToRemove.getClass(), value);
+        } else {
+            throw new IllegalArgumentException("Can't delete non-existing unit");
+        }
+        updateNumUnits();
+    }
+
+
     /** getters and setters **/
     public String getTerritoryName() {
         return territoryName;

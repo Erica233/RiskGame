@@ -250,7 +250,7 @@ public class Client implements Serializable {
         Territory t1 = new Territory("Mordor", 8);
         Territory t2 = new Territory("Gondor", 5);
         ArrayList<Territory> ts2 = new ArrayList<>();
-        b1.tryAddTerritory(t1);
+        //b1.tryAddTerritory(t1);
         ts2.add(t);
         ts2.add(t1);
         ts2.add(t2);

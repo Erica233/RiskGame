@@ -50,7 +50,7 @@ public class Server implements Serializable {
             connectClient();
             Territory t1 = new Territory("Hogwarts", 10);
             RiskGameBoard riskGameBoard = new RiskGameBoard();
-            riskGameBoard.tryAddTerritory(t1);
+            //riskGameBoard.tryAddTerritory(t1);
             transData();
             transBoard(riskGameBoard);
             recvMultipleAction();
@@ -152,7 +152,7 @@ public class Server implements Serializable {
     public static void main(String[] args) throws Exception {
         Territory t1 = new Territory("Hogwarts", 10);
         RiskGameBoard riskGameBoard = new RiskGameBoard();
-        riskGameBoard.tryAddTerritory(t1);
+        //riskGameBoard.tryAddTerritory(t1);
         int numPlayer = 2;
         int portNum = 12345;
 

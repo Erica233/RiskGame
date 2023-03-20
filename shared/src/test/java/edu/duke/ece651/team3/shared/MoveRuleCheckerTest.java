@@ -10,6 +10,7 @@ public class MoveRuleCheckerTest {
     RiskGameBoard r = new RiskGameBoard();
     r.initMap();
     out.println(r.displayBoard());
+    Player p = r.getAllPlayers().get(0);
 
     Player p1 = new Player(0, "Red", 5);
 

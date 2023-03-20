@@ -23,7 +23,7 @@ public class ClientTest {
 //        BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
         Territory t1 = new Territory("Mordor", 8);
         RiskGameBoard b1 = new RiskGameBoard();
-        b1.tryAddTerritory(t1);
+        //b1.tryAddTerritory(t1);
         BoardTextView v1 = new BoardTextView(b1);
         int portNum = 12345;
         ServerSocket ss = new ServerSocket(portNum);
@@ -33,7 +33,7 @@ public class ClientTest {
         Territory t3 = new Territory("Mordor", 8);
         Territory t2 = new Territory("Gondor", 5);
         ArrayList<Territory> ts2 = new ArrayList<>();
-        b1.tryAddTerritory(t1);
+        //b1.tryAddTerritory(t1);
         ts2.add(t);
         ts2.add(t3);
         ts2.add(t2);
