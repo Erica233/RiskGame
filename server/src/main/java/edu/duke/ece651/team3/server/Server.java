@@ -15,18 +15,13 @@ import static java.lang.System.out; //out.println()
 public class Server implements Serializable {
     private int clientID;
     private final ServerSocket serverS; //The server socket
-//    private final Socket clientSocket;
-//    private final ObjectOutputStream sendObjToClient;
-//    private final ObjectInputStream readObjFromClient;
+
     private final ArrayList<String> PlayerNames;
 
-    //The client's ID and The Client Socket
     private HashMap<Integer, Socket> clientSockets;
 
-    //The client's ID and its ObjectOutputStream
     private HashMap<Integer, ObjectOutputStream> sendObjToClients;
 
-    //The client's ID and its ObjectInputStream
     private HashMap<Integer, ObjectInputStream> receiveObjFromClients;
 
 
@@ -38,9 +33,6 @@ public class Server implements Serializable {
         this.clientID = 0;
 
         this.serverS = new ServerSocket(portNum);
-//        this.clientSocket = serverS.accept();
-//        this.sendObjToClient = new ObjectOutputStream(clientSocket.getOutputStream());
-//        this.readObjFromClient = new ObjectInputStream(clientSocket.getInputStream());
         this.clientSockets = new HashMap<>();
         this.sendObjToClients = new HashMap<>();
         this.receiveObjFromClients = new HashMap<>();
@@ -53,7 +45,6 @@ public class Server implements Serializable {
      * @throws ClassNotFoundException
      */
     public boolean tryConnectMulClient(int numPlayer) throws Exception {
-        //this.numOfPlayer = numPlayer;
         for(int i = 0; i < numPlayer; i++){
             ++ clientID;
             connectClient();
