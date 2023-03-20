@@ -47,24 +47,13 @@ public class Client implements Serializable {
      * @throws IOException
      */
 
-    public void transData() throws IOException, ClassNotFoundException {
+    public void receivePlayerInfoFromServer() throws IOException, ClassNotFoundException {
         //To get the info from the server
         String receivedMsg = (String) readFromServer.readObject();
         out.println(receivedMsg);
         out.println("Received the string successfully from the server");
         Integer playerID = (Integer) readFromServer.readObject();
-
-        //To get the Player Identifier from the server
-//        String playerColor = (String) readFromServer.readObject();
-
-//        this.playerColor = playerColor;
-//        out.println(playerColor);
-//        if(playerColor.equals("Red")){
-//            playerID = 0;
-//        }
-//        if(playerColor.equals("Green")){
-//            playerID = 1;
-//        }
+        this.playerID = playerID;
         out.println("Received the Player's color successfully from the server");
     }
 
@@ -74,7 +63,7 @@ public class Client implements Serializable {
      * @throws IOException
      * @throws ClassNotFoundException
      */
-    public void transBoard() throws IOException, ClassNotFoundException{
+    public void receiveBoardFromServer() throws IOException, ClassNotFoundException{
         RiskGameBoard riskGameBoard = (RiskGameBoard) readFromServer.readObject();
         this.riskGameBoard = riskGameBoard;
         String test = riskGameBoard.displayBoard();
@@ -140,7 +129,6 @@ public class Client implements Serializable {
     }
 
 
-
     /**
      * This method adds the player into the field
      * @param _player
@@ -187,12 +175,12 @@ public class Client implements Serializable {
         out.println(prompt);
         String name = inputReader.readLine();
 
-        boolean isValid = player.checkTerrOwner(name);
-        while (!isValid) {
-            out.println("The source Territory does not exist, please enter again!");
-            name = inputReader.readLine();
-            isValid = player.checkTerrOwner(name);
-        }
+//        boolean isValid = player.checkTerrOwner(name);
+//        while (!isValid) {
+//            out.println("The source Territory does not exist, please enter again!");
+//            name = inputReader.readLine();
+//            isValid = player.checkTerrOwner(name);
+//        }
         Territory srcOrDstTerritory = new Territory(name, 0);
         if(srcOrDst.equals("S")){
             action.setSrc(srcOrDstTerritory);
@@ -222,11 +210,11 @@ public class Client implements Serializable {
         String unitStr = inputReader.readLine();
         int units = Integer.parseInt(unitStr);
 
-        while (units < 0) {
-            out.println("The number of action units should be greater than 0, please enter again!");
-            unitStr = inputReader.readLine();
-            units = Integer.parseInt(unitStr);
-        }
+//        while (units < 0) {
+//            out.println("The number of action units should be greater than 0, please enter again!");
+//            unitStr = inputReader.readLine();
+//            units = Integer.parseInt(unitStr);
+//        }
         action.setActionUnits(units);
 
         //Adding the move or attack into the Arraylist
@@ -277,8 +265,8 @@ public class Client implements Serializable {
 
         //connect with The first client
         c.printConnectInfo();
-        c.transData();
-        c.transBoard();
+        c.receivePlayerInfoFromServer();
+        c.receiveBoardFromServer();
 
         //Adding player
         c.addPlayer(p1);

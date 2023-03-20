@@ -95,6 +95,7 @@ public class Server implements Serializable {
 //        String playerColor = PlayerNames.get(clientID);
 //        ++ clientID;
         Integer ID = clientID;
+        out.println("Current client is: " + ID);
 
         //Send data to the client
 //        this.sendObjToClient = new ObjectOutputStream(clientSocket.getOutputStream());
@@ -124,7 +125,7 @@ public class Server implements Serializable {
         String commitInfo = "";
         while(!commitInfo.equals("Done")){
             commitInfo = (String) receiveObjFromClients.get(clientID).readObject();
-            out.println("receiving: " + commitInfo);
+//            out.println("receiving: " + commitInfo);
             if(!commitInfo.equals("D") && !commitInfo.equals("Done")){
                 out.println("Done?");
                 recvAction();

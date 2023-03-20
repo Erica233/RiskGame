@@ -6,7 +6,6 @@ import org.mockito.Mockito;
 
 import static java.lang.System.out;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.anyChar;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -21,6 +20,7 @@ public class ClientTest {
 
     /**
      * This method checks whether the
+     *
      * @throws IOException
      */
 //    @Test
@@ -55,83 +55,70 @@ public class ClientTest {
 //        assertEquals(true, c.checkValidation());
 //
 //    }
-
-
-    @Test
-    public void test_main() throws Exception {
-//        BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
-        Territory t1 = new Territory("Mordor", 8);
-        RiskGameBoard b1 = new RiskGameBoard();
-        b1.tryAddTerritory(t1);
-        BoardTextView v1 = new BoardTextView(b1);
-        int portNum = 12345;
-        ServerSocket ss = new ServerSocket(portNum);
-
-//        ServerSocket ss = new ServerSocket(portNum);
-        Thread th = new Thread() {
-            @Override()
-            public void run() {
-                try {
-                    Client.main(new String[0]);
-                } catch (Exception e) {
-
-                }
-            }
-        };
-        th.start();
-        Thread.sleep(100);
-        Socket acceptedSocekt = ss.accept();
-
-        ObjectOutputStream sendObjToClient = new ObjectOutputStream(acceptedSocekt.getOutputStream());
-        ObjectInputStream in = new ObjectInputStream(acceptedSocekt.getInputStream());
-        String info = "Hi, This is Server!! I am connecting with you";
-        String playerColor = "Green";
-        sendObjToClient.writeObject(info);
-        sendObjToClient.writeObject(playerColor);
-        assertEquals("Hi, This is Server!! I am connecting with you", info);
-        assertEquals("Green", playerColor);
-
-        Territory src = new Territory("Space", 11);
-        Territory dst = new Territory("Mordor", 4);
-        String actionType = "Move";
-        int actionUnits = 5;
-        Action action = new MoveAction(actionType, src, dst, actionUnits);
-
-        sendObjToClient.writeObject(b1);
-        sendObjToClient.writeObject(action);
-        RiskGameBoard b_pass = (RiskGameBoard) in.readObject();
-        assertEquals(b1.getAllTerritories().get(0).getNumUnits(), b_pass.getAllTerritories().get(0).getNumUnits());
-        out.println("sending object");
-
-        ObjectInputStream mockObjInput = Mockito.mock(ObjectInputStream.class);
-//        BufferedReader mockLineInput = mock(BufferedReader.class);
-//        when(mockLineInput.readLine()).thenReturn( "M");
-//        when(mockObjInput.readObject()).thenReturn( "Oz", "Oz",  "Commit");
-
-        ss.close();
-        acceptedSocekt.close();
-    }
-//
 //    @Test
-//    public void test_other() throws Exception {
-//        BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
+//    public void test_main() throws Exception {
+////        BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
 //        Territory t1 = new Territory("Mordor", 8);
 //        RiskGameBoard b1 = new RiskGameBoard();
 //        b1.tryAddTerritory(t1);
 //        BoardTextView v1 = new BoardTextView(b1);
-//        int portNum = 12348;
+//        int portNum = 12345;
 //        ServerSocket ss = new ServerSocket(portNum);
-//        Player p1 = new Player(1, "red", 3);
+//
+//        //Initialize player and its neighbors
+//        Territory t = new Territory("Oz", 2);
+//        Territory t3 = new Territory("Mordor", 8);
+//        Territory t2 = new Territory("Gondor", 5);
+//        ArrayList<Territory> ts2 = new ArrayList<>();
+//        b1.tryAddTerritory(t1);
+//        ts2.add(t);
+//        ts2.add(t3);
+//        ts2.add(t2);
+//        Player p1 = new Player(1, "yellow", 3, ts2);
+//
+//        //Initialize Action
+//        Territory src = new Territory("Space", 11);
+//        Territory dst = new Territory("Mordor", 4);
+//        String actionType = "Move";
+//        int actionUnits = 5;
+//        Action action = new MoveAction(actionType, src, dst, actionUnits);
+//
+//
+//        BufferedReader mockInput = Mockito.mock(BufferedReader.class);
+//        when(mockInput.readLine()).thenReturn("S", "M", "Oz", "abc", "Mordor", "-2", "1", "M", "Oz", "Mordor", "1", "D");
+//
 //
 ////        ServerSocket ss = new ServerSocket(portNum);
 //        Thread th = new Thread() {
 //            @Override()
 //            public void run() {
 //                try {
-//                    Client c = new Client(22223);
-//                    c.addPlayer(p1);
-//                    c.closePipe();
-//
+//                    Client.main(new String[0]);
+////                    Client c = new Client(portNum, action);
+////                    //connect with The first client
+////                    c.printConnectInfo();
+////                    c.transData();
+////                    c.transBoard();
+////
+////                    //Adding player
+////                    c.addPlayer(p1);
+////                    String display = "yellow player:\n" +
+////                            "---------------\n" +
+////                            "2 units in Oz (no neighbors)\n" +
+////                            "8 units in Mordor (no neighbors)\n" +
+////                            "5 units in Gondor (no neighbors)\n";
+////                    assertEquals(display, c.displayTerritoryAndNeighbor());
+////                    c.inputReader = mockInput;
+////                    //Enter the action and check
+////                    if(c.promptAction().equals("M")){
+////                        c.enterAction("M");
+////                    }
+////
+//////        c.checkActionOrder("M");
+////                    c.multipleMoves(); //checking
+////
+////                    //Choose when to close
+////                    c.closePipe();
 //                } catch (Exception e) {
 //
 //                }
@@ -150,83 +137,144 @@ public class ClientTest {
 //        assertEquals("Hi, This is Server!! I am connecting with you", info);
 //        assertEquals("Green", playerColor);
 //
-//        Territory src = new Territory("Space", 11);
-//        Territory dst = new Territory("Mordor", 4);
-//        String actionType = "Move";
-//        int actionUnits = 5;
-//        Action action = new MoveAction(actionType, src, dst, actionUnits);
 //
 //        sendObjToClient.writeObject(b1);
 //        sendObjToClient.writeObject(action);
-//        RiskGameBoard b_pass = (RiskGameBoard) in.readObject();
-//        assertEquals(b1.getAllTerritories().get(0).getNumUnits(), b_pass.getAllTerritories().get(0).getNumUnits());
-//        out.println("sending object");
-//
+////        sendObjToClient.writeObject(action);
+//        String s1 = (String) in.readObject();
+//        Action action1 = (Action) in.readObject();
+//        sendObjToClient.writeObject("Finish!");
 //
 //        ss.close();
 //        acceptedSocekt.close();
 //    }
-//    @Test
-//    void test_displays() throws Exception {
-//        ArrayList<Territory> ts1 = new ArrayList<>();
-//        Territory t1 = new Territory("Mordor", 8);
-//        ts1.add(t1);
-//        RiskGameBoard b1 = new RiskGameBoard();
-//        b1.tryAddTerritory(t1);
-//
-//
-//        ServerSocket mockServerSocket = Mockito.mock(ServerSocket.class);
-//        Socket mockServer = Mockito.mock(Socket.class);
-//        Socket mockClientSocket = Mockito.mock(Socket.class);
-//
-//        int portNum = 12345;
-//        Client c = new Client(portNum);
-//        when(mockServerSocket.accept()).thenReturn(mockClientSocket);
-//        assertEquals("1", c.displayTerritoryAndNeighbor());
-////        c.displayNeighbor();
-//    }
 
-//
-//    @Test
-//    void test_transData() throws IOException, ClassNotFoundException {
-//        //Initialize
-//        Territory src = new Territory("Space", 11);
-//        Territory dst = new Territory("Mordor", 4);
-//        String actionType = "Move";
-//        int actionUnits = 5;
-//        Action action = new Action(actionType, src, dst, actionUnits);
-//        ObjectInputStream mockObjectInput = Mockito.mock(ObjectInputStream.class);
-//        when(mockObjectInput.readObject()).thenReturn(action);
-//    }
-//
-//    @Test
-//    void test_closePipe() throws IOException, ClassNotFoundException{
+
+    @Test
+    public void test_other() throws Exception {
 //        BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
-//        Client c = new Client();
-//        ServerSocket mockServerSocket = Mockito.mock(ServerSocket.class);
-//        Socket mockTestClientSocket = Mockito.mock(Socket.class);
-//
-//
-//        // Then mock it
-//        when(mockServerSocket.accept()).thenReturn(mockTestClientSocket);
-//        ObjectInputStream mockObjectInput = Mockito.mock(ObjectInputStream.class);
-//        ObjectOutputStream mockObjectOutput = Mockito.mock(ObjectOutputStream.class);
-//
-//    }
-//    @Test
-//    void test_trans() throws IOException {
-//        Territory src = new Territory("Space", 11);
-//        Territory dst = new Territory("Mordor", 4);
-//        String actionType = "Move";
-//        int actionUnits =   5;
-//        Action action = new Action(actionType, src, dst, actionUnits);
-//        BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
-//        ObjectOutputStream mockObjectOutput = Mockito.mock(ObjectOutputStream.class);
-//        Client c = new Client();
-//
-////        when(mockObjectOutput.writeObject(action)).thenReturn(action);
-//
-//    }
+        Territory t1 = new Territory("Mordor", 8);
+        RiskGameBoard b1 = new RiskGameBoard();
+        b1.tryAddTerritory(t1);
+        BoardTextView v1 = new BoardTextView(b1);
+        int portNum = 12345;
+        ServerSocket ss = new ServerSocket(portNum);
+
+        //Initialize player and its neighbors
+        Territory t = new Territory("Oz", 2);
+        Territory t3 = new Territory("Mordor", 8);
+        Territory t2 = new Territory("Gondor", 5);
+        ArrayList<Territory> ts2 = new ArrayList<>();
+        b1.tryAddTerritory(t1);
+        ts2.add(t);
+        ts2.add(t3);
+        ts2.add(t2);
+        Player p1 = new Player(1, "yellow", 3, ts2);
+
+        //Initialize Action
+        Territory src = new Territory("Space", 11);
+        Territory dst = new Territory("Mordor", 4);
+        String actionType = "Move";
+        int actionUnits = 5;
+        Action action = new MoveAction(actionType, src, dst, actionUnits);
 
 
+        BufferedReader mockInput = Mockito.mock(BufferedReader.class);
+        when(mockInput.readLine()).thenReturn("S", "M", "Oz", "Mordor","1",
+                "M", "Ozz", "Mor", "1",
+                "A", "Oz", "Mordor", "1",
+                "M", "Oz", "Mordor", "1", "D");
+
+
+
+        Thread th = new Thread() {
+            @Override()
+            public void run() {
+                try {
+//                    Client.main(new String[0], mockInput);
+                    Client c = new Client(portNum, action);
+                    //connect with The first client
+                    c.printConnectInfo();
+                    c.receivePlayerInfoFromServer();
+                    c.receiveBoardFromServer();
+
+                    //Adding player
+                    c.addPlayer(p1);
+                    String display = "yellow player:\n" +
+                            "---------------\n" +
+                            "2 units in Oz (no neighbors)\n" +
+                            "8 units in Mordor (no neighbors)\n" +
+                            "5 units in Gondor (no neighbors)\n";
+                    assertEquals(display, c.displayTerritoryAndNeighbor());
+                    c.inputReader = mockInput;
+                    //Enter the action and check
+                    if (c.promptAction().equals("M")) {
+                        c.enterAction("M");
+                    }
+                    if(c.promptAction().equals("A")){
+                        c.enterAction("A");
+                    }
+                    c.checkActionOrder("M");
+                    c.checkActionOrder("A");
+
+//        c.checkActionOrder("M");
+                    c.multipleMoves(); //checking
+
+                    //Choose when to close
+                    c.closePipe();
+                } catch (Exception e) {
+
+                }
+            }
+        };
+        th.start();
+        Thread.sleep(100);
+        Socket acceptedSocekt = ss.accept();
+
+        ObjectOutputStream sendObjToClient = new ObjectOutputStream(acceptedSocekt.getOutputStream());
+        ObjectInputStream in = new ObjectInputStream(acceptedSocekt.getInputStream());
+        String info = "Hi, This is Server!! I am connecting with you";
+        String playerColor = "Green";
+        Integer in1 = 1;
+        sendObjToClient.writeObject(info);
+//        sendObjToClient.writeObject(info);
+        sendObjToClient.writeObject(in1);
+//        sendObjToClient.writeObject(playerColor);
+        assertEquals("Hi, This is Server!! I am connecting with you", info);
+//        assertEquals("Green", playerColor);
+        assertEquals(1, in1);
+        sendObjToClient.writeObject(b1);
+
+
+        String a = "A";
+        String a1 = (String) in.readObject();
+        assertEquals(a, a1);
+
+
+        Action action1 = (Action) in.readObject();
+        assertEquals(action.getActionUnits(), action1.getActionUnits());
+
+        String a2_exp = "M";
+        String a2 = (String) in.readObject();
+        assertEquals(a2_exp, a2);
+
+
+        Action action2 = (Action) in.readObject();
+        assertEquals(action.getActionUnits(), action2.getActionUnits());
+
+        String a3_exp = "M";
+        String a3 = (String) in.readObject();
+        assertEquals(a3_exp, a3);
+
+
+        Action action3 = (Action) in.readObject();
+        assertEquals(action.getActionUnits(), action3.getActionUnits());
+
+        out.println("HI1!?");
+        sendObjToClient.writeObject("Finish!");
+
+
+        ss.close();
+        acceptedSocekt.close();
+    }
 }
