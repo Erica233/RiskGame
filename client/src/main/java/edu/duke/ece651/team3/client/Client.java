@@ -241,44 +241,44 @@ public class Client implements Serializable {
         readFromServer.close();
         clientS.close();
     }
-//
-//    //This class wrap up the functions for client
-//    public void clientConnection() throws Exception {
-//        //Initialize player and its neighbors
-//        RiskGameBoard b1 = new RiskGameBoard();
-//        Territory t = new Territory("Oz", 2);
-//        Territory t1 = new Territory("Mordor", 8);
-//        Territory t2 = new Territory("Gondor", 5);
-//        ArrayList<Territory> ts2 = new ArrayList<>();
-//        b1.tryAddTerritory(t1);
-//        ts2.add(t);
-//        ts2.add(t1);
-//        ts2.add(t2);
-//        Player p1 = new Player(1, "yellow", 3, ts2);
-//
-//        //connect with The first client
-//        printConnectInfo();
-//        receivePlayerInfoFromServer();
-//        receiveBoardFromServer();
-//
-//        //Adding player
-//        addPlayer(p1);
-//        //Enter the action and check
-//        if(readAction().equals("M")){
-//            enterAction("M");
-//        }
-//        checkActionOrder("M");
-//        multipleMoves(); //checking
-//    }
-//
-//    public static void main(String[] args) throws Exception {
-//        int portNum = 12345;
-//        Client c = new Client(portNum);
-//        c.clientConnection();
-//
-//        //Choose when to close
-//        c.closePipe();
-//    }
+
+    //This class wrap up the functions for client
+    public void clientConnection() throws Exception {
+        //Initialize player and its neighbors
+        RiskGameBoard b1 = new RiskGameBoard();
+        Territory t = new Territory("Oz", 2);
+        Territory t1 = new Territory("Mordor", 8);
+        Territory t2 = new Territory("Gondor", 5);
+        ArrayList<Territory> ts2 = new ArrayList<>();
+        b1.tryAddTerritory(t1);
+        ts2.add(t);
+        ts2.add(t1);
+        ts2.add(t2);
+        Player p1 = new Player(1, "yellow", 3, ts2);
+
+        //connect with The first client
+        printConnectInfo();
+        receivePlayerInfoFromServer();
+        receiveBoardFromServer();
+
+        //Adding player
+        addPlayer(p1);
+        //Enter the action and check
+        if(readAction().equals("M")){
+            enterAction("M");
+        }
+        checkActionOrder("M");
+        multipleMoves(); //checking
+    }
+
+    public static void main(String[] args) throws Exception {
+        int portNum = 12345;
+        Client c = new Client(portNum);
+        c.clientConnection();
+
+        //Choose when to close
+        c.closePipe();
+    }
 
 
 }
