@@ -13,7 +13,7 @@ public class ServerTest {
     void test_transData() throws Exception {
         Territory t1 = new Territory("Hogwarts", 10);
         RiskGameBoard riskGameBoard = new RiskGameBoard();
-        riskGameBoard.tryAddTerritory(t1);
+        //riskGameBoard.tryAddTerritory(t1);
         Thread th1 = new Thread() {
             @Override()
             public void run() {

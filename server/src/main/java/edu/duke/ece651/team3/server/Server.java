@@ -44,7 +44,7 @@ public class Server implements Serializable {
             printConnectInfo();
             Territory t1 = new Territory("Hogwarts", 10);
             RiskGameBoard riskGameBoard = new RiskGameBoard();
-            riskGameBoard.tryAddTerritory(t1);
+            //riskGameBoard.tryAddTerritory(t1);
             transData();
             transObject(riskGameBoard);
         }
@@ -60,7 +60,7 @@ public class Server implements Serializable {
         try{
             Territory t1 = new Territory("Hogwarts", 10);
             RiskGameBoard riskGameBoard = new RiskGameBoard();
-            riskGameBoard.tryAddTerritory(t1);
+            //riskGameBoard.tryAddTerritory(t1);
             out.println("Build up the Server");
 
             //Connecting with the first player
@@ -125,7 +125,7 @@ public class Server implements Serializable {
     public static void main(String[] args) throws Exception {
         Territory t1 = new Territory("Hogwarts", 10);
         RiskGameBoard riskGameBoard = new RiskGameBoard();
-        riskGameBoard.tryAddTerritory(t1);
+        //riskGameBoard.tryAddTerritory(t1);
         int numPlayer = 1;
         int portNum = 12345;
 

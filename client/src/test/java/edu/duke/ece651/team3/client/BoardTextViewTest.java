@@ -14,8 +14,8 @@ class BoardTextViewTest {
         Territory t2 = new Territory("Mordor", 4);
         Board m1 = new RiskGameBoard();
         BoardTextView v1 = new BoardTextView(m1);
-        m1.tryAddTerritory(t1);
-        m1.tryAddTerritory(t2);
+        //m1.tryAddTerritory(t1);
+        //m1.tryAddTerritory(t2);
         String expected = "3 units in Narnia (no neighbors)\n4 units in Mordor (no neighbors)\n";
         assertEquals(expected, v1.displayBoard());
 

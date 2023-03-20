@@ -114,7 +114,7 @@ public class Client implements Serializable {
     public void displayNeighbor() throws Exception {
         Territory t1 = new Territory("Mordor", 8);
         RiskGameBoard b1 = new RiskGameBoard();
-        b1.tryAddTerritory(t1);
+        //b1.tryAddTerritory(t1);
 
         ArrayList<Territory> ownTerritories = player.getOwnedTerritories();
         for(int i = 0; i < ownTerritories.size(); i++){
@@ -137,7 +137,7 @@ public class Client implements Serializable {
     public static void main(String[] args) throws Exception {
         Territory t1 = new Territory("Mordor", 8);
         RiskGameBoard b1 = new RiskGameBoard();
-        b1.tryAddTerritory(t1);
+        //b1.tryAddTerritory(t1);
 
         Client c = new Client();
 

@@ -26,7 +26,7 @@ public class TerritoryTest {
         t1.addNeighbors(t6, t7, t8);
         assertNotEquals(t1, t2); //different neighbors
         t2.addNeighbors(t7, t6, t8);
-        assertNotEquals(t1, t2); //neighbors different order
+        assertEquals(t1, t2); //neighbors different order
 
 
     }
@@ -52,7 +52,7 @@ public class TerritoryTest {
     }
 
     @Test
-    public void test_tryAddANeighbor() throws Exception {
+    public void test_addANeighbor() throws Exception {
         ArrayList<Territory> n1 = new ArrayList<>();
         Territory t1 = new Territory("Oz", 12);
         assertEquals(n1, t1.getNeighbors());
@@ -66,17 +66,33 @@ public class TerritoryTest {
         t2.addANeighbor(t3);
         n2.add(t3);
         assertEquals(n2, t2.getNeighbors());
+        assertThrows(Exception.class, () -> t2.addANeighbor(t2));
+        assertThrows(Exception.class, () -> t2.addNeighbors(t2, t1));
+
     }
 
     @Test
-    public void test_isAValidNeighbor() {
+    public void test_checkValidNeighbor() throws Exception {
         Territory t1 = new Territory("Narnia", 3);
-        assertTrue(t1.isAValidNeighbor());
-    }
-    @Test
-    public void test_isValidToAdd() {
-        Territory t1 = new Territory("Narnia", 3);
-        assertTrue(t1.isValidToAdd());
+        Territory t2 = new Territory("Oz", 3);
+        assertTrue(t1.checkValidNeighbor(t2));
+        t1.addANeighbor(t2);
+        assertFalse(t1.checkValidNeighbor(t2));
+        assertFalse(t1.checkValidNeighbor(t1));
     }
 
+    @Test
+    public void test_displayTerritory() throws Exception {
+        Territory t1 = new Territory("a", 3);
+        String expected1 = "3 units in a (no neighbors)\n";
+        assertEquals(expected1, t1.displayTerritory()); //empty neighbors
+        Territory t2 = new Territory("b", 2);
+        Territory t3 = new Territory("c", 5);
+        t1.addANeighbor(t2);
+        String expected2 = "3 units in a (next to: b)\n";
+        assertEquals(expected2, t1.displayTerritory());
+        t1.addANeighbor(t3);
+        String expected3 = "3 units in a (next to: b, c)\n";
+        assertEquals(expected3, t1.displayTerritory());
+    }
 }

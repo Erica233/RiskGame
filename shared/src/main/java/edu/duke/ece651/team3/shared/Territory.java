@@ -2,12 +2,12 @@ package edu.duke.ece651.team3.shared;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Objects;
+import java.util.Collections;
 
 /**
  * A class for Territory
  */
-public class Territory implements Serializable {
+public class Territory implements Serializable, Comparable<Territory> {
     private final String territoryName;
     private final int numUnits;
     private final ArrayList<Territory> neighbors;
@@ -38,22 +38,34 @@ public class Territory implements Serializable {
     }
 
     @Override
+    public int compareTo(Territory aTerritory) {
+        return this.territoryName.compareTo(aTerritory.getTerritoryName());
+    }
+
+    @Override
     public boolean equals(Object other) {
         if (other.getClass().equals(getClass())) {
             Territory territory = (Territory) other;
-            return numUnits == territory.getNumUnits() && territoryName.equals(territory.getTerritoryName()) && neighbors.equals(territory.getNeighbors());
+            return numUnits == territory.getNumUnits() && territoryName.equals(territory.getTerritoryName()) && hasSameNeighbors(territory);
         }
         return false;
     }
 
-    /**
-     * Checks whether the Territory is valid to add to the Board
-     *
-     * @return true if it is valid to add to the Board, otherwise false
-     */
-    //TODO: unfinished
-    public boolean isValidToAdd() {
-        return true;
+    public boolean hasSameNeighbors(Territory territoryToCompare) {
+        if (neighbors.size() != territoryToCompare.getNeighbors().size()) {
+            return false;
+        }
+        ArrayList<String> leftNeighborsNames = getSortedNeighborNames();
+        ArrayList<String> rightNeighborsNames = territoryToCompare.getSortedNeighborNames();
+        return leftNeighborsNames.equals(rightNeighborsNames);
+    }
+
+    public ArrayList<String> getSortedNeighborNames() {
+        ArrayList<String> sortedNeighborNames = new ArrayList<>();
+        for (Territory aNeighbor: neighbors) {
+            sortedNeighborNames.add(aNeighbor.getTerritoryName());
+        }
+        return sortedNeighborNames;
     }
 
     /**
@@ -63,25 +75,28 @@ public class Territory implements Serializable {
      * @throws Exception if the Territory to add is invalid
      */
     public void addANeighbor(Territory aNeighbor) throws Exception {
-        if (!aNeighbor.isAValidNeighbor()) {
+        if (!checkValidNeighbor(aNeighbor)) {
             throw new Exception("addANeighbor(): invalid neighbor to add!");
         }
         neighbors.add(aNeighbor);
+        Collections.sort(neighbors);
     }
 
     /**
      * Add multiple valid Territories to the neighbors
+     * !!Attention: if invalid neighbor in the middle, it will not remove the added neighbors
      *
      * @param territories the Territories to add to the neighbors
      * @throws Exception if a Territory to add is invalid
      */
     public void addNeighbors(Territory... territories) throws Exception {
         for (Territory aNeighbor: territories) {
-            if (!aNeighbor.isAValidNeighbor()) {
+            if (!checkValidNeighbor(aNeighbor)) {
                 throw new Exception("addANeighbors(): invalid neighbor to add!");
             }
             neighbors.add(aNeighbor);
         }
+        Collections.sort(neighbors);
     }
 
     /**
@@ -90,7 +105,15 @@ public class Territory implements Serializable {
      * @return true if it is valid to add to the neighbors, otherwise false
      */
     //TODO: unfinished
-    public boolean isAValidNeighbor() {
+    public boolean checkValidNeighbor(Territory territoryToAddAsNeighbor) {
+        if (territoryName.equals(territoryToAddAsNeighbor.getTerritoryName())) {
+            return false;
+        }
+        for (Territory aNeighbor: neighbors) {
+            if (aNeighbor.getTerritoryName().equals(territoryToAddAsNeighbor.getTerritoryName())) {
+                return false;
+            }
+        }
         return true;
     }
 
