@@ -36,21 +36,26 @@ public class Client {
         try {
             Client client = new Client(hostname, portNum);
             System.out.println(client + " connect to the Server successfully!");
-
+            Territory t1 = client.recvTerritory();
+            System.out.println("received " + t1.displayTerritory() + "from server!");
 
 
             client.closePipes();
         } catch (IOException e) {
             System.err.println(e.getMessage());
             System.exit(-1);
+        } catch (ClassNotFoundException e) {
+            //recvTerritory()
+            e.printStackTrace();
         }
 
     }
 
     //test
-//    public Territory recvTerritory() {
-//
-//    }
+    public Territory recvTerritory() throws IOException, ClassNotFoundException {
+        Territory territory = (Territory) objectFromServer.readObject();
+        return territory;
+    }
 
     public void recvBoard() {
 

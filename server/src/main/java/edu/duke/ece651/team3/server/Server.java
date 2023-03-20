@@ -1,5 +1,7 @@
 package edu.duke.ece651.team3.server;
 
+import edu.duke.ece651.team3.shared.Territory;
+
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -34,7 +36,7 @@ public class Server {
             System.out.println("Create Server successfully!");
             server.connectClients();
             System.out.println("Both clients connect to the Server successfully!");
-
+            server.sendTerritory();
 
 
             server.closePipes();
@@ -44,8 +46,10 @@ public class Server {
     }
 
     //test
-    public void sendTerritory() {
-
+    public void sendTerritory() throws IOException {
+        Territory t1 = new Territory("a", 2);
+        objectsToClients.get(0).writeObject(t1);
+        objectsToClients.get(1).writeObject(t1);
     }
 
     public void sendBoard() {
