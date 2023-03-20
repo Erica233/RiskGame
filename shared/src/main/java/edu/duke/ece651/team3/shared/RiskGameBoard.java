@@ -8,7 +8,7 @@ import java.util.Collections;
  * A Risk Game Board
  */
 public class RiskGameBoard implements Board, Serializable {
-    private final ArrayList<Territory> allTerritories;
+    //private final ArrayList<Territory> allTerritories;
     private final ArrayList<Player> allPlayers;
 
     /**
@@ -16,7 +16,7 @@ public class RiskGameBoard implements Board, Serializable {
      *
      */
     public RiskGameBoard() throws Exception {
-        this.allTerritories = new ArrayList<>();
+        //this.allTerritories = new ArrayList<>();
         this.allPlayers = new ArrayList<>();
         initMap();
     }
@@ -61,18 +61,27 @@ public class RiskGameBoard implements Board, Serializable {
         return output;
     }
 
-    public boolean tryAddTerritory(Territory territoryToAdd) {
-        if (!territoryToAdd.isValidToAdd()) {
-            return false;
+    @Override
+    public boolean equals(Object other) {
+        if (other.getClass().equals(getClass())) {
+            RiskGameBoard riscBoard = (RiskGameBoard) other;
+            return allPlayers.equals(riscBoard.allPlayers);
         }
-        allTerritories.add(territoryToAdd);
-        return true;
+        return false;
     }
+
+//    public boolean tryAddTerritory(Territory territoryToAdd) {
+//        if (!territoryToAdd.isValidToAdd()) {
+//            return false;
+//        }
+//        allTerritories.add(territoryToAdd);
+//        return true;
+//    }
 
     public String displayBoard() {
         StringBuilder output = new StringBuilder();
-        for (Territory aTerritory: allTerritories) {
-            output.append(aTerritory.displayTerritory());
+        for (Player aPlayer: allPlayers) {
+            output.append(aPlayer.displayPlayer()).append("\n");
         }
         return output.toString();
     }
@@ -80,7 +89,11 @@ public class RiskGameBoard implements Board, Serializable {
         return allPlayers;
     }
 
-    public ArrayList<Territory> getAllTerritories() {
-        return allTerritories;
+//    public ArrayList<Territory> getAllTerritories() {
+//        return allTerritories;
+//    }
+
+    public ArrayList<Player> getAllPlayers() {
+        return allPlayers;
     }
 }

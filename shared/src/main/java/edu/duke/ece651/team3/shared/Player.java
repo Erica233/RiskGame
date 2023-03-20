@@ -3,8 +3,6 @@ package edu.duke.ece651.team3.shared;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-import static java.lang.System.out;
-
 public class Player implements Serializable {
     private final int playerId;
     private final String color;
@@ -25,18 +23,27 @@ public class Player implements Serializable {
         this.ownedTerritories = _ownedTerritories;
     }
 
+    @Override
+    public boolean equals(Object other) {
+        if (other.getClass().equals(getClass())) {
+            Player player = (Player) other;
+            return playerId == player.playerId && totNumUnits == player.totNumUnits && color.equals(player.color) && ownedTerritories.equals(player.ownedTerritories);
+        }
+        return false;
+    }
+
     /**
      * Checks whether the Territory is valid to own by the player
-     * @param territoryToOwn territory to be tested validation
+     *
      * @return true if it is valid to be owned, otherwise false
      */
     public boolean isValidToOwn(Territory territoryToOwn) {
-        for(int i = 0; i < ownedTerritories.size(); i++){
-            if(territoryToOwn == ownedTerritories.get(i)){
-                return true;
+        for (int i = 0; i < ownedTerritories.size(); i++){
+            if (territoryToOwn.getTerritoryName().equals(ownedTerritories.get(i).getTerritoryName())) {
+                return false;
             }
         }
-        return false;
+        return true;
     }
 
     /**
@@ -69,7 +76,7 @@ public class Player implements Serializable {
      * @return true if the Territory is valid to own, otherwise false
      */
     public boolean tryOwnTerritory(Territory territoryToOwn) {
-        if (!territoryToOwn.isAValidNeighbor()) {
+        if (!isValidToOwn(territoryToOwn)) {
             return false;
         }
         ownedTerritories.add(territoryToOwn);

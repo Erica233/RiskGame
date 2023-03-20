@@ -7,6 +7,30 @@ import java.util.ArrayList;
 import static org.junit.jupiter.api.Assertions.*;
 
 class PlayerTest {
+    @Test
+    public void test_equals() {
+        Player p0 = new Player(1, "red", 10);
+        Player p1 = new Player(1, "red", 10);
+        Player p2 = new Player(2, "red", 10);
+        Player p3 = new Player(1, "blue", 10);
+        Player p4 = new Player(1, "red", 11);
+        assertEquals(p0, p1);
+        assertNotEquals(p0, "(1, red, 10)"); //different objects
+        assertNotEquals(p0, p2); // different id
+        assertNotEquals(p0, p3); // different color
+        assertNotEquals(p0, p4); // different totNumUnits
+        Territory t1 = new Territory("a", 4);
+        Territory t2 = new Territory("b", 5);
+        Territory t3 = new Territory("c", 6);
+        p0.tryOwnTerritory(t1);
+        p0.tryOwnTerritory(t2);
+        p0.tryOwnTerritory(t3);
+        assertNotEquals(p0, p1); //different ownedTerritories
+        p1.tryOwnTerritory(t1);
+        p1.tryOwnTerritory(t3);
+        p1.tryOwnTerritory(t2);
+        assertNotEquals(p0, p1); //ownedTerritories different orders
+    }
 
     @Test
     void test_id_color_totNumUnits() {
@@ -30,7 +54,7 @@ class PlayerTest {
     }
 
     @Test
-    void test_tryAddTerritory() {
+    void test_tryOwnTerritory() {
         Player p1 = new Player(1, "blue", 3);
         Territory t1 = new Territory("Oz", 2);
         ArrayList<Territory> ts1 = new ArrayList<>();
@@ -39,16 +63,15 @@ class PlayerTest {
         assertTrue(p1.tryOwnTerritory(t1));
         ts1.add(t1);
         assertEquals(ts1, p1.getOwnedTerritories());
+        assertFalse(p1.tryOwnTerritory(t1));
     }
 
     @Test
     void test_isValidToOwn() {
         Player p1 = new Player(1, "blue", 3);
         Territory t1 = new Territory("Oz", 2);
-        Territory t2 = new Territory("Mordor", 5);
-        Territory t3 = new Territory("Roshar", 7);
-        p1.tryOwnTerritory(t2);
-        p1.tryOwnTerritory(t3);
+        assertTrue(p1.isValidToOwn(t1));
+        p1.getOwnedTerritories().add(t1);
         assertFalse(p1.isValidToOwn(t1));
     }
 
