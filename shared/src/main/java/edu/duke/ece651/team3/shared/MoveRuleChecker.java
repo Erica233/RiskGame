@@ -1,11 +1,7 @@
 package edu.duke.ece651.team3.shared;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-
-import static java.lang.System.out;
 
 public class MoveRuleChecker extends RuleChecker{
     private final RiskGameBoard riskGameBoard;
@@ -27,7 +23,7 @@ public class MoveRuleChecker extends RuleChecker{
      * @return if valid return true, invalid return false
      */
     public boolean checkSrcDst(Action myAttack, Player currPlayer){
-        return currPlayer.checkTerrOwner(myAttack.getSrc().getTerritoryName()) && currPlayer.checkTerrOwner(myAttack.getSrc().getTerritoryName());
+        return currPlayer.checkTerrOwner(myAttack.getSrc().getTerritoryName()) && currPlayer.checkTerrOwner(myAttack.getDst().getTerritoryName());
     }
 
     /**t
@@ -68,20 +64,59 @@ public class MoveRuleChecker extends RuleChecker{
      * @param currPlayer current player
      * @return true if valid false if invalid
      */
-    public boolean checkPath(Action myMove, Player currPlayer){
+    public boolean checkPathWithBothPlayer(Action myMove, Player currPlayer, Player OtherPlayer) throws Exception {
         Territory src = myMove.getSrc();
         Territory dst = myMove.getDst();
-//        if(src.equals(dst)){
-//            return false;
+        ArrayList<Territory> Neighbors = src.getNeighbors();
+        HashMap<Territory, Boolean> visited = new HashMap<>();
+//
+//        RiskGameBoard r = new RiskGameBoard();
+//        r.initMap();
+//        Player p1 = r.getAllPlayers().get(0);
+//        Player p2 = r.getAllPlayers().get(1);
+//        if(p1.equals(currPlayer)){
+//            currPlayer = p1;
+//            initVisited(currPlayer, visited);
+//            initVisited(p2, visited);
+//
+//        }
+//        if(p2.equals(currPlayer)){
+//            currPlayer = p2;
+//            initVisited(currPlayer, visited);
+//            initVisited(p1, visited);
 //        }
 
-        ArrayList<Territory> Neighbors = src.getNeighbors();
-
-        HashMap<Territory, Boolean> visited = new HashMap<>();
-        if(isValidPath(src, dst, Neighbors, visited)){
+        initVisited(currPlayer, visited);
+        initVisited(OtherPlayer, visited);
+        if(isValidPath(src, dst, Neighbors, visited, currPlayer)){
             return true;
         }
         return false;
+    }
+
+    /**
+     * This method checks whether the path is correct
+     * It uses DFS to check whether the territory belongs to the self player
+     * @param myMove move information
+     * @param currPlayer current player
+     * @return true if valid false if invalid
+     */
+    public boolean checkPath(Action myMove, Player currPlayer) throws Exception {
+//        Territory src = myMove.getSrc();
+//        Territory dst = myMove.getDst();
+////        if(src.equals(dst)){
+////            return false;
+////        }
+//
+//        ArrayList<Territory> Neighbors = src.getNeighbors();
+//
+//        HashMap<Territory, Boolean> visited = new HashMap<>();
+//        initVisited(currPlayer, visited);
+////        initVisited(OtherPlayer, visited);
+//        if(isValidPath(src, dst, Neighbors, visited, currPlayer)){
+//            return true;
+//        }
+        return true;
     }
 
     /**
@@ -93,18 +128,39 @@ public class MoveRuleChecker extends RuleChecker{
      * @return
      */
     public boolean isValidPath(Territory src, Territory dst,
-                               ArrayList<Territory> Neighbors, HashMap<Territory, Boolean> visited) {
-        if (src.equals(dst)) {
+                               ArrayList<Territory> Neighbors, HashMap<Territory, Boolean> visited, Player currPlayer) {
+        if (src.equals(dst) && checkIsSelfTerritory(dst, currPlayer)) {
             return true;
         }
 
         visited.put(src, true);
+        Neighbors = src.getNeighbors();
 
         for(int i = 0; i < Neighbors.size(); i++){
-            if (!visited.get(Neighbors.get(i)) && isValidPath(Neighbors.get(i), dst, Neighbors, visited)) {
+            if (!visited.get(Neighbors.get(i)) && checkIsSelfTerritory(Neighbors.get(i), currPlayer) &&
+                    isValidPath(Neighbors.get(i), dst, Neighbors, visited, currPlayer)) {
+                return true;
+            }
+//            isValidPath(Neighbors.get(i), dst, Neighbors, visited);
+        }
+        return false;
+    }
+
+
+
+    public boolean checkIsSelfTerritory(Territory territory, Player p){
+        for(int i = 0; i < p.getOwnedTerritories().size(); i++){
+            if(territory.equals(p.getOwnedTerritories().get(i))){
                 return true;
             }
         }
         return false;
     }
+    public void initVisited(Player player, HashMap<Territory, Boolean> visited){
+        for(int i = 0; i < player.getOwnedTerritories().size(); i++){
+            visited.put(player.getOwnedTerritories().get(i), false);
+        }
+
+    }
+
 }

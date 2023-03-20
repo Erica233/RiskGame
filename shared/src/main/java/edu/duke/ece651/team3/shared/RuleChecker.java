@@ -29,5 +29,5 @@ public abstract class RuleChecker {
      * @param currPlayer current player
      * @return if valid return true, invalid return false
      */
-    public abstract boolean checkPath(Action myAction, Player currPlayer);
+    public abstract boolean checkPath(Action myAction, Player currPlayer) throws Exception;
 }

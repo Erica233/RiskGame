@@ -75,7 +75,7 @@ public class Client implements Serializable {
     /**
      * This method checks the move order
      */
-    boolean checkActionOrder(String moveOrAttack){
+    boolean checkActionOrder(String moveOrAttack) throws Exception {
         MoveRuleChecker mrc = new MoveRuleChecker(this.action, this.riskGameBoard);
         if (moveOrAttack.equals("M")) {
             for(int i = 0; i < moveActions.size(); i++){

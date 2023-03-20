@@ -18,6 +18,8 @@ class RiskGameBoardTest {
     public void test_equals() throws Exception {
         Board b0 = new RiskGameBoard();
         Board b1 = new RiskGameBoard();
+        b0.initMap();
+        b1.initMap();
         assertEquals(b0, b1);
         assertNotEquals(b0, "(player 1)");
         b1.getAllPlayers().get(0).getOwnedTerritories().get(0).addANeighbor(new Territory("x", 3));
@@ -56,6 +58,7 @@ class RiskGameBoardTest {
         Territory t2 = new Territory("Mordor", 4);
         Territory t3 = new Territory("Oz", 5);
         Board m1 = new RiskGameBoard();
+        m1.initMap();
 //        m1.tryAddTerritory(t1);
 //        m1.tryAddTerritory(t2);
 //        m1.tryAddTerritory(t3);
@@ -111,4 +114,6 @@ class RiskGameBoardTest {
                 "\n";
         assertEquals(expected, b1.initMap());
     }
+
+
 }
