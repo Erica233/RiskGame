@@ -52,17 +52,19 @@ public class Client implements Serializable {
         String receivedMsg = (String) readFromServer.readObject();
         out.println(receivedMsg);
         out.println("Received the string successfully from the server");
+        Integer playerID = (Integer) readFromServer.readObject();
 
         //To get the Player Identifier from the server
-        String playerColor = (String) readFromServer.readObject();
-        this.playerColor = playerColor;
-        out.println(playerColor);
-        if(playerColor.equals("Red")){
-            playerID = 0;
-        }
-        if(playerColor.equals("Green")){
-            playerID = 1;
-        }
+//        String playerColor = (String) readFromServer.readObject();
+
+//        this.playerColor = playerColor;
+//        out.println(playerColor);
+//        if(playerColor.equals("Red")){
+//            playerID = 0;
+//        }
+//        if(playerColor.equals("Green")){
+//            playerID = 1;
+//        }
         out.println("Received the Player's color successfully from the server");
     }
 
