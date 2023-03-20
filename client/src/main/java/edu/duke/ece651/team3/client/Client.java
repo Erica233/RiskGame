@@ -270,7 +270,7 @@ public class Client implements Serializable {
         checkActionOrder("M");
         multipleMoves(); //checking
     }
-
+    //TODO: execute the action and print the log out
     public static void main(String[] args) throws Exception {
         int portNum = 12345;
         Client c = new Client(portNum);

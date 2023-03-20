@@ -21,13 +21,13 @@ public class MoveRuleChecker extends RuleChecker{
     }
 
     /**
-     * Check whether the current player has the territory from attack's information
+     * Check whether the current player's src and dst territory are both in its owned territory
      * @param myAttack move information
      * @param currPlayer current player
      * @return if valid return true, invalid return false
      */
     public boolean checkSrcDst(Action myAttack, Player currPlayer){
-        return currPlayer.checkTerrOwner(myAttack.getSrc().getTerritoryName()) && currPlayer.checkTerrOwner(myAttack.getDst().getTerritoryName());
+        return currPlayer.checkTerrOwner(myAttack.getSrc().getTerritoryName()) && currPlayer.checkTerrOwner(myAttack.getSrc().getTerritoryName());
     }
 
     /**t
@@ -71,9 +71,9 @@ public class MoveRuleChecker extends RuleChecker{
     public boolean checkPath(Action myMove, Player currPlayer){
         Territory src = myMove.getSrc();
         Territory dst = myMove.getDst();
-        if(src.equals(dst)){
-            return false;
-        }
+//        if(src.equals(dst)){
+//            return false;
+//        }
 
         ArrayList<Territory> Neighbors = src.getNeighbors();
 
