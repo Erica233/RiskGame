@@ -8,11 +8,20 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class RiskGameBoardTest {
     @Test
+    public void test_allPlayers() throws Exception {
+        Board b0 = new RiskGameBoard();
+        Board b1 = new RiskGameBoard();
+        assertEquals(b0.getAllPlayers(), b1.getAllPlayers());
+    }
+
+    @Test
     public void test_equals() throws Exception {
         Board b0 = new RiskGameBoard();
         Board b1 = new RiskGameBoard();
         assertEquals(b0, b1);
-        //assertNotEquals(b0, "(player 1)");
+        assertNotEquals(b0, "(player 1)");
+        b1.getAllPlayers().get(0).getOwnedTerritories().get(0).addANeighbor(new Territory("x", 3));
+        assertNotEquals(b0, b1);
 
     }
 

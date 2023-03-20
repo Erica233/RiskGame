@@ -22,15 +22,6 @@ public class RiskGameBoard implements Board, Serializable {
         initMap();
     }
 
-    @Override
-    public boolean equals(Object other) {
-        if (other.getClass().equals(getClass())) {
-            RiskGameBoard riscBoard = (RiskGameBoard) other;
-            return allPlayers.equals(riscBoard.allPlayers);
-        }
-        return false;
-    }
-
     public String initMap() throws Exception {
         Territory t1 = new Territory("a", 5);
         Territory t2 = new Territory("b", 5);
@@ -71,6 +62,15 @@ public class RiskGameBoard implements Board, Serializable {
         return output;
     }
 
+    @Override
+    public boolean equals(Object other) {
+        if (other.getClass().equals(getClass())) {
+            RiskGameBoard riscBoard = (RiskGameBoard) other;
+            return allPlayers.equals(riscBoard.allPlayers);
+        }
+        return false;
+    }
+
 //    public boolean tryAddTerritory(Territory territoryToAdd) {
 //        if (!territoryToAdd.isValidToAdd()) {
 //            return false;
@@ -90,4 +90,8 @@ public class RiskGameBoard implements Board, Serializable {
 //    public ArrayList<Territory> getAllTerritories() {
 //        return allTerritories;
 //    }
+
+    public ArrayList<Player> getAllPlayers() {
+        return allPlayers;
+    }
 }

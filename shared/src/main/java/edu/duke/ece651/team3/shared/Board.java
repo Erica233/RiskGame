@@ -29,4 +29,6 @@ public interface Board {
     /** getters and setters **/
     //ArrayList<Territory> getAllTerritories();
 
+    ArrayList<Player> getAllPlayers();
+
 }
