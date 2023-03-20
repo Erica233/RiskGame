@@ -18,7 +18,7 @@ public class RiskGameBoard implements Board, Serializable {
     public RiskGameBoard() throws Exception {
         //this.allTerritories = new ArrayList<>();
         this.allPlayers = new ArrayList<>();
-//        initMap();
+        //initMap();
     }
 
     public String initMap() throws Exception {
