@@ -54,7 +54,7 @@ class PlayerTest {
     }
 
     @Test
-    void test_tryAddTerritory() {
+    void test_tryOwnTerritory() {
         Player p1 = new Player(1, "blue", 3);
         Territory t1 = new Territory("Oz", 2);
         ArrayList<Territory> ts1 = new ArrayList<>();
@@ -63,6 +63,7 @@ class PlayerTest {
         assertTrue(p1.tryOwnTerritory(t1));
         ts1.add(t1);
         assertEquals(ts1, p1.getOwnedTerritories());
+        assertFalse(p1.tryOwnTerritory(t1));
     }
 
     @Test
@@ -70,6 +71,8 @@ class PlayerTest {
         Player p1 = new Player(1, "blue", 3);
         Territory t1 = new Territory("Oz", 2);
         assertTrue(p1.isValidToOwn(t1));
+        p1.getOwnedTerritories().add(t1);
+        assertFalse(p1.isValidToOwn(t1));
     }
 
     @Test
