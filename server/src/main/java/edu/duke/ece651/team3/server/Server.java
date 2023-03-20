@@ -161,7 +161,7 @@ public class Server implements Serializable {
         Territory t1 = new Territory("Hogwarts", 10);
         RiskGameBoard riskGameBoard = new RiskGameBoard();
         riskGameBoard.tryAddTerritory(t1);
-        int numPlayer = 1;
+        int numPlayer = 2;
         int portNum = 12345;
 
         Server s = new Server(portNum);
