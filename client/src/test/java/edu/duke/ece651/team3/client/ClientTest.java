@@ -18,8 +18,8 @@ import java.util.ArrayList;
 
 public class ClientTest {
 
-//    @Test
-//    public void test_other() throws Exception {
+    @Test
+    public void test_other() throws Exception {
 ////        BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
 //        Territory t1 = new Territory("Mordor", 8);
 //        RiskGameBoard b1 = new RiskGameBoard();
@@ -154,5 +154,5 @@ public class ClientTest {
 //
 //        ss.close();
 //        acceptedSocekt.close();
-//    }
+    }
 }

@@ -1,5 +1,7 @@
 package edu.duke.ece651.team3.client;
 
+import edu.duke.ece651.team3.shared.Territory;
+
 import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -28,6 +30,28 @@ public class Client {
         this.objectToServer = new ObjectOutputStream(socket.getOutputStream());
     }
 
+    public static void main(String[] args) {
+        int portNum = 12345;
+        String hostname = "localhost";
+        try {
+            Client client = new Client(hostname, portNum);
+            System.out.println(client + " connect to the Server successfully!");
+
+
+
+            client.closePipes();
+        } catch (IOException e) {
+            System.err.println(e.getMessage());
+            System.exit(-1);
+        }
+
+    }
+
+    //test
+//    public Territory recvTerritory() {
+//
+//    }
+
     public void recvBoard() {
 
     }
@@ -49,20 +73,7 @@ public class Client {
         return output;
     }
 
-    public static void main(String[] args) {
-        int portNum = 12345;
-        String hostname = "localhost";
-        try {
-            Client client = new Client(hostname, portNum);
-            System.out.println(client + " connect to the Server successfully!");
 
-            client.closePipes();
-        } catch (IOException e) {
-            System.err.println(e.getMessage());
-            System.exit(-1);
-        }
-
-    }
 
 //    public Client(int portNum) throws IOException {
 //        this.inputReader = new BufferedReader(new InputStreamReader(System.in));

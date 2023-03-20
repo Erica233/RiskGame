@@ -27,6 +27,27 @@ public class Server {
         this.objectsFromClients = new ArrayList<>();
     }
 
+    public static void main(String[] args) {
+        int portNum = 12345;
+        try {
+            Server server = new Server(portNum);
+            System.out.println("Create Server successfully!");
+            server.connectClients();
+            System.out.println("Both clients connect to the Server successfully!");
+
+
+
+            server.closePipes();
+        } catch (IOException e) {
+            System.err.println(e.getMessage());
+        }
+    }
+
+    //test
+    public void sendTerritory() {
+
+    }
+
     public void sendBoard() {
 
     }
@@ -57,17 +78,7 @@ public class Server {
         serverSock.close();
     }
 
-    public static void main(String[] args) {
-        int portNum = 12345;
-        try {
-            Server server = new Server(portNum);
-            server.connectClients();
 
-            server.closePipes();
-        } catch (IOException e) {
-            System.err.println(e.getMessage());
-        }
-    }
 
     //    public Server(int portNum) throws IOException{
 //        PlayerNames = new ArrayList<>();
