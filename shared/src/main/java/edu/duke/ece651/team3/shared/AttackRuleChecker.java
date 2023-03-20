@@ -1,5 +1,4 @@
 package edu.duke.ece651.team3.shared;
-
 import java.util.ArrayList;
 
 public class AttackRuleChecker extends RuleChecker{
@@ -24,7 +23,7 @@ public class AttackRuleChecker extends RuleChecker{
     public boolean checkSrcDst(Action myAttack, Player currPlayer){
         ArrayList<Player> playerList = riskGameBoard.getAllPlayers();
         int playerId = currPlayer.getPlayerId();
-        int enemyId = -1;
+        int enemyId;
         if(playerId == 0){
             enemyId = 1;
         }
@@ -37,7 +36,7 @@ public class AttackRuleChecker extends RuleChecker{
                 enemy = playerList.get(i);
             }
         }
-        return currPlayer.checkTerrOwner(myAttack.getSrc().getTerritoryName()) && enemy.checkTerrOwner(myAttack.getSrc().getTerritoryName());
+        return currPlayer.checkTerrOwner(myAttack.getSrc().getTerritoryName()) && enemy.checkTerrOwner(myAttack.getDst().getTerritoryName());
     }
 
     /**
@@ -48,10 +47,10 @@ public class AttackRuleChecker extends RuleChecker{
     //TODO: if t == null needed? if already finish the checkSrcDst, it is needed
     public boolean checkPath(Action myAttack, Player currPlayer){
         Territory t = findTerritory(myAttack, currPlayer);
-        return t.checkValidNeighbor(myAttack.getDst());
+        return t.checkExistNeighbor(myAttack.getDst());
     }
 
-    /**t
+    /**
      * Find the territory owned by current player and return the territory
      * @param myAttack attack information
      * @param currPlayer current player
@@ -61,8 +60,9 @@ public class AttackRuleChecker extends RuleChecker{
         int length = currPlayer.getOwnedTerritories().size();
         Territory t = null;
         for (int i = 0; i < length; i++) {
-            if (currPlayer.getOwnedTerritories().get(i).getTerritoryName().equals(myAttack.getSrc())) {
+            if (currPlayer.getOwnedTerritories().get(i).getTerritoryName().equals(myAttack.getSrc().getTerritoryName())) {
                 t = currPlayer.getOwnedTerritories().get(i);
+                return t;
             }
         }
         return t;
