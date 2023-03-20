@@ -38,6 +38,7 @@ public class Client {
             System.out.println(client + " connect to the Server successfully!");
             Territory t1 = client.recvTerritory();
             System.out.println("received " + t1.displayTerritory() + "from server!");
+            client.sendTerritory();
 
 
             client.closePipes();
@@ -55,6 +56,10 @@ public class Client {
     public Territory recvTerritory() throws IOException, ClassNotFoundException {
         Territory territory = (Territory) objectFromServer.readObject();
         return territory;
+    }
+    public void sendTerritory() throws IOException, ClassNotFoundException {
+        Territory t1 = new Territory("b", 3);
+        objectToServer.writeObject(t1);
     }
 
     public void recvBoard() {

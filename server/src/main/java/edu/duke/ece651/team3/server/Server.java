@@ -37,11 +37,15 @@ public class Server {
             server.connectClients();
             System.out.println("Both clients connect to the Server successfully!");
             server.sendTerritory();
+            server.recvTerritory(0);
+            server.recvTerritory(1);
 
 
             server.closePipes();
         } catch (IOException e) {
             System.err.println(e.getMessage());
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
         }
     }
 
@@ -51,6 +55,12 @@ public class Server {
         objectsToClients.get(0).writeObject(t1);
         objectsToClients.get(1).writeObject(t1);
     }
+    public Territory recvTerritory(int playerId) throws IOException, ClassNotFoundException {
+        Territory t1 = (Territory) objectsFromClients.get(playerId).readObject();
+        System.out.println("receive "+t1.displayTerritory()+"from "+playerId);
+        return t1;
+    }
+
 
     public void sendBoard() {
 
