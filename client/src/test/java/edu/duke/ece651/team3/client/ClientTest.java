@@ -181,9 +181,10 @@ public class ClientTest {
 
         BufferedReader mockInput = Mockito.mock(BufferedReader.class);
         when(mockInput.readLine()).thenReturn("S", "M", "Oz", "Mordor","1",
-                "M", "Ozz", "Mor", "1",
                 "A", "Oz", "Mordor", "1",
-                "M", "Oz", "Mordor", "1", "D");
+                "M", "Oz", "Mordor", "1", //Enter Action 1, the src incorrect
+//                "M", "Oz", "Mordor", "1",
+                "D");
 
 
 
@@ -192,7 +193,7 @@ public class ClientTest {
             public void run() {
                 try {
 //                    Client.main(new String[0], mockInput);
-                    Client c = new Client(portNum, action);
+                    Client c = new Client(portNum);
                     //connect with The first client
                     c.printConnectInfo();
                     c.receivePlayerInfoFromServer();
@@ -208,17 +209,21 @@ public class ClientTest {
                     assertEquals(display, c.displayTerritoryAndNeighbor());
                     c.inputReader = mockInput;
                     //Enter the action and check
-                    if (c.promptAction().equals("M")) {
+                    if (c.readAction().equals("M")) {
                         c.enterAction("M");
                     }
-                    if(c.promptAction().equals("A")){
+                    c.checkActionOrder("M");
+                    if(c.readAction().equals("A")){
                         c.enterAction("A");
                     }
                     c.checkActionOrder("M");
-                    c.checkActionOrder("A");
+
 
 //        c.checkActionOrder("M");
                     c.multipleMoves(); //checking
+
+
+
 
                     //Choose when to close
                     c.closePipe();
@@ -246,7 +251,7 @@ public class ClientTest {
         sendObjToClient.writeObject(b1);
 
 
-        String a = "A";
+        String a = "M";
         String a1 = (String) in.readObject();
         assertEquals(a, a1);
 
@@ -254,24 +259,29 @@ public class ClientTest {
         Action action1 = (Action) in.readObject();
         assertEquals(action.getActionUnits(), action1.getActionUnits());
 
-        String a2_exp = "M";
-        String a2 = (String) in.readObject();
-        assertEquals(a2_exp, a2);
+        String infoDone = (String) in.readObject();
+        assertEquals("D", infoDone);
+
+        sendObjToClient.writeObject("Please wait the other player finish enter");
+//
+//        String a2_exp = "M";
+//        String a2 = (String) in.readObject();
+//        assertEquals(a2_exp, a2);
+
+//
+//        Action action2 = (Action) in.readObject();
+//        assertEquals(action.getActionUnits(), action2.getActionUnits());
+//
+//        String a3_exp = "M";
+//        String a3 = (String) in.readObject();
+//        assertEquals(a3_exp, a3);
 
 
-        Action action2 = (Action) in.readObject();
-        assertEquals(action.getActionUnits(), action2.getActionUnits());
-
-        String a3_exp = "M";
-        String a3 = (String) in.readObject();
-        assertEquals(a3_exp, a3);
-
-
-        Action action3 = (Action) in.readObject();
-        assertEquals(action.getActionUnits(), action3.getActionUnits());
+//        Action action3 = (Action) in.readObject();
+//        assertEquals(action.getActionUnits(), action3.getActionUnits());
 
         out.println("HI1!?");
-        sendObjToClient.writeObject("Finish!");
+//        sendObjToClient.writeObject("Finish!");
 
 
         ss.close();

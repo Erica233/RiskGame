@@ -22,14 +22,14 @@ public class Client implements Serializable {
     ArrayList<Action> attackActions;
 
 
-    public Client(int portNum, Action _action) throws IOException {
-        this.action = _action;
+    public Client(int portNum) throws IOException {
         this.inputReader = new BufferedReader(new InputStreamReader(System.in));
         this.clientS = new Socket("localhost", portNum);
         this.readFromServer = new ObjectInputStream(clientS.getInputStream()); //TODO: does not build successfully
         this.sendObjToServer = new ObjectOutputStream(clientS.getOutputStream());
         this.moveActions = new ArrayList<>();
         this.attackActions = new ArrayList<>();
+        this.action = new MoveAction();
     }
 
     /**
@@ -116,10 +116,14 @@ public class Client implements Serializable {
     public void multipleMoves() throws IOException, ClassNotFoundException {
         String action = "";
         while (!action.equals("D")) {
-            action = promptAction();
+            action = readAction();
             sendObjToServer.writeObject(action);
             if(action.equals("M")) {
                 Action newAction = enterAction("M");
+                //Checking whether the action enters correct
+//                while(!checkActionOrder("M")){
+//                    newAction = enterAction("M");
+//                }
                 transAction(newAction);
             }
         }
@@ -151,7 +155,7 @@ public class Client implements Serializable {
      * This method reads the action from the user using bufferReader
      * @throws IOException
      */
-    public String promptAction() throws IOException {
+    public String readAction() throws IOException {
         String prompt = "You are the " + playerColor + " player, what would you like to do?\n(M)ove\n(A)ttack\n(D)one";
         String errorInput = "The input is invalid, choose from \n(M)ove\n(A)ttack\n(D)one";
         out.println(prompt);
@@ -198,10 +202,10 @@ public class Client implements Serializable {
      * @throws IOException
      */
     public Action enterAction(String moveOrAttack) throws IOException{
-        String srcPrompt = "Ok, you choose to move. Which Type the name of the territory you want to move FROM";
+        String srcPrompt = "Ok, you choose to move.  Type the name of the territory you want to move FROM";
         enterSrcOrDst(srcPrompt, "S");
 
-        String dstPrompt = "Which Type the name of the territory you want to move TO";
+        String dstPrompt = "Type the name of the territory you want to move TO";
         enterSrcOrDst(dstPrompt, "D");
 
         String unitPrompt = "Enter the units that you want to move";
@@ -238,12 +242,9 @@ public class Client implements Serializable {
         clientS.close();
     }
 
-    public static void main(String[] args) throws Exception {
-        //Initialize RiskGameBoard
-        RiskGameBoard b1 = new RiskGameBoard();
-        int portNum = 12345;
-
+    public void clientConnection() throws Exception {
         //Initialize player and its neighbors
+        RiskGameBoard b1 = new RiskGameBoard();
         Territory t = new Territory("Oz", 2);
         Territory t1 = new Territory("Mordor", 8);
         Territory t2 = new Territory("Gondor", 5);
@@ -261,21 +262,27 @@ public class Client implements Serializable {
         int actionUnits = 5;
         Action action = new MoveAction(actionType, src, dst, actionUnits);
 
-        Client c = new Client(portNum, action);
+
 
         //connect with The first client
-        c.printConnectInfo();
-        c.receivePlayerInfoFromServer();
-        c.receiveBoardFromServer();
+        printConnectInfo();
+        receivePlayerInfoFromServer();
+        receiveBoardFromServer();
 
         //Adding player
-        c.addPlayer(p1);
+        addPlayer(p1);
         //Enter the action and check
-        if(c.promptAction().equals("M")){
-            c.enterAction("M");
+        if(readAction().equals("M")){
+            enterAction("M");
         }
-        c.checkActionOrder("M");
-        c.multipleMoves(); //checking
+        checkActionOrder("M");
+        multipleMoves(); //checking
+    }
+
+    public static void main(String[] args) throws Exception {
+        int portNum = 12345;
+        Client c = new Client(portNum);
+        c.clientConnection();
 
         //Choose when to close
         c.closePipe();

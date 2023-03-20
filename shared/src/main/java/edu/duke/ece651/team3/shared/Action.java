@@ -24,12 +24,14 @@ public abstract class Action implements Serializable {
         return actionUnits;
     }
 
+
     public Action(String _actionType, Territory _src, Territory _dst, int _actionUnits){
         this.actionType = _actionType;
         this.src = _src;
         this.dst = _dst;
         this.actionUnits = _actionUnits;
     }
+
 
     //Since the actions are read from the user, it supports set methods
     public void setActionType(String actionType) {
