@@ -104,7 +104,6 @@ public class Territory implements Serializable, Comparable<Territory> {
      *
      * @return true if it is valid to add to the neighbors, otherwise false
      */
-    //TODO: unfinished
     public boolean checkValidNeighbor(Territory territoryToAddAsNeighbor) {
         if (territoryName.equals(territoryToAddAsNeighbor.getTerritoryName())) {
             return false;
