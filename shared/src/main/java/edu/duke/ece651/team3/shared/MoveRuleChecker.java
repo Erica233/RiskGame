@@ -71,13 +71,14 @@ public class MoveRuleChecker extends RuleChecker{
     public boolean checkPath(Action myMove, Player currPlayer){
         Territory src = myMove.getSrc();
         Territory dst = myMove.getDst();
-        HashMap<Integer, Territory> allNeighbors = new HashMap<>();
-        ArrayList<Territory> Neighbors = src.getNeighbors();
-        for(int i = 0; i < Neighbors.size(); i++){
-            allNeighbors.put(i, Neighbors.get(i));
+        if(src.equals(dst)){
+            return false;
         }
+
+        ArrayList<Territory> Neighbors = src.getNeighbors();
+
         HashMap<Territory, Boolean> visited = new HashMap<>();
-        if(isValidPath(src, dst, allNeighbors, visited)){
+        if(isValidPath(src, dst, Neighbors, visited)){
             return true;
         }
         return false;
@@ -92,11 +93,13 @@ public class MoveRuleChecker extends RuleChecker{
      * @return
      */
     public boolean isValidPath(Territory src, Territory dst,
-                               HashMap<Integer, Territory> Neighbors, HashMap<Territory, Boolean> visited) {
-        if (src == dst) {
+                               ArrayList<Territory> Neighbors, HashMap<Territory, Boolean> visited) {
+        if (src.equals(dst)) {
             return true;
         }
+
         visited.put(src, true);
+
         for(int i = 0; i < Neighbors.size(); i++){
             if (!visited.get(Neighbors.get(i)) && isValidPath(Neighbors.get(i), dst, Neighbors, visited)) {
                 return true;
