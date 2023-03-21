@@ -39,7 +39,8 @@ public class Server {
             Server server = new Server(portNum);
             System.out.println("Create Server successfully!");
             server.connectClients();
-            System.out.println("Both clients connect to the Server successfully!");
+            System.out.println("Both clients connect to the Server successfully!\n");
+            server.initGame();
             server.sendBoardToAllClients();
 
 
@@ -66,6 +67,12 @@ public class Server {
         return t1;
     }
 
+    public void sendStringToAllClients() throws IOException {
+        objectsToClients.get(0).writeObject("");
+        objectsToClients.get(1).writeObject(riscBoard);
+        System.out.println("send boards to all clients!");
+    }
+
     public void sendBoardToAllClients() throws IOException {
         objectsToClients.get(0).writeObject(riscBoard);
         objectsToClients.get(1).writeObject(riscBoard);
@@ -74,6 +81,11 @@ public class Server {
 
     public void recvActions() {
 
+    }
+
+    public void initGame() throws Exception {
+        riscBoard.initMap();
+        System.out.println("initialize map successfully!");
     }
 
     public void connectClients() throws IOException {

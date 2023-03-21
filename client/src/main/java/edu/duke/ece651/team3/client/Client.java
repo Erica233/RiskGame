@@ -39,14 +39,14 @@ public class Client {
             Client client = new Client(hostname, portNum);
             System.out.println(client + " connect to the Server successfully!");
             client.recvStoreBoard();
-
+            System.out.println("received initial map successfully!");
 
             client.closePipes();
         } catch (IOException e) {
             System.err.println(e.getMessage());
             System.exit(-1);
         } catch (ClassNotFoundException e) {
-            //recvTerritory()
+            //recvBoard()
             e.printStackTrace();
         }
 
@@ -64,7 +64,7 @@ public class Client {
 
     public Board recvStoreBoard() throws IOException, ClassNotFoundException {
         riskGameBoard = (RiskGameBoard) objectFromServer.readObject();
-        System.out.println("receive "+riskGameBoard.displayBoard()+"from server!");
+        System.out.println(riskGameBoard.displayBoard());
         return riskGameBoard;
     }
 
