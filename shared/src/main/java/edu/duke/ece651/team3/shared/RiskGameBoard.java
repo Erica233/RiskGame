@@ -58,6 +58,7 @@ public class RiskGameBoard implements Board, Serializable {
         allPlayers.add(player1);
         allPlayers.add(player2);
         output = output + player1.displayPlayer() + "\n" + player2.displayPlayer() + "\n";
+        System.out.println("initialize map successfully!");
         return output;
     }
 

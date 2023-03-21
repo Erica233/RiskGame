@@ -41,7 +41,7 @@ public class Server {
             server.connectClients();
             System.out.println("Both clients connect to the Server successfully!\n");
             server.initGame();
-            server.sendBoardToAllClients();
+
 
 
 
@@ -83,9 +83,16 @@ public class Server {
 
     }
 
+    public void assignPlayerIdToClients() throws IOException {
+        objectsToClients.get(0).writeInt(0);
+        objectsToClients.get(1).writeInt(1);
+        System.out.println("assign and send playerId to all clients!");
+    }
+
     public void initGame() throws Exception {
         riscBoard.initMap();
-        System.out.println("initialize map successfully!");
+        assignPlayerIdToClients();
+        sendBoardToAllClients();
     }
 
     public void connectClients() throws IOException {

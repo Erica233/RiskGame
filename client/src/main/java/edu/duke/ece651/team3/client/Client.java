@@ -25,6 +25,7 @@ public class Client {
     private final ObjectInputStream objectFromServer;
     private final ObjectOutputStream objectToServer;
     private RiskGameBoard riskGameBoard = null;
+    private int playerId = -1;
 
     public Client(String hostname, int _portNum) throws IOException {
         this.socket = new Socket(hostname, _portNum);
@@ -38,8 +39,8 @@ public class Client {
         try {
             Client client = new Client(hostname, portNum);
             System.out.println(client + " connect to the Server successfully!");
-            client.recvStoreBoard();
-            System.out.println("received initial map successfully!");
+            client.joinGame();
+
 
             client.closePipes();
         } catch (IOException e) {
@@ -50,6 +51,17 @@ public class Client {
             e.printStackTrace();
         }
 
+    }
+
+    public void joinGame() throws IOException, ClassNotFoundException {
+        recvPlayerId();
+        recvStoreBoard();
+        System.out.println("received initial map successfully!");
+    }
+
+    public void recvPlayerId() throws IOException {
+        playerId = objectFromServer.readInt();
+        System.out.println("received playerId = " + playerId + " successfully!");
     }
 
     //test
@@ -80,7 +92,7 @@ public class Client {
 
     @Override
     public String toString() {
-        String output = "Client ";
+        String output = "Client " + playerId + ": ";
         output += socket.getInetAddress();
         return output;
     }
