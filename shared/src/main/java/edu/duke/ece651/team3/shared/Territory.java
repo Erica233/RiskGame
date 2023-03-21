@@ -10,9 +10,20 @@ import java.util.HashMap;
  */
 public class Territory implements Serializable, Comparable<Territory> {
     private final String territoryName;
-    private int numUnits;
+    private int numUnits = 0;
     private final ArrayList<Territory> neighbors;
     private final HashMap<Class<?>, Integer> units;
+
+    /**
+     * Constructs a Territory with specified name, and number of units
+     *
+     * @param _name the name of the Territory
+     */
+    public Territory(String _name) {
+        this.territoryName = _name;
+        this.neighbors = new ArrayList<>();
+        this.units = new HashMap<>();
+    }
 
     /**
      * Constructs a Territory with specified name, and number of units
@@ -27,19 +38,31 @@ public class Territory implements Serializable, Comparable<Territory> {
         this.units = new HashMap<>();
     }
 
+//    public Territory(String _name, ArrayList<Territory> _neighbors) {
+//        this.territoryName = _name;
+//        this.neighbors = _neighbors;
+//        this.units = new HashMap<>();
+//    }
+
+    public Territory(String _name, HashMap<Class<?>, Integer> _units) {
+        this.territoryName = _name;
+        this.neighbors = new ArrayList<>();
+        this.units = _units;
+        updateNumUnits();
+    }
+
     /**
      * Constructs a Territory with specified name, number of units, and neighbor territories
      *
      * @param _name the name of the Territory
-     * @param _numUnits the number of units in the Territory
      * @param _neighbors the neighbors of the Territory
      * @param _units units in this Territory
      */
-    public Territory(String _name, int _numUnits, ArrayList<Territory> _neighbors, HashMap<Class<?>, Integer> _units) {
+    public Territory(String _name, ArrayList<Territory> _neighbors, HashMap<Class<?>, Integer> _units) {
         this.territoryName = _name;
-        this.numUnits = _numUnits;
         this.neighbors = _neighbors;
         this.units = _units;
+        updateNumUnits();
     }
 
     @Override
@@ -127,8 +150,8 @@ public class Territory implements Serializable, Comparable<Territory> {
      * @return true if it is neighbrr false if it is not neighbor
      */
     public boolean checkExistNeighbor(Territory territoryToCheck){
-        for(int i = 0; i < neighbors.size(); i++){
-            if(territoryToCheck.getTerritoryName().equals(neighbors.get(i).getTerritoryName())){
+        for (Territory neighbor : neighbors) {
+            if (territoryToCheck.getTerritoryName().equals(neighbor.getTerritoryName())) {
                 return true;
             }
         }
@@ -170,8 +193,6 @@ public class Territory implements Serializable, Comparable<Territory> {
         }
         numUnits = num;
     }
-
-
 
     /**
      * Add specific type and number of unit to units
@@ -219,5 +240,9 @@ public class Territory implements Serializable, Comparable<Territory> {
 
     public ArrayList<Territory> getNeighbors() {
         return neighbors;
+    }
+
+    public HashMap<Class<?>, Integer> getUnits() {
+        return units;
     }
 }

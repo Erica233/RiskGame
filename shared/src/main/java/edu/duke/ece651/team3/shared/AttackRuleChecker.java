@@ -62,7 +62,7 @@ public class AttackRuleChecker extends RuleChecker{
         for (int i = 0; i < length; i++) {
             if (currPlayer.getOwnedTerritories().get(i).getTerritoryName().equals(myAttack.getSrc().getTerritoryName())) {
                 t = currPlayer.getOwnedTerritories().get(i);
-                return t;
+                break;
             }
         }
         return t;

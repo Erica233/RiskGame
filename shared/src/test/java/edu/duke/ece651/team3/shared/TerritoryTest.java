@@ -39,7 +39,12 @@ public class TerritoryTest {
         assertNotEquals("Narnias", t1.getTerritoryName());
         assertEquals(3, t1.getNumUnits());
         assertNotEquals(4, t1.getNumUnits());
+        Territory t2 = new Territory("a");
+        assertEquals("a", t2.getTerritoryName());
+        assertEquals(new ArrayList<Territory>(), t2.getNeighbors());
+        assertEquals(new HashMap<Class<?>, Integer>(), t2.getUnits());
     }
+
     @Test
     public void test_neighbors() {
         ArrayList<Territory> n1 = new ArrayList<>();
@@ -47,7 +52,7 @@ public class TerritoryTest {
         assertEquals(n1, t1.getNeighbors());
         ArrayList<Territory> n2 = new ArrayList<>();
         n2.add(t1);
-        Territory t2 = new Territory("Gondor", 14, n2, new HashMap<>());
+        Territory t2 = new Territory("Gondor", n2, new HashMap<>());
         assertEquals(n2, t2.getNeighbors());
         //Territory t3 = new Territory("Morder", 9);
     }
@@ -59,11 +64,11 @@ public class TerritoryTest {
         assertEquals(n1, t1.getNeighbors());
         ArrayList<Territory> n2 = new ArrayList<>();
         n2.add(t1);
-        Territory t2 = new Territory("Gondor", 14, n2, new HashMap<>());
+        Territory t2 = new Territory("Gondor", n2, new HashMap<>());
         assertEquals(n2, t2.getNeighbors());
         ArrayList<Territory> n3 = new ArrayList<>();
         n3.add(t2);
-        Territory t3 = new Territory("Morder", 9, n3, new HashMap<>());
+        Territory t3 = new Territory("Morder", n3, new HashMap<>());
         t2.addANeighbor(t3);
         n2.add(t3);
         assertEquals(n2, t2.getNeighbors());
@@ -103,7 +108,7 @@ public class TerritoryTest {
         Unit unit1 = new Soldier();
         //units.put(unit1.getClass(), 1);
         ArrayList<Territory> n = new ArrayList<>();
-        Territory t = new Territory("Gondor", 0, n, units);
+        Territory t = new Territory("Gondor", n, units);
         t.increaseUnit(unit1, 1);
         t.increaseUnit(unit1, 2);
         assertEquals(3, t.getNumUnits());
@@ -117,7 +122,7 @@ public class TerritoryTest {
         Unit unit2 = new Soldier();
         units.put(unit1.getClass(), 1);
         ArrayList<Territory> n = new ArrayList<>();
-        Territory t = new Territory("Gondor", 0, n, units);
+        Territory t = new Territory("Gondor", n, units);
         t.decreaseUnit(unit2, 1);
         assertEquals(0, t.getNumUnits());
         Unit unit3 = new Officer();

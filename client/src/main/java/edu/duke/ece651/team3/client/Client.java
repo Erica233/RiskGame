@@ -70,7 +70,7 @@ public class Client {
         return territory;
     }
     public void sendTerritory() throws IOException, ClassNotFoundException {
-        Territory t1 = new Territory("b", 3);
+        Territory t1 = new Territory("b");
         objectToServer.writeObject(t1);
     }
 

@@ -3,6 +3,7 @@ package edu.duke.ece651.team3.shared;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 
 /**
  * A Risk Game Board
@@ -22,18 +23,21 @@ public class RiskGameBoard implements Board, Serializable {
     }
 
     public String initMap() throws Exception {
-        Territory t1 = new Territory("a", 5);
-        Territory t2 = new Territory("b", 5);
-        Territory t3 = new Territory("c", 5);
-        Territory t4 = new Territory("d", 5);
-        Territory t5 = new Territory("e", 5);
-        Territory t6 = new Territory("f", 5);
-        Territory t7 = new Territory("g", 5);
-        Territory t8 = new Territory("h", 5);
-        Territory t9 = new Territory("i", 5);
-        Territory t10 = new Territory("j", 5);
-        Territory t11 = new Territory("k", 5);
-        Territory t12 = new Territory("l", 5);
+        HashMap<Class<?>, Integer> units = new HashMap<>();
+        Unit unit1 = new Soldier();
+        units.put(unit1.getClass(), 5);
+        Territory t1 = new Territory("a", (HashMap<Class<?>, Integer>) units.clone());
+        Territory t2 = new Territory("b", (HashMap<Class<?>, Integer>) units.clone());
+        Territory t3 = new Territory("c", (HashMap<Class<?>, Integer>) units.clone());
+        Territory t4 = new Territory("d", (HashMap<Class<?>, Integer>) units.clone());
+        Territory t5 = new Territory("e", (HashMap<Class<?>, Integer>) units.clone());
+        Territory t6 = new Territory("f", (HashMap<Class<?>, Integer>) units.clone());
+        Territory t7 = new Territory("g", (HashMap<Class<?>, Integer>) units.clone());
+        Territory t8 = new Territory("h", (HashMap<Class<?>, Integer>) units.clone());
+        Territory t9 = new Territory("i", (HashMap<Class<?>, Integer>) units.clone());
+        Territory t10 = new Territory("j", (HashMap<Class<?>, Integer>) units.clone());
+        Territory t11 = new Territory("k", (HashMap<Class<?>, Integer>) units.clone());
+        Territory t12 = new Territory("l", (HashMap<Class<?>, Integer>) units.clone());
         t1.addNeighbors(t2, t3);
         t2.addNeighbors(t1, t3, t4);
         t3.addNeighbors(t1, t2, t4, t5, t12);
@@ -81,6 +85,9 @@ public class RiskGameBoard implements Board, Serializable {
 
     public String displayBoard() {
         StringBuilder output = new StringBuilder();
+        if (allPlayers.size() == 0) {
+            return output.append("No players in the Board!\n").toString();
+        }
         for (Player aPlayer: allPlayers) {
             output.append(aPlayer.displayPlayer()).append("\n");
         }
