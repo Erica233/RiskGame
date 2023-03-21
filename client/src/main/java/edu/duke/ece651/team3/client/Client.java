@@ -82,7 +82,7 @@ public class Client implements Serializable {
                 Action currAction = moveActions.get(i);
                 if(!mrc.checkSrcDst(currAction, this.player)) return false;
                 if(!mrc.checkNumUnits(currAction, player)) return false;
-                if(!mrc.checkPath(currAction, player)) return false;
+                if(!mrc.checkPath(currAction, riskGameBoard, player)) return false;
             }
         }
         else{
@@ -90,7 +90,7 @@ public class Client implements Serializable {
                 Action currAction = attackActions.get(i);
                 if(!mrc.checkSrcDst(currAction, this.player)) return false;
                 if(!mrc.checkNumUnits(currAction, player)) return false;
-                if(!mrc.checkPath(currAction, player)) return false;
+                if(!mrc.checkPath(currAction, riskGameBoard ,player)) return false;
             }
         }
         return true;

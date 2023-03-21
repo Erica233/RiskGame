@@ -64,27 +64,21 @@ public class MoveRuleChecker extends RuleChecker{
      * @param currPlayer current player
      * @return true if valid false if invalid
      */
-    public boolean checkPathWithBothPlayer(Action myMove, Player currPlayer, Player OtherPlayer) throws Exception {
+    public boolean checkPath(Action myMove, RiskGameBoard r, Player currPlayer) throws Exception {
         Territory src = myMove.getSrc();
         Territory dst = myMove.getDst();
         ArrayList<Territory> Neighbors = src.getNeighbors();
         HashMap<Territory, Boolean> visited = new HashMap<>();
-//
-//        RiskGameBoard r = new RiskGameBoard();
-//        r.initMap();
-//        Player p1 = r.getAllPlayers().get(0);
-//        Player p2 = r.getAllPlayers().get(1);
-//        if(p1.equals(currPlayer)){
-//            currPlayer = p1;
-//            initVisited(currPlayer, visited);
-//            initVisited(p2, visited);
-//
-//        }
-//        if(p2.equals(currPlayer)){
-//            currPlayer = p2;
-//            initVisited(currPlayer, visited);
-//            initVisited(p1, visited);
-//        }
+
+        Player OtherPlayer1 = r.getAllPlayers().get(0);
+        Player OtherPlayer2 = r.getAllPlayers().get(1);
+        Player OtherPlayer = null;
+        if(OtherPlayer1.equals(currPlayer)){
+            OtherPlayer = OtherPlayer2;
+        }
+        if(OtherPlayer2.equals(currPlayer)){
+            OtherPlayer = OtherPlayer1;
+        }
 
         initVisited(currPlayer, visited);
         initVisited(OtherPlayer, visited);
@@ -94,30 +88,7 @@ public class MoveRuleChecker extends RuleChecker{
         return false;
     }
 
-    /**
-     * This method checks whether the path is correct
-     * It uses DFS to check whether the territory belongs to the self player
-     * @param myMove move information
-     * @param currPlayer current player
-     * @return true if valid false if invalid
-     */
-    public boolean checkPath(Action myMove, Player currPlayer) throws Exception {
-//        Territory src = myMove.getSrc();
-//        Territory dst = myMove.getDst();
-////        if(src.equals(dst)){
-////            return false;
-////        }
-//
-//        ArrayList<Territory> Neighbors = src.getNeighbors();
-//
-//        HashMap<Territory, Boolean> visited = new HashMap<>();
-//        initVisited(currPlayer, visited);
-////        initVisited(OtherPlayer, visited);
-//        if(isValidPath(src, dst, Neighbors, visited, currPlayer)){
-//            return true;
-//        }
-        return true;
-    }
+
 
     /**
      * This method using dfs, if the path exist, return true. If not, return false
@@ -135,13 +106,11 @@ public class MoveRuleChecker extends RuleChecker{
 
         visited.put(src, true);
         Neighbors = src.getNeighbors();
-
         for(int i = 0; i < Neighbors.size(); i++){
             if (!visited.get(Neighbors.get(i)) && checkIsSelfTerritory(Neighbors.get(i), currPlayer) &&
                     isValidPath(Neighbors.get(i), dst, Neighbors, visited, currPlayer)) {
                 return true;
             }
-//            isValidPath(Neighbors.get(i), dst, Neighbors, visited);
         }
         return false;
     }

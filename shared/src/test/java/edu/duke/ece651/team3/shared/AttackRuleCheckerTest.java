@@ -40,7 +40,7 @@ public class AttackRuleCheckerTest {
         Territory b = new Territory("b", 2);
         Action myAction = new AttackAction("A", a, b, 2);
         AttackRuleChecker attackRuleChecker = new AttackRuleChecker(myAction, r);
-        assertEquals(true, attackRuleChecker.checkPath(myAction, p));
+        assertEquals(true, attackRuleChecker.checkPath(myAction, r, p));
     }
 
     @Test
