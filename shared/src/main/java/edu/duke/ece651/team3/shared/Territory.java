@@ -122,6 +122,20 @@ public class Territory implements Serializable, Comparable<Territory> {
     }
 
     /**
+     * to check whether is object's neighbor
+     * @param territoryToCheck territory To Check whether is its neighbor
+     * @return true if it is neighbrr false if it is not neighbor
+     */
+    public boolean checkExistNeighbor(Territory territoryToCheck){
+        for(int i = 0; i < neighbors.size(); i++){
+            if(territoryToCheck.getTerritoryName().equals(neighbors.get(i).getTerritoryName())){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
      * Displays the Territory information, including its name, number of units and neighbors
      *
      * @return a String about its name, number of units and the neighbor territories
