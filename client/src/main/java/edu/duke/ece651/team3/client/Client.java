@@ -50,7 +50,7 @@ public class Client {
             Client client = new Client(hostname, portNum);
             System.out.println(client + " connect to the Server successfully!");
             client.joinGame();
-            client.playGame();
+            //client.playGame();
 
 
             client.closePipes();

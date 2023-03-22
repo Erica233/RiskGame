@@ -3,7 +3,7 @@ package edu.duke.ece651.team3.shared;
 import java.io.Serializable;
 import java.util.HashMap;
 
-public abstract class Action implements Serializable {
+public class Action implements Serializable {
     private String actionType;
     private String srcName; //The FROM territory
     private String dstName; //The TO territory
