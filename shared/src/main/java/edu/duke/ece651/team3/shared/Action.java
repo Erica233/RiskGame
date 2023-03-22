@@ -5,14 +5,14 @@ import java.util.HashMap;
 
 public abstract class Action implements Serializable {
     private String actionType;
-    private Territory src; //The FROM territory
-    private Territory dst; //The TO territory
+    private String srcName; //The FROM territory
+    private String dstName; //The TO territory
     private HashMap<Integer, Integer> actionUnits;
 
-    public Action(String _actionType, Territory _src, Territory _dst, HashMap<Integer, Integer> _actionUnits){
+    public Action(String _actionType, String _srcName, String _dstName, HashMap<Integer, Integer> _actionUnits){
         this.actionType = _actionType;
-        this.src = _src;
-        this.dst = _dst;
+        this.srcName = _srcName;
+        this.dstName = _dstName;
         this.actionUnits = _actionUnits;
     }
 
@@ -20,12 +20,12 @@ public abstract class Action implements Serializable {
         return actionType;
     }
 
-    public Territory getSrc() {
-        return src;
+    public String getSrcName() {
+        return srcName;
     }
 
-    public Territory getDst() {
-        return dst;
+    public String getDstName() {
+        return dstName;
     }
 
     public HashMap<Integer, Integer> getActionUnits() {
@@ -37,12 +37,12 @@ public abstract class Action implements Serializable {
         this.actionType = actionType;
     }
 
-    public void setSrc(Territory src) {
-        this.src = src;
+    public void setSrcName(String srcName) {
+        this.srcName = srcName;
     }
 
-    public void setDst(Territory dst) {
-        this.dst = dst;
+    public void setDstName(String dstName) {
+        this.dstName = dstName;
     }
 
     public void setActionUnits(HashMap<Integer, Integer> actionUnits) {
@@ -58,8 +58,8 @@ public abstract class Action implements Serializable {
         }
         return "Action{" +
                 "actionType='" + actionType + '\'' +
-                ", src=" + src +
-                ", dst=" + dst +
+                ", src=" + srcName +
+                ", dst=" + dstName +
                 ", actionUnits=" + s +
                 '}';
     }

@@ -4,14 +4,14 @@ import java.util.ArrayList;
 public class AttackRuleChecker extends RuleChecker{
     private final RiskGameBoard riskGameBoard;
     private final Action action;
-    Territory src;
-    Territory dst;
+    String srcName;
+    String dstName;
 
     public AttackRuleChecker(Action _action, RiskGameBoard _riskGameBoard){
         super(_action);
         this.action = _action;
-        this.src = this.action.getSrc();
-        this.dst = this.action.getDst();
+        this.srcName = this.action.getSrcName();
+        this.dstName = this.action.getDstName();
         this.riskGameBoard = _riskGameBoard;
     }
 
@@ -37,7 +37,7 @@ public class AttackRuleChecker extends RuleChecker{
                 enemy = playerList.get(i);
             }
         }
-        return currPlayer.checkTerrOwner(myAttack.getSrc().getTerritoryName()) && enemy.checkTerrOwner(myAttack.getDst().getTerritoryName());
+        return currPlayer.checkTerrOwner(myAttack.getSrcName()) && enemy.checkTerrOwner(myAttack.getDstName());
     }
 
     /**
@@ -48,7 +48,7 @@ public class AttackRuleChecker extends RuleChecker{
     //TODO: if t == null needed? if already finish the checkSrcDst, it is needed
     public boolean checkPath(Action myAttack, RiskGameBoard r, Player currPlayer){
         Territory t = findTerritory(myAttack, currPlayer);
-        return t.checkExistNeighbor(myAttack.getDst());
+        return t.checkExistNeighbor(myAttack.getDstName());
     }
 
     /**
@@ -61,7 +61,7 @@ public class AttackRuleChecker extends RuleChecker{
         int length = currPlayer.getOwnedTerritories().size();
         Territory t = null;
         for (int i = 0; i < length; i++) {
-            if (currPlayer.getOwnedTerritories().get(i).getTerritoryName().equals(myAttack.getSrc().getTerritoryName())) {
+            if (currPlayer.getOwnedTerritories().get(i).getTerritoryName().equals(myAttack.getSrcName())) {
                 t = currPlayer.getOwnedTerritories().get(i);
                 break;
             }

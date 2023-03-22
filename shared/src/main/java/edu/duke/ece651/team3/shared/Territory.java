@@ -152,9 +152,9 @@ public class Territory implements Serializable, Comparable<Territory> {
      * @param territoryToCheck territory To Check whether is its neighbor
      * @return true if it is neighbrr false if it is not neighbor
      */
-    public boolean checkExistNeighbor(Territory territoryToCheck){
+    public boolean checkExistNeighbor(String territoryToCheck){
         for (Territory neighbor : neighbors) {
-            if (territoryToCheck.getTerritoryName().equals(neighbor.getTerritoryName())) {
+            if (territoryToCheck.equals(neighbor.getTerritoryName())) {
                 return true;
             }
         }
@@ -167,8 +167,10 @@ public class Territory implements Serializable, Comparable<Territory> {
      * @return a String about its name, number of units and the neighbor territories
      */
     public String displayTerritory() {
+        int forceLevel = 1;
         StringBuilder output = new StringBuilder();
-        output.append(numUnits).append(" units in ").append(territoryName);
+
+        output.append(units.get(forceLevel)).append(" units in ").append(territoryName);
         if (neighbors.isEmpty()) {
             output.append(" (no neighbors)\n");
         } else {

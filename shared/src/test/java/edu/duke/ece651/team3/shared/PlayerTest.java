@@ -81,7 +81,7 @@ class PlayerTest {
         Player p1 = new Player(1, "green", 3, ts1);
         String expected1 = "green player:\n---------------\nno territories\n";
         assertEquals(expected1, p1.displayPlayer());
-        Territory t1 = new Territory("Oz", 2);
+        Territory t1 = new Territory("Oz", 1, 2);
         ts1.add(t1);
         String expected2 = "green player:\n---------------\n2 units in Oz (no neighbors)\n";
         assertEquals(expected2, p1.displayPlayer());

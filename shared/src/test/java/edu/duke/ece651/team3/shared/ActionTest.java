@@ -15,7 +15,7 @@ public class ActionTest {
     HashMap<Integer, Integer> actionUnits = new HashMap<>();
     actionUnits.put(1, 2);
 
-    Action act = new MoveAction(actionType, src, dst, actionUnits);
+    Action act = new MoveAction(actionType, "Space", "Mordor", actionUnits);
 
     assertEquals("M", act.getActionType());
     assertEquals(actionUnits, act.getActionUnits());
@@ -26,10 +26,12 @@ public class ActionTest {
 
     Territory newSrc = new Territory("Oz", 8);
     Territory newDst = new Territory("Elantris", 6);
-    act.setSrc(newSrc);
-    act.setDst(newDst);
-    assertEquals(newSrc, act.getSrc());
-    assertEquals(newDst, act.getDst());
+    String newSrcName = "Oz";
+    String newDstName = "Elantris";
+    act.setSrcName("Oz");
+    act.setDstName("Elantris");
+    assertEquals(newSrcName, act.getSrcName());
+    assertEquals(newDstName, act.getDstName());
 
     act.setActionUnits(actionUnits);
     assertEquals(actionUnits, act.getActionUnits());
@@ -37,8 +39,8 @@ public class ActionTest {
     String ss = "null(1 : 2) ";
 
     String s = "Action{" + "actionType='" + act.getActionType() + '\'' +
-            ", src=" + act.getSrc() +
-            ", dst=" + act.getDst() +
+            ", src=" + act.getSrcName() +
+            ", dst=" + act.getDstName() +
             ", actionUnits=" + ss +
             '}';
     assertEquals(s, act.toString());

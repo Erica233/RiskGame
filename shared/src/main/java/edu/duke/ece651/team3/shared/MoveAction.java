@@ -4,8 +4,8 @@ import java.util.HashMap;
 
 public class MoveAction extends Action{
 
-    public MoveAction(String _actionType, Territory _src, Territory _dst, HashMap<Integer, Integer> _actionUnits) {
-        super(_actionType, _src, _dst, _actionUnits);
+    public MoveAction(String _actionType, String _srcName, String _dstName, HashMap<Integer, Integer> _actionUnits) {
+        super(_actionType, _srcName, _dstName, _actionUnits);
     }
 
 

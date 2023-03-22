@@ -1,5 +1,6 @@
 package edu.duke.ece651.team3.shared;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -30,6 +31,7 @@ class RiskGameBoardTest {
     @Test
     public void test_displayBoard() throws Exception {
         Board m1 = new RiskGameBoard();
+        assertEquals("No players in the Board!\n", m1.displayBoard());
         m1.initMap();
 
         String expected = "red player:\n" +
@@ -52,7 +54,7 @@ class RiskGameBoardTest {
                 "\n";
         assertEquals(expected, m1.displayBoard());
     }
-
+    
     @Test
     public void test_initMap() throws Exception {
         Board b1 = new RiskGameBoard();
