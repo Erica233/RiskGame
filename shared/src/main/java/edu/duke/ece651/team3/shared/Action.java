@@ -25,13 +25,6 @@ public abstract class Action implements Serializable {
         return actionUnits;
     }
 
-    public int getActionNumUnits(){
-        int sum = 0;
-        for(Class<?> c : actionUnits.keySet()){
-            sum += actionUnits.get(c);
-        }
-        return sum;
-    }
 
     public Action(String _actionType, Territory _src, Territory _dst, HashMap<Class<?>, Integer> _actionUnits){
         this.actionType = _actionType;
