@@ -51,8 +51,12 @@ public class MoveRuleChecker extends RuleChecker{
      */
     public boolean checkNumUnits(Action myMove, Player currPlayer){
         Territory t = findTerritory(myMove, currPlayer);
-        if(myMove.getActionUnits() > t.getNumUnits() || myMove.getActionUnits() < 0){
-            return false;
+        for(Class<?> c : myMove.getActionUnits().keySet()){
+            int numUnits = myMove.getActionUnits().get(c);
+            //If move units is greater than the current scr unit
+            if(numUnits > t.getUnits().get(c) || numUnits < 0){
+                return false;
+            }
         }
         return true;
     }
