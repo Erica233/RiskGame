@@ -3,9 +3,11 @@ package edu.duke.ece651.team3.client;
 import edu.duke.ece651.team3.shared.Board;
 import edu.duke.ece651.team3.shared.RiskGameBoard;
 import edu.duke.ece651.team3.shared.Territory;
+import org.checkerframework.checker.units.qual.A;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.ArrayList;
 
 public class Client {
 //    private final Socket clientS; //The unique ID for each client
@@ -26,11 +28,18 @@ public class Client {
     private final ObjectOutputStream objectToServer;
     private RiskGameBoard riskGameBoard = null;
     private int playerId = -1;
+    private final BufferedReader inputReader;
+    private final ArrayList<Action> moveActions;
+    private final ArrayList<Action> attackActions;
 
     public Client(String hostname, int _portNum) throws IOException {
         this.socket = new Socket(hostname, _portNum);
         this.objectFromServer = new ObjectInputStream(socket.getInputStream());
         this.objectToServer = new ObjectOutputStream(socket.getOutputStream());
+        this.inputReader = new BufferedReader(new InputStreamReader(System.in));
+
+        this.moveActions = new ArrayList<>();
+        this.attackActions = new ArrayList<>();
     }
 
     public static void main(String[] args) {
@@ -40,6 +49,7 @@ public class Client {
             Client client = new Client(hostname, portNum);
             System.out.println(client + " connect to the Server successfully!");
             client.joinGame();
+            client.playGame();
 
 
             client.closePipes();
@@ -53,10 +63,40 @@ public class Client {
 
     }
 
+    public void playGame() throws IOException {
+        readOneAction();
+    }
+
+    public Action readOneAction() throws IOException {
+        String prompt = "You are the " + riskGameBoard.getAllPlayers().get(playerId).getColor() + " player, what would you like to do?\n" +
+                " (M)ove\n" +
+                " (A)ttack\n" +
+                " (D)one\n";
+        System.out.println(prompt);
+        String actionType = inputReader.readLine();
+        if (actionType.equals("M") || actionType.equals("A") || actionType.equals("D")) {
+
+        }
+        String srcName = inputReader.readLine();
+        String dstName = inputReader.readLine();
+
+        int numUnitsToMove = Integer.parseInt(inputReader.readLine());
+
+
+
+        return new Action();
+
+    }
+
+    public void readAction() {
+
+    }
+
     public void joinGame() throws IOException, ClassNotFoundException {
         recvPlayerId();
         recvStoreBoard();
         System.out.println("received initial map successfully!");
+        System.out.println("Placement phase is done!\n");
     }
 
     public void recvPlayerId() throws IOException {
@@ -88,6 +128,7 @@ public class Client {
         objectFromServer.close();
         objectToServer.close();
         socket.close();
+        inputReader.close();
     }
 
     @Override

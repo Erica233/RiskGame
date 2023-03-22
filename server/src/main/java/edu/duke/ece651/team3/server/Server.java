@@ -41,8 +41,7 @@ public class Server {
             server.connectClients();
             System.out.println("Both clients connect to the Server successfully!\n");
             server.initGame();
-
-
+            server.runGame();
 
 
             server.closePipes();
@@ -55,6 +54,10 @@ public class Server {
         }
     }
 
+    public void runGame() {
+
+    }
+
     //test
     public void sendTerritory() throws IOException {
         Territory t1 = new Territory("a", 2);
@@ -65,12 +68,6 @@ public class Server {
         Territory t1 = (Territory) objectsFromClients.get(playerId).readObject();
         System.out.println("receive "+t1.displayTerritory()+"from "+playerId);
         return t1;
-    }
-
-    public void sendStringToAllClients() throws IOException {
-        objectsToClients.get(0).writeObject("");
-        objectsToClients.get(1).writeObject(riscBoard);
-        System.out.println("send boards to all clients!");
     }
 
     public void sendBoardToAllClients() throws IOException {
