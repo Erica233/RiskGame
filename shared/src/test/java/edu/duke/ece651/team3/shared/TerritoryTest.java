@@ -130,4 +130,15 @@ public class TerritoryTest {
         assertThrows(IllegalArgumentException.class, ()->t.decreaseUnit(unit3, 1));
     }
 
+    @Test
+    public void test_checkExistNei() throws Exception {
+        Territory t1 = new Territory("a", 3);
+        Territory t2 = new Territory("b", 3);
+        Territory t3 = new Territory("c", 3);
+
+        t1.addANeighbor(t2);
+        assertEquals(true, t1.checkExistNeighbor(t2));
+        assertEquals(false, t1.checkExistNeighbor(t3));
+    }
+
 }

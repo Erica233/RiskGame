@@ -52,7 +52,7 @@ public class AttackRuleCheckerTest {
 
         Action myAction = new AttackAction("A", a, b, actionUnits);
         AttackRuleChecker attackRuleChecker = new AttackRuleChecker(myAction, r);
-        assertEquals(true, attackRuleChecker.checkPath(myAction, p));
+        assertEquals(true, attackRuleChecker.checkPath(myAction, r, p));
     }
 
     @Test
