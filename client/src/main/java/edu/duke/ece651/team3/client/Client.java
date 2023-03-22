@@ -66,7 +66,20 @@ public class Client {
     }
 
     public void playGame() throws IOException {
-        readOneAction();
+        do {
+            try {
+                Action action = readOneAction();
+
+                //check actions validity
+                MoveRuleChecker moveRuleChecker = new MoveRuleChecker();
+                AttackRuleChecker attackRuleChecker = new AttackRuleChecker();
+
+            } catch () {
+
+            }
+        } while ();
+
+
     }
 
     //check if input is entered
@@ -91,6 +104,16 @@ public class Client {
         return output;
     }
 
+    public HashMap<Integer, Integer> readNumUnitsMap() throws IOException {
+        HashMap<Integer, Integer> unitsMap = new HashMap<>();
+        for (int forceLevel = 1; forceLevel < 2; forceLevel++) {
+            String prompt = "Please enter the number of units (whose force level is " + forceLevel + ") you want to use:\n";
+            int numUnits = readIntFromUser(prompt);
+            unitsMap.put(forceLevel, numUnits);
+        }
+        return unitsMap;
+    }
+
     //check if input is the right format (e.g. string, numeric)
     public Action readOneAction() throws IOException {
         String choicePrompt = "You are the " + riskGameBoard.getAllPlayers().get(playerId).getColor() + " player, what would you like to do?\n" +
@@ -104,20 +127,15 @@ public class Client {
         String dstPrompt = "Please enter the name of your destination territory:\n";
         String dstName = readStringFromUser(dstPrompt);
 
-        String unitPrompt = "Please enter the type of unit you want to use:\n";
-        String unitType = readStringFromUser(unitPrompt);
-        String unitNumPrompt = "Please enter the number of unit you want to use:\n";
-        int unitNum = readIntFromUser(unitNumPrompt);
+        HashMap<Integer, Integer> unitsToMove = readNumUnitsMap();
 
 //        String input = inputReader.readLine().toUpperCase(Locale.ROOT);
 //        while (!input.equals("M") && !input.equals("A") && !input.equals("D")) {
 //            String errorInput = "The input is invalid, choose from \n(M)ove\n(A)ttack\n(D)one";
 //            input = inputReader.readLine().toUpperCase(Locale.ROOT);
 //        }
-        Unit unit = new Unit();
-        HashMap<Class<?>, Integer> unitsToMove = new HashMap<>();
-        unitsToMove.put()
-        return new Action(actionType, srcName, dstName, new HashMap<>());
+
+        return new Action(actionType, srcName, dstName, unitsToMove);
 
     }
 
