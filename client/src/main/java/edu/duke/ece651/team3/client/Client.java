@@ -1,13 +1,13 @@
 package edu.duke.ece651.team3.client;
 
-import edu.duke.ece651.team3.shared.Board;
-import edu.duke.ece651.team3.shared.RiskGameBoard;
-import edu.duke.ece651.team3.shared.Territory;
+import edu.duke.ece651.team3.shared.*;
 import org.checkerframework.checker.units.qual.A;
 
 import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Locale;
 
 public class Client {
 //    private final Socket clientS; //The unique ID for each client
@@ -31,6 +31,8 @@ public class Client {
     private final BufferedReader inputReader;
     private final ArrayList<Action> moveActions;
     private final ArrayList<Action> attackActions;
+    private MoveRuleChecker moveRuleChecker;
+    private AttackRuleChecker attackRuleChecker;
 
     public Client(String hostname, int _portNum) throws IOException {
         this.socket = new Socket(hostname, _portNum);
@@ -67,24 +69,55 @@ public class Client {
         readOneAction();
     }
 
+    //check if input is entered
+    public String readStringFromUser(String prompt) throws IOException {
+        System.out.println(prompt);
+        String s = inputReader.readLine();
+        if (s == null) {
+            throw new EOFException();
+        }
+        return s;
+    }
+
+    //check if input is an integer
+    public int readIntFromUser(String prompt) throws IOException {
+        String s = readStringFromUser(prompt);
+        int output;
+        try {
+            output = Integer.parseInt(s);
+        } catch (NumberFormatException e) {
+            throw new NumberFormatException("it is not a integer: " + e.getMessage());
+        }
+        return output;
+    }
+
+    //check if input is the right format (e.g. string, numeric)
     public Action readOneAction() throws IOException {
-        String prompt = "You are the " + riskGameBoard.getAllPlayers().get(playerId).getColor() + " player, what would you like to do?\n" +
+        String choicePrompt = "You are the " + riskGameBoard.getAllPlayers().get(playerId).getColor() + " player, what would you like to do?\n" +
                 " (M)ove\n" +
                 " (A)ttack\n" +
                 " (D)one\n";
-        System.out.println(prompt);
-        String actionType = inputReader.readLine();
-        if (actionType.equals("M") || actionType.equals("A") || actionType.equals("D")) {
+        String actionType = readStringFromUser(choicePrompt);
 
-        }
-        String srcName = inputReader.readLine();
-        String dstName = inputReader.readLine();
+        String srcPrompt = "Please enter the name of your source territory:\n";
+        String srcName = readStringFromUser(srcPrompt);
+        String dstPrompt = "Please enter the name of your destination territory:\n";
+        String dstName = readStringFromUser(dstPrompt);
 
-        int numUnitsToMove = Integer.parseInt(inputReader.readLine());
+        String unitPrompt = "Please enter the type of unit you want to use:\n";
+        String unitType = readStringFromUser(unitPrompt);
+        String unitNumPrompt = "Please enter the number of unit you want to use:\n";
+        int unitNum = readIntFromUser(unitNumPrompt);
 
-
-
-        return new Action();
+//        String input = inputReader.readLine().toUpperCase(Locale.ROOT);
+//        while (!input.equals("M") && !input.equals("A") && !input.equals("D")) {
+//            String errorInput = "The input is invalid, choose from \n(M)ove\n(A)ttack\n(D)one";
+//            input = inputReader.readLine().toUpperCase(Locale.ROOT);
+//        }
+        Unit unit = new Unit();
+        HashMap<Class<?>, Integer> unitsToMove = new HashMap<>();
+        unitsToMove.put()
+        return new Action(actionType, srcName, dstName, new HashMap<>());
 
     }
 

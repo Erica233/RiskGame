@@ -17,9 +17,8 @@ public class AttackRuleCheckerTest {
         Territory i = new Territory("i", 2);
         Territory f = new Territory("f", 2);
 
-        HashMap<Class<?>, Integer> actionUnits = new HashMap<>();
-        Soldier soldier = new Soldier();
-        actionUnits.put(soldier.getClass(), 2);
+        HashMap<Integer, Integer> actionUnits = new HashMap<>();
+        actionUnits.put(1, 2);
 
         Action myAction = new AttackAction("A", a, b, actionUnits);
         Action myAction1 = new AttackAction("A", a, c, actionUnits);
@@ -46,9 +45,8 @@ public class AttackRuleCheckerTest {
         Territory a = new Territory("a", 2);
         Territory b = new Territory("b", 2);
 
-        HashMap<Class<?>, Integer> actionUnits = new HashMap<>();
-        Soldier soldier = new Soldier();
-        actionUnits.put(soldier.getClass(), 2);
+        HashMap<Integer, Integer> actionUnits = new HashMap<>();
+        actionUnits.put(1, 2);
 
         Action myAction = new AttackAction("A", a, b, actionUnits);
         AttackRuleChecker attackRuleChecker = new AttackRuleChecker(myAction, r);
@@ -62,21 +60,20 @@ public class AttackRuleCheckerTest {
         Player p = r.getAllPlayers().get(0);
         Territory a = new Territory("a", 2);
         Territory b = new Territory("b", 2);
-        HashMap<Class<?>, Integer> actionUnits = new HashMap<>();
-        Soldier soldier = new Soldier();
-        actionUnits.put(soldier.getClass(), -3);
+        HashMap<Integer, Integer> actionUnits = new HashMap<>();
+        actionUnits.put(1, -3);
         Action myAction = new AttackAction("A", a, b, actionUnits);
         AttackRuleChecker attackRuleChecker = new AttackRuleChecker(myAction, r);
         assertEquals(false, attackRuleChecker.checkNumUnits(myAction, p));
-        HashMap<Class<?>, Integer> actionUnits1 = new HashMap<>();
-        actionUnits1.put(soldier.getClass(), 6);
+        HashMap<Integer, Integer> actionUnits1 = new HashMap<>();
+        actionUnits1.put(1, 6);
 
         Action myAction1 = new AttackAction("A", a, b, actionUnits1);
         attackRuleChecker = new AttackRuleChecker(myAction1, r);
         assertEquals(false, attackRuleChecker.checkNumUnits(myAction1, p));
 
-        HashMap<Class<?>, Integer> actionUnits2 = new HashMap<>();
-        actionUnits2.put(soldier.getClass(), 1);
+        HashMap<Integer, Integer> actionUnits2 = new HashMap<>();
+        actionUnits2.put(1, 1);
         Action myAction2 = new AttackAction("A", a, b, actionUnits2);
         attackRuleChecker = new AttackRuleChecker(myAction2, r);
         assertEquals(true, attackRuleChecker.checkNumUnits(myAction2, p));

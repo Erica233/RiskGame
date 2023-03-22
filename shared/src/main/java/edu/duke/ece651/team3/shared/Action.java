@@ -7,7 +7,14 @@ public abstract class Action implements Serializable {
     private String actionType;
     private Territory src; //The FROM territory
     private Territory dst; //The TO territory
-    private HashMap<Class<?>, Integer> actionUnits;
+    private HashMap<Integer, Integer> actionUnits;
+
+    public Action(String _actionType, Territory _src, Territory _dst, HashMap<Integer, Integer> _actionUnits){
+        this.actionType = _actionType;
+        this.src = _src;
+        this.dst = _dst;
+        this.actionUnits = _actionUnits;
+    }
 
     public String getActionType() {
         return actionType;
@@ -21,19 +28,9 @@ public abstract class Action implements Serializable {
         return dst;
     }
 
-    public HashMap<Class<?>, Integer> getActionUnits() {
+    public HashMap<Integer, Integer> getActionUnits() {
         return actionUnits;
     }
-
-
-    public Action(String _actionType, Territory _src, Territory _dst, HashMap<Class<?>, Integer> _actionUnits){
-        this.actionType = _actionType;
-        this.src = _src;
-        this.dst = _dst;
-        this.actionUnits = _actionUnits;
-    }
-
-
 
     //Since the actions are read from the user, it supports set methods
     public void setActionType(String actionType) {
@@ -48,7 +45,7 @@ public abstract class Action implements Serializable {
         this.dst = dst;
     }
 
-    public void setActionUnits(HashMap<Class<?>, Integer> actionUnits) {
+    public void setActionUnits(HashMap<Integer, Integer> actionUnits) {
         this.actionUnits = actionUnits;
     }
 
@@ -56,7 +53,7 @@ public abstract class Action implements Serializable {
     @Override
     public String toString() {
         String s = null;
-        for(Class<?> c : actionUnits.keySet()){
+        for(Integer c : actionUnits.keySet()){
             s += "("+c.toString()+" : "+actionUnits.get(c)+") ";
         }
         return "Action{" +

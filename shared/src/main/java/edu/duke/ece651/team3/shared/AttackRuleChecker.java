@@ -76,7 +76,7 @@ public class AttackRuleChecker extends RuleChecker{
      */
     public boolean checkNumUnits(Action myAttack, Player currPlayer){
         Territory t = findTerritory(myAttack, currPlayer);
-        for(Class<?> c : myAttack.getActionUnits().keySet()){
+        for(Integer c : myAttack.getActionUnits().keySet()){
             int numUnits = myAttack.getActionUnits().get(c);
             if(numUnits > t.getUnits().get(c) || numUnits < 0){
                 return false;

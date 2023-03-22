@@ -12,9 +12,8 @@ public class ActionTest {
     Territory src = new Territory("Space", 11);
     Territory dst = new Territory("Mordor", 4);
     String actionType = "M";
-    Soldier soldier = new Soldier();
-    HashMap<Class<?>, Integer> actionUnits = new HashMap<>();
-    actionUnits.put(soldier.getClass(), 2);
+    HashMap<Integer, Integer> actionUnits = new HashMap<>();
+    actionUnits.put(1, 2);
 
     Action act = new MoveAction(actionType, src, dst, actionUnits);
 
@@ -35,7 +34,7 @@ public class ActionTest {
     act.setActionUnits(actionUnits);
     assertEquals(actionUnits, act.getActionUnits());
 
-    String ss = "null(class edu.duke.ece651.team3.shared.Soldier : 2) ";
+    String ss = "null(1 : 2) ";
 
     String s = "Action{" + "actionType='" + act.getActionType() + '\'' +
             ", src=" + act.getSrc() +

@@ -15,18 +15,15 @@ public class MoveRuleCheckerTest {
     out.println(r.displayBoard());
     Player p1 = r.getAllPlayers().get(0);
     Player p2 = r.getAllPlayers().get(1);
-    HashMap<Class<?>, Integer> unit1 = new HashMap<>();
-    Soldier soldier = new Soldier();
-    unit1.put(soldier.getClass(), 1);
+    HashMap<Integer, Integer> unit1 = new HashMap<>();
+    unit1.put(1, 1);
 //    out.println("FIRST");
 
-    HashMap<Class<?>, Integer> unit2 = new HashMap<>();
-    Soldier soldier1 = new Soldier();
-    unit2.put(soldier1.getClass(), -1);
+    HashMap<Integer, Integer> unit2 = new HashMap<>();
+    unit2.put(1, -1);
 
-    HashMap<Class<?>, Integer> unit3 = new HashMap<>();
-    Soldier soldier2 = new Soldier();
-    unit3.put(soldier2.getClass(), 3);
+    HashMap<Integer, Integer> unit3 = new HashMap<>();
+    unit3.put(1, 3);
 
 
     Territory src = r.getAllPlayers().get(0).getOwnedTerritories().get(0);

@@ -12,7 +12,7 @@ public class Territory implements Serializable, Comparable<Territory> {
     private final String territoryName;
     private int numUnits = 0;
     private final ArrayList<Territory> neighbors;
-    private final HashMap<Class<?>, Integer> units;
+    private final HashMap<Integer, Integer> units;
 
     /**
      * Constructs a Territory with specified name, and number of units
@@ -23,6 +23,14 @@ public class Territory implements Serializable, Comparable<Territory> {
         this.territoryName = _name;
         this.neighbors = new ArrayList<>();
         this.units = new HashMap<>();
+        units.put(1, 0);
+    }
+
+    public Territory(String _name, int forcelevel, int num) {
+        this.territoryName = _name;
+        this.neighbors = new ArrayList<>();
+        this.units = new HashMap<>();
+        units.put(forcelevel, num);
     }
 
     /**
@@ -31,6 +39,7 @@ public class Territory implements Serializable, Comparable<Territory> {
      * @param _name the name of the Territory
      * @param _numUnits the number of units in the Territory
      */
+    //fake constructor: used to test
     public Territory(String _name, int _numUnits) {
         this.territoryName = _name;
         this.numUnits = _numUnits;
@@ -38,13 +47,7 @@ public class Territory implements Serializable, Comparable<Territory> {
         this.units = new HashMap<>();
     }
 
-//    public Territory(String _name, ArrayList<Territory> _neighbors) {
-//        this.territoryName = _name;
-//        this.neighbors = _neighbors;
-//        this.units = new HashMap<>();
-//    }
-
-    public Territory(String _name, HashMap<Class<?>, Integer> _units) {
+    public Territory(String _name, HashMap<Integer, Integer> _units) {
         this.territoryName = _name;
         this.neighbors = new ArrayList<>();
         this.units = _units;
@@ -58,7 +61,7 @@ public class Territory implements Serializable, Comparable<Territory> {
      * @param _neighbors the neighbors of the Territory
      * @param _units units in this Territory
      */
-    public Territory(String _name, ArrayList<Territory> _neighbors, HashMap<Class<?>, Integer> _units) {
+    public Territory(String _name, ArrayList<Territory> _neighbors, HashMap<Integer, Integer> _units) {
         this.territoryName = _name;
         this.neighbors = _neighbors;
         this.units = _units;
@@ -187,7 +190,7 @@ public class Territory implements Serializable, Comparable<Territory> {
      */
     public void updateNumUnits(){
         int num = 0;
-        for(Class<?> c : units.keySet()){
+        for(Integer c : units.keySet()){
             System.out.println(c);
             num += units.get(c);
         }
@@ -199,12 +202,12 @@ public class Territory implements Serializable, Comparable<Territory> {
      * @param unitToAdd specific type of unit to add
      * @param num number of this type of unit
      */
-    public void increaseUnit(Unit unitToAdd, int num) {
-        if (units.containsKey(unitToAdd.getClass())) {
-            int value = units.get(unitToAdd.getClass()) + num;
-            units.put(unitToAdd.getClass(), value);
+    public void increaseUnit(int unitToAdd, int num) {
+        if (units.containsKey(unitToAdd)) {
+            int value = units.get(unitToAdd) + num;
+            units.put(unitToAdd, value);
         } else {
-            units.put(unitToAdd.getClass(), num);
+            units.put(unitToAdd, num);
         }
         updateNumUnits();
     }
@@ -214,14 +217,14 @@ public class Territory implements Serializable, Comparable<Territory> {
      * @param unitToRemove specific type of unit to remove
      * @param num number of this type of unit
      */
-    public void decreaseUnit(Unit unitToRemove, int num) {
-        if (units.containsKey(unitToRemove.getClass())) {
-            int value = units.get(unitToRemove.getClass()) - num;
-            System.out.println(unitToRemove.getClass());
+    public void decreaseUnit(int unitToRemove, int num) {
+        if (units.containsKey(unitToRemove)) {
+            int value = units.get(unitToRemove) - num;
+            System.out.println(unitToRemove);
             if (value < 0) {
                 throw new IllegalArgumentException("Can't delete too much num of unit");
             }
-            units.put(unitToRemove.getClass(), value);
+            units.put(unitToRemove, value);
         } else {
             throw new IllegalArgumentException("Can't delete non-existing unit");
         }
@@ -242,7 +245,7 @@ public class Territory implements Serializable, Comparable<Territory> {
         return neighbors;
     }
 
-    public HashMap<Class<?>, Integer> getUnits() {
+    public HashMap<Integer, Integer> getUnits() {
         return units;
     }
 }

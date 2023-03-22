@@ -80,6 +80,23 @@ public class Server {
 
     }
 
+        /**
+     * This method receives multiple actions from the client
+     */
+    public void recvMultipleAction() throws IOException, ClassNotFoundException {
+        String commitInfo = "";
+        while(!commitInfo.equals("Done")){
+            commitInfo = (String) receiveObjFromClients.get(clientID).readObject();
+//            out.println("receiving: " + commitInfo);
+            if(!commitInfo.equals("D") && !commitInfo.equals("Done")){
+                out.println("Done?");
+                recvAction();
+            }
+        }
+        sendObjToClients.get(clientID).writeObject("Please wait the other player finish enter");
+
+    }
+
     public void assignPlayerIdToClients() throws IOException {
         objectsToClients.get(0).writeInt(0);
         objectsToClients.get(1).writeInt(1);

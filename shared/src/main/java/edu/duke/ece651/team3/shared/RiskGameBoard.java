@@ -23,21 +23,18 @@ public class RiskGameBoard implements Board, Serializable {
     }
 
     public String initMap() throws Exception {
-        HashMap<Class<?>, Integer> units = new HashMap<>();
-        Unit unit1 = new Soldier();
-        units.put(unit1.getClass(), 5);
-        Territory t1 = new Territory("a", (HashMap<Class<?>, Integer>) units.clone());
-        Territory t2 = new Territory("b", (HashMap<Class<?>, Integer>) units.clone());
-        Territory t3 = new Territory("c", (HashMap<Class<?>, Integer>) units.clone());
-        Territory t4 = new Territory("d", (HashMap<Class<?>, Integer>) units.clone());
-        Territory t5 = new Territory("e", (HashMap<Class<?>, Integer>) units.clone());
-        Territory t6 = new Territory("f", (HashMap<Class<?>, Integer>) units.clone());
-        Territory t7 = new Territory("g", (HashMap<Class<?>, Integer>) units.clone());
-        Territory t8 = new Territory("h", (HashMap<Class<?>, Integer>) units.clone());
-        Territory t9 = new Territory("i", (HashMap<Class<?>, Integer>) units.clone());
-        Territory t10 = new Territory("j", (HashMap<Class<?>, Integer>) units.clone());
-        Territory t11 = new Territory("k", (HashMap<Class<?>, Integer>) units.clone());
-        Territory t12 = new Territory("l", (HashMap<Class<?>, Integer>) units.clone());
+        Territory t1 = new Territory("a", 1, 5);
+        Territory t2 = new Territory("b", 1, 5);
+        Territory t3 = new Territory("c", 1, 5);
+        Territory t4 = new Territory("d", 1, 5);
+        Territory t5 = new Territory("e", 1, 5);
+        Territory t6 = new Territory("f", 1, 5);
+        Territory t7 = new Territory("g", 1, 5);
+        Territory t8 = new Territory("h", 1, 5);
+        Territory t9 = new Territory("i", 1, 5);
+        Territory t10 = new Territory("j", 1, 5);
+        Territory t11 = new Territory("k", 1, 5);
+        Territory t12 = new Territory("l", 1, 5);
         t1.addNeighbors(t2, t3);
         t2.addNeighbors(t1, t3, t4);
         t3.addNeighbors(t1, t2, t4, t5, t12);

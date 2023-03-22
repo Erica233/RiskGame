@@ -104,37 +104,32 @@ public class TerritoryTest {
 
     @Test
     public void test_increaseUnit(){
-        HashMap<Class<?>, Integer> units = new HashMap<>();
-        Unit unit1 = new Soldier();
+        HashMap<Integer, Integer> units = new HashMap<>();
         //units.put(unit1.getClass(), 1);
         ArrayList<Territory> n = new ArrayList<>();
         Territory t = new Territory("Gondor", n, units);
-        t.increaseUnit(unit1, 1);
-        t.increaseUnit(unit1, 2);
+        t.increaseUnit(1, 1);
+        t.increaseUnit(1, 2);
         assertEquals(3, t.getNumUnits());
 
     }
 
     @Test
     public void test_decreaseUnit(){
-        HashMap<Class<?>, Integer> units = new HashMap<>();
-        Unit unit1 = new Soldier();
-        Unit unit2 = new Soldier();
-        units.put(unit1.getClass(), 1);
+        HashMap<Integer, Integer> units = new HashMap<>();
+        units.put(1, 1);
         ArrayList<Territory> n = new ArrayList<>();
         Territory t = new Territory("Gondor", n, units);
-        t.decreaseUnit(unit2, 1);
+        t.decreaseUnit(1, 1);
         assertEquals(0, t.getNumUnits());
-        Unit unit3 = new Officer();
-        assertThrows(IllegalArgumentException.class, ()->t.decreaseUnit(unit2, 1));
-        assertThrows(IllegalArgumentException.class, ()->t.decreaseUnit(unit3, 1));
+        assertThrows(IllegalArgumentException.class, ()->t.decreaseUnit(1, 1));
+        assertThrows(IllegalArgumentException.class, ()->t.decreaseUnit(2, 1));
     }
 
     @Test
     public void test_checkExistNeighbor(){
-        HashMap<Class<?>, Integer> units = new HashMap<>();
-        Unit unit1 = new Soldier();
-        units.put(unit1.getClass(), 1);
+        HashMap<Integer, Integer> units = new HashMap<>();
+        units.put(1, 1);
         ArrayList<Territory> n = new ArrayList<>();
         Territory t = new Territory("Gondor", n, units);
         Territory t1 = new Territory("a", 1);
