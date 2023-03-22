@@ -130,4 +130,15 @@ public class TerritoryTest {
         assertThrows(IllegalArgumentException.class, ()->t.decreaseUnit(unit3, 1));
     }
 
+    @Test
+    public void test_checkExistNeighbor(){
+        HashMap<Class<?>, Integer> units = new HashMap<>();
+        Unit unit1 = new Soldier();
+        units.put(unit1.getClass(), 1);
+        ArrayList<Territory> n = new ArrayList<>();
+        Territory t = new Territory("Gondor", 0, n, units);
+        Territory t1 = new Territory("a", 1);
+        assertEquals(false, t.checkExistNeighbor(t1));
+    }
+
 }
