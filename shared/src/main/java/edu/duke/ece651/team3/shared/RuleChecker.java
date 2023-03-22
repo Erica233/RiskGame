@@ -7,6 +7,10 @@ public abstract class RuleChecker {
         this.action = _action;
     }
 
+//    public boolean checkValidAction() {
+//        return checkSrcDst() && checkNumUnits() && checkPath();
+//    }
+
     /**
      * Check whether the current player and enemy have the territory from attack's information
      * @param myAction attack information

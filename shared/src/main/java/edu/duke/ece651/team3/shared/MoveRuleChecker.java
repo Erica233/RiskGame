@@ -8,6 +8,7 @@ public class MoveRuleChecker extends RuleChecker{
     private final Action action;
     Territory src;
     Territory dst;
+
     public MoveRuleChecker(Action _action, RiskGameBoard _riskGameBoard){
         super(_action);
         this.action = _action;
