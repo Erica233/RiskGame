@@ -45,7 +45,7 @@ public class AttackRuleChecker extends RuleChecker{
      * @return if valid return true, invalid return false
      */
     //TODO: if t == null needed? if already finish the checkSrcDst, it is needed
-    public boolean checkPath(Action myAttack, Player currPlayer){
+    public boolean checkPath(Action myAttack, RiskGameBoard r, Player currPlayer){
         Territory t = findTerritory(myAttack, currPlayer);
         return t.checkExistNeighbor(myAttack.getDst());
     }
@@ -76,8 +76,11 @@ public class AttackRuleChecker extends RuleChecker{
      */
     public boolean checkNumUnits(Action myAttack, Player currPlayer){
         Territory t = findTerritory(myAttack, currPlayer);
-        if(myAttack.getActionUnits() > t.getNumUnits() || myAttack.getActionUnits()< 0){
-            return false;
+        for(Class<?> c : myAttack.getActionUnits().keySet()){
+            int numUnits = myAttack.getActionUnits().get(c);
+            if(numUnits > t.getUnits().get(c) || numUnits < 0){
+                return false;
+            }
         }
         return true;
     }
