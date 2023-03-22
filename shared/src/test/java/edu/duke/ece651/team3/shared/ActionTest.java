@@ -35,11 +35,7 @@ public class ActionTest {
     act.setActionUnits(actionUnits);
     assertEquals(actionUnits, act.getActionUnits());
 
-    String ss = null;
-    for(Class<?> c : actionUnits.keySet()){
-      ss += "("+c.toString()+" : "+actionUnits.get(c)+") ";
-    }
-
+    String ss = "null(class edu.duke.ece651.team3.shared.Soldier : 2) ";
 
     String s = "Action{" + "actionType='" + act.getActionType() + '\'' +
             ", src=" + act.getSrc() +
