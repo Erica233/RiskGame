@@ -42,6 +42,8 @@ public class Server {
             System.out.println("Both clients connect to the Server successfully!\n");
             server.initGame();
             server.runGame();
+            server.recvString(0);
+            server.recvString(1);
 
 
             server.closePipes();
@@ -52,6 +54,12 @@ public class Server {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public String recvString(int playerId) throws IOException, ClassNotFoundException {
+        String s = (String) objectsFromClients.get(playerId).readObject();
+        System.out.println("receive -"+s+"- from "+playerId);
+        return s;
     }
 
     public void runGame() {

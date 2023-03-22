@@ -69,7 +69,7 @@ public class MoveRuleChecker extends RuleChecker{
      * @param currPlayer current player
      * @return true if valid false if invalid
      */
-    public boolean checkPath(Action myMove, RiskGameBoard r, Player currPlayer) throws Exception {
+    public boolean checkPath(Action myMove, RiskGameBoard r, Player currPlayer) {
         String srcName = myMove.getSrcName();
         String dstName = myMove.getDstName();
 //        Territory src = findTerritoryByName(srcName, currPlayer);

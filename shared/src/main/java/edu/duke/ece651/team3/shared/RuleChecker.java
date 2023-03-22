@@ -7,9 +7,9 @@ public abstract class RuleChecker {
         this.action = _action;
     }
 
-//    public boolean checkValidAction() {
-//        return checkSrcDst() && checkNumUnits() && checkPath();
-//    }
+    public boolean checkValidAction(Action myAction, RiskGameBoard r, Player currPlayer) throws Exception {
+        return checkSrcDst(myAction, currPlayer) && checkNumUnits(myAction, currPlayer) && checkPath(myAction, r, currPlayer);
+    }
 
     /**
      * Check whether the current player and enemy have the territory from attack's information

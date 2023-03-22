@@ -7,7 +7,7 @@ public class Action implements Serializable {
     private String actionType;
     private String srcName; //The FROM territory
     private String dstName; //The TO territory
-    private HashMap<Integer, Integer> actionUnits;
+    private HashMap<Integer, Integer> actionUnits; //for
 
     public Action(String _actionType, String _srcName, String _dstName, HashMap<Integer, Integer> _actionUnits){
         this.actionType = _actionType;

@@ -51,6 +51,18 @@ public class Client {
             System.out.println(client + " connect to the Server successfully!");
             client.joinGame();
             //client.playGame();
+            String s = "";
+            do {
+                try {
+                    s = client.readStringFromUser("please enter sth!");
+                } catch (IllegalArgumentException e) {
+
+                }
+
+            } while (s.isEmpty());
+
+
+            client.sendString(s);
 
 
             client.closePipes();
@@ -64,8 +76,13 @@ public class Client {
 
     }
 
+    public void sendString(String s) throws IOException {
+        objectToServer.writeObject(s);
+    }
+
     public void playGame() throws IOException {
         String actionType = "";
+        String problem = "";
         do {
             try {
                 String choicePrompt = "You are the " + riskGameBoard.getAllPlayers().get(playerId).getColor() + " player, what would you like to do?\n" +
@@ -77,14 +94,29 @@ public class Client {
                 Action action = readOneAction(actionType);
 
                 //check actions validity
-                MoveRuleChecker moveRuleChecker = new MoveRuleChecker(action, riskGameBoard);
-                AttackRuleChecker attackRuleChecker = new AttackRuleChecker(action, riskGameBoard);
+                if (action.getActionType().toUpperCase(Locale.ROOT).equals("M")) {
+                    MoveRuleChecker moveRuleChecker = new MoveRuleChecker(action, riskGameBoard);
+                    if (!moveRuleChecker.checkValidAction(action, riskGameBoard, riskGameBoard.getAllPlayers().get(playerId))) {
+                        problem = "Invalid Move!\n";
+                        throw new IllegalArgumentException("Your move is invalid!\n");
+                    }
+                } else if (action.getActionType().toUpperCase(Locale.ROOT).equals("A")) {
+                    AttackRuleChecker attackRuleChecker = new AttackRuleChecker(action, riskGameBoard);
+                    if (!attackRuleChecker.checkValidAction(action, riskGameBoard, riskGameBoard.getAllPlayers().get(playerId))) {
+                        problem = "Invalid Attack!\n";
+                        throw new IllegalArgumentException("Your attack is invalid!\n");
+                    }
+                } else {
+                    continue;
+                }
 
                 //store action into action lists
 
 
             } catch (IllegalArgumentException e) {
                 System.out.println("Your action does not have correct format: " + e.getMessage());
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         } while (!actionType.equals("d") && !actionType.equals("D"));
 
