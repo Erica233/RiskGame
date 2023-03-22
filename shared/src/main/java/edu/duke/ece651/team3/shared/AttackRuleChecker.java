@@ -6,6 +6,7 @@ public class AttackRuleChecker extends RuleChecker{
     private final Action action;
     Territory src;
     Territory dst;
+
     public AttackRuleChecker(Action _action, RiskGameBoard _riskGameBoard){
         super(_action);
         this.action = _action;

@@ -1,7 +1,6 @@
 package edu.duke.ece651.team3.client;
 
 import edu.duke.ece651.team3.shared.*;
-import org.checkerframework.checker.units.qual.A;
 
 import java.io.*;
 import java.net.Socket;
@@ -66,18 +65,28 @@ public class Client {
     }
 
     public void playGame() throws IOException {
+        String actionType = "";
         do {
             try {
-                Action action = readOneAction();
+                String choicePrompt = "You are the " + riskGameBoard.getAllPlayers().get(playerId).getColor() + " player, what would you like to do?\n" +
+                        " (M)ove\n" +
+                        " (A)ttack\n" +
+                        " (D)one\n";
+                actionType = readStringFromUser(choicePrompt);
+
+                Action action = readOneAction(actionType);
 
                 //check actions validity
-                MoveRuleChecker moveRuleChecker = new MoveRuleChecker();
-                AttackRuleChecker attackRuleChecker = new AttackRuleChecker();
+                MoveRuleChecker moveRuleChecker = new MoveRuleChecker(action, riskGameBoard);
+                AttackRuleChecker attackRuleChecker = new AttackRuleChecker(action, riskGameBoard);
 
-            } catch () {
+                //store action into action lists
 
+
+            } catch (IllegalArgumentException e) {
+                System.out.println("Your action does not have correct format: " + e.getMessage());
             }
-        } while ();
+        } while (!actionType.equals("d") && !actionType.equals("D"));
 
 
     }
@@ -115,12 +124,12 @@ public class Client {
     }
 
     //check if input is the right format (e.g. string, numeric)
-    public Action readOneAction() throws IOException {
-        String choicePrompt = "You are the " + riskGameBoard.getAllPlayers().get(playerId).getColor() + " player, what would you like to do?\n" +
-                " (M)ove\n" +
-                " (A)ttack\n" +
-                " (D)one\n";
-        String actionType = readStringFromUser(choicePrompt);
+    public Action readOneAction(String actionType) throws IOException {
+//        String choicePrompt = "You are the " + riskGameBoard.getAllPlayers().get(playerId).getColor() + " player, what would you like to do?\n" +
+//                " (M)ove\n" +
+//                " (A)ttack\n" +
+//                " (D)one\n";
+//        String actionType = readStringFromUser(choicePrompt);
 
         String srcPrompt = "Please enter the name of your source territory:\n";
         String srcName = readStringFromUser(srcPrompt);
