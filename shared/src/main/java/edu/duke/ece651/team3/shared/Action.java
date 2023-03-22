@@ -1,12 +1,13 @@
 package edu.duke.ece651.team3.shared;
 
 import java.io.Serializable;
+import java.util.HashMap;
 
 public abstract class Action implements Serializable {
     private String actionType;
     private Territory src; //The FROM territory
     private Territory dst; //The TO territory
-    private int actionUnits; //The units to move
+    private HashMap<Class<?>, Integer> actionUnits;
 
     public String getActionType() {
         return actionType;
@@ -20,11 +21,19 @@ public abstract class Action implements Serializable {
         return dst;
     }
 
-    public int getActionUnits() {
+    public HashMap<Class<?>, Integer> getActionUnits() {
         return actionUnits;
     }
 
-    public Action(String _actionType, Territory _src, Territory _dst, int _actionUnits){
+    public int getActionNumUnits(){
+        int sum = 0;
+        for(Class<?> c : actionUnits.keySet()){
+            sum += actionUnits.get(c);
+        }
+        return sum;
+    }
+
+    public Action(String _actionType, Territory _src, Territory _dst, HashMap<Class<?>, Integer> _actionUnits){
         this.actionType = _actionType;
         this.src = _src;
         this.dst = _dst;
@@ -46,18 +55,22 @@ public abstract class Action implements Serializable {
         this.dst = dst;
     }
 
-    public void setActionUnits(int actionUnits) {
+    public void setActionUnits(HashMap<Class<?>, Integer> actionUnits) {
         this.actionUnits = actionUnits;
     }
 
 
     @Override
     public String toString() {
+        String s = null;
+        for(Class<?> c : actionUnits.keySet()){
+            s += "("+c.toString()+" : "+actionUnits.get(c)+") ";
+        }
         return "Action{" +
                 "actionType='" + actionType + '\'' +
                 ", src=" + src +
                 ", dst=" + dst +
-                ", actionUnits=" + actionUnits +
+                ", actionUnits=" + s +
                 '}';
     }
 
