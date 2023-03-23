@@ -1,8 +1,10 @@
 package edu.duke.ece651.team3.server;
 
 import edu.duke.ece651.team3.shared.*;
+import org.checkerframework.checker.units.qual.A;
 
 import java.io.*;
+import java.util.Random;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -17,7 +19,7 @@ public class Server {
     private ArrayList<ObjectInputStream> objectsFromClients;
     private final Board riscBoard;
     private HashMap<Integer, ArrayList<Action>> moves;
-    private HashMap<Integer, ArrayList<Action>> attacks;
+    private HashMap<Integer, ArrayList<Action>> attacks; //playerID, All attack actions
 
 
 
@@ -55,7 +57,6 @@ public class Server {
             srcTerr.decreaseUnit(i, unitNum);
             dstTerr.increaseUnit(i, unitNum);
         }
-        return;
     }
 
 
@@ -79,7 +80,6 @@ public class Server {
                 executeAttack(myattack, player);
             }
         }
-        return;
     }
 
     public void executeAttack(Action myattack, Player currPlayer){
@@ -96,6 +96,79 @@ public class Server {
 
     }
 
+    //5(b) sum the total number of attacks for one player
+
+    /**
+     * This method sums all attack actions from the same player
+     * @param currentPlayer the current player who execute the attack action
+     * @return the total number of attack units
+     */
+    public int totalAttackUnits(Player currentPlayer){
+        int sumUnits = 0;
+        int currPlayerID = currentPlayer.getPlayerId();
+        ArrayList<Action> attackList = attacks.get(currPlayerID);
+        for(Action attAction: attackList){
+            int curAttactUnits = attAction.getActionUnits().get(1); //TODO: the first integer
+            sumUnits += curAttactUnits;
+        }
+        return sumUnits;
+    }
+
+    /**
+     * This method rolls two 20-sided dice until one player runs out of units.
+     * The one who run out of units loses.
+     * @return the player who wins
+     *
+     */
+    public Player rollDice(Action attackAction){
+        Random random = new Random();
+        int rand_att = random.nextInt(20) + 1; //For the attacker
+        int rand_def = random.nextInt(20) + 1; //For the defender
+
+        Player attacker = getPlayer(attackAction.getSrcName());
+        Player defender = getPlayer(attackAction.getDstName());
+
+        int cnt_att = attacker.getTotNumUnits();
+        int cnt_def = defender.getTotNumUnits();
+
+        while(rand_att != 0 || rand_def != 0){
+            if(rand_att < rand_def){
+                cnt_att --;
+            }
+            else if(rand_def < rand_att){
+                cnt_def --;
+            }
+            else if(rand_def == rand_att){ //defender wins
+                cnt_att --;
+            }
+        }
+
+        //The attacker lose
+        if(cnt_att == 0){
+            return defender;
+        }
+        return attacker;
+    }
+
+    /**
+     * This method gets the player that owns the given territory.
+     * @param territoryName the territory's name
+     * @return the current player
+     */
+    public Player getPlayer(String territoryName){
+        Player currPlayer = null;
+        ArrayList<Player> allPlayers = riscBoard.getAllPlayers();
+
+        for(Player p : allPlayers){
+            for(Territory t: p.getOwnedTerritories()){
+                if(t.getTerritoryName().equals(territoryName)){ //If the territory name under current player equals to the source name
+                    currPlayer = p;
+                    break;
+                }
+            }
+        }
+        return currPlayer;
+    }
 
 
 
