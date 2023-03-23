@@ -88,5 +88,18 @@ public class AttackRuleCheckerTest {
 
     }
 
+    @Test
+    public void test_findTerritory() throws Exception {
+        RiskGameBoard r = new RiskGameBoard();
+        r.initMap();
+        Player currPlayer = r.getAllPlayers().get(0);
+
+        HashMap<Integer, Integer> units = new HashMap<>();
+
+        Action a = new AttackAction("Attack", "m", "b", units);
+        AttackRuleChecker arc = new AttackRuleChecker(a, r);
+        arc.findTerritory(a, currPlayer);
+    }
+
 
 }
