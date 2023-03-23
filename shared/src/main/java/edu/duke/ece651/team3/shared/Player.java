@@ -23,6 +23,31 @@ public class Player implements Serializable {
         this.ownedTerritories = _ownedTerritories;
     }
 
+    public void executeMove(Action move) {
+        Territory src = findOwnedTerritoryByName(move.getSrcName());
+        Territory dst = findOwnedTerritoryByName(move.getDstName());
+        for (Integer forceLevel: move.getActionUnits().keySet()) {
+            src.decreaseUnit(forceLevel, move.getActionUnits().get(forceLevel));
+            dst.increaseUnit(forceLevel, move.getActionUnits().get(forceLevel));
+        }
+    }
+
+    public void executeAttack(Action move) {
+        Territory src = findOwnedTerritoryByName(move.getSrcName());
+        for (Integer forceLevel: move.getActionUnits().keySet()) {
+            src.decreaseUnit(forceLevel, move.getActionUnits().get(forceLevel));
+        }
+    }
+
+    public Territory findOwnedTerritoryByName(String territoryName) {
+        for (Territory eachTerritory: ownedTerritories) {
+            if (eachTerritory.getTerritoryName().equals(territoryName)) {
+                return eachTerritory;
+            }
+        }
+        return null;
+    }
+
     @Override
     public boolean equals(Object other) {
         if (other.getClass().equals(getClass())) {

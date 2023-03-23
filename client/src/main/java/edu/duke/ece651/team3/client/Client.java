@@ -90,13 +90,22 @@ public class Client {
                 }
                 checkValidAction(action);
                 storeActionToList(action);
-
+                executeAction(action);
             } catch (IllegalArgumentException e) {
                 System.out.println("Your action does not have correct format: " + e.getMessage());
             } catch (Exception e) {
                 e.printStackTrace();
             }
         } while (true);
+    }
+
+    public void executeAction(Action action) {
+        if (action.isMoveType()) {
+            riskGameBoard.executeMove(action, playerId);
+        }
+        if (action.isAttackType()) {
+            riskGameBoard.executeAttack(action, playerId);
+        }
     }
 
     public void sendActionListsToServer() throws IOException {

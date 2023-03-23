@@ -67,7 +67,7 @@ public class Server {
         sendBoardToAllClients();
         recvActionsFromAllClients();
         printActionsMap();
-        //removeInvalidActions();
+        //executeAllMoves();
     }
 
     public void printActionsMap() {

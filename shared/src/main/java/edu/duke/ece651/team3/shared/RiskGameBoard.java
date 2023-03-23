@@ -63,6 +63,14 @@ public class RiskGameBoard implements Board, Serializable {
         return output;
     }
 
+    public void executeMove(Action move, int playerId) {
+        allPlayers.get(playerId).executeMove(move);
+    }
+
+    public void executeAttack(Action attack, int playerId) {
+        allPlayers.get(playerId).executeAttack(attack);
+    }
+
     @Override
     public boolean equals(Object other) {
         if (other.getClass().equals(getClass())) {
