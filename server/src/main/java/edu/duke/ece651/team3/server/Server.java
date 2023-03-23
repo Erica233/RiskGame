@@ -4,6 +4,7 @@ import edu.duke.ece651.team3.shared.*;
 import org.checkerframework.checker.units.qual.A;
 
 import java.io.*;
+import java.util.HashSet;
 import java.util.Random;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -38,18 +39,49 @@ public class Server {
         this.riscBoard = new RiskGameBoard();
     }
 
-    public void executeMoves(){
+    public Integer checkWin(){
+        ArrayList<Player> myplayers = riscBoard.getAllPlayers();
+        for(Player p : myplayers){
+            Integer playerid = p.getPlayerId();
+            ArrayList<Territory> territories = p.getOwnedTerritories();
+            if(territories.size() == 0){
+                if(playerid == 0){
+                    return 1;
+                }
+                else return 0;
+            }
+        }
+        return 2;
+    }
+
+    public Integer executeMoves() throws Exception {
         for(int i : moves.keySet()){
             Player player = riscBoard.getAllPlayers().get(i);
             ArrayList<Action> mymoves = moves.get(i);
             for (Action mymove : mymoves) {
+                if(!checkMove(mymove, player)) continue;
                 executeMove(mymove, player);
+                if(checkWin() == 0 || checkWin() == 1){
+                    return checkWin();
+                }
+                else{
+                    continue;
+                }
             }
         }
-        return;
+        return 2; //continue the next round
     }
 
-    public void executeMove(Action mymove, Player currPlayer){
+    public boolean checkMove(Action mymove, Player currPlayer) throws Exception {
+        MoveRuleChecker moveRulechecker = new MoveRuleChecker(mymove, (RiskGameBoard) riscBoard);
+        if (!moveRulechecker.checkValidAction(mymove, (RiskGameBoard) riscBoard, currPlayer)) {
+            return false;
+        }
+        return true;
+    }
+
+    public void executeMove(Action mymove, Player currPlayer) throws Exception {
+
         Territory srcTerr = getTerr(mymove.getSrcName(), currPlayer);
         Territory dstTerr = getTerr(mymove.getDstName(), currPlayer);
         for(Integer i : mymove.getActionUnits().keySet()){
@@ -72,28 +104,128 @@ public class Server {
         return t;
     }
 
+    public boolean checkAttack(Action myattack, Player currPlayer) throws Exception{
+        AttackRuleChecker attackRulechecker = new AttackRuleChecker(myattack, (RiskGameBoard) riscBoard);
+        if (!attackRulechecker.checkValidAction(myattack, (RiskGameBoard) riscBoard, currPlayer)) {
+            return false;
+        }
+        return true;
+    }
+
+
+
+    public ArrayList<Action> intergAttack(ArrayList<Action> myattacks){
+//        for(int i = 0 ; i < myattacks.size(); i++){
+//            for(int j = i+1; j < myattacks.size(); j++){
+//                if(myattacks.get(i).getDstName().equals(myattacks.get(j).getDstName())){
+//
+//                }
+//
+//            }
+//        }
+        ArrayList<Action> newattackers = new ArrayList<>();
+        HashSet<String> destinations = null;
+        for(Action act : myattacks){
+            destinations.add(act.getDstName());
+        }
+        for(String s : destinations){
+            HashMap<Integer, Integer> hashMap = new HashMap();
+            Action newaction = new Action("A", null, s, hashMap);
+            newattackers.add(newaction);
+        }
+        for(Action act : myattacks){
+            HashMap<Integer, Integer> acthp = act.getActionUnits();
+            for(String s : destinations) {
+                if (act.getDstName().equals(s)) {
+                    for(int i = 0; i < newattackers.size(); i++){
+                        if(newattackers.get(i).getDstName().equals(s)){
+                            HashMap<Integer, Integer> newhp = newattackers.get(i).getActionUnits();
+                            for(Integer key : newhp.keySet()){
+                                if(acthp.containsKey(key)){
+                                    newhp.put(key, newhp.get(key)+acthp.get(key));
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return newattackers;
+    }
+
     //TODO: one player executes once
-    public void executeAttacks(){
+    public void executeAttacks() throws Exception {
         for(int i : attacks.keySet()){
             Player player = riscBoard.getAllPlayers().get(i);
             ArrayList<Action> myattacks = attacks.get(i);
+            //integration
             for (Action myattack : myattacks) {
                 //1. Getting the total attack Units from one player(the attacker)
-                int totalAttackUnits = totalAttackUnits(player, myattack.getDstName());
-                myattack.setActionUnits(new HashMap<>(1, totalAttackUnits));
+
+//                int totalAttackUnits = totalAttackUnits(player, myattack.getDstName());
+//                myattack.setActionUnits(new HashMap<>(1, totalAttackUnits));
+                myattacks = intergAttack(myattacks);
+            }
+            //execution
+            for(Action myattack : myattacks){
+                if(!checkAttack(myattack, player)){
+                    continue;
+                }
                 executeAttack(myattack, player);
             }
         }
     }
 
-
-
+    /**
+     * This method rolls two 20-sided dice until one player runs out of units.
+     * The one who run out of units loses.
+     * This method loses or occupies the territory
+     * @param myattack the action
+     * @return the player who wins
+     *
+     */
     //TODO: check validation
-    public void executeAttack(Action myattack, Player currPlayer){
+    public void executeAttack(Action myattack, Player attacker){
+        Random random = new Random();
         Player defender = getPlayer(myattack.getDstName());
 
-        //1. Deciding who wins
-        doAttack(myattack);
+        int attackNum = myattack.getActionUnits().get(1);
+        int defNum = defender.getTotNumUnits();
+
+        int attackerLoseTimes = 0;
+        int defenderLoseTimes = 0;
+
+        while(attackNum != 0 && defNum != 0){
+            int rand_att = random.nextInt(20) + 1;
+            int rand_def = random.nextInt(20) + 1;
+
+            if(rand_att < rand_def){
+                attackNum --;
+                attackerLoseTimes ++;
+            }
+            else if(rand_def < rand_att){
+                defNum --;
+                defenderLoseTimes ++;
+            }
+            else if(rand_def == rand_att){ //defender wins
+                attackNum --;
+                attackerLoseTimes ++;
+            }
+        }
+        //The attacker wins, the attack action success
+        Territory toOccupy = getTerr(myattack.getDstName(), defender);
+
+        //The attacker loses, the attack action fails
+        if(attackNum == 0){
+            toOccupy.decreaseUnit(1, defenderLoseTimes);
+        }
+
+        //Adding the territory to the winner's territory
+        attacker.occupyTerritory(myattack, attackerLoseTimes);
+
+        //Removing the territory from the loser's territory. It loses the whole territory
+        defender.loseTerritory(toOccupy);
+
     }
 
 
@@ -117,60 +249,8 @@ public class Server {
         return sumUnits;
     }
 
-    /**
-     * This method rolls two 20-sided dice until one player runs out of units.
-     * The one who run out of units loses.
-     * This method loses or occupies the territory
-     * @param attackAction the action
-     * @return the player who wins
-     *
-     */
-    public void doAttack(Action attackAction){
-        Random random = new Random();
-        int rand_att = random.nextInt(20) + 1; //For the attacker
-        int rand_def = random.nextInt(20) + 1; //For the defender
 
-        Player attacker = getPlayer(attackAction.getSrcName());
-        Player defender = getPlayer(attackAction.getDstName());
 
-        int attackNum = attackAction.getActionUnits().get(1);
-        int defNum = defender.getTotNumUnits();
-
-        int attackerLoseTimes = 0;
-        int defenderLoseTimes = 0;
-
-        while(attackNum != 0 || defNum != 0){
-            rand_att = random.nextInt(20) + 1;
-            rand_def = random.nextInt(20) + 1;
-
-            if(rand_att < rand_def){
-                attackNum --;
-                attackerLoseTimes ++;
-            }
-            else if(rand_def < rand_att){
-                defNum --;
-                defenderLoseTimes ++;
-            }
-            else if(rand_def == rand_att){ //defender wins
-                attackNum --;
-                attackerLoseTimes ++;
-            }
-        }
-        //The attacker wins, the attack action success
-        Territory toOccupy = getTerr(attackAction.getDstName(), defender);
-
-        //The attacker loses, the attack action fails
-        if(attackNum == 0){
-            toOccupy.decreaseUnit(1, defenderLoseTimes);
-        }
-
-        //Adding the territory to the winner's territory
-        attacker.occupyTerritory(attackAction, attackerLoseTimes);
-
-        //Removing the territory from the loser's territory. It loses the whole territory
-        defender.loseTerritory(toOccupy);
-
-    }
 
     /**
      * This method gets the player that owns the given territory.
