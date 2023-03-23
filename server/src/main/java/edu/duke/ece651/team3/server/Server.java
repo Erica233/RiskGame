@@ -83,55 +83,48 @@ public class Server {
         }
     }
 
+
+    //TODO: check validation
     public void executeAttack(Action myattack, Player currPlayer){
-//        Territory srcTerr = getTerr(myattack.getSrcName(), currPlayer);
-//        for(Integer i : myattack.getActionUnits().keySet()){
-//            Integer unitNum = myattack.getActionUnits().get(i);
-//            srcTerr.decreaseUnit(i, unitNum);
-//        }
-//        Integer attackNum =
-//        HashMap<Integer, Integer> record = myattack.getActionUnits();
-//        for(){
-//
-//        }
+        Player defender = getPlayer(myattack.getDstName());
+
         //1. Getting the total attack Units from one player(the attacker)
-        int totalAttackUnits = totalAttackUnits(currPlayer);
+        int totalAttackUnits = totalAttackUnits(currPlayer, myattack.getDstName());
 
         //2. Deciding who wins
-        Player winPlayer = getWinPlayer(myattack);
+        Player winPlayer = doAttack(myattack, totalAttackUnits);
 
         //If the current player wins, the attacker wins
-        if(winPlayer.equals(winPlayer)){
+        if(winPlayer.equals(currPlayer)){
+            //The territory that was attacked
+            Territory toOccupy = getTerr(myattack.getDstName(), defender);
+
+            //Adding the territory to the winner's territory
+            winPlayer.occupyTerritory(myattack, toOccupy);
+
+            //Removing the territory from the loser's territory. It loses the whole territory
+            defender.loseTerritory(toOccupy);
 
         }
-
-
     }
 
-    //5(d)
-
-    /**
-     * This method executes the case when both side uses all of their units
-     * which means there are no defender
-     */
-    public void noLoseAttack(){
-
-    }
 
     //5(b) sum the total number of attacks for one player
-
     /**
      * This method sums all attack actions from the same player
      * @param currentPlayer the current player who execute the attack action
      * @return the total number of attack units
      */
-    public int totalAttackUnits(Player currentPlayer){
+    public int totalAttackUnits(Player currentPlayer, String dstName){
         int sumUnits = 0;
         int currPlayerID = currentPlayer.getPlayerId();
         ArrayList<Action> attackList = attacks.get(currPlayerID);
         for(Action attAction: attackList){
-            int curAttactUnits = attAction.getActionUnits().get(1); //TODO: the first integer
-            sumUnits += curAttactUnits;
+            //If multiple territories of player A attacks territory X, sum them
+            if(attAction.getDstName().equals(dstName)){
+                int curAttactUnits = attAction.getActionUnits().get(1); //TODO: the first integer
+                sumUnits += curAttactUnits;
+            }
         }
         return sumUnits;
     }
@@ -139,10 +132,13 @@ public class Server {
     /**
      * This method rolls two 20-sided dice until one player runs out of units.
      * The one who run out of units loses.
+     * This method loses or occupies the territory
+     * @param attackAction the action
+     * @param attNum the number of attack action
      * @return the player who wins
      *
      */
-    public Player getWinPlayer(Action attackAction){
+    public Player doAttack(Action attackAction, int attNum){
         Random random = new Random();
         int rand_att = random.nextInt(20) + 1; //For the attacker
         int rand_def = random.nextInt(20) + 1; //For the defender
@@ -150,25 +146,25 @@ public class Server {
         Player attacker = getPlayer(attackAction.getSrcName());
         Player defender = getPlayer(attackAction.getDstName());
 
-        int cnt_att = attacker.getTotNumUnits();
-        int cnt_def = defender.getTotNumUnits();
+        int defNum = defender.getTotNumUnits();
 
         while(rand_att != 0 || rand_def != 0){
             if(rand_att < rand_def){
-                cnt_att --;
+                attNum --;
             }
             else if(rand_def < rand_att){
-                cnt_def --;
+                defNum --;
             }
             else if(rand_def == rand_att){ //defender wins
-                cnt_att --;
+                attNum --;
             }
         }
 
-        //The attacker lose
-        if(cnt_att == 0){
+        //The attacker loses, the attack action fails
+        if(attNum == 0){
             return defender;
         }
+        //The attacker wins, the attack action success
         return attacker;
     }
 
@@ -192,6 +188,15 @@ public class Server {
         return currPlayer;
     }
 
+    /**
+     * This method adds one unit after finishing each turn
+     */
+    public void addOneUnits(){
+        for(Territory t: riscBoard.getAllTerritories()){
+            t.increaseUnit(1, 1);
+        }
+
+    }
 
 
 

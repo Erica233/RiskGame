@@ -96,6 +96,26 @@ public class Player implements Serializable {
         return output.toString();
     }
 
+    /**
+     * This method removes the territory from the current player
+     * @param toLose
+     */
+    public void loseTerritory(Territory toLose){
+        ownedTerritories.remove(toLose);
+    }
+
+    /**
+     * This method adds the new occupied territory when the current player attacks successfully
+     * The name should be the src name from the attacker
+     * The units number should be the remaining + the attack
+     * @param toOccupy
+     */
+    public void occupyTerritory(Action currAttack, Territory toOccupy){
+        int units_new = toOccupy.getNumUnits() + currAttack.getActionUnits().get(1); //TODO: check 1 for force level
+        Territory newOccupy = new Territory(currAttack.getSrcName(), units_new);
+        ownedTerritories.add(newOccupy);
+    }
+
     /** getters and setters **/
     public int getPlayerId() {
         return playerId;
