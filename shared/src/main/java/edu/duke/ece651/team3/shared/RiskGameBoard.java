@@ -21,6 +21,11 @@ public class RiskGameBoard implements Board, Serializable {
         this.allPlayers = new ArrayList<>();
     }
 
+    /**
+     * This method initialize the map
+     * @return A string that contains all information of a map
+     * @throws Exception
+     */
     public String initMap() throws Exception {
         Territory t1 = new Territory("a", 1, 5);
         Territory t2 = new Territory("b", 1, 5);
@@ -62,6 +67,11 @@ public class RiskGameBoard implements Board, Serializable {
         return output;
     }
 
+    /**
+     * This method overrides the equals function to check whether two riskGameBoards are equal
+     * @param other
+     * @return true if both are equal, false if they are not
+     */
     @Override
     public boolean equals(Object other) {
         if (other.getClass().equals(getClass())) {
@@ -71,6 +81,11 @@ public class RiskGameBoard implements Board, Serializable {
         return false;
     }
 
+    /**
+     * This method tries to add a territory to the whole territory list
+     * @param territoryToAdd the Territory to add to the Board
+     * @return true if it successfully added, false otherwise
+     */
     public boolean tryAddTerritory(Territory territoryToAdd) {
         if (!territoryToAdd.isValidToAdd(allTerritories, territoryToAdd)) {
             return false;
@@ -79,6 +94,10 @@ public class RiskGameBoard implements Board, Serializable {
         return true;
     }
 
+    /**
+     * This method displays the board
+     * @return String contains the info of the board
+     */
     public String displayBoard() {
         StringBuilder output = new StringBuilder();
         if (allPlayers.size() == 0) {
@@ -89,13 +108,27 @@ public class RiskGameBoard implements Board, Serializable {
         }
         return output.toString();
     }
+
+    /**
+     * This method adds a player into the board
+     * @param p
+     */
     public void addPlayer(Player p){
         allPlayers.add(p);
     }
+
+    /**
+     * This method gets all players
+     * @return the ArrayList<Players>
+     */
     public ArrayList<Player> getAllPlayers() {
         return allPlayers;
     }
 
+    /**
+     * This method gets all territories
+     * @return the ArrayList<Territory>
+     */
     public ArrayList<Territory> getAllTerritories() {
         return allTerritories;
     }

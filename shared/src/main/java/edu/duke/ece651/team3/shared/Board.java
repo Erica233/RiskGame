@@ -6,7 +6,12 @@ import java.util.ArrayList;
  * A Board
  */
 public interface Board {
-
+    /**
+     * This method initialize the map
+     *
+     * @return A String that contains all information of a map
+     * @throws Exception
+     */
     String initMap() throws Exception;
 
     /**

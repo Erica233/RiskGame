@@ -26,6 +26,12 @@ public class Territory implements Serializable, Comparable<Territory> {
         units.put(1, 0);
     }
 
+    /**
+     * This constructor constructs a territory with name, forcelevel, and num
+     * @param _name
+     * @param forcelevel
+     * @param num
+     */
     public Territory(String _name, int forcelevel, int num) {
         this.territoryName = _name;
         this.neighbors = new ArrayList<>();
@@ -47,6 +53,11 @@ public class Territory implements Serializable, Comparable<Territory> {
         this.units = new HashMap<>();
     }
 
+    /**
+     * Constructs the territory with name, and the units
+     * @param _name
+     * @param _units
+     */
     public Territory(String _name, HashMap<Integer, Integer> _units) {
         this.territoryName = _name;
         this.neighbors = new ArrayList<>();
@@ -91,6 +102,10 @@ public class Territory implements Serializable, Comparable<Territory> {
         return leftNeighborsNames.equals(rightNeighborsNames);
     }
 
+    /**
+     * This method gets the sorted neighbors' names
+     * @return an ArrayList<String> contains all names
+     */
     public ArrayList<String> getSortedNeighborNames() {
         ArrayList<String> sortedNeighborNames = new ArrayList<>();
         for (Territory aNeighbor: neighbors) {
@@ -249,14 +264,27 @@ public class Territory implements Serializable, Comparable<Territory> {
         return territoryName;
     }
 
+    /**
+     * This method gets the num of units of a territory
+     * @return the num of units
+     */
     public int getNumUnits() {
         return numUnits;
     }
 
+
+    /**
+     * This method gets all the neighbors of this territory
+     * @return ArrayList<Territory> contains all neighbor territories
+     */
     public ArrayList<Territory> getNeighbors() {
         return neighbors;
     }
 
+    /**
+     * This method gets a hashmap of units
+     * @return hashmap of units with <level, num>
+     */
     public HashMap<Integer, Integer> getUnits() {
         return units;
     }

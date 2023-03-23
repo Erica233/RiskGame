@@ -9,6 +9,12 @@ public class MoveRuleChecker extends RuleChecker{
     private String srcName;
     private String dstName;
 
+    /**
+     * Check whether the current player and enemy have the territory from attack's information
+     * @param _action attack information
+     * @param _riskGameBoard current player
+     * @return if valid return true, invalid return false
+     */
     public MoveRuleChecker(Action _action, RiskGameBoard _riskGameBoard){
         super(_action);
         this.action = _action;

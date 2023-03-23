@@ -9,6 +9,12 @@ public class Player implements Serializable {
     private final int totNumUnits;
     private final ArrayList<Territory> ownedTerritories;
 
+    /**
+     * This constructor builds up the player with 3 input paremeters
+     * @param _id the player's id
+     * @param _color the player's color
+     * @param _totNumUnits the total number of the units that all territory of the player obtains
+     */
     public Player(int _id, String _color, int _totNumUnits) {
         this.playerId = _id;
         this.color = _color;
@@ -16,6 +22,13 @@ public class Player implements Serializable {
         this.ownedTerritories = new ArrayList<>();
     }
 
+    /**
+     * This constructor builds up the player with 4 input parameters
+     * @param _id the player's id
+     * @param _color the player's color
+     * @param _totNumUnits the total number of units
+     * @param _ownedTerritories an ArrayList contains all the territory a player owns
+     */
     public Player(int _id, String _color, int _totNumUnits, ArrayList<Territory> _ownedTerritories) {
         this.playerId = _id;
         this.color = _color;
@@ -23,6 +36,11 @@ public class Player implements Serializable {
         this.ownedTerritories = _ownedTerritories;
     }
 
+    /**
+     * This method overrides the equal method to compare whether two players are the same
+     * @param other the other player
+     * @return true if two players are same, false if they are not
+     */
     @Override
     public boolean equals(Object other) {
         if (other.getClass().equals(getClass())) {
@@ -83,6 +101,10 @@ public class Player implements Serializable {
         return true;
     }
 
+    /**
+     * This method displays the player
+     * @return A String that contains all information of it
+     */
     public String displayPlayer() {
         StringBuilder output = new StringBuilder();
         output.append(color).append(" player:\n---------------\n");
@@ -120,14 +142,26 @@ public class Player implements Serializable {
         return playerId;
     }
 
+    /**
+     * This method gets all the territory that a player owned
+     * @return
+     */
     public ArrayList<Territory> getOwnedTerritories() {
         return ownedTerritories;
     }
 
+    /**
+     * This method gets the color of the player to identify it
+     * @return the String contains color
+     */
     public String getColor() {
         return color;
     }
 
+    /**
+     * This method gets the total number of Units a player obtains
+     * @return int of the total number of units
+     */
     public int getTotNumUnits() {
         return totNumUnits;
     }
