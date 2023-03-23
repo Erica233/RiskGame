@@ -10,7 +10,6 @@ import java.util.HashMap;
 
 
 public class Server {
-    //private int clientID;
     private final ServerSocket serverSock;
     private final ArrayList<Socket> clientSockets;
     private ArrayList<ObjectOutputStream> objectsToClients;
