@@ -19,39 +19,35 @@ public class Action implements Serializable {
 
     /**
      * This method checks whether the action type is the move type
-     * @param action
      * @return true if it is Move type, false if it not
      */
-    public boolean isMoveType(Action action){
-        return action.getActionType().toUpperCase(Locale.ROOT).equals("M");
+    public boolean isMoveType(){
+        return actionType.toUpperCase(Locale.ROOT).equals("M");
     }
 
     /**
      * This method checks whether the action type is the attack type
-     * @param action
      * @return true if it is Attack type, false if it is not
      */
-    public boolean isAttackType(Action action){
-        return action.getActionType().toUpperCase(Locale.ROOT).equals("A");
+    public boolean isAttackType(){
+        return actionType.toUpperCase(Locale.ROOT).equals("A");
     }
 
     /**
      * This method checks whether the action is Done
-     * @param action
      * @return true if it is Done, false if it is not
      */
-    public boolean isDone(Action action){
-        return action.getActionType().toUpperCase(Locale.ROOT).equals("D");
+    public boolean isDone(){
+        return actionType.toUpperCase(Locale.ROOT).equals("D");
     }
 
     /**
      * This method checks whether the action type is valid(Move, Attack, Done)
-     * @param action
      * @return true if the action type is valid, false if it is not
      */
 
-    public boolean isValidType(Action action){
-        return isAttackType(action) || isMoveType(action) || isDone(action);
+    public boolean isValidType(){
+        return isAttackType() || isMoveType() || isDone();
     }
 
 
