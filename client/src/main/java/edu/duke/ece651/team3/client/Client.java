@@ -36,7 +36,7 @@ public class Client {
         try {
             Client client = new Client(hostname, portNum);
             System.out.println(client + " connect to the Server successfully!");
-            //client.joinGame();
+            //client join Game
             client.recvPlayerId();
             //client.playGame();
             client.playOneTurn();
@@ -58,6 +58,23 @@ public class Client {
         System.out.println(riskGameBoard.displayBoard());
         handleAllActions();
         sendActionListsToServer();
+        printActionsLists();
+    }
+
+    public void printActionsLists() {
+        String output = "";
+        output = output + "Player " + playerId + " move actions:\n";
+        for (Action move: moveActions) {
+            output = output + move + "\n";
+        }
+        output += "\n";
+
+        output = output + "Player " + playerId + " attack actions:\n";
+        for (Action attack: attackActions) {
+            output = output + attack + "\n";
+        }
+        output += "\n";
+        System.out.println(output);
     }
 
     public void sendString(String s) throws IOException {

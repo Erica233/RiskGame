@@ -66,7 +66,26 @@ public class Server {
     public void runOneTurn() throws IOException, ClassNotFoundException {
         sendBoardToAllClients();
         recvActionsFromAllClients();
+        printActionsMap();
         //removeInvalidActions();
+    }
+
+    public void printActionsMap() {
+        String output = "";
+        for (int id = 0; id < 2; id++) {
+            output = output + "Player " + id + " move actions:\n";
+            for (Action move: movesMap.get(id)) {
+                output = output + move + "\n";
+            }
+            output += "\n";
+
+            output = output + "Player " + id + " attack actions:\n";
+            for (Action attack: attacksMap.get(id)) {
+                output = output + attack + "\n";
+            }
+            output += "\n";
+        }
+        System.out.println(output);
     }
 
     public void recvActionsFromAllClients() throws IOException, ClassNotFoundException {
