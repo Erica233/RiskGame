@@ -78,40 +78,28 @@ public class Server {
             Player player = riscBoard.getAllPlayers().get(i);
             ArrayList<Action> myattacks = attacks.get(i);
             for (Action myattack : myattacks) {
+                //1. Getting the total attack Units from one player(the attacker)
+                int totalAttackUnits = totalAttackUnits(player, myattack.getDstName());
+                myattack.setActionUnits(new HashMap<>(1, totalAttackUnits));
                 executeAttack(myattack, player);
             }
         }
     }
 
 
+
     //TODO: check validation
     public void executeAttack(Action myattack, Player currPlayer){
         Player defender = getPlayer(myattack.getDstName());
 
-        //1. Getting the total attack Units from one player(the attacker)
-        int totalAttackUnits = totalAttackUnits(currPlayer, myattack.getDstName());
-
-        //2. Deciding who wins
-        Player winPlayer = doAttack(myattack, totalAttackUnits);
-
-        //If the current player wins, the attacker wins
-        if(winPlayer.equals(currPlayer)){
-            //The territory that was attacked
-            Territory toOccupy = getTerr(myattack.getDstName(), defender);
-
-            //Adding the territory to the winner's territory
-            winPlayer.occupyTerritory(myattack, toOccupy);
-
-            //Removing the territory from the loser's territory. It loses the whole territory
-            defender.loseTerritory(toOccupy);
-
-        }
+        //1. Deciding who wins
+        doAttack(myattack);
     }
 
 
     //5(b) sum the total number of attacks for one player
     /**
-     * This method sums all attack actions from the same player
+     * This method sums all attack actions from the same player to the same dst
      * @param currentPlayer the current player who execute the attack action
      * @return the total number of attack units
      */
@@ -134,11 +122,10 @@ public class Server {
      * The one who run out of units loses.
      * This method loses or occupies the territory
      * @param attackAction the action
-     * @param attNum the number of attack action
      * @return the player who wins
      *
      */
-    public Player doAttack(Action attackAction, int attNum){
+    public void doAttack(Action attackAction){
         Random random = new Random();
         int rand_att = random.nextInt(20) + 1; //For the attacker
         int rand_def = random.nextInt(20) + 1; //For the defender
@@ -146,26 +133,43 @@ public class Server {
         Player attacker = getPlayer(attackAction.getSrcName());
         Player defender = getPlayer(attackAction.getDstName());
 
+        int attackNum = attackAction.getActionUnits().get(1);
         int defNum = defender.getTotNumUnits();
 
-        while(rand_att != 0 || rand_def != 0){
+        int attackerLoseTimes = 0;
+        int defenderLoseTimes = 0;
+
+        while(attackNum != 0 || defNum != 0){
+            rand_att = random.nextInt(20) + 1;
+            rand_def = random.nextInt(20) + 1;
+
             if(rand_att < rand_def){
-                attNum --;
+                attackNum --;
+                attackerLoseTimes ++;
             }
             else if(rand_def < rand_att){
                 defNum --;
+                defenderLoseTimes ++;
             }
             else if(rand_def == rand_att){ //defender wins
-                attNum --;
+                attackNum --;
+                attackerLoseTimes ++;
             }
         }
+        //The attacker wins, the attack action success
+        Territory toOccupy = getTerr(attackAction.getDstName(), defender);
 
         //The attacker loses, the attack action fails
-        if(attNum == 0){
-            return defender;
+        if(attackNum == 0){
+            toOccupy.decreaseUnit(1, defenderLoseTimes);
         }
-        //The attacker wins, the attack action success
-        return attacker;
+
+        //Adding the territory to the winner's territory
+        attacker.occupyTerritory(attackAction, attackerLoseTimes);
+
+        //Removing the territory from the loser's territory. It loses the whole territory
+        defender.loseTerritory(toOccupy);
+
     }
 
     /**
