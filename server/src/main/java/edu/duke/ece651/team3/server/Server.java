@@ -338,6 +338,11 @@ public class Server {
             try {
                 result = runOneTurn();
                 sendEndGameInfo(result);
+                if (result == 0 || result == 1) {
+                    System.out.println("Player " + result + " is the winner!");
+                    System.out.println("Game Ends!");
+                    return;
+                }
             } catch (Exception e) {
                 System.err.println(e.getMessage());
             }

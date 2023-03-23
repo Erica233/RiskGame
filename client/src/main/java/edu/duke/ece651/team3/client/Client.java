@@ -58,17 +58,18 @@ public class Client {
     public void playGame() throws IOException, ClassNotFoundException {
         int gameResult = -1;
         do {
-            try {
+            //try {
                 playOneTurn();
                 gameResult = recvGameResult();
                 if (gameResult == 0 || gameResult == 1) {
                     System.out.println("Player " + gameResult + " is the winner!");
                     System.out.println("Game ends!");
-                    System.exit(0);
+                    return;
                 }
-            } catch (Exception e) {
-                System.err.println("playGame: " + e.getMessage());
-            }
+            //}
+//            catch (Exception e) {
+//                System.err.println("playGame: " + e.getMessage());
+//            }
         } while (true);
     }
 
@@ -126,6 +127,8 @@ public class Client {
      * It checks whether the action is valid and store it into the action list
      */
     public void handleAllActions() {
+        moveActions.clear();
+        attackActions.clear();
         do {
             try {
                 Action action = readOneAction();
@@ -173,11 +176,9 @@ public class Client {
      * @param action
      */
     public void storeActionToList(Action action) {
-        moveActions.clear();
         if (action.getActionType().toUpperCase(Locale.ROOT).equals("M")) {
             moveActions.add(action);
         }
-        attackActions.clear();
         if (action.getActionType().toUpperCase(Locale.ROOT).equals("A")) {
             attackActions.add(action);
         }
