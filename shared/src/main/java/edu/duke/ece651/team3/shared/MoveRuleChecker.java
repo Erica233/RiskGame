@@ -69,10 +69,10 @@ public class MoveRuleChecker extends RuleChecker{
      * @param currPlayer current player
      * @return true if valid false if invalid
      */
-    public boolean checkPath(Action myMove, RiskGameBoard r, Player currPlayer) throws Exception {
+    public boolean checkPath(Action myMove, RiskGameBoard r, Player currPlayer) {
         String srcName = myMove.getSrcName();
         String dstName = myMove.getDstName();
-//        Territory src = findTerritoryByName(srcName, currPlayer);
+        Territory src = findTerritoryByName(srcName, currPlayer);
         Territory dst = findTerritoryByName(dstName, currPlayer);
         if(dst == null){
             return false;
@@ -81,49 +81,40 @@ public class MoveRuleChecker extends RuleChecker{
 
         Player OtherPlayer1 = r.getAllPlayers().get(0);
         Player OtherPlayer2 = r.getAllPlayers().get(1);
-//        Player OtherPlayer = null;
-//        if(OtherPlayer1.equals(currPlayer)){
-//            OtherPlayer = OtherPlayer2;
-//        }
-//        if(OtherPlayer2.equals(currPlayer)){
-//            OtherPlayer = OtherPlayer1;
-//        }
-
-
         initVisited(currPlayer, visited);
         initVisited(OtherPlayer1, visited);
         initVisited(OtherPlayer2, visited);
-//        if(isValidPath(src, dst, visited, currPlayer)){
-//            return true;
-//        }
-        return true;
+        if(isValidPath(src, dst, visited, currPlayer)){
+            return true;
+        }
+        return false;
     }
 
 
 
-//    /**
-//     * This method using dfs, if the path exist, return true. If not, return false
-//     * @param src the source territory
-//     * @param dst the destination territory
-//     * @param visited whether the territory has been visited
-//     * @return
-//     */
-//    public boolean isValidPath(Territory src, Territory dst,
-//                               HashMap<Territory, Boolean> visited, Player currPlayer) {
-//        if (src.equals(dst) && checkIsSelfTerritory(dst, currPlayer)) {
-//            return true;
-//        }
-//
-//        visited.put(src, true);
-//        ArrayList<Territory> Neighbors = src.getNeighbors();
-//        for(int i = 0; i < Neighbors.size(); i++){
-//            if (!visited.get(Neighbors.get(i)) && checkIsSelfTerritory(Neighbors.get(i), currPlayer) &&
-//                    isValidPath(Neighbors.get(i), dst, visited, currPlayer)) {
-//                return true;
-//            }
-//        }
-//        return false;
-//    }
+    /**
+     * This method using dfs, if the path exist, return true. If not, return false
+     * @param src the source territory
+     * @param dst the destination territory
+     * @param visited whether the territory has been visited
+     * @return
+     */
+    public boolean isValidPath(Territory src, Territory dst,
+                               HashMap<Territory, Boolean> visited, Player currPlayer) {
+        if (src.equals(dst) && checkIsSelfTerritory(dst, currPlayer)) {
+            return true;
+        }
+
+        visited.put(src, true);
+        ArrayList<Territory> Neighbors = src.getNeighbors();
+        for(int i = 0; i < Neighbors.size(); i++){
+            if (!visited.get(Neighbors.get(i)) && checkIsSelfTerritory(Neighbors.get(i), currPlayer) &&
+                    isValidPath(Neighbors.get(i), dst, visited, currPlayer)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     /**
      * This method takes the territory's name and the current player
@@ -142,7 +133,12 @@ public class MoveRuleChecker extends RuleChecker{
         return t;
     }
 
-
+    /**
+     * This method checks whether the current territory is self territory
+     * @param territory
+     * @param p
+     * @return true if it is self territory, false if it is not
+     */
     public boolean checkIsSelfTerritory(Territory territory, Player p){
         for(int i = 0; i < p.getOwnedTerritories().size(); i++){
             if(territory.equals(p.getOwnedTerritories().get(i))){
@@ -151,6 +147,12 @@ public class MoveRuleChecker extends RuleChecker{
         }
         return false;
     }
+
+    /**
+     * This method initialized the visited HashMap
+     * @param player
+     * @param visited
+     */
     public void initVisited(Player player, HashMap<Territory, Boolean> visited){
         for(int i = 0; i < player.getOwnedTerritories().size(); i++){
             visited.put(player.getOwnedTerritories().get(i), false);
