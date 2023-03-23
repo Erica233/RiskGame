@@ -3,19 +3,16 @@ package edu.duke.ece651.team3.server;
 import edu.duke.ece651.team3.shared.*;
 
 import java.io.*;
-import java.util.HashSet;
-import java.util.Random;
+import java.util.*;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.HashMap;
 
 
 public class Server {
     private final ServerSocket serverSock;
     private final ArrayList<Socket> clientSockets;
-    private ArrayList<ObjectOutputStream> objectsToClients;
-    private ArrayList<ObjectInputStream> objectsFromClients;
+    private final ArrayList<ObjectOutputStream> objectsToClients;
+    private final ArrayList<ObjectInputStream> objectsFromClients;
     private final Board riscBoard;
     private HashMap<Integer, ArrayList<Action>> movesMap;
     private HashMap<Integer, ArrayList<Action>> attacksMap;
@@ -38,10 +35,10 @@ public class Server {
         }
     }
 
-    public Integer checkWin(){
+    public int checkWin(){
         ArrayList<Player> myplayers = riscBoard.getAllPlayers();
         for(Player p : myplayers){
-            Integer playerid = p.getPlayerId();
+            int playerid = p.getPlayerId();
             ArrayList<Territory> territories = p.getOwnedTerritories();
             if(territories.size() == 0){
                 if(playerid == 0){
@@ -53,22 +50,15 @@ public class Server {
         return 2;
     }
 
-    public Integer executeMoves() throws Exception {
+    public void executeMoves() throws Exception {
         for(int i : movesMap.keySet()){
             Player player = riscBoard.getAllPlayers().get(i);
             ArrayList<Action> mymoves = movesMap.get(i);
             for (Action mymove : mymoves) {
                 if(!checkMove(mymove, player)) continue;
                 executeMove(mymove, player);
-                if(checkWin() == 0 || checkWin() == 1){
-                    return checkWin();
-                }
-                else{
-                    continue;
-                }
             }
         }
-        return 2; //continue the next round
     }
 
     public boolean checkMove(Action mymove, Player currPlayer) throws Exception {
@@ -79,7 +69,7 @@ public class Server {
         return true;
     }
 
-    public void executeMove(Action mymove, Player currPlayer) throws Exception {
+    public void executeMove(Action mymove, Player currPlayer) {
 
         Territory srcTerr = getTerr(mymove.getSrcName(), currPlayer);
         Territory dstTerr = getTerr(mymove.getDstName(), currPlayer);
@@ -114,21 +104,13 @@ public class Server {
 
 
     public ArrayList<Action> intergAttack(ArrayList<Action> myattacks){
-//        for(int i = 0 ; i < myattacks.size(); i++){
-//            for(int j = i+1; j < myattacks.size(); j++){
-//                if(myattacks.get(i).getDstName().equals(myattacks.get(j).getDstName())){
-//
-//                }
-//
-//            }
-//        }
         ArrayList<Action> newattackers = new ArrayList<>();
-        HashSet<String> destinations = null;
+        HashSet<String> destinations = new HashSet<>();
         for(Action act : myattacks){
             destinations.add(act.getDstName());
         }
         for(String s : destinations){
-            HashMap<Integer, Integer> hashMap = new HashMap();
+            HashMap<Integer, Integer> hashMap = new HashMap<>();
             Action newaction = new Action("A", null, s, hashMap);
             newattackers.add(newaction);
         }
@@ -153,26 +135,27 @@ public class Server {
     }
 
     //TODO: one player executes once
-    public void executeAttacks() throws Exception {
+    public int executeAttacks() throws Exception {
         for(int i : attacksMap.keySet()){
             Player player = riscBoard.getAllPlayers().get(i);
             ArrayList<Action> myattacks = attacksMap.get(i);
             //integration
-            for (Action myattack : myattacks) {
-                //1. Getting the total attack Units from one player(the attacker)
-
-//                int totalAttackUnits = totalAttackUnits(player, myattack.getDstName());
-//                myattack.setActionUnits(new HashMap<>(1, totalAttackUnits));
-                myattacks = intergAttack(myattacks);
-            }
+            myattacks = intergAttack(myattacks);
             //execution
             for(Action myattack : myattacks){
                 if(!checkAttack(myattack, player)){
                     continue;
                 }
                 executeAttack(myattack, player);
+                if(checkWin() == 0 || checkWin() == 1){
+                    return checkWin();
+                }
+                else{
+                    continue;
+                }
             }
         }
+        return 2;
     }
 
     /**
@@ -180,7 +163,6 @@ public class Server {
      * The one who run out of units loses.
      * This method loses or occupies the territory
      * @param myattack the action
-     * @return the player who wins
      *
      */
     //TODO: check validation
@@ -291,8 +273,7 @@ public class Server {
             server.connectClients();
             System.out.println("Both clients connect to the Server successfully!\n");
             server.initGame();
-            //server.runGame();
-            server.runOneTurn();
+            server.runGame();
 
 
             server.closePipes();
@@ -303,17 +284,34 @@ public class Server {
         }
     }
 
-    public String recvString(int playerId) throws IOException, ClassNotFoundException {
-        String s = (String) objectsFromClients.get(playerId).readObject();
-        System.out.println("receive -"+s+"- from "+playerId);
-        return s;
+    public void runGame() {
+        int result = -1;
+        do {
+            try {
+                result = runOneTurn();
+                if (result == 0 || result == 1) {
+                    sendEndGameInfo(result);
+                }
+            } catch (Exception e) {
+                System.err.println(e.getMessage());
+            }
+        } while (true);
+
     }
 
-    public void runOneTurn() throws IOException, ClassNotFoundException {
+    public int runOneTurn() throws Exception {
         sendBoardToAllClients();
         recvActionsFromAllClients();
         printActionsMap();
-        //executeAllMoves();
+        //executeAllMoves:
+        executeMoves();
+        return executeAttacks();
+    }
+
+    public void sendEndGameInfo(int gameResult) throws IOException {
+        objectsToClients.get(0).writeInt(gameResult);
+        objectsToClients.get(1).writeInt(gameResult);
+        System.out.println("send gameResult (Player " + gameResult + " is the winner) to all clients!");
     }
 
     public void printActionsMap() {
@@ -336,23 +334,13 @@ public class Server {
 
     public void recvActionsFromAllClients() throws IOException, ClassNotFoundException {
         for (int id = 0; id < 2; id++) {
+            movesMap.get(id).clear();
+            attacksMap.get(id).clear();
             ArrayList<Action> movesList = (ArrayList<Action>) objectsFromClients.get(id).readObject();
             ArrayList<Action> attacksList = (ArrayList<Action>) objectsFromClients.get(id).readObject();
             movesMap.put(id, movesList);
             attacksMap.put(id, attacksList);
         }
-    }
-
-    //test
-    public void sendTerritory() throws IOException {
-        Territory t1 = new Territory("a", 2);
-        objectsToClients.get(0).writeObject(t1);
-        objectsToClients.get(1).writeObject(t1);
-    }
-    public Territory recvTerritory(int playerId) throws IOException, ClassNotFoundException {
-        Territory t1 = (Territory) objectsFromClients.get(playerId).readObject();
-        System.out.println("receive "+t1.displayTerritory()+"from "+playerId);
-        return t1;
     }
 
     public void sendBoardToAllClients() throws IOException {
@@ -394,161 +382,5 @@ public class Server {
         clientSockets.get(1).close();
         serverSock.close();
     }
-
-
-
-    //    public Server(int portNum) throws IOException{
-//        PlayerNames = new ArrayList<>();
-//        this.PlayerNames.add("Red");
-//        this.PlayerNames.add("Green");
-//        this.clientID = 0;
-//
-//        this.serverS = new ServerSocket(portNum);
-//        this.clientSockets = new HashMap<>();
-//        this.sendObjToClients = new HashMap<>();
-//        this.receiveObjFromClients = new HashMap<>();
-//    }
-
-//    /**
-//     * This function tries to connect the multi client
-//     * @param numPlayer the total number of players
-//     * @return true if everything works well
-//     * @throws IOException
-//     * @throws ClassNotFoundException
-//     */
-//    public boolean tryConnectMulClient(int numPlayer) throws Exception {
-//        for(int i = 0; i < numPlayer; i++){
-//            ++ clientID;
-//            connectClient();
-//            Territory t1 = new Territory("Hogwarts", 10);
-//            RiskGameBoard riskGameBoard = new RiskGameBoard();
-//            //riskGameBoard.tryAddTerritory(t1);
-//            transData();
-//            transBoard(riskGameBoard);
-//            recvMultipleAction();
-//        }
-//        closePipe();
-//        return true;
-//    }
-//
-//    /**
-//     * This method tries to connect the server to the client
-//     * @return true if the connection is successful, false if failed
-//     */
-//    public void connectClient() throws Exception {
-//        //Connecting with the first player
-//        //Getting the client's socket and initialize its Object Input and Output Stream
-//        Socket currClientSocket = serverS.accept();
-//        clientSockets.put(clientID, currClientSocket);
-//        sendObjToClients.put(clientID, new ObjectOutputStream(clientSockets.get(clientID).getOutputStream()));
-//        receiveObjFromClients.put(clientID, new ObjectInputStream(clientSockets.get(clientID).getInputStream()));
-//
-////            clientSocket = serverS.accept(); //Accept the connection from the client
-//        out.println("Server accept socket is: ");
-//        out.println(clientSockets.get(clientID));
-//        out.println("The connection is established!");
-//        out.println("The server is connecting to the client with the port: " +  clientSockets.get(clientID).getPort());
-//    }
-//    /**
-//     * This method is currently the testing method. It transits String
-//     * @throws IOException
-//     */
-//    public void transData() throws IOException {
-//        String info = "Hi, This is Server!! I am connecting with you";
-////        String playerColor = PlayerNames.get(clientID);
-////        ++ clientID;
-//        Integer ID = clientID;
-//        out.println("Current client is: " + ID);
-//
-//        //Send data to the client
-////        this.sendObjToClient = new ObjectOutputStream(clientSocket.getOutputStream());
-//        sendObjToClients.get(clientID).writeObject(info);
-//        sendObjToClients.get(clientID).writeObject(ID);
-////        sendObjToClients.get(clientID).writeObject(playerColor);
-//    }
-//
-//    /**
-//     * This method receives single actions from the client
-//     * @throws IOException
-//     * @throws ClassNotFoundException
-//     */
-//    public void recvAction() throws IOException, ClassNotFoundException {
-////        this.readObjFromClient = new ObjectInputStream(clientSocket.getInputStream());
-//        Action action = (Action) receiveObjFromClients.get(clientID).readObject();
-//        String test = action.getActionType();
-//        out.println(test);
-//        out.println("Getting the action from the client successfully");
-//
-//    }
-//
-//    /**
-//     * This method receives multiple actions from the client
-//     */
-//    public void recvMultipleAction() throws IOException, ClassNotFoundException {
-//        String commitInfo = "";
-//        while(!commitInfo.equals("Done")){
-//            commitInfo = (String) receiveObjFromClients.get(clientID).readObject();
-////            out.println("receiving: " + commitInfo);
-//            if(!commitInfo.equals("D") && !commitInfo.equals("Done")){
-//                out.println("Done?");
-//                recvAction();
-//            }
-//        }
-//        sendObjToClients.get(clientID).writeObject("Please wait the other player finish enter");
-//
-//    }
-//    /**
-//     * This method is currently the testing method. It transits the class
-//     * @param riskGameBoard_toClient
-//     * @throws IOException
-//     * @throws ClassNotFoundException
-//     */
-//    public void transBoard(RiskGameBoard riskGameBoard_toClient) throws IOException, ClassNotFoundException {
-//        out.println("Sending the RiskGameBoard class to client");
-//        sendObjToClients.get(clientID).writeObject(riskGameBoard_toClient);
-//        out.println("sending risk game board successfully");
-//    }
-//
-//    /**
-//     * This method closes all pipes
-//     * @throws IOException
-//     */
-//    void closePipe() throws IOException {
-//        sendObjToClients.get(clientID).close();
-//        receiveObjFromClients.get(clientID).close();
-//        clientSockets.get(clientID).close();
-//        serverS.close();
-//    }
-
-    //        /**
-//     * This method receives multiple actions from the client
-//     */
-//    public void recvMultipleAction() throws IOException, ClassNotFoundException {
-//        String commitInfo = "";
-//        while(!commitInfo.equals("Done")){
-//            commitInfo = (String) receiveObjFromClients.get(clientID).readObject();
-////            out.println("receiving: " + commitInfo);
-//            if(!commitInfo.equals("D") && !commitInfo.equals("Done")){
-//                out.println("Done?");
-//                recvAction();
-//            }
-//        }
-//        sendObjToClients.get(clientID).writeObject("Please wait the other player finish enter");
-//
-//    }
-
-    //For testing the Serve.java
-//    public static void main(String[] args) throws Exception {
-//        Territory t1 = new Territory("Hogwarts", 10);
-//        RiskGameBoard riskGameBoard = new RiskGameBoard();
-//        //riskGameBoard.tryAddTerritory(t1);
-//        int numPlayer = 2;
-//        int portNum = 12345;
-//
-//        Server s = new Server(portNum);
-//
-//        //connect with multiple clients
-//        s.tryConnectMulClient(numPlayer);
-//    }
 
 }
