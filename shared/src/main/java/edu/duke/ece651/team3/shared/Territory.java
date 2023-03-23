@@ -222,7 +222,7 @@ public class Territory implements Serializable, Comparable<Territory> {
     public void decreaseUnit(int unitToRemove, int num) {
         if (units.containsKey(unitToRemove)) {
             int value = units.get(unitToRemove) - num;
-            System.out.println(unitToRemove);
+            //System.out.println(unitToRemove);
             if (value < 0) {
                 throw new IllegalArgumentException("Can't delete too much num of unit");
             }

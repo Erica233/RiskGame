@@ -106,6 +106,7 @@ public class Client {
         if (action.isAttackType()) {
             riskGameBoard.executeAttack(action, playerId);
         }
+        System.out.println("board after execution check: \n" + riskGameBoard.displayBoard());
     }
 
     public void sendActionListsToServer() throws IOException {
@@ -166,7 +167,7 @@ public class Client {
     public HashMap<Integer, Integer> readNumUnitsMap() throws IOException {
         HashMap<Integer, Integer> unitsMap = new HashMap<>();
         for (int forceLevel = 1; forceLevel < 2; forceLevel++) {
-            String prompt = "Please enter the number of units (whose force level is " + forceLevel + ") you want to use:\n";
+            String prompt = "Please enter the number of units (whose force level is " + forceLevel + ") you want to use:";
             int numUnits = readIntFromUser(prompt);
             unitsMap.put(forceLevel, numUnits);
         }
@@ -184,9 +185,9 @@ public class Client {
             return new Action(actionType, "", "", null);
         }
 
-        String srcPrompt = "Please enter the name of your source territory:\n";
+        String srcPrompt = "Please enter the name of your source territory:";
         String srcName = readStringFromUser(srcPrompt);
-        String dstPrompt = "Please enter the name of your destination territory:\n";
+        String dstPrompt = "Please enter the name of your destination territory:";
         String dstName = readStringFromUser(dstPrompt);
 
         HashMap<Integer, Integer> unitsToMove = readNumUnitsMap();
