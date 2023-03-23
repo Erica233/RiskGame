@@ -92,6 +92,11 @@ public class MoveRuleCheckerTest {
     Territory td = new Territory("d", 1, 3);
     ta.addNeighbors(tb, tc);
     RiskGameBoard riskGameBoard = new RiskGameBoard();
+    riskGameBoard.tryAddTerritory(ta);
+    riskGameBoard.tryAddTerritory(tb);
+    riskGameBoard.tryAddTerritory(tc);
+    riskGameBoard.tryAddTerritory(td);
+
     int unit0 = 1;
     Player py1 = new Player(4, "Blue", unit0);
     Player py2 = new Player(5, "Green", unit0);
@@ -99,6 +104,10 @@ public class MoveRuleCheckerTest {
     py1.tryOwnTerritory(td);
     py2.tryOwnTerritory(tb);
     py2.tryOwnTerritory(tc);
+
+    riskGameBoard.addPlayer(py1);
+    riskGameBoard.addPlayer(py2);
+
     Action newMoveAction = new MoveAction("move", "a", "d", unit1);
     MoveRuleChecker moveRuleChecker1 = new MoveRuleChecker(newMoveAction, r);
     moveRuleChecker1.checkPath(newMoveAction, riskGameBoard, py1);

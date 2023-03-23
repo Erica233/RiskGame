@@ -79,4 +79,16 @@ class RiskGameBoardTest {
                 "\n";
         assertEquals(expected, b1.initMap());
     }
+
+    @Test
+    void test_tryAddTerritory() throws Exception {
+        Board b = new RiskGameBoard();
+        Territory t1 = new Territory("a", 1, 2);
+        b.tryAddTerritory(t1);
+        ArrayList<Territory> expected = new ArrayList<>();
+        expected.add(t1);
+        assertEquals(expected, b.getAllTerritories());
+
+        assertEquals(false, b.tryAddTerritory(t1));
+    }
 }

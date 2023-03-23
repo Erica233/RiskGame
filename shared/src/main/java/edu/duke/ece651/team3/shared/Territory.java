@@ -233,6 +233,16 @@ public class Territory implements Serializable, Comparable<Territory> {
         updateNumUnits();
     }
 
+    public boolean isValidToAdd(ArrayList<Territory> allTerritories, Territory toAdd){
+        for(Territory t: allTerritories){
+            if(toAdd.equals(t)){
+                return false;
+            }
+        }
+        return true;
+    }
+
+
 
     /** getters and setters **/
     public String getTerritoryName() {

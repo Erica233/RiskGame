@@ -9,7 +9,7 @@ import java.util.HashMap;
  * A Risk Game Board
  */
 public class RiskGameBoard implements Board, Serializable {
-    //private final ArrayList<Territory> allTerritories;
+    private final ArrayList<Territory> allTerritories;
     private final ArrayList<Player> allPlayers;
 
     /**
@@ -17,9 +17,8 @@ public class RiskGameBoard implements Board, Serializable {
      *
      */
     public RiskGameBoard() throws Exception {
-        //this.allTerritories = new ArrayList<>();
+        this.allTerritories = new ArrayList<>();
         this.allPlayers = new ArrayList<>();
-        //initMap();
     }
 
     public String initMap() throws Exception {
@@ -72,13 +71,13 @@ public class RiskGameBoard implements Board, Serializable {
         return false;
     }
 
-//    public boolean tryAddTerritory(Territory territoryToAdd) {
-//        if (!territoryToAdd.isValidToAdd()) {
-//            return false;
-//        }
-//        allTerritories.add(territoryToAdd);
-//        return true;
-//    }
+    public boolean tryAddTerritory(Territory territoryToAdd) {
+        if (!territoryToAdd.isValidToAdd(allTerritories, territoryToAdd)) {
+            return false;
+        }
+        allTerritories.add(territoryToAdd);
+        return true;
+    }
 
     public String displayBoard() {
         StringBuilder output = new StringBuilder();
@@ -90,12 +89,15 @@ public class RiskGameBoard implements Board, Serializable {
         }
         return output.toString();
     }
+    public void addPlayer(Player p){
+        allPlayers.add(p);
+    }
     public ArrayList<Player> getAllPlayers() {
         return allPlayers;
     }
 
-//    public ArrayList<Territory> getAllTerritories() {
-//        return allTerritories;
-//    }
+    public ArrayList<Territory> getAllTerritories() {
+        return allTerritories;
+    }
 
 }
