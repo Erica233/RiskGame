@@ -6,7 +6,12 @@ import java.util.ArrayList;
  * A Board
  */
 public interface Board {
-
+    /**
+     * This method initialize the map
+     *
+     * @return A String that contains all information of a map
+     * @throws Exception
+     */
     String initMap() throws Exception;
 
     /**
@@ -24,10 +29,10 @@ public interface Board {
      * @param territoryToAdd the Territory to add to the Board
      * @return true if the Territory is valid to add, otherwise false
      */
-    //boolean tryAddTerritory(Territory territoryToAdd);
+    boolean tryAddTerritory(Territory territoryToAdd);
 
     /** getters and setters **/
-    //ArrayList<Territory> getAllTerritories();
+    ArrayList<Territory> getAllTerritories();
 
     ArrayList<Player> getAllPlayers();
 

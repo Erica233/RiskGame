@@ -10,6 +10,13 @@ public class Action implements Serializable {
     private String dstName; //The TO territory
     private HashMap<Integer, Integer> actionUnits;
 
+    /**
+     * This constructor takes 4 elements
+     * @param _actionType the string indicates the action type, i.e : M, A, D
+     * @param _srcName the string indicates the src territory name
+     * @param _dstName the string indicates the dst territory name
+     * @param _actionUnits the action units (i.e the move or attack units)
+     */
     public Action(String _actionType, String _srcName, String _dstName, HashMap<Integer, Integer> _actionUnits){
         this.actionType = _actionType;
         this.srcName = _srcName;
@@ -49,6 +56,41 @@ public class Action implements Serializable {
     public boolean isValidType(){
         return isAttackType() || isMoveType() || isDone();
     }
+
+    /**
+     * This method checks whether the action type is the move type
+     * @return true if it is Move type, false if it not
+     */
+    public boolean isMoveType(){
+        return actionType.toUpperCase(Locale.ROOT).equals("M");
+    }
+
+    /**
+     * This method checks whether the action type is the attack type
+     * @return true if it is Attack type, false if it is not
+     */
+    public boolean isAttackType(){
+        return actionType.toUpperCase(Locale.ROOT).equals("A");
+    }
+
+    /**
+     * This method checks whether the action is Done
+     * @return true if it is Done, false if it is not
+     */
+    public boolean isDone(){
+        return actionType.toUpperCase(Locale.ROOT).equals("D");
+    }
+
+    /**
+     * This method checks whether the action type is valid(Move, Attack, Done)
+     * @return true if the action type is valid, false if it is not
+     */
+
+    public boolean isValidType(){
+        return isAttackType() || isMoveType() || isDone();
+    }
+
+
 
     public String getActionType() {
         return actionType;

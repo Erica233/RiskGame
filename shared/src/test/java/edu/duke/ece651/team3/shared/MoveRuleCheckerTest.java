@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
+import java.net.Socket;
 import java.util.HashMap;
 
 
@@ -82,6 +83,34 @@ public class MoveRuleCheckerTest {
     MoveRuleChecker mrc7 = new MoveRuleChecker(a6, r);
     assertEquals(true, mrc7.checkPath(a6, r, p1));
 
+
+
+    //Test if the self does not have a path, but src and dst are both self
+    Territory ta = new Territory("a", 1, 3);
+    Territory tb = new Territory("b", 1, 3);
+    Territory tc = new Territory("c", 1, 3);
+    Territory td = new Territory("d", 1, 3);
+    ta.addNeighbors(tb, tc);
+    RiskGameBoard riskGameBoard = new RiskGameBoard();
+    riskGameBoard.tryAddTerritory(ta);
+    riskGameBoard.tryAddTerritory(tb);
+    riskGameBoard.tryAddTerritory(tc);
+    riskGameBoard.tryAddTerritory(td);
+
+    int unit0 = 1;
+    Player py1 = new Player(4, "Blue", unit0);
+    Player py2 = new Player(5, "Green", unit0);
+    py1.tryOwnTerritory(ta);
+    py1.tryOwnTerritory(td);
+    py2.tryOwnTerritory(tb);
+    py2.tryOwnTerritory(tc);
+
+    riskGameBoard.addPlayer(py1);
+    riskGameBoard.addPlayer(py2);
+
+    Action newMoveAction = new MoveAction("move", "a", "d", unit1);
+    MoveRuleChecker moveRuleChecker1 = new MoveRuleChecker(newMoveAction, r);
+    moveRuleChecker1.checkPath(newMoveAction, riskGameBoard, py1);
   }
 
 

@@ -7,6 +7,14 @@ public abstract class RuleChecker {
         this.action = _action;
     }
 
+    /**
+     * This method checks whether the action is valid based on all three aspects
+     * @param myAction the action
+     * @param r the riskGameBoard
+     * @param currPlayer the current player
+     * @return true if it is valid, false if it is not
+     * @throws Exception
+     */
     public boolean checkValidAction(Action myAction, RiskGameBoard r, Player currPlayer) throws Exception {
         return checkSrcDst(myAction, currPlayer) && checkNumUnits(myAction, currPlayer) && checkPath(myAction, r, currPlayer);
     }
