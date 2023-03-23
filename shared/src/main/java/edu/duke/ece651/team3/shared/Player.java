@@ -108,11 +108,10 @@ public class Player implements Serializable {
      * This method adds the new occupied territory when the current player attacks successfully
      * The name should be the src name from the attacker
      * The units number should be the remaining + the attack
-     * @param toOccupy
      */
-    public void occupyTerritory(Action currAttack, Territory toOccupy){
-        int units_new = toOccupy.getNumUnits() + currAttack.getActionUnits().get(1); //TODO: check 1 for force level
-        Territory newOccupy = new Territory(currAttack.getSrcName(), units_new);
+    public void occupyTerritory(Action currAttack, int loseTimes){
+        int units_new = currAttack.getActionUnits().get(1) - loseTimes; //TODO: check 1 for force level
+        Territory newOccupy = new Territory(currAttack.getDstName(), units_new);
         ownedTerritories.add(newOccupy);
     }
 
