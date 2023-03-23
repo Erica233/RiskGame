@@ -1,13 +1,12 @@
 package edu.duke.ece651.team3.server;
 
-import edu.duke.ece651.team3.shared.Board;
-import edu.duke.ece651.team3.shared.RiskGameBoard;
-import edu.duke.ece651.team3.shared.Territory;
+import edu.duke.ece651.team3.shared.*;
 
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 
 public class Server {
@@ -17,6 +16,10 @@ public class Server {
     private ArrayList<ObjectOutputStream> objectsToClients;
     private ArrayList<ObjectInputStream> objectsFromClients;
     private final Board riscBoard;
+    private HashMap<Integer, ArrayList<Action>> moves;
+    private HashMap<Integer, ArrayList<Action>> attacks;
+
+
 
 //    private final DataInputStream input;
 //    private final DataOutputStream out;
@@ -32,6 +35,70 @@ public class Server {
         this.objectsFromClients = new ArrayList<>();
         this.riscBoard = new RiskGameBoard();
     }
+
+    public void executeMoves(){
+        for(int i : moves.keySet()){
+            Player player = riscBoard.getAllPlayers().get(i);
+            ArrayList<Action> mymoves = moves.get(i);
+            for (Action mymove : mymoves) {
+                executeMove(mymove, player);
+            }
+        }
+        return;
+    }
+
+    public void executeMove(Action mymove, Player currPlayer){
+        Territory srcTerr = getTerr(mymove.getSrcName(), currPlayer);
+        Territory dstTerr = getTerr(mymove.getDstName(), currPlayer);
+        for(Integer i : mymove.getActionUnits().keySet()){
+            Integer unitNum = mymove.getActionUnits().get(i);
+            srcTerr.decreaseUnit(i, unitNum);
+            dstTerr.increaseUnit(i, unitNum);
+        }
+        return;
+    }
+
+
+    public Territory getTerr(String terrName, Player currPlayer){
+        int length = currPlayer.getOwnedTerritories().size();
+        Territory t = null;
+        for (int i = 0; i < length; i++) {
+            if (currPlayer.getOwnedTerritories().get(i).getTerritoryName().equals(terrName)) {
+                t = currPlayer.getOwnedTerritories().get(i);
+                break;
+            }
+        }
+        return t;
+    }
+
+    public void executeAttacks(){
+        for(int i : attacks.keySet()){
+            Player player = riscBoard.getAllPlayers().get(i);
+            ArrayList<Action> myattacks = attacks.get(i);
+            for (Action myattack : myattacks) {
+                executeAttack(myattack, player);
+            }
+        }
+        return;
+    }
+
+    public void executeAttack(Action myattack, Player currPlayer){
+        Territory srcTerr = getTerr(myattack.getSrcName(), currPlayer);
+        for(Integer i : myattack.getActionUnits().keySet()){
+            Integer unitNum = myattack.getActionUnits().get(i);
+            srcTerr.decreaseUnit(i, unitNum);
+        }
+//        Integer attackNum =
+//        HashMap<Integer, Integer> record = myattack.getActionUnits();
+//        for(){
+//
+//        }
+
+    }
+
+
+
+
 
     public static void main(String[] args) {
         int portNum = 12345;
@@ -55,6 +122,7 @@ public class Server {
     }
 
     public void runGame() {
+
 
     }
 
@@ -130,6 +198,7 @@ public class Server {
         clientSockets.get(1).close();
         serverSock.close();
     }
+
 
 
 
