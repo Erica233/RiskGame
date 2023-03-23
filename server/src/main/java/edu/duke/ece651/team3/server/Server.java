@@ -337,9 +337,7 @@ public class Server {
         do {
             try {
                 result = runOneTurn();
-                if (result == 0 || result == 1) {
-                    sendEndGameInfo(result);
-                }
+                sendEndGameInfo(result);
             } catch (Exception e) {
                 System.err.println(e.getMessage());
             }
@@ -402,6 +400,7 @@ public class Server {
             ArrayList<Action> attacksList = (ArrayList<Action>) objectsFromClients.get(id).readObject();
             movesMap.put(id, movesList);
             attacksMap.put(id, attacksList);
+            objectsFromClients.get(id).readObject(); //read 'D'
         }
     }
 
