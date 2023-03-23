@@ -9,7 +9,7 @@ import java.util.HashMap;
  * A Risk Game Board
  */
 public class RiskGameBoard implements Board, Serializable {
-    //private final ArrayList<Territory> allTerritories;
+    private final ArrayList<Territory> allTerritories; //only for test
     private final ArrayList<Player> allPlayers;
 
     /**
@@ -17,7 +17,7 @@ public class RiskGameBoard implements Board, Serializable {
      *
      */
     public RiskGameBoard() throws Exception {
-        //this.allTerritories = new ArrayList<>();
+        this.allTerritories = new ArrayList<>();
         this.allPlayers = new ArrayList<>();
         //initMap();
     }

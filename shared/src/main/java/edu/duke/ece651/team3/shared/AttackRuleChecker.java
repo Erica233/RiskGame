@@ -7,15 +7,12 @@ public class AttackRuleChecker extends RuleChecker{
     String srcName;
     String dstName;
 
-    public AttackRuleChecker(Action _action, Board _riskGameBoard){
-    private String srcName;
-    private String dstName;
     /**
      * This constructor takes 4 elements
      * @param _action the Action class containing all the information of an action
      * @param _riskGameBoard the board passed in
      */
-    public AttackRuleChecker(Action _action, RiskGameBoard _riskGameBoard){
+    public AttackRuleChecker(Action _action, Board _riskGameBoard){
         super(_action);
         this.action = _action;
         this.srcName = this.action.getSrcName();

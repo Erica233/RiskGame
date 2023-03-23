@@ -54,9 +54,9 @@ public class Server {
     }
 
     public Integer executeMoves() throws Exception {
-        for(int i : moves.keySet()){
+        for(int i : movesMap.keySet()){
             Player player = riscBoard.getAllPlayers().get(i);
-            ArrayList<Action> mymoves = moves.get(i);
+            ArrayList<Action> mymoves = movesMap.get(i);
             for (Action mymove : mymoves) {
                 if(!checkMove(mymove, player)) continue;
                 executeMove(mymove, player);
@@ -154,9 +154,9 @@ public class Server {
 
     //TODO: one player executes once
     public void executeAttacks() throws Exception {
-        for(int i : attacks.keySet()){
+        for(int i : attacksMap.keySet()){
             Player player = riscBoard.getAllPlayers().get(i);
-            ArrayList<Action> myattacks = attacks.get(i);
+            ArrayList<Action> myattacks = attacksMap.get(i);
             //integration
             for (Action myattack : myattacks) {
                 //1. Getting the total attack Units from one player(the attacker)
@@ -237,7 +237,7 @@ public class Server {
     public int totalAttackUnits(Player currentPlayer, String dstName){
         int sumUnits = 0;
         int currPlayerID = currentPlayer.getPlayerId();
-        ArrayList<Action> attackList = attacks.get(currPlayerID);
+        ArrayList<Action> attackList = attacksMap.get(currPlayerID);
         for(Action attAction: attackList){
             //If multiple territories of player A attacks territory X, sum them
             if(attAction.getDstName().equals(dstName)){

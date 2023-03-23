@@ -3,8 +3,6 @@ package edu.duke.ece651.team3.shared;
 import java.util.HashMap;
 
 public class MoveAction extends Action {
-
-public class MoveAction extends Action{
     /**
      * This constructor takes 4 elements
      * @param _actionType the string indicates the action type, i.e : M, A, D
@@ -15,6 +13,4 @@ public class MoveAction extends Action{
     public MoveAction(String _actionType, String _srcName, String _dstName, HashMap<Integer, Integer> _actionUnits) {
         super(_actionType, _srcName, _dstName, _actionUnits);
     }
-
-
 }
