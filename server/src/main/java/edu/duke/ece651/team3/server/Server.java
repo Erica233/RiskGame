@@ -72,6 +72,7 @@ public class Server {
         return t;
     }
 
+    //TODO: one player executes once
     public void executeAttacks(){
         for(int i : attacks.keySet()){
             Player player = riscBoard.getAllPlayers().get(i);
@@ -83,16 +84,37 @@ public class Server {
     }
 
     public void executeAttack(Action myattack, Player currPlayer){
-        Territory srcTerr = getTerr(myattack.getSrcName(), currPlayer);
-        for(Integer i : myattack.getActionUnits().keySet()){
-            Integer unitNum = myattack.getActionUnits().get(i);
-            srcTerr.decreaseUnit(i, unitNum);
-        }
+//        Territory srcTerr = getTerr(myattack.getSrcName(), currPlayer);
+//        for(Integer i : myattack.getActionUnits().keySet()){
+//            Integer unitNum = myattack.getActionUnits().get(i);
+//            srcTerr.decreaseUnit(i, unitNum);
+//        }
 //        Integer attackNum =
 //        HashMap<Integer, Integer> record = myattack.getActionUnits();
 //        for(){
 //
 //        }
+        //1. Getting the total attack Units from one player(the attacker)
+        int totalAttackUnits = totalAttackUnits(currPlayer);
+
+        //2. Deciding who wins
+        Player winPlayer = getWinPlayer(myattack);
+
+        //If the current player wins, the attacker wins
+        if(winPlayer.equals(winPlayer)){
+
+        }
+
+
+    }
+
+    //5(d)
+
+    /**
+     * This method executes the case when both side uses all of their units
+     * which means there are no defender
+     */
+    public void noLoseAttack(){
 
     }
 
@@ -120,7 +142,7 @@ public class Server {
      * @return the player who wins
      *
      */
-    public Player rollDice(Action attackAction){
+    public Player getWinPlayer(Action attackAction){
         Random random = new Random();
         int rand_att = random.nextInt(20) + 1; //For the attacker
         int rand_def = random.nextInt(20) + 1; //For the defender
