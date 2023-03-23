@@ -46,9 +46,10 @@ public class Client {
 
             client.closePipes();
         } catch (IOException e) {
-            System.err.println(e.getMessage());
+            System.err.println("in main: " + e.getMessage());
             System.exit(-1);
         } catch (ClassNotFoundException e) {
+            System.err.println("in main: " + e.getMessage());
             e.printStackTrace();
         }
 
@@ -66,7 +67,7 @@ public class Client {
                     System.exit(0);
                 }
             } catch (Exception e) {
-                System.err.println(e.getMessage());
+                System.err.println("playGame: " + e.getMessage());
             }
         } while (true);
     }
@@ -137,6 +138,7 @@ public class Client {
             } catch (IllegalArgumentException e) {
                 System.out.println("Your action does not have correct format: " + e.getMessage());
             } catch (Exception e) {
+                System.out.println("handleAllActions");
                 e.printStackTrace();
             }
         } while (true);
