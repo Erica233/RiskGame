@@ -14,9 +14,14 @@ public class Server {
     private final ArrayList<ObjectOutputStream> objectsToClients;
     private final ArrayList<ObjectInputStream> objectsFromClients;
     private final Board riscBoard;
-    private HashMap<Integer, ArrayList<Action>> movesMap;
-    private HashMap<Integer, ArrayList<Action>> attacksMap;
+    private HashMap<Integer, ArrayList<Action>> movesMap; //player ID and all move actions this player has
+    private HashMap<Integer, ArrayList<Action>> attacksMap; //player ID and all attack actions this player has
 
+    /**
+     * Constructs Server with port number
+     * @param _portNum
+     * @throws Exception
+     */
     public Server(int _portNum) throws Exception {
         this.serverSock = new ServerSocket(_portNum);
         this.clientSockets = new ArrayList<>();
@@ -26,6 +31,9 @@ public class Server {
         setUpActionsLists();
     }
 
+    /**
+     * This method sets up the action list
+     */
     public void setUpActionsLists() {
         this.movesMap = new HashMap<>();
         this.attacksMap = new HashMap<>();
@@ -35,6 +43,10 @@ public class Server {
         }
     }
 
+    /**
+     * This method checks which player wins
+     * @return 1 if player 1 wins, 0 if player 0 wins, 2 to continue
+     */
     public int checkWin(){
         ArrayList<Player> myplayers = riscBoard.getAllPlayers();
         for(Player p : myplayers){
@@ -50,6 +62,11 @@ public class Server {
         return 2;
     }
 
+    /**
+     * This method executes all moves for all players
+     * @return
+     * @throws Exception
+     */
     public void executeMoves() throws Exception {
         for(int i : movesMap.keySet()){
             Player player = riscBoard.getAllPlayers().get(i);
@@ -61,6 +78,13 @@ public class Server {
         }
     }
 
+    /**
+     * This method checks whether the move action is valid
+     * @param mymove
+     * @param currPlayer
+     * @return true if it is valid, false if it is not
+     * @throws Exception
+     */
     public boolean checkMove(Action mymove, Player currPlayer) throws Exception {
         MoveRuleChecker moveRulechecker = new MoveRuleChecker(mymove, (RiskGameBoard) riscBoard);
         if (!moveRulechecker.checkValidAction(mymove, (RiskGameBoard) riscBoard, currPlayer)) {
@@ -69,8 +93,13 @@ public class Server {
         return true;
     }
 
-    public void executeMove(Action mymove, Player currPlayer) {
-
+    /**
+     * This method executes one move
+     * @param mymove
+     * @param currPlayer
+     * @throws Exception
+     */
+    public void executeMove(Action mymove, Player currPlayer) throws Exception {
         Territory srcTerr = getTerr(mymove.getSrcName(), currPlayer);
         Territory dstTerr = getTerr(mymove.getDstName(), currPlayer);
         for(Integer i : mymove.getActionUnits().keySet()){
@@ -80,7 +109,12 @@ public class Server {
         }
     }
 
-
+    /**
+     * This method gets the territory based on the territory's name
+     * @param terrName
+     * @param currPlayer
+     * @return
+     */
     public Territory getTerr(String terrName, Player currPlayer){
         int length = currPlayer.getOwnedTerritories().size();
         Territory t = null;
@@ -93,6 +127,13 @@ public class Server {
         return t;
     }
 
+    /**
+     * This method checks attack action
+     * @param myattack
+     * @param currPlayer
+     * @return true if it is valid, false if it is not
+     * @throws Exception
+     */
     public boolean checkAttack(Action myattack, Player currPlayer) throws Exception{
         AttackRuleChecker attackRulechecker = new AttackRuleChecker(myattack, (RiskGameBoard) riscBoard);
         if (!attackRulechecker.checkValidAction(myattack, (RiskGameBoard) riscBoard, currPlayer)) {
@@ -106,14 +147,17 @@ public class Server {
     public ArrayList<Action> intergAttack(ArrayList<Action> myattacks){
         ArrayList<Action> newattackers = new ArrayList<>();
         HashSet<String> destinations = new HashSet<>();
+        //Extracted all destination strings
         for(Action act : myattacks){
             destinations.add(act.getDstName());
         }
+        //Set up all attack actions using the extracted destination names and set src to null
         for(String s : destinations){
             HashMap<Integer, Integer> hashMap = new HashMap<>();
             Action newaction = new Action("A", null, s, hashMap);
             newattackers.add(newaction);
         }
+
         for(Action act : myattacks){
             HashMap<Integer, Integer> acthp = act.getActionUnits();
             for(String s : destinations) {
@@ -134,6 +178,10 @@ public class Server {
         return newattackers;
     }
 
+    /**
+     * This method executes all attacks
+     * @throws Exception
+     */
     //TODO: one player executes once
     public int executeAttacks() throws Exception {
         for(int i : attacksMap.keySet()){
@@ -299,6 +347,12 @@ public class Server {
 
     }
 
+    /**
+     * This method plays one turn for both players
+     * It sends board to all clients and receive the action from the client
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
     public int runOneTurn() throws Exception {
         sendBoardToAllClients();
         recvActionsFromAllClients();
@@ -314,6 +368,9 @@ public class Server {
         System.out.println("send gameResult (Player " + gameResult + " is the winner) to all clients!");
     }
 
+    /**
+     * This method prints the action all player executes
+     */
     public void printActionsMap() {
         String output = "";
         for (int id = 0; id < 2; id++) {
@@ -332,6 +389,11 @@ public class Server {
         System.out.println(output);
     }
 
+    /**
+     * This method receives the actions from all clients and store them into attackMap and movesMap
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
     public void recvActionsFromAllClients() throws IOException, ClassNotFoundException {
         for (int id = 0; id < 2; id++) {
             movesMap.get(id).clear();
@@ -343,24 +405,41 @@ public class Server {
         }
     }
 
+    /**
+     * This method sends the board to all clients on the board
+     * @throws IOException
+     */
     public void sendBoardToAllClients() throws IOException {
         objectsToClients.get(0).writeObject(riscBoard);
         objectsToClients.get(1).writeObject(riscBoard);
         System.out.println("send boards to all clients!");
     }
 
+    /**
+     * This method assigns the ID to each player
+     * @throws IOException
+     */
     public void assignPlayerIdToClients() throws IOException {
         objectsToClients.get(0).writeInt(0);
         objectsToClients.get(1).writeInt(1);
         System.out.println("assign and send playerId to all clients!");
     }
 
+    /**
+     * This method initialize the Game by
+     * initializing the map on the board and assigning each player its ID
+     * @throws Exception
+     */
     public void initGame() throws Exception {
         riscBoard.initMap();
         assignPlayerIdToClients();
         //sendBoardToAllClients();
     }
 
+    /**
+     * This method connects the client using ObjectOutputStream and ObjectInputStream
+     * @throws IOException
+     */
     public void connectClients() throws IOException {
         this.clientSockets.add(serverSock.accept());
         objectsToClients.add(new ObjectOutputStream(clientSockets.get(0).getOutputStream()));
@@ -373,6 +452,10 @@ public class Server {
         System.out.println("Client 1 connects to Server successfully!");
     }
 
+    /**
+     * This method closes all pipes
+     * @throws IOException
+     */
     public void closePipes() throws IOException {
         objectsToClients.get(0).close();
         objectsToClients.get(1).close();

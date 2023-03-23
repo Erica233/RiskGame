@@ -18,6 +18,12 @@ public class Client {
     private final ArrayList<Action> moveActions;
     private final ArrayList<Action> attackActions;
 
+    /**
+     * Constructs the Client with the hostname and the port number
+     * @param hostname
+     * @param _portNum
+     * @throws IOException
+     */
     public Client(String hostname, int _portNum) throws IOException {
         this.socket = new Socket(hostname, _portNum);
         this.objectFromServer = new ObjectInputStream(socket.getInputStream());
@@ -65,6 +71,13 @@ public class Client {
         } while (true);
     }
 
+    /**
+     * This method plays one turn for the client.
+     * It receives a board from the server, and checks all actions
+     * Then, it sends the action list to the server
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
     public void playOneTurn() throws IOException, ClassNotFoundException {
         riskGameBoard = recvBoard();
         System.out.println("A new turn: updated new board as below!");
@@ -79,6 +92,9 @@ public class Client {
         return gameResult;
     }
 
+    /**
+     * This method prints the action(both move and attack actions) list for the player
+     */
     public void printActionsLists() {
         String output = "";
         output = output + "Player " + playerId + " move actions:\n";
@@ -95,10 +111,19 @@ public class Client {
         System.out.println(output);
     }
 
+    /**
+     * This method sends string to the server
+     * @param s
+     * @throws IOException
+     */
     public void sendString(String s) throws IOException {
         objectToServer.writeObject(s);
     }
 
+    /**
+     * This method handles all actions to check whether it has the correct format
+     * It checks whether the action is valid and store it into the action list
+     */
     public void handleAllActions() {
         do {
             try {
@@ -117,6 +142,10 @@ public class Client {
         } while (true);
     }
 
+    /**
+     * This method mocks the action executed on the riskGameBoard and checks whether it is valid
+     * @param action
+     */
     public void executeAction(Action action) {
         if (action.isMoveType()) {
             riskGameBoard.executeMove(action, playerId);
@@ -127,12 +156,20 @@ public class Client {
         System.out.println("board after execution check: \n" + riskGameBoard.displayBoard());
     }
 
+    /**
+     * This method sends the action list to the server
+     * @throws IOException
+     */
     public void sendActionListsToServer() throws IOException {
         objectToServer.writeObject(moveActions);
         objectToServer.writeObject(attackActions);
         objectToServer.writeObject("D");
     }
 
+    /**
+     * This method store all actions into an ArrayList
+     * @param action
+     */
     public void storeActionToList(Action action) {
         moveActions.clear();
         if (action.getActionType().toUpperCase(Locale.ROOT).equals("M")) {
@@ -144,6 +181,11 @@ public class Client {
         }
     }
 
+    /**
+     * This method checks whether the current method is valid
+     * @param action the action tobe checked
+     * @throws Exception
+     */
     public void checkValidAction(Action action) throws Exception {
         if (action.getActionType().toUpperCase(Locale.ROOT).equals("M")) {
             MoveRuleChecker moveRuleChecker = new MoveRuleChecker(action, riskGameBoard);
@@ -162,7 +204,13 @@ public class Client {
         }
     }
 
-    //check if input is entered
+    /**
+     * This method reads the string from the user and checks if input is entered
+     * If it is null, throw the EOFException
+     * @param prompt
+     * @return
+     * @throws IOException
+     */
     public String readStringFromUser(String prompt) throws IOException {
         System.out.println(prompt);
         String s = inputReader.readLine();
@@ -172,7 +220,13 @@ public class Client {
         return s;
     }
 
-    //check if input is an integer
+    /**
+     * This method reads int from the user and checks whether it is an integer
+     * If it is not an integer, throw the NumberFormatException
+     * @param prompt
+     * @return
+     * @throws IOException
+     */
     public int readIntFromUser(String prompt) throws IOException {
         String s = readStringFromUser(prompt);
         int output;
@@ -184,6 +238,11 @@ public class Client {
         return output;
     }
 
+    /**
+     * This method reads the number of units in the map and store it into a HashMap
+     * @return
+     * @throws IOException
+     */
     public HashMap<Integer, Integer> readNumUnitsMap() throws IOException {
         HashMap<Integer, Integer> unitsMap = new HashMap<>();
         for (int forceLevel = 1; forceLevel < 2; forceLevel++) {
@@ -194,7 +253,12 @@ public class Client {
         return unitsMap;
     }
 
-    //check if input is the right format (e.g. string, numeric)
+    /**
+     * This method reads one action from the user input
+     * It check if input is the right format (e.g. string, numeric)
+     * @return
+     * @throws IOException
+     */
     public Action readOneAction() throws IOException {
         String choicePrompt = "You are the " + riskGameBoard.getAllPlayers().get(playerId).getColor() + " player, what would you like to do?\n" +
                 " (M)ove\n" +
@@ -216,17 +280,31 @@ public class Client {
 
     }
 
+    /**
+     * This method receives the player id from the server
+     * @throws IOException
+     */
     public void recvPlayerId() throws IOException {
         playerId = objectFromServer.readInt();
         System.out.println("received playerId = " + playerId + " successfully!");
     }
 
+    /**
+     * This method receives the board from the Server
+     * @return
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
     public RiskGameBoard recvBoard() throws IOException, ClassNotFoundException {
         RiskGameBoard b = (RiskGameBoard) objectFromServer.readObject();
         //System.out.println(b.displayBoard());
         return b;
     }
 
+    /**
+     * This method closes all pipes in the client
+     * @throws IOException
+     */
     public void closePipes() throws IOException {
         objectFromServer.close();
         objectToServer.close();
@@ -234,6 +312,10 @@ public class Client {
         inputReader.close();
     }
 
+    /**
+     * This method overrides the toString method and gets the client's information
+     * @return
+     */
     @Override
     public String toString() {
         String output = "Client " + playerId + ": ";
