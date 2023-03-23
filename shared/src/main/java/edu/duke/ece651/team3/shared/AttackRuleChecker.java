@@ -4,8 +4,8 @@ import java.util.ArrayList;
 public class AttackRuleChecker extends RuleChecker{
     private final RiskGameBoard riskGameBoard;
     private final Action action;
-    String srcName;
-    String dstName;
+    private String srcName;
+    private String dstName;
 
     public AttackRuleChecker(Action _action, RiskGameBoard _riskGameBoard){
         super(_action);
