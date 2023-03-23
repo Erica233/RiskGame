@@ -1,13 +1,12 @@
 package edu.duke.ece651.team3.server;
 
-import edu.duke.ece651.team3.shared.Board;
-import edu.duke.ece651.team3.shared.RiskGameBoard;
-import edu.duke.ece651.team3.shared.Territory;
+import edu.duke.ece651.team3.shared.*;
 
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 
 public class Server {
@@ -17,13 +16,8 @@ public class Server {
     private ArrayList<ObjectOutputStream> objectsToClients;
     private ArrayList<ObjectInputStream> objectsFromClients;
     private final Board riscBoard;
-
-//    private final DataInputStream input;
-//    private final DataOutputStream out;
-//    private final ArrayList<String> PlayerNames;
-//    private HashMap<Integer, Socket> clientSockets;
-//    private HashMap<Integer, ObjectOutputStream> sendObjToClients;
-//    private HashMap<Integer, ObjectInputStream> receiveObjFromClients;
+    private HashMap<Integer, ArrayList<Action>> movesMap;
+    private HashMap<Integer, ArrayList<Action>> attacksMap;
 
     public Server(int _portNum) throws Exception {
         this.serverSock = new ServerSocket(_portNum);
@@ -31,6 +25,16 @@ public class Server {
         this.objectsToClients = new ArrayList<>();
         this.objectsFromClients = new ArrayList<>();
         this.riscBoard = new RiskGameBoard();
+        setUpActionsLists();
+    }
+
+    public void setUpActionsLists() {
+        this.movesMap = new HashMap<>();
+        this.attacksMap = new HashMap<>();
+        for (int id = 0; id < 2; id++) {
+            movesMap.put(id, new ArrayList<>());
+            attacksMap.put(id, new ArrayList<>());
+        }
     }
 
     public static void main(String[] args) {
@@ -41,16 +45,13 @@ public class Server {
             server.connectClients();
             System.out.println("Both clients connect to the Server successfully!\n");
             server.initGame();
-            server.runGame();
-            server.recvString(0);
-            server.recvString(1);
+            //server.runGame();
+            server.runOneTurn();
 
 
             server.closePipes();
         } catch (IOException e) {
             System.err.println(e.getMessage());
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -62,8 +63,19 @@ public class Server {
         return s;
     }
 
-    public void runGame() {
+    public void runOneTurn() throws IOException, ClassNotFoundException {
+        sendBoardToAllClients();
+        recvActionsFromAllClients();
+        //removeInvalidActions();
+    }
 
+    public void recvActionsFromAllClients() throws IOException, ClassNotFoundException {
+        for (int id = 0; id < 2; id++) {
+            ArrayList<Action> movesList = (ArrayList<Action>) objectsFromClients.get(id).readObject();
+            ArrayList<Action> attacksList = (ArrayList<Action>) objectsFromClients.get(id).readObject();
+            movesMap.put(id, movesList);
+            attacksMap.put(id, attacksList);
+        }
     }
 
     //test
@@ -84,27 +96,6 @@ public class Server {
         System.out.println("send boards to all clients!");
     }
 
-    public void recvActions() {
-
-    }
-
-//        /**
-//     * This method receives multiple actions from the client
-//     */
-//    public void recvMultipleAction() throws IOException, ClassNotFoundException {
-//        String commitInfo = "";
-//        while(!commitInfo.equals("Done")){
-//            commitInfo = (String) receiveObjFromClients.get(clientID).readObject();
-////            out.println("receiving: " + commitInfo);
-//            if(!commitInfo.equals("D") && !commitInfo.equals("Done")){
-//                out.println("Done?");
-//                recvAction();
-//            }
-//        }
-//        sendObjToClients.get(clientID).writeObject("Please wait the other player finish enter");
-//
-//    }
-
     public void assignPlayerIdToClients() throws IOException {
         objectsToClients.get(0).writeInt(0);
         objectsToClients.get(1).writeInt(1);
@@ -114,7 +105,7 @@ public class Server {
     public void initGame() throws Exception {
         riscBoard.initMap();
         assignPlayerIdToClients();
-        sendBoardToAllClients();
+        //sendBoardToAllClients();
     }
 
     public void connectClients() throws IOException {
@@ -262,6 +253,23 @@ public class Server {
 //        receiveObjFromClients.get(clientID).close();
 //        clientSockets.get(clientID).close();
 //        serverS.close();
+//    }
+
+    //        /**
+//     * This method receives multiple actions from the client
+//     */
+//    public void recvMultipleAction() throws IOException, ClassNotFoundException {
+//        String commitInfo = "";
+//        while(!commitInfo.equals("Done")){
+//            commitInfo = (String) receiveObjFromClients.get(clientID).readObject();
+////            out.println("receiving: " + commitInfo);
+//            if(!commitInfo.equals("D") && !commitInfo.equals("Done")){
+//                out.println("Done?");
+//                recvAction();
+//            }
+//        }
+//        sendObjToClients.get(clientID).writeObject("Please wait the other player finish enter");
+//
 //    }
 
     //For testing the Serve.java

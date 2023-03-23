@@ -9,19 +9,6 @@ import java.util.HashMap;
 import java.util.Locale;
 
 public class Client {
-//    private final Socket clientS; //The unique ID for each client
-//    private final ObjectInputStream readFromServer;
-//    private final ObjectOutputStream sendObjToServer;
-//    private int playerID; //The current player's ID
-//    private RiskGameBoard riskGameBoard;
-//    public BufferedReader inputReader;
-
-//    Player player;
-//    String playerColor;
-//    Action action;
-//    ArrayList<Action> moveActions;
-//    ArrayList<Action> attackActions;
-
     private final Socket socket;
     private final ObjectInputStream objectFromServer;
     private final ObjectOutputStream objectToServer;
@@ -49,20 +36,10 @@ public class Client {
         try {
             Client client = new Client(hostname, portNum);
             System.out.println(client + " connect to the Server successfully!");
-            client.joinGame();
+            //client.joinGame();
+            client.recvPlayerId();
             //client.playGame();
-            String s = "";
-            do {
-                try {
-                    s = client.readStringFromUser("please enter sth!");
-                } catch (IllegalArgumentException e) {
-
-                }
-
-            } while (s.isEmpty());
-
-
-            client.sendString(s);
+            client.playOneTurn();
 
 
             client.closePipes();
@@ -70,57 +47,72 @@ public class Client {
             System.err.println(e.getMessage());
             System.exit(-1);
         } catch (ClassNotFoundException e) {
-            //recvBoard()
             e.printStackTrace();
         }
 
+    }
+
+    public void playOneTurn() throws IOException, ClassNotFoundException {
+        riskGameBoard = recvBoard();
+        System.out.println("A new turn: updated new board as below!");
+        System.out.println(riskGameBoard.displayBoard());
+        handleAllActions();
+        sendActionListsToServer();
     }
 
     public void sendString(String s) throws IOException {
         objectToServer.writeObject(s);
     }
 
-    public void playGame() throws IOException {
-        String actionType = "";
-        String problem = "";
+    public void handleAllActions() {
         do {
             try {
-                String choicePrompt = "You are the " + riskGameBoard.getAllPlayers().get(playerId).getColor() + " player, what would you like to do?\n" +
-                        " (M)ove\n" +
-                        " (A)ttack\n" +
-                        " (D)one\n";
-                actionType = readStringFromUser(choicePrompt);
-
-                Action action = readOneAction(actionType);
-
-                //check actions validity
-                if (action.getActionType().toUpperCase(Locale.ROOT).equals("M")) {
-                    MoveRuleChecker moveRuleChecker = new MoveRuleChecker(action, riskGameBoard);
-                    if (!moveRuleChecker.checkValidAction(action, riskGameBoard, riskGameBoard.getAllPlayers().get(playerId))) {
-                        problem = "Invalid Move!\n";
-                        throw new IllegalArgumentException("Your move is invalid!\n");
-                    }
-                } else if (action.getActionType().toUpperCase(Locale.ROOT).equals("A")) {
-                    AttackRuleChecker attackRuleChecker = new AttackRuleChecker(action, riskGameBoard);
-                    if (!attackRuleChecker.checkValidAction(action, riskGameBoard, riskGameBoard.getAllPlayers().get(playerId))) {
-                        problem = "Invalid Attack!\n";
-                        throw new IllegalArgumentException("Your attack is invalid!\n");
-                    }
-                } else {
-                    continue;
+                Action action = readOneAction();
+                if (action.getActionType().toUpperCase(Locale.ROOT).equals("D")) {
+                    break;
                 }
-
-                //store action into action lists
-
+                checkValidAction(action);
+                storeActionToList(action);
 
             } catch (IllegalArgumentException e) {
                 System.out.println("Your action does not have correct format: " + e.getMessage());
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        } while (!actionType.equals("d") && !actionType.equals("D"));
+        } while (true);
+    }
 
+    public void sendActionListsToServer() throws IOException {
+        objectToServer.writeObject(moveActions);
+        objectToServer.writeObject(attackActions);
+        objectToServer.writeObject("D");
+    }
 
+    public void storeActionToList(Action action) {
+        if (action.getActionType().toUpperCase(Locale.ROOT).equals("M")) {
+            moveActions.add(action);
+        }
+        if (action.getActionType().toUpperCase(Locale.ROOT).equals("A")) {
+            attackActions.add(action);
+        }
+    }
+
+    public void checkValidAction(Action action) throws Exception {
+        if (action.getActionType().toUpperCase(Locale.ROOT).equals("M")) {
+            MoveRuleChecker moveRuleChecker = new MoveRuleChecker(action, riskGameBoard);
+            if (!moveRuleChecker.checkValidAction(action, (RiskGameBoard) riskGameBoard, riskGameBoard.getAllPlayers().get(playerId))) {
+                //problem = "Invalid Move!\n";
+                throw new IllegalArgumentException("Your move is invalid!\n");
+            }
+        } else if (action.getActionType().toUpperCase(Locale.ROOT).equals("A")) {
+            AttackRuleChecker attackRuleChecker = new AttackRuleChecker(action, riskGameBoard);
+            if (!attackRuleChecker.checkValidAction(action, (RiskGameBoard) riskGameBoard, riskGameBoard.getAllPlayers().get(playerId))) {
+                //problem = "Invalid Attack!\n";
+                throw new IllegalArgumentException("Your attack is invalid!\n");
+            }
+        } else {
+            throw new IllegalArgumentException("Your action type is invalid!\n");
+        }
     }
 
     //check if input is entered
@@ -156,12 +148,15 @@ public class Client {
     }
 
     //check if input is the right format (e.g. string, numeric)
-    public Action readOneAction(String actionType) throws IOException {
-//        String choicePrompt = "You are the " + riskGameBoard.getAllPlayers().get(playerId).getColor() + " player, what would you like to do?\n" +
-//                " (M)ove\n" +
-//                " (A)ttack\n" +
-//                " (D)one\n";
-//        String actionType = readStringFromUser(choicePrompt);
+    public Action readOneAction() throws IOException {
+        String choicePrompt = "You are the " + riskGameBoard.getAllPlayers().get(playerId).getColor() + " player, what would you like to do?\n" +
+                " (M)ove\n" +
+                " (A)ttack\n" +
+                " (D)one";
+        String actionType = readStringFromUser(choicePrompt);
+        if (actionType.toUpperCase(Locale.ROOT).equals("D")) {
+            return new Action(actionType, "", "", null);
+        }
 
         String srcPrompt = "Please enter the name of your source territory:\n";
         String srcName = readStringFromUser(srcPrompt);
@@ -170,23 +165,13 @@ public class Client {
 
         HashMap<Integer, Integer> unitsToMove = readNumUnitsMap();
 
-//        String input = inputReader.readLine().toUpperCase(Locale.ROOT);
-//        while (!input.equals("M") && !input.equals("A") && !input.equals("D")) {
-//            String errorInput = "The input is invalid, choose from \n(M)ove\n(A)ttack\n(D)one";
-//            input = inputReader.readLine().toUpperCase(Locale.ROOT);
-//        }
-
         return new Action(actionType, srcName, dstName, unitsToMove);
 
     }
 
-    public void readAction() {
-
-    }
-
     public void joinGame() throws IOException, ClassNotFoundException {
-        recvPlayerId();
-        recvStoreBoard();
+        //playerId = recvPlayerId();
+        //riskGameBoard = (RiskGameBoard) recvBoard();
         System.out.println("received initial map successfully!");
         System.out.println("Placement phase is done!\n");
     }
@@ -196,24 +181,10 @@ public class Client {
         System.out.println("received playerId = " + playerId + " successfully!");
     }
 
-    //test
-    public Territory recvTerritory() throws IOException, ClassNotFoundException {
-        Territory territory = (Territory) objectFromServer.readObject();
-        return territory;
-    }
-    public void sendTerritory() throws IOException, ClassNotFoundException {
-        Territory t1 = new Territory("b");
-        objectToServer.writeObject(t1);
-    }
-
-    public Board recvStoreBoard() throws IOException, ClassNotFoundException {
-        riskGameBoard = (RiskGameBoard) objectFromServer.readObject();
-        System.out.println(riskGameBoard.displayBoard());
-        return riskGameBoard;
-    }
-
-    public void sendActions() {
-
+    public RiskGameBoard recvBoard() throws IOException, ClassNotFoundException {
+        RiskGameBoard b = (RiskGameBoard) objectFromServer.readObject();
+        //System.out.println(b.displayBoard());
+        return b;
     }
 
     public void closePipes() throws IOException {

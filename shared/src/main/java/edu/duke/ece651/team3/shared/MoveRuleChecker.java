@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class MoveRuleChecker extends RuleChecker{
-    private final RiskGameBoard riskGameBoard;
+    private final Board riskGameBoard;
     private final Action action;
     String srcName;
     String dstName;
 
-    public MoveRuleChecker(Action _action, RiskGameBoard _riskGameBoard){
+    public MoveRuleChecker(Action _action, Board _riskGameBoard){
         super(_action);
         this.action = _action;
         this.srcName = this.action.getSrcName();

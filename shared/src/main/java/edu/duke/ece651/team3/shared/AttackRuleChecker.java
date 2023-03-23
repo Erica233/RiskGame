@@ -2,12 +2,12 @@ package edu.duke.ece651.team3.shared;
 import java.util.ArrayList;
 
 public class AttackRuleChecker extends RuleChecker{
-    private final RiskGameBoard riskGameBoard;
+    private final Board riskGameBoard;
     private final Action action;
     String srcName;
     String dstName;
 
-    public AttackRuleChecker(Action _action, RiskGameBoard _riskGameBoard){
+    public AttackRuleChecker(Action _action, Board _riskGameBoard){
         super(_action);
         this.action = _action;
         this.srcName = this.action.getSrcName();
@@ -37,6 +37,7 @@ public class AttackRuleChecker extends RuleChecker{
                 enemy = playerList.get(i);
             }
         }
+
         return currPlayer.checkTerrOwner(myAttack.getSrcName()) && enemy.checkTerrOwner(myAttack.getDstName());
     }
 

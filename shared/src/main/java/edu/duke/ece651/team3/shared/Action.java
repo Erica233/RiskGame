@@ -2,18 +2,52 @@ package edu.duke.ece651.team3.shared;
 
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.Locale;
 
 public class Action implements Serializable {
     private String actionType;
     private String srcName; //The FROM territory
     private String dstName; //The TO territory
-    private HashMap<Integer, Integer> actionUnits; //for
+    private HashMap<Integer, Integer> actionUnits;
 
     public Action(String _actionType, String _srcName, String _dstName, HashMap<Integer, Integer> _actionUnits){
         this.actionType = _actionType;
         this.srcName = _srcName;
         this.dstName = _dstName;
         this.actionUnits = _actionUnits;
+    }
+
+    /**
+     * This method checks whether the action type is the move type
+     * @return true if it is Move type, false if it not
+     */
+    public boolean isMoveType(){
+        return actionType.toUpperCase(Locale.ROOT).equals("M");
+    }
+
+    /**
+     * This method checks whether the action type is the attack type
+     * @return true if it is Attack type, false if it is not
+     */
+    public boolean isAttackType(){
+        return actionType.toUpperCase(Locale.ROOT).equals("A");
+    }
+
+    /**
+     * This method checks whether the action is Done
+     * @return true if it is Done, false if it is not
+     */
+    public boolean isDone(){
+        return actionType.toUpperCase(Locale.ROOT).equals("D");
+    }
+
+    /**
+     * This method checks whether the action type is valid(Move, Attack, Done)
+     * @return true if the action type is valid, false if it is not
+     */
+
+    public boolean isValidType(){
+        return isAttackType() || isMoveType() || isDone();
     }
 
     public String getActionType() {
