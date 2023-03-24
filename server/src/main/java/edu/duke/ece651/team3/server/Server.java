@@ -13,7 +13,7 @@ public class Server {
     private final ArrayList<Socket> clientSockets;
     private final ArrayList<ObjectOutputStream> objectsToClients;
     private final ArrayList<ObjectInputStream> objectsFromClients;
-    private final Board riscBoard;
+    private final RiskGameBoard riscBoard;
     private HashMap<Integer, ArrayList<Action>> movesMap; //player ID and all move actions this player has
     private HashMap<Integer, ArrayList<Action>> attacksMap; //player ID and all attack actions this player has
 
@@ -199,21 +199,10 @@ public class Server {
 
             myattacks = intergAttack(myattacks);
 
-//            int totl = totalAttackUnits(player, dstName);
-//            HashMap<Integer, Integer> units = new HashMap<>(1, totl);
-//            Action myattack = new Action("A", myattacks.get(0).getSrcName(), dstName, units);
-
-
-            //execution
             for(Action myattack : myattacks){
                 executeAttack(myattack, player);
 
-
-//                if(checkWin() == 0 || checkWin() == 1){
-//                    return checkWin();
-//                }
             }
-//            addOneUnits();
         }
 
     }
@@ -436,6 +425,7 @@ public class Server {
         //executeAllMoves:
         executeMoves();
         executeAttacks();
+        riscBoard.updateCombatResult();
         if(checkWin() == 2){
             addOneUnits();
         }
