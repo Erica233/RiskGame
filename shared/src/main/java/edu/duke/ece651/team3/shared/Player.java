@@ -4,12 +4,15 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * A player class for store player information
+ *
+ */
 public class Player implements Serializable {
     private final int playerId;
     private final String color;
     private final int totNumUnits;
     private final ArrayList<Territory> ownedTerritories;
-
 
     /**
      * This constructor builds up the player with 3 input paremeters
@@ -134,8 +137,6 @@ public class Player implements Serializable {
         }
         return false;
     }
-
-
 
     /**
      * Add a Territory owned by the player,

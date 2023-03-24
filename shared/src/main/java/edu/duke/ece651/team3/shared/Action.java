@@ -4,6 +4,9 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Locale;
 
+/**
+ * action class to store move or attack action information
+ */
 public class Action implements Serializable {
     private String actionType;
     private String srcName; //The FROM territory

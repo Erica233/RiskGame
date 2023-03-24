@@ -1,7 +1,10 @@
 package edu.duke.ece651.team3.shared;
 
+/**
+ * A class of rule checker for only checking different actions
+ *
+ */
 public abstract class RuleChecker {
-
     private final Action action;
     public RuleChecker(Action _action){
         this.action = _action;

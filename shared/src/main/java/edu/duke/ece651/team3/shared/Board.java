@@ -14,6 +14,10 @@ public interface Board {
      */
     String initMap() throws Exception;
 
+    /**
+     * add one basic unit for each territory
+     *
+     */
     void addAUnitEachTurn();
 
     /**

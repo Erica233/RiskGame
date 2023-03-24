@@ -8,6 +8,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
 
+/**
+ * A client class, used for users to join and play risk game
+ */
 public class Client {
     private final Socket socket;
     private final ObjectInputStream objectFromServer;
@@ -20,12 +23,12 @@ public class Client {
 
     /**
      * Constructs the Client with the hostname and the port number
-     * @param hostname
-     * @param _portNum
+     * @param _hostname the host name
+     * @param _portNum the port num
      * @throws IOException
      */
-    public Client(String hostname, int _portNum) throws IOException {
-        this.socket = new Socket(hostname, _portNum);
+    public Client(String _hostname, int _portNum) throws IOException {
+        this.socket = new Socket(_hostname, _portNum);
         this.objectFromServer = new ObjectInputStream(socket.getInputStream());
         this.objectToServer = new ObjectOutputStream(socket.getOutputStream());
         this.inputReader = new BufferedReader(new InputStreamReader(System.in));
@@ -55,6 +58,12 @@ public class Client {
 
     }
 
+    /**
+     * It runs the whole risc game interacting with user
+     *
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
     public void playGame() throws IOException, ClassNotFoundException {
         int gameResult = -1;
         do {
@@ -92,6 +101,14 @@ public class Client {
         System.out.println("printed action list");
     }
 
+    /**
+     * receives end game signal,
+     * 0 means player 0 is thw winner, 1 means player 1 is the winner,
+     * 2 means the game is still running
+     *
+     * @return game result signal
+     * @throws IOException
+     */
     public int recvGameResult() throws IOException {
         int gameResult = objectFromServer.readInt();
         System.out.println("Game result is :" + gameResult);
@@ -115,15 +132,6 @@ public class Client {
         }
         output += "\n";
         System.out.println(output);
-    }
-
-    /**
-     * This method sends string to the server
-     * @param s
-     * @throws IOException
-     */
-    public void sendString(String s) throws IOException {
-        objectToServer.writeObject(s);
     }
 
     /**
@@ -153,7 +161,7 @@ public class Client {
 
     /**
      * This method mocks the action executed on the riskGameBoard and checks whether it is valid
-     * @param action
+     * @param action the action need to be executed
      */
     public void executeAction(Action action) {
         if (action.isMoveType()) {
@@ -178,8 +186,8 @@ public class Client {
     }
 
     /**
-     * This method store all actions into an ArrayList
-     * @param action
+     * This method store one action into the action list
+     * @param action the action need to store
      */
     public void storeActionToList(Action action) {
         if (action.getActionType().toUpperCase(Locale.ROOT).equals("M")) {
@@ -192,7 +200,7 @@ public class Client {
 
     /**
      * This method checks whether the current method is valid
-     * @param action the action tobe checked
+     * @param action the action to be checked
      * @throws Exception
      */
     public void checkValidAction(Action action) throws Exception {
@@ -216,8 +224,8 @@ public class Client {
     /**
      * This method reads the string from the user and checks if input is entered
      * If it is null, throw the EOFException
-     * @param prompt
-     * @return
+     * @param prompt the prompt message that needs to print to user
+     * @return the String that received from user
      * @throws IOException
      */
     public String readStringFromUser(String prompt) throws IOException {
@@ -232,8 +240,8 @@ public class Client {
     /**
      * This method reads int from the user and checks whether it is an integer
      * If it is not an integer, throw the NumberFormatException
-     * @param prompt
-     * @return
+     * @param prompt the prompt message that needs to print to user
+     * @return the integer that received from user
      * @throws IOException
      */
     public int readIntFromUser(String prompt) throws IOException {
@@ -249,7 +257,7 @@ public class Client {
 
     /**
      * This method reads the number of units in the map and store it into a HashMap
-     * @return
+     * @return the numUnitsMap it reads from user
      * @throws IOException
      */
     public HashMap<Integer, Integer> readNumUnitsMap() throws IOException {
@@ -265,7 +273,7 @@ public class Client {
     /**
      * This method reads one action from the user input
      * It check if input is the right format (e.g. string, numeric)
-     * @return
+     * @return Action it reads from user
      * @throws IOException
      */
     public Action readOneAction() throws IOException {
@@ -300,7 +308,7 @@ public class Client {
 
     /**
      * This method receives the board from the Server
-     * @return
+     * @return the risc board received from the server
      * @throws IOException
      * @throws ClassNotFoundException
      */
@@ -324,7 +332,7 @@ public class Client {
 
     /**
      * This method overrides the toString method and gets the client's information
-     * @return
+     * @return output String
      */
     @Override
     public String toString() {

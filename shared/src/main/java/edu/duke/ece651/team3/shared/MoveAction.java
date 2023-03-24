@@ -2,6 +2,9 @@ package edu.duke.ece651.team3.shared;
 
 import java.util.HashMap;
 
+/**
+ * attack action class
+ */
 public class MoveAction extends Action {
     /**
      * This constructor takes 4 elements

@@ -92,20 +92,32 @@ public class RiskGameBoard implements Board, Serializable {
         return output;
     }
 
+    /**
+     * Increase the number of the basic unit (whose force level is one) by one in each player's owned territory
+     *
+     */
     public void addAUnitEachTurn() {
         for (Player player: allPlayers) {
             player.addAUnitForEachTerr();
         }
     }
 
-//    public void transferOwnedTerritory(int originalOwnerId, ) {
-//
-//    }
-
+    /**
+     * execute a move
+     *
+     * @param move the move to execute
+     * @param playerId the id of the player who need to execute the action
+     */
     public void executeMove(Action move, int playerId) {
         allPlayers.get(playerId).executeMove(move);
     }
 
+    /**
+     * execute an attack
+     *
+     * @param attack the attack to execute
+     * @param playerId the id of the player who need to execute the action
+     */
     public void executeAttack(Action attack, int playerId) {
         allPlayers.get(playerId).executeAttack(attack);
     }
