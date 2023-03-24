@@ -14,6 +14,7 @@ public class Territory implements Serializable, Comparable<Territory> {
     private final ArrayList<Territory> neighbors;
     private HashMap<Integer, Integer> units;
     private int winnerId = -1;
+    private HashMap<Integer, Integer> attackerUnits = new HashMap<>();
 
     public HashMap<Integer, Integer> getAttackerUnits() {
         return attackerUnits;
@@ -22,10 +23,6 @@ public class Territory implements Serializable, Comparable<Territory> {
     public void setUnits(HashMap<Integer, Integer> _units) {
         units = _units;
     }
-
-
-
-    private HashMap<Integer, Integer> attackerUnits = new HashMap<>();
 
     /**
      * update the combat result, and reset the winnerId and attackerUnits field
