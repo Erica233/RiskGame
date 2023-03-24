@@ -171,7 +171,9 @@ public class Client {
      */
     public void sendActionListsToServer() throws IOException {
         objectToServer.writeObject(moveActions);
+        objectToServer.reset();
         objectToServer.writeObject(attackActions);
+        objectToServer.reset();
         objectToServer.writeObject("D");
     }
 

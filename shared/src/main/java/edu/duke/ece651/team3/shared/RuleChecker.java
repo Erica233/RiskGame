@@ -16,7 +16,20 @@ public abstract class RuleChecker {
      * @throws Exception
      */
     public boolean checkValidAction(Action myAction, RiskGameBoard r, Player currPlayer) throws Exception {
-        return checkSrcDst(myAction, currPlayer) && checkNumUnits(myAction, currPlayer) && checkPath(myAction, r, currPlayer);
+        if (!checkSrcDst(myAction, currPlayer)) {
+            System.out.printf("src dst invalid");
+            return false;
+        }
+        if (!checkNumUnits(myAction, currPlayer)) {
+            System.out.printf("checkNumUnits invalid");
+            return false;
+        }
+        if (!checkPath(myAction, r, currPlayer)) {
+            System.out.printf("checkPath invalid");
+            return false;
+        }
+        return true;
+        //return checkSrcDst(myAction, currPlayer) && checkNumUnits(myAction, currPlayer) && checkPath(myAction, r, currPlayer);
     }
 
     /**

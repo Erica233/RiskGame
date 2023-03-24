@@ -60,8 +60,10 @@ public class MoveRuleChecker extends RuleChecker{
         Territory t = findTerritory(myMove, currPlayer);
         for(Integer c : myMove.getActionUnits().keySet()){
             int numUnits = myMove.getActionUnits().get(c);
+            System.out.println(" ");
             //If move units is greater than the current scr unit
             if(numUnits > t.getUnits().get(c) || numUnits < 0){
+                System.out.println("Invalid numberUnits: " + numUnits + "current territory's unit: " + t.getUnits().get(c));
                 return false;
             }
         }
