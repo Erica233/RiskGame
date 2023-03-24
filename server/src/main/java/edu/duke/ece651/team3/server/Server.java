@@ -226,21 +226,22 @@ public class Server {
         while(attNum != 0 && defNum !=0){
             int rand_att = random.nextInt(20) + 1;
             int rand_def = random.nextInt(20) + 1;
-            System.out.print("attacker: "+rand_att+" defender: "+rand_def);
+            //System.out.print("attacker: "+rand_att+" defender: "+rand_def);
             if(rand_att > rand_def){
                 defNum--;
-                System.out.println(" - attacker large");
+                //System.out.println(" - attacker large");
             }
             else{
                 attNum--;
-                System.out.println(" - defender large");
+                //System.out.println(" - defender large");
             }
         }
         if(attNum==0){
-            HashMap<Integer, Integer> hashMap =  new HashMap<>();
+            HashMap<Integer, Integer> hashMap = new HashMap<>();
             hashMap.put(1, defNum);
             defenderTerritory.setWinnerId(defender.getPlayerId());
-            defenderTerritory.setAttackerUnits(hashMap);
+            defenderTerritory.setUnits(hashMap);
+            //defenderTerritory.setAttackerUnits(hashMap);
             System.out.println("winner is defender");
         }
         else{

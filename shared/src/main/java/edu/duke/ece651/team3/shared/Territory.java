@@ -19,6 +19,12 @@ public class Territory implements Serializable, Comparable<Territory> {
         return attackerUnits;
     }
 
+    public void setUnits(HashMap<Integer, Integer> _units) {
+        units = _units;
+    }
+
+
+
     private HashMap<Integer, Integer> attackerUnits = new HashMap<>();
 
     /**
