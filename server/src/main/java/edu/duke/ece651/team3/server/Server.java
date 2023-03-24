@@ -285,7 +285,8 @@ public class Server {
 
         for (int forceLevel: myattack.getActionUnits().keySet()) {
             attackNum.put(forceLevel, myattack.getActionUnits().get(forceLevel));
-            int defNum = defender.getTotNumUnits();
+            Territory defenderTerritory = getTerr(myattack.getDstName(), defender);
+            int defNum = defenderTerritory.getNumUnits();
 
             int attackerLoseTimes = 0;
             int defenderLoseTimes = 0;
@@ -324,9 +325,11 @@ public class Server {
 
             //The attacker loses, the attack action fails
             if(attackNum.get(forceLevel) == 0){
+                System.out.println("The defender wins!");
                 toOccupy.decreaseUnit(forceLevel, defenderLoseTimes);
                 return;
             }
+            System.out.println("The attacker wins!");
             //Adding the territory to the winner's territory
             attacker.occupyTerritory(myattack, attackerLoseTimes);
 
