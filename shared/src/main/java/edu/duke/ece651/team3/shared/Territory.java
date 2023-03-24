@@ -12,7 +12,7 @@ public class Territory implements Serializable, Comparable<Territory> {
     private final String territoryName;
     private int numUnits = 0;
     private final ArrayList<Territory> neighbors;
-    private final HashMap<Integer, Integer> units;
+    private HashMap<Integer, Integer> units;
     private int winnerId = -1;
 
     public HashMap<Integer, Integer> getAttackerUnits() {
@@ -27,9 +27,12 @@ public class Territory implements Serializable, Comparable<Territory> {
      * @param ownerId the original owner id of the territory before the combat
      */
     public void updateCombatResult(int ownerId) {
+        System.out.print("in updateCombatResult - winnerid=" + winnerId);
+        System.out.println(" - attackerUnits: "+attackerUnits.get(1));
         //update units
         if (winnerId != ownerId) {
-            attackerUnits = (HashMap<Integer, Integer>) units.clone();
+            units = attackerUnits;
+            System.out.println("after update - units: "+units.get(1));
         }
         //reset
         winnerId = -1;
