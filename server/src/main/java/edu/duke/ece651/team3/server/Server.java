@@ -146,13 +146,12 @@ public class Server {
 
 
     public ArrayList<Action> intergAttack(ArrayList<Action> myattacks){
-        ArrayList<Action> newattackers = new ArrayList<>();
-
-        HashSet<String> destinations = new HashSet<>();
-        //Extracted all destination strings
-        for(Action act : myattacks){
-            destinations.add(act.getDstName());
-        }
+//        ArrayList<Action> newattackers = new ArrayList<>();
+//        HashSet<String> destinations = new HashSet<>();
+//        //Extracted all destination strings
+//        for(Action act : myattacks){
+//            destinations.add(act.getDstName());
+//        }
         //Set up all attack actions using the extracted destination names and set src to null
 //        for(String s : destinations){
 //            HashMap<Integer, Integer> hashMap = new HashMap<>();
@@ -161,42 +160,72 @@ public class Server {
 //            newattackers.add(newaction);
 //        }
 
-        for(Action action : myattacks){
-            HashMap<Integer, Integer> units = action.getActionUnits();
+//        for(Action action : myattacks){
+//            HashMap<Integer, Integer> units = action.getActionUnits();
+//            for(String s : destinations) {
+//                HashMap<Integer, Integer> integratedUnits = new HashMap<>();
+//                integratedUnits.put(1, 0);
+//                if (action.getDstName().equals(s)) {
+//                    int size = newattackers.size();
+//                    for(int i = 0; i < size; i++){
+//                        if(newattackers.get(i).getDstName().equals(s)){
+////                            newattackers.get(i).getActionUnits() = newattackers.get(i).getActionUnits();
+//                            integratedUnits = newattackers.get(i).getActionUnits();
+//                            System.out.println("The integrated Units is: " + integratedUnits);
+//                            for(Integer key : integratedUnits.keySet()){
+//                                System.out.println("the key is: " + key + "The action is :" + action);
+//                                if(units.containsKey(key)){
+//                                    integratedUnits.put(key, integratedUnits.get(key)+units.get(key));
+//
+//                                }
+//                            }
+//                            System.out.println("The updated integratedUnits is: " + integratedUnits);
+//                            Action curraction = new Action("A", myattacks.get(0).getSrcName(), s, integratedUnits);
+//                            System.out.println("The current action in integrated is: " + curraction);
+//                            newattackers.add(curraction);
+//                            size = newattackers.size();
+//                        }
+////                        Action curraction = new Action("A", myattacks.get(0).getSrcName(), s, integratedUnits);
+////                        System.out.println("The current action in integrated is: " + curraction);
+////                        newattackers.add(curraction);
+//                    }
+////                    Action curraction = new Action("A", myattacks.get(0).getSrcName(), s, integratedUnits);
+////                    System.out.println("The current action in integrated is: " + curraction);
+////                    newattackers.add(curraction);
+//                }
+//            }
+//        }
+//        return newattackers;
+        ArrayList<Action> newattackers = new ArrayList<>();
+        HashSet<String> destinations = new HashSet<>();
+        for(Action act : myattacks){
+            destinations.add(act.getDstName());
+        }
+        for(String s : destinations){
+            HashMap<Integer, Integer> hashMap = new HashMap();
+            hashMap.put(1, 0);
+            Action newaction = new Action("A", null, s, hashMap);
+            newattackers.add(newaction);
+        }
+        for(Action act : myattacks){
+            HashMap<Integer, Integer> acthp = act.getActionUnits();
             for(String s : destinations) {
-                HashMap<Integer, Integer> integratedUnits = new HashMap<>();
-                integratedUnits.put(1, 0);
-                if (action.getDstName().equals(s)) {
-                    int size = newattackers.size();
-                    for(int i = 0; i < size; i++){
+                if (act.getDstName().equals(s)) {
+                    for(int i = 0; i < newattackers.size(); i++){
                         if(newattackers.get(i).getDstName().equals(s)){
-//                            newattackers.get(i).getActionUnits() = newattackers.get(i).getActionUnits();
-                            integratedUnits = newattackers.get(i).getActionUnits();
-                            System.out.println("The integrated Units is: " + integratedUnits);
-                            for(Integer key : integratedUnits.keySet()){
-                                System.out.println("the key is: " + key + "The action is :" + action);
-                                if(units.containsKey(key)){
-                                    integratedUnits.put(key, integratedUnits.get(key)+units.get(key));
-
+                            HashMap<Integer, Integer> newhp = newattackers.get(i).getActionUnits();
+                            for(Integer key : newhp.keySet()){
+                                if(acthp.containsKey(key)){
+                                    newhp.put(key, newhp.get(key)+acthp.get(key));
                                 }
                             }
-                            System.out.println("The updated integratedUnits is: " + integratedUnits);
-                            Action curraction = new Action("A", myattacks.get(0).getSrcName(), s, integratedUnits);
-                            System.out.println("The current action in integrated is: " + curraction);
-                            newattackers.add(curraction);
-                            size = newattackers.size();
                         }
-//                        Action curraction = new Action("A", myattacks.get(0).getSrcName(), s, integratedUnits);
-//                        System.out.println("The current action in integrated is: " + curraction);
-//                        newattackers.add(curraction);
                     }
-//                    Action curraction = new Action("A", myattacks.get(0).getSrcName(), s, integratedUnits);
-//                    System.out.println("The current action in integrated is: " + curraction);
-//                    newattackers.add(curraction);
                 }
             }
         }
         return newattackers;
+
     }
 
     /**
