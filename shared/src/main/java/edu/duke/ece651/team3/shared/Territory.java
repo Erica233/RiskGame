@@ -20,6 +20,11 @@ public class Territory implements Serializable, Comparable<Territory> {
         return winnerId;
     }
 
+    /**
+     * update the combat result, and reset the winnerId and attackerUnits field
+     *
+     * @param ownerId the original owner id of the territory before the combat
+     */
     public void updateCombatResult(int ownerId) {
         //update units
         if (winnerId != ownerId) {
@@ -28,11 +33,10 @@ public class Territory implements Serializable, Comparable<Territory> {
         //reset
         winnerId = -1;
         attackerUnits = new HashMap<>();
-
     }
 
     /**
-     * Constructs a Territory with specified name, and number of units
+     * Constructs an empty Territory with specified name, and number of units
      *
      * @param _name the name of the Territory
      */

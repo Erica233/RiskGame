@@ -22,6 +22,10 @@ public class RiskGameBoard implements Board, Serializable {
         //initMap();
     }
 
+    /**
+     * Update combat results for each territory and transfer ownership if the territory is occupied by enemny
+     *
+     */
     public void updateCombatResult() {
         for (int id = 0; id < 2; id++) {
             Player player = allPlayers.get(id);

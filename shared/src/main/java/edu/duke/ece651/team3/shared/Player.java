@@ -10,17 +10,6 @@ public class Player implements Serializable {
     private final int totNumUnits;
     private final ArrayList<Territory> ownedTerritories;
 
-//    public void updateCombatResult() {
-//        for (Territory territory: ownedTerritories) {
-//            if (territory.getWinnerId() != playerId) {
-//                //transfer ownership
-//
-//
-//            }
-//            territory.updateCombatResult(playerId);
-//        }
-//    }
-
     /**
      * This constructor builds up the player with 3 input paremeters
      * @param _id the player's id
@@ -48,12 +37,20 @@ public class Player implements Serializable {
         this.ownedTerritories = _ownedTerritories;
     }
 
+    /**
+     * Increase the number of the basic unit (whose force level is one) by one in each owned territory
+     */
     public void addAUnitForEachTerr() {
         for (Territory territory: ownedTerritories) {
             territory.increaseUnit(1, 1);
         }
     }
 
+    /**
+     * execute the given move action, update the number of units
+     *
+     * @param move the move action
+     */
     public void executeMove(Action move) {
         Territory src = findOwnedTerritoryByName(move.getSrcName());
         Territory dst = findOwnedTerritoryByName(move.getDstName());
@@ -63,13 +60,24 @@ public class Player implements Serializable {
         }
     }
 
-    public void executeAttack(Action move) {
-        Territory src = findOwnedTerritoryByName(move.getSrcName());
-        for (Integer forceLevel: move.getActionUnits().keySet()) {
-            src.decreaseUnit(forceLevel, move.getActionUnits().get(forceLevel));
+    /**
+     * execute the given attack action (only decrease the units in the source territory)
+     *
+     * @param attack the attack action
+     */
+    public void executeAttack(Action attack) {
+        Territory src = findOwnedTerritoryByName(attack.getSrcName());
+        for (Integer forceLevel: attack.getActionUnits().keySet()) {
+            src.decreaseUnit(forceLevel, attack.getActionUnits().get(forceLevel));
         }
     }
 
+    /**
+     * get the territory given its territory name, if not find, returns null
+     *
+     * @param territoryName the name of the territory want to find
+     * @return the territory
+     */
     public Territory findOwnedTerritoryByName(String territoryName) {
         for (Territory eachTerritory: ownedTerritories) {
             if (eachTerritory.getTerritoryName().equals(territoryName)) {
