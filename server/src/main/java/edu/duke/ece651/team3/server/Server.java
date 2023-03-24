@@ -258,6 +258,7 @@ public class Server {
             //execution
             for(Action myattack : myattacks){
                 executeAttack(myattack, player);
+                addOneUnits();
                 if(checkWin() == 0 || checkWin() == 1){
                     return checkWin();
                 }
@@ -289,6 +290,9 @@ public class Server {
             int attackerLoseTimes = 0;
             int defenderLoseTimes = 0;
 
+            System.out.println("Before the battle there are: " + attackNum.get(forceLevel) + "attackers");
+            System.out.println("Before the battle there are: " + defNum + "defenders");
+
             while(attackNum.get(forceLevel) != 0 && defNum != 0){
                 int rand_att = random.nextInt(20) + 1;
                 int rand_def = random.nextInt(20) + 1;
@@ -310,6 +314,11 @@ public class Server {
                     attackerLoseTimes ++;
                 }
             }
+
+            System.out.println("After the battle there are: " + attackNum.get(forceLevel) + "attackers");
+            System.out.println("After the battle there are: " + defNum + "defenders");
+
+            System.out.println("The total attackLoseTime is: " + attackerLoseTimes + "The total defendLostTime is: " + defenderLoseTimes);
             //The attacker wins, the attack action success
             Territory toOccupy = getTerr(myattack.getDstName(), defender);
 
