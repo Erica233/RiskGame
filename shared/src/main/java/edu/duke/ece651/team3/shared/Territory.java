@@ -37,6 +37,7 @@ public class Territory implements Serializable, Comparable<Territory> {
         this.neighbors = new ArrayList<>();
         this.units = new HashMap<>();
         units.put(forcelevel, num);
+        updateNumUnits();
     }
 
     /**

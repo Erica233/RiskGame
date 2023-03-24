@@ -285,7 +285,9 @@ public class Server {
 
         for (int forceLevel: myattack.getActionUnits().keySet()) {
             attackNum.put(forceLevel, myattack.getActionUnits().get(forceLevel));
-            Territory defenderTerritory = getTerr(myattack.getDstName(), defender);
+            Territory defenderTerritory = defender.findOwnedTerritoryByName(myattack.getDstName());
+            //Territory defenderTerritory = getTerr(myattack.getDstName(), defender);
+            System.out.println("The current defend territory is: " + defenderTerritory);
             System.out.println("The defender territory is: " + defenderTerritory.getTerritoryName());
             int defNum = defenderTerritory.getNumUnits();
 
@@ -296,8 +298,10 @@ public class Server {
             System.out.println("Before the battle there are: " + defNum + "defenders");
 
             while(attackNum.get(forceLevel) != 0 && defNum != 0){
-                int rand_att = random.nextInt(20) + 1;
-                int rand_def = random.nextInt(20) + 1;
+//                int rand_att = random.nextInt(20) + 1;
+//                int rand_def = random.nextInt(20) + 1;
+                int rand_att = 3;
+                int rand_def = 2;
 //                System.out.println("Dice for attacker is :" + rand_att +
 //                        "\nDice for defender is: " + rand_def);
 
