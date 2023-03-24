@@ -1,9 +1,7 @@
 package edu.duke.ece651.team3.shared;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
+import java.util.*;
 
 /**
  * A Risk Game Board
@@ -132,6 +130,176 @@ public class RiskGameBoard implements Board, Serializable {
         System.out.println("initialize map successfully!");
         return output;
     }
+
+    public String initSmallMap() throws Exception {
+        Territory t1 = new Territory("a", 1, 10);
+        Territory t2 = new Territory("b", 1, 1);
+        Territory t3 = new Territory("c", 1, 10);
+        Territory t4 = new Territory("d", 1, 1);
+
+        t1.addNeighbors(t2, t3, t4);
+        t2.addNeighbors(t1, t3);
+        t3.addNeighbors(t1, t2, t4);
+        t4.addNeighbors(t1, t3);
+
+        ArrayList<Territory> territoriesOwnedByPlayer1 = new ArrayList<>();
+        Collections.addAll(territoriesOwnedByPlayer1, t1, t3);
+        ArrayList<Territory> territoriesOwnedByPlayer2 = new ArrayList<>();
+        Collections.addAll(territoriesOwnedByPlayer2, t2, t4);
+
+        String output = "";
+        Player player1 = new Player(0, "red", 4, territoriesOwnedByPlayer1);
+        Player player2 = new Player(1, "blue", 4, territoriesOwnedByPlayer2);
+        allPlayers.add(player1);
+        allPlayers.add(player2);
+        output = output + player1.displayPlayer() + "\n" + player2.displayPlayer() + "\n";
+        System.out.println("initialize map successfully!");
+        return output;
+    }
+
+    /**
+     * This method checks which player wins
+     * @return 1 if player 1 wins, 0 if player 0 wins, 2 to continue
+     */
+    public int checkWin(){
+        ArrayList<Player> myplayers = this.getAllPlayers();
+        for(Player p : myplayers){
+            int playerid = p.getPlayerId();
+            ArrayList<Territory> territories = p.getOwnedTerritories();
+            if(territories.size() == 0){
+                if(playerid == 0){
+                    return 1;
+                }
+                else return 0;
+            }
+        }
+        return 2;
+    }
+
+    /**
+     * This method checks attack action
+     * @param myattack
+     * @param currPlayer
+     * @return true if it is valid, false if it is not
+     * @throws Exception
+     */
+    public boolean checkAttack(Action myattack, Player currPlayer) throws Exception{
+        AttackRuleChecker attackRulechecker = new AttackRuleChecker(myattack,  this);
+        if (!attackRulechecker.checkValidAction(myattack,  this, currPlayer)) {
+            return false;
+        }
+        return true;
+    }
+
+
+    /**
+     * This method rolls two 20-sided dice until one player runs out of units.
+     * The one who run out of units loses.
+     * This method loses or occupies the territory
+     * @param myattack the action
+     *
+     */
+    public void executeAttack(Action myattack, Player attacker){
+        Player defender = allPlayers.get(1-attacker.getPlayerId());
+        Random random = new Random();
+        Territory defenderTerritory = defender.findOwnedTerritoryByName(myattack.getDstName());
+        Integer defNum = defenderTerritory.getNumUnits();
+        Integer attNum = myattack.getNumActionUnits();
+
+        while(attNum != 0 && defNum !=0){
+            int rand_att = random.nextInt(20) + 1;
+            int rand_def = random.nextInt(20) + 1;
+            //System.out.print("attacker: "+rand_att+" defender: "+rand_def);
+            if(rand_att > rand_def){
+                defNum--;
+                //System.out.println(" - attacker large");
+            }
+            else{
+                attNum--;
+                //System.out.println(" - defender large");
+            }
+        }
+        if(attNum==0){
+            HashMap<Integer, Integer> hashMap = new HashMap<>();
+            hashMap.put(1, defNum);
+            defenderTerritory.setWinnerId(defender.getPlayerId());
+            defenderTerritory.setUnits(hashMap);
+            //System.out.println("winner is defender");
+        }
+        else{
+            defenderTerritory.setWinnerId(attacker.getPlayerId());
+            HashMap<Integer, Integer> hashMap =  new HashMap<>();
+            hashMap.put(1, attNum);
+            defenderTerritory.setAttackerUnits(hashMap);
+            //System.out.println("winner is attacker");
+
+        }
+    }
+
+    /**
+     * This method executes all attacks for all players
+     * @throws Exception
+     */
+    //TODO: one player executes once
+    public void executeAttacks(HashMap<Integer, ArrayList<Action>> attacksMap) throws Exception {
+        for(int i : attacksMap.keySet()){
+            Player player = this.getAllPlayers().get(i);
+            System.out.println("Player "+player.getPlayerId()+"'s execute all attacks");
+            ArrayList<Action> myattacks = attacksMap.get(i);
+            ArrayList<Action> newAttacks = new ArrayList<>();
+            for(Action myattack : myattacks) {
+                if (!this.checkAttack(myattack, player)) {
+                    continue;
+                }
+                newAttacks.add(myattack);
+                player.executeAttack(myattack);
+            }
+            attacksMap.put(player.getPlayerId(), newAttacks);
+            myattacks = intergAttack(newAttacks);
+
+            for(Action myattack : myattacks){
+                this.executeAttack(myattack, player);
+            }
+        }
+    }
+
+    /**
+     * combine all attacks into one new attack if they have the same destination
+     *
+     * @param myattacks
+     * @return
+     */
+    public ArrayList<Action> intergAttack(ArrayList<Action> myattacks){
+        ArrayList<Action> newattackers = new ArrayList<>();
+        HashSet<String> destinations = new HashSet<>();
+        for(Action act : myattacks){
+            destinations.add(act.getDstName());
+        }
+        for(String s : destinations){
+            HashMap<Integer, Integer> hashMap = new HashMap();
+            hashMap.put(1, 0);
+            Action newaction = new Action("A", null, s, hashMap);
+            newattackers.add(newaction);
+        }
+        for(Action act : myattacks){
+            HashMap<Integer, Integer> acthp = act.getActionUnits();
+            for(String s : destinations) {
+                if (act.getDstName().equals(s)) {
+                    for(int i = 0; i < newattackers.size(); i++){
+                        if(newattackers.get(i).getDstName().equals(s)){
+                            HashMap<Integer, Integer> newhp = newattackers.get(i).getActionUnits();
+                            for(Integer key : newhp.keySet()){
+                                int num = newhp.get(key);
+                                newhp.put(key, num + acthp.get(key));
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return newattackers;
+    }
+
 
     /**
      * Increase the number of the basic unit (whose force level is one) by one in each player's owned territory

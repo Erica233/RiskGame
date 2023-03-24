@@ -46,24 +46,6 @@ public class Server {
         }
     }
 
-    /**
-     * This method checks which player wins
-     * @return 1 if player 1 wins, 0 if player 0 wins, 2 to continue
-     */
-    public int checkWin(){
-        ArrayList<Player> myplayers = riscBoard.getAllPlayers();
-        for(Player p : myplayers){
-            int playerid = p.getPlayerId();
-            ArrayList<Territory> territories = p.getOwnedTerritories();
-            if(territories.size() == 0){
-                if(playerid == 0){
-                    return 1;
-                }
-                else return 0;
-            }
-        }
-        return 2;
-    }
 
     /**
      * This method executes all moves for all players
@@ -108,149 +90,6 @@ public class Server {
             Integer unitNum = mymove.getActionUnits().get(i);
             srcTerr.decreaseUnit(i, unitNum);
             dstTerr.increaseUnit(i, unitNum);
-        }
-    }
-
-//    /**
-//     * This method gets the territory based on the territory's name
-//     * @param terrName
-//     * @param currPlayer
-//     * @return
-//     */
-//    public Territory getTerr(String terrName, Player currPlayer){
-//        int length = currPlayer.getOwnedTerritories().size();
-//        Territory t = null;
-//        for (int i = 0; i < length; i++) {
-//            if (currPlayer.getOwnedTerritories().get(i).getTerritoryName().equals(terrName)) {
-//                t = currPlayer.getOwnedTerritories().get(i);
-//                break;
-//            }
-//        }
-//        return t;
-//    }
-
-    /**
-     * This method checks attack action
-     * @param myattack
-     * @param currPlayer
-     * @return true if it is valid, false if it is not
-     * @throws Exception
-     */
-    public boolean checkAttack(Action myattack, Player currPlayer) throws Exception{
-        AttackRuleChecker attackRulechecker = new AttackRuleChecker(myattack, (RiskGameBoard) riscBoard);
-        if (!attackRulechecker.checkValidAction(myattack, (RiskGameBoard) riscBoard, currPlayer)) {
-            return false;
-        }
-        return true;
-    }
-
-    /**
-     * combine all attacks into one new attack if they have the same destination
-     *
-     * @param myattacks
-     * @return
-     */
-    public ArrayList<Action> intergAttack(ArrayList<Action> myattacks){
-        ArrayList<Action> newattackers = new ArrayList<>();
-        HashSet<String> destinations = new HashSet<>();
-        for(Action act : myattacks){
-            destinations.add(act.getDstName());
-        }
-        for(String s : destinations){
-            HashMap<Integer, Integer> hashMap = new HashMap();
-            hashMap.put(1, 0);
-            Action newaction = new Action("A", null, s, hashMap);
-            newattackers.add(newaction);
-        }
-        for(Action act : myattacks){
-            HashMap<Integer, Integer> acthp = act.getActionUnits();
-            for(String s : destinations) {
-                if (act.getDstName().equals(s)) {
-                    for(int i = 0; i < newattackers.size(); i++){
-                        if(newattackers.get(i).getDstName().equals(s)){
-                            HashMap<Integer, Integer> newhp = newattackers.get(i).getActionUnits();
-                            for(Integer key : newhp.keySet()){
-                                if(acthp.containsKey(key)){
-                                    newhp.put(key, newhp.get(key)+acthp.get(key));
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        return newattackers;
-    }
-
-    /**
-     * This method executes all attacks for all players
-     * @throws Exception
-     */
-    //TODO: one player executes once
-    public void executeAttacks() throws Exception {
-        for(int i : attacksMap.keySet()){
-            Player player = riscBoard.getAllPlayers().get(i);
-            System.out.println("Player "+player.getPlayerId()+"'s execute all attacks");
-            ArrayList<Action> myattacks = attacksMap.get(i);
-            for(Action myattack : myattacks) {
-                if (!checkAttack(myattack, player)) {
-                    myattacks.remove(myattack);
-                    continue;
-                }
-                player.executeAttack(myattack);
-            }
-            //integration
-
-            myattacks = intergAttack(myattacks);
-
-            for(Action myattack : myattacks){
-                executeAttack(myattack, player);
-            }
-        }
-    }
-
-    /**
-     * This method rolls two 20-sided dice until one player runs out of units.
-     * The one who run out of units loses.
-     * This method loses or occupies the territory
-     * @param myattack the action
-     *
-     */
-    public void executeAttack(Action myattack, Player attacker){
-        Player defender = getPlayer(myattack.getDstName());
-        Random random = new Random();
-        Territory defenderTerritory = defender.findOwnedTerritoryByName(myattack.getDstName());
-        Integer defNum = defenderTerritory.getNumUnits();
-        Integer attNum = myattack.getNumActionUnits();
-
-        while(attNum != 0 && defNum !=0){
-            int rand_att = random.nextInt(20) + 1;
-            int rand_def = random.nextInt(20) + 1;
-            //System.out.print("attacker: "+rand_att+" defender: "+rand_def);
-            if(rand_att > rand_def){
-                defNum--;
-                //System.out.println(" - attacker large");
-            }
-            else{
-                attNum--;
-                //System.out.println(" - defender large");
-            }
-        }
-        if(attNum==0){
-            HashMap<Integer, Integer> hashMap = new HashMap<>();
-            hashMap.put(1, defNum);
-            defenderTerritory.setWinnerId(defender.getPlayerId());
-            defenderTerritory.setUnits(hashMap);
-            //defenderTerritory.setAttackerUnits(hashMap);
-            //System.out.println("winner is defender");
-        }
-        else{
-            defenderTerritory.setWinnerId(attacker.getPlayerId());
-            HashMap<Integer, Integer> hashMap =  new HashMap<>();
-            hashMap.put(1, attNum);
-            defenderTerritory.setAttackerUnits(hashMap);
-            //System.out.println("winner is attacker");
-
         }
     }
 
@@ -331,12 +170,12 @@ public class Server {
         printActionsMap();
         //executeAllMoves:
         executeMoves();
-        executeAttacks();
+        riscBoard.executeAttacks(attacksMap);
         riscBoard.updateCombatResult();
-        if(checkWin() == 2){
+        if(riscBoard.checkWin() == 2){
             riscBoard.addAUnitEachTurn();
         }
-        return checkWin();
+        return riscBoard.checkWin();
     }
 
     /**
@@ -422,6 +261,15 @@ public class Server {
         riscBoard.initMap();
         assignPlayerIdToClients();
         //sendBoardToAllClients();
+    }
+
+    /**
+     * The test map
+     * @throws Exception
+     */
+    public void initTestGame() throws Exception {
+        riscBoard.initSmallMap();
+        assignPlayerIdToClients();
     }
 
     /**

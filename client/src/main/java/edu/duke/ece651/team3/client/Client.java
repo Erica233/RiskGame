@@ -17,7 +17,12 @@ public class Client {
     private final ObjectOutputStream objectToServer;
     private RiskGameBoard riskGameBoard = null;
     private int playerId = -1;
-    private final BufferedReader inputReader;
+
+    public void setInputReader(BufferedReader inputReader) {
+        this.inputReader = inputReader;
+    }
+
+    private BufferedReader inputReader;
     private final ArrayList<Action> moveActions;
     private final ArrayList<Action> attackActions;
 
@@ -48,12 +53,9 @@ public class Client {
             client.playGame();
 
             client.closePipes();
-        } catch (IOException e) {
-            System.err.println("in main: " + e.getMessage());
-            System.exit(-1);
-        } catch (ClassNotFoundException e) {
-            System.err.println("in main: " + e.getMessage());
-            e.printStackTrace();
+        } catch (Exception e) {
+//            System.err.println("in main: " + e.getMessage());
+//            System.exit(-1);
         }
 
     }
@@ -118,7 +120,7 @@ public class Client {
     /**
      * This method prints the action(both move and attack actions) list for the player
      */
-    public void printActionsLists() {
+    public String printActionsLists() {
         String output = "";
         output = output + "Player " + playerId + " move actions:\n";
         for (Action move: moveActions) {
@@ -132,6 +134,7 @@ public class Client {
         }
         output += "\n";
         System.out.println(output);
+        return output;
     }
 
     /**
@@ -153,8 +156,8 @@ public class Client {
             } catch (IllegalArgumentException e) {
                 System.out.println("Your action does not have correct format: " + e.getMessage());
             } catch (Exception e) {
-                System.out.println("handleAllActions");
-                e.printStackTrace();
+//                System.out.println("handleAllActions");
+//                e.printStackTrace();
             }
         } while (true);
     }
