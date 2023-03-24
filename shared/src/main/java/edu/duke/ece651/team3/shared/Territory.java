@@ -12,7 +12,7 @@ public class Territory implements Serializable, Comparable<Territory> {
     private final String territoryName;
     private int numUnits = 0;
     private final ArrayList<Territory> neighbors;
-    private final HashMap<Integer, Integer> units;
+    private HashMap<Integer, Integer> units;
     private int winnerId = -1;
     private HashMap<Integer, Integer> attackerUnits = new HashMap<>();
 
@@ -20,17 +20,8 @@ public class Territory implements Serializable, Comparable<Territory> {
         return attackerUnits;
     }
 
-
-    public void setWinnerId(int winnerId){
-        this.winnerId = winnerId;
-    }
-
-    public void setAttackerUnits(HashMap<Integer, Integer> newUnites){
-        this.attackerUnits = newUnites;
-    }
-
-    public int getWinnerId() {
-        return winnerId;
+    public void setUnits(HashMap<Integer, Integer> _units) {
+        units = _units;
     }
 
     /**
@@ -39,9 +30,12 @@ public class Territory implements Serializable, Comparable<Territory> {
      * @param ownerId the original owner id of the territory before the combat
      */
     public void updateCombatResult(int ownerId) {
+        //System.out.print("in updateCombatResult - winnerid=" + winnerId);
+        //System.out.println(" - attackerUnits: "+attackerUnits.get(1));
         //update units
         if (winnerId != ownerId) {
-            attackerUnits = (HashMap<Integer, Integer>) units.clone();
+            units = attackerUnits;
+            //System.out.println("after update - units: "+units.get(1));
         }
         //reset
         winnerId = -1;
@@ -90,8 +84,8 @@ public class Territory implements Serializable, Comparable<Territory> {
 
     /**
      * Constructs the territory with name, and the units
-     * @param _name
-     * @param _units
+     * @param _name the name of the Territory
+     * @param _units the number of units in the Territory
      */
     public Territory(String _name, HashMap<Integer, Integer> _units) {
         this.territoryName = _name;
@@ -128,6 +122,12 @@ public class Territory implements Serializable, Comparable<Territory> {
         return false;
     }
 
+    /**
+     * check if the two territories are the same
+     *
+     * @param territoryToCompare
+     * @return ture if the two territories are the same, else false
+     */
     public boolean hasSameNeighbors(Territory territoryToCompare) {
         if (neighbors.size() != territoryToCompare.getNeighbors().size()) {
             return false;
@@ -282,6 +282,13 @@ public class Territory implements Serializable, Comparable<Territory> {
         updateNumUnits();
     }
 
+    /**
+     * checks if the territory is valid to add
+     *
+     * @param allTerritories
+     * @param toAdd
+     * @return
+     */
     public boolean isValidToAdd(ArrayList<Territory> allTerritories, Territory toAdd){
         for(Territory t: allTerritories){
             if(toAdd.equals(t)){
@@ -290,7 +297,6 @@ public class Territory implements Serializable, Comparable<Territory> {
         }
         return true;
     }
-
 
 
     /** getters and setters **/
@@ -306,7 +312,6 @@ public class Territory implements Serializable, Comparable<Territory> {
         return numUnits;
     }
 
-
     /**
      * This method gets all the neighbors of this territory
      * @return ArrayList<Territory> contains all neighbor territories
@@ -321,5 +326,17 @@ public class Territory implements Serializable, Comparable<Territory> {
      */
     public HashMap<Integer, Integer> getUnits() {
         return units;
+    }
+
+    public void setWinnerId(int winnerId){
+        this.winnerId = winnerId;
+    }
+
+    public void setAttackerUnits(HashMap<Integer, Integer> newUnites){
+        this.attackerUnits = newUnites;
+    }
+
+    public int getWinnerId() {
+        return winnerId;
     }
 }

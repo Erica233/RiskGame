@@ -4,12 +4,15 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * A player class for store player information
+ *
+ */
 public class Player implements Serializable {
     private final int playerId;
     private final String color;
     private final int totNumUnits;
     private final ArrayList<Territory> ownedTerritories;
-
 
     /**
      * This constructor builds up the player with 3 input paremeters
@@ -46,6 +49,23 @@ public class Player implements Serializable {
             territory.increaseUnit(1, 1);
         }
     }
+    /**
+     * This method gets the territory based on the territory's name
+     * @param terrName
+     * @return
+     */
+    public Territory getTerr(String terrName){
+        int length = getOwnedTerritories().size();
+        Territory t = null;
+        for (int i = 0; i < length; i++) {
+            if (getOwnedTerritories().get(i).getTerritoryName().equals(terrName)) {
+                t = getOwnedTerritories().get(i);
+                break;
+            }
+        }
+        return t;
+    }
+
 
     /**
      * execute the given move action, update the number of units
@@ -134,8 +154,6 @@ public class Player implements Serializable {
         }
         return false;
     }
-
-
 
     /**
      * Add a Territory owned by the player,

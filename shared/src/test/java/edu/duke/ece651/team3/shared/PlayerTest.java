@@ -124,19 +124,6 @@ class PlayerTest {
 
     }
 
-    public Territory getTerr(String terrName, Player currPlayer){
-        int length = currPlayer.getOwnedTerritories().size();
-        Territory t = null;
-        for (int i = 0; i < length; i++) {
-            if (currPlayer.getOwnedTerritories().get(i).getTerritoryName().equals(terrName)) {
-                t = currPlayer.getOwnedTerritories().get(i);
-                break;
-            }
-        }
-        return t;
-    }
-
-
     @Test
     void test_executeMove() throws Exception {
         RiskGameBoard r = new RiskGameBoard();
@@ -151,11 +138,11 @@ class PlayerTest {
 
         Action action = new MoveAction("M", srcName, dstName, units);
         curr.executeMove(action);
-        Territory src = getTerr(srcName, curr);
-        Territory dst = getTerr(dstName, curr);
+        Territory src = curr.getTerr(srcName);
+        Territory dst = curr.getTerr(dstName);
         assertEquals(4, src.getNumUnits());
         assertEquals(6, dst.getNumUnits());
-        assertNotNull( getTerr(dstName, curr));
+        assertNotNull( curr.getTerr(dstName));
 
 
 
@@ -177,5 +164,40 @@ class PlayerTest {
         for(Territory territory : curr.getOwnedTerritories()){
             assertEquals(6, territory.getNumUnits());
         }
+        r.addAUnitEachTurn();
+        for(Territory territory : curr.getOwnedTerritories()){
+            assertEquals(7, territory.getNumUnits());
+        }
+        r.updateCombatResult();
+
+        Player testPlayer = new Player(2, "Black", 0);
+        r.addPlayer(testPlayer);
+        testPlayer.getTerr("a");
+
+    }
+
+    @Test
+    public void test_ExecuteAttack() throws Exception {
+        RiskGameBoard r = new RiskGameBoard();
+        r.initMap();
+        Player p1 = r.getAllPlayers().get(0);
+        Player p2 = r.getAllPlayers().get(1);
+        HashMap<Integer, Integer> newUnit = new HashMap<>();
+        newUnit.put(1, 1);
+        newUnit.put(2, 1);
+
+        Territory currAtt = p1.getOwnedTerritories().get(0);
+        Territory currDef = p2.getOwnedTerritories().get(0);
+        currAtt.setAttackerUnits(newUnit);
+        currAtt.setUnits(newUnit);
+        currDef.setAttackerUnits(newUnit);
+        currDef.setUnits(newUnit);
+
+
+        AttackAction attack = new AttackAction("A",
+                p1.getOwnedTerritories().get(0).getTerritoryName(),
+                p2.getOwnedTerritories().get(0).getTerritoryName(), newUnit);
+
+        p1.executeAttack(attack);
     }
 }

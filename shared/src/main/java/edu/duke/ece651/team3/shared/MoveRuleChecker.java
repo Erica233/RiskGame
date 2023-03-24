@@ -3,6 +3,10 @@ package edu.duke.ece651.team3.shared;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * A class of rule checker for only checking moves actions
+ *
+ */
 public class MoveRuleChecker extends RuleChecker{
     private final Board riskGameBoard;
     private final Action action;
@@ -98,8 +102,6 @@ public class MoveRuleChecker extends RuleChecker{
         return false;
     }
 
-
-
     /**
      * This method using dfs, if the path exist, return true. If not, return false
      * @param src the source territory
@@ -165,7 +167,5 @@ public class MoveRuleChecker extends RuleChecker{
         for(int i = 0; i < player.getOwnedTerritories().size(); i++){
             visited.put(player.getOwnedTerritories().get(i), false);
         }
-
     }
-
 }
