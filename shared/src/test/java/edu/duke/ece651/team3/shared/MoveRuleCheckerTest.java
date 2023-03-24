@@ -76,6 +76,8 @@ public class MoveRuleCheckerTest {
     Action a5 = new MoveAction(s1, "a", "b", unit1);
     MoveRuleChecker mrc6 = new MoveRuleChecker(a5, r);
     assertEquals(false, mrc6.checkPath(a5, r, p1));
+    assertEquals(false, mrc6.checkValidAction(a5, r, p1));
+
 
     //a: invalid path: neighbor but not directly connect
     Territory self_notDirNei = r.getAllPlayers().get(0).getOwnedTerritories().get(5);//l
@@ -111,6 +113,66 @@ public class MoveRuleCheckerTest {
     Action newMoveAction = new MoveAction("move", "a", "d", unit1);
     MoveRuleChecker moveRuleChecker1 = new MoveRuleChecker(newMoveAction, r);
     moveRuleChecker1.checkPath(newMoveAction, riskGameBoard, py1);
+  }
+
+  @Test
+  public void test_checkValid() throws Exception {
+    RiskGameBoard r = new RiskGameBoard();
+    r.initMap();
+    //Correct case
+    HashMap<Integer, Integer> units = new HashMap<>();
+    units.put(1, 1);
+    Action a = new MoveAction("A", "a", "c", units);
+    RuleChecker mrc = new MoveRuleChecker(a, r);
+    assertTrue(mrc.checkValidAction(a, r, r.getAllPlayers().get(0)));
+
+    //Wrong destination
+    HashMap<Integer, Integer> units1 = new HashMap<>();
+    units1.put(1, 1);
+    Action a1 = new MoveAction("A", "a", "b", units1);
+    assertFalse(mrc.checkValidAction(a1, r, r.getAllPlayers().get(0)));
+
+    //Wrong number
+    HashMap<Integer, Integer> units2 = new HashMap<>();
+    units2.put(1, -1);
+    Action a2 = new MoveAction("A", "a", "c", units2);
+    assertFalse(mrc.checkValidAction(a2, r, r.getAllPlayers().get(0)));
+
+    //Wrong path
+    HashMap<Integer, Integer> units3 = new HashMap<>();
+    units3.put(1, 1);
+    Action a3 = new MoveAction("A", "a", "c", units3);
+    assertTrue(mrc.checkValidAction(a3, r, r.getAllPlayers().get(0)));
+
+    HashMap<Integer, Integer> units4 = new HashMap<>();
+    units4.put(1, 5);
+    Action attack1 = new MoveAction("A", "i", "j", units4);
+
+    HashMap<Integer, Integer> units5 = new HashMap<>();
+    units5.put(1, 5);
+    Action attack2 = new MoveAction("A", "j", "i", units5);
+
+    HashMap<Integer, Integer> units6 = new HashMap<>();
+    units6.put(1, 1);
+    Action invalid_move = new MoveAction("M", "i", "h", units6);
+
+    RiskGameBoard b = new RiskGameBoard();
+    b.initMap();
+    b.executeAttack(attack1, 0);
+    b.executeAttack(attack2, 1);
+//    assertFalse(mrc.checkValidAction(invalid_move, r, r.getAllPlayers().get(0)));
+
+    //a: invalid path
+
+//    HashMap<Integer, Integer> unit1 = new HashMap<>();
+//    Player p1 = r.getAllPlayers().get(0);
+//    unit1.put(1, 1);
+//    Territory notSelfdst = r.getAllPlayers().get(1).getOwnedTerritories().get(3);//not neighbor
+//    Action a0 = new MoveAction("M", "a", "f", unit1);
+//    MoveRuleChecker mrc5 = new MoveRuleChecker(a0, r);
+//    assertEquals(false, mrc5.checkValidAction(a0, r, p1));
+
+
   }
 
 

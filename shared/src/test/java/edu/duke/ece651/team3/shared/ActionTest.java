@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class ActionTest {
@@ -44,6 +45,27 @@ public class ActionTest {
             ", actionUnits=" + ss +
             '}';
     assertEquals(s, act.toString());
+
+  }
+  @Test
+  public void test_ActionType() throws Exception {
+    RiskGameBoard r = new RiskGameBoard();
+    r.initMap();
+
+    HashMap<Integer, Integer> units = new HashMap<>();
+    units.put(1, 1);
+    MoveAction move = new MoveAction("M", "a", "b", units);
+    Integer in1 = 1;
+    assertEquals(in1 ,move.getNumActionUnits());
+    assertEquals(true,  move.isMoveType());
+    assertEquals(false,  move.isAttackType());
+    assertEquals(false,  move.isDone());
+    assertEquals(true,  move.isValidType());
+
+    ArrayList<Action> list = new ArrayList<>();
+    list.add(move);
+    Player player1 = r.getAllPlayers().get(0);
+//    assertEquals(1, player1.getN());
 
   }
 
