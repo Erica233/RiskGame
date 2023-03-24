@@ -1,6 +1,10 @@
 package edu.duke.ece651.team3.shared;
 import java.util.ArrayList;
 
+/**
+ * Ac class of rule checker for only checking attacks actions
+ *
+ */
 public class AttackRuleChecker extends RuleChecker{
     private final Board riskGameBoard;
     private final Action action;

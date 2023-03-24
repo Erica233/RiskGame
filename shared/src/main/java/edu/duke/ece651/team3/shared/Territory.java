@@ -21,18 +21,6 @@ public class Territory implements Serializable, Comparable<Territory> {
 
     private HashMap<Integer, Integer> attackerUnits = new HashMap<>();
 
-    public void setWinnerId(int winnerId){
-        this.winnerId = winnerId;
-    }
-
-    public void setAttackerUnits(HashMap<Integer, Integer> newUnites){
-        this.attackerUnits = newUnites;
-    }
-
-    public int getWinnerId() {
-        return winnerId;
-    }
-
     /**
      * update the combat result, and reset the winnerId and attackerUnits field
      *
@@ -90,8 +78,8 @@ public class Territory implements Serializable, Comparable<Territory> {
 
     /**
      * Constructs the territory with name, and the units
-     * @param _name
-     * @param _units
+     * @param _name the name of the Territory
+     * @param _units the number of units in the Territory
      */
     public Territory(String _name, HashMap<Integer, Integer> _units) {
         this.territoryName = _name;
@@ -128,6 +116,12 @@ public class Territory implements Serializable, Comparable<Territory> {
         return false;
     }
 
+    /**
+     * check if the two territories are the same
+     *
+     * @param territoryToCompare
+     * @return ture if the two territories are the same, else false
+     */
     public boolean hasSameNeighbors(Territory territoryToCompare) {
         if (neighbors.size() != territoryToCompare.getNeighbors().size()) {
             return false;
@@ -282,6 +276,13 @@ public class Territory implements Serializable, Comparable<Territory> {
         updateNumUnits();
     }
 
+    /**
+     * checks if the territory is valid to add
+     *
+     * @param allTerritories
+     * @param toAdd
+     * @return
+     */
     public boolean isValidToAdd(ArrayList<Territory> allTerritories, Territory toAdd){
         for(Territory t: allTerritories){
             if(toAdd.equals(t)){
@@ -290,7 +291,6 @@ public class Territory implements Serializable, Comparable<Territory> {
         }
         return true;
     }
-
 
 
     /** getters and setters **/
@@ -306,7 +306,6 @@ public class Territory implements Serializable, Comparable<Territory> {
         return numUnits;
     }
 
-
     /**
      * This method gets all the neighbors of this territory
      * @return ArrayList<Territory> contains all neighbor territories
@@ -321,5 +320,17 @@ public class Territory implements Serializable, Comparable<Territory> {
      */
     public HashMap<Integer, Integer> getUnits() {
         return units;
+    }
+
+    public void setWinnerId(int winnerId){
+        this.winnerId = winnerId;
+    }
+
+    public void setAttackerUnits(HashMap<Integer, Integer> newUnites){
+        this.attackerUnits = newUnites;
+    }
+
+    public int getWinnerId() {
+        return winnerId;
     }
 }

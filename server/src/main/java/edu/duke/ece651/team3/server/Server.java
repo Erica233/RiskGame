@@ -8,6 +8,9 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 
+/**
+ * A server to run the risc game
+ */
 public class Server {
     private final ServerSocket serverSock;
     private final ArrayList<Socket> clientSockets;
@@ -64,7 +67,6 @@ public class Server {
 
     /**
      * This method executes all moves for all players
-     * @return
      * @throws Exception
      */
     public void executeMoves() throws Exception {
@@ -142,8 +144,12 @@ public class Server {
         return true;
     }
 
-
-
+    /**
+     * combine all attacks into one new attack if they have the same destination
+     *
+     * @param myattacks
+     * @return
+     */
     public ArrayList<Action> intergAttack(ArrayList<Action> myattacks){
         ArrayList<Action> newattackers = new ArrayList<>();
         HashSet<String> destinations = new HashSet<>();
@@ -174,17 +180,15 @@ public class Server {
             }
         }
         return newattackers;
-
     }
 
     /**
-     * This method executes all attacks
+     * This method executes all attacks for all players
      * @throws Exception
      */
     //TODO: one player executes once
     public void executeAttacks() throws Exception {
         for(int i : attacksMap.keySet()){
-
             Player player = riscBoard.getAllPlayers().get(i);
             System.out.println("Player "+player.getPlayerId()+"'s execute all attacks");
             ArrayList<Action> myattacks = attacksMap.get(i);
@@ -201,10 +205,8 @@ public class Server {
 
             for(Action myattack : myattacks){
                 executeAttack(myattack, player);
-
             }
         }
-
     }
 
     /**
@@ -244,30 +246,6 @@ public class Server {
         }
     }
 
-
-    //5(b) sum the total number of attacks for one player
-    /**
-     * This method sums all attack actions from the same player to the same dst
-     * @param currentPlayer the current player who execute the attack action
-     * @return the total number of attack units
-     */
-    public int totalAttackUnits(Player currentPlayer, String dstName){
-        int sumUnits = 0;
-        int currPlayerID = currentPlayer.getPlayerId();
-        ArrayList<Action> attackList = attacksMap.get(currPlayerID);
-        for(Action attAction: attackList){
-            //If multiple territories of player A attacks territory X, sum them
-            if(attAction.getDstName().equals(dstName)){
-                int curAttactUnits = attAction.getActionUnits().get(1); //TODO: the first integer
-                sumUnits += curAttactUnits;
-            }
-        }
-        return sumUnits;
-    }
-
-
-
-
     /**
      * This method gets the player that owns the given territory.
      * @param territoryName the territory's name
@@ -288,19 +266,6 @@ public class Server {
         return currPlayer;
     }
 
-    /**
-     * This method adds one unit after finishing each turn
-     */
-    public void addOneUnits(){
-//        for(Territory t: riscBoard.getAllTerritories()){
-//            t.increaseUnit(1, 1);
-//        }
-        riscBoard.addAUnitEachTurn();
-
-    }
-
-
-
     public static void main(String[] args) {
         int portNum = 12345;
         try {
@@ -320,6 +285,11 @@ public class Server {
         }
     }
 
+    /**
+     * run the whole game
+     *
+     * @throws Exception
+     */
     public void runGame() throws Exception {
         int result = -1;
         do {
@@ -354,11 +324,19 @@ public class Server {
         executeAttacks();
         riscBoard.updateCombatResult();
         if(checkWin() == 2){
-            addOneUnits();
+            riscBoard.addAUnitEachTurn();
         }
         return checkWin();
     }
 
+    /**
+     * send end game signal,
+     * 0 means player 0 is thw winner, 1 means player 1 is the winner,
+     * 2 means the game is still running
+     *
+     * @param gameResult game result signal
+     * @throws IOException
+     */
     public void sendEndGameInfo(int gameResult) throws IOException {
         objectsToClients.get(0).writeInt(gameResult);
         objectsToClients.get(1).writeInt(gameResult);
