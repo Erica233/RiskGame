@@ -10,6 +10,7 @@ public class Player implements Serializable {
     private final int totNumUnits;
     private final ArrayList<Territory> ownedTerritories;
 
+
     /**
      * This constructor builds up the player with 3 input paremeters
      * @param _id the player's id

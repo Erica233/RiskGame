@@ -74,6 +74,14 @@ public class Action implements Serializable {
         return actionUnits;
     }
 
+    public Integer getNumActionUnits(){
+        int res = 0;
+        for(Integer i : actionUnits.keySet()){
+            res+=actionUnits.get(i);
+        }
+        return res;
+    }
+
     //Since the actions are read from the user, it supports set methods
     public void setActionType(String actionType) {
         this.actionType = actionType;

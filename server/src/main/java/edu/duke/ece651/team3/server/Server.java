@@ -182,8 +182,9 @@ public class Server {
      * @throws Exception
      */
     //TODO: one player executes once
-    public int executeAttacks() throws Exception {
+    public void executeAttacks() throws Exception {
         for(int i : attacksMap.keySet()){
+
             Player player = riscBoard.getAllPlayers().get(i);
             System.out.println("Player "+player.getPlayerId()+"'s execute all attacks");
             ArrayList<Action> myattacks = attacksMap.get(i);
@@ -195,17 +196,26 @@ public class Server {
                 player.executeAttack(myattack);
             }
             //integration
+
             myattacks = intergAttack(myattacks);
+
+//            int totl = totalAttackUnits(player, dstName);
+//            HashMap<Integer, Integer> units = new HashMap<>(1, totl);
+//            Action myattack = new Action("A", myattacks.get(0).getSrcName(), dstName, units);
+
 
             //execution
             for(Action myattack : myattacks){
                 executeAttack(myattack, player);
-                if(checkWin() == 0 || checkWin() == 1){
-                    return checkWin();
-                }
+
+
+//                if(checkWin() == 0 || checkWin() == 1){
+//                    return checkWin();
+//                }
             }
+//            addOneUnits();
         }
-        return 2;
+
     }
 
     /**
@@ -215,76 +225,107 @@ public class Server {
      * @param myattack the action
      *
      */
-    //TODO: check validation
-    public void executeAttack(Action myattack, Player attacker){
-        System.out.println("execute attack: ");
-        System.out.println(myattack);
-        Random random = new Random();
-        Player defender = getPlayer(myattack.getDstName());
-//        System.out.println("The defender is: ");
-        HashMap<Integer, Integer> attackNum = new HashMap<>();//forceLevel, total Number
-
-        for (int forceLevel: myattack.getActionUnits().keySet()) {
-            attackNum.put(forceLevel, myattack.getActionUnits().get(forceLevel));
-            Territory defenderTerritory = defender.findOwnedTerritoryByName(myattack.getDstName());
-            //Territory defenderTerritory = getTerr(myattack.getDstName(), defender);
-            System.out.println("The current defend territory is: " + defenderTerritory);
-            System.out.println("The defender territory is: " + defenderTerritory.getTerritoryName());
-            int defNum = defenderTerritory.getNumUnits();
-
-            int attackerLoseTimes = 0;
-            int defenderLoseTimes = 0;
-
-            System.out.println("Before the battle there are: " + attackNum.get(forceLevel) + "attackers");
-            System.out.println("Before the battle there are: " + defNum + "defenders");
-
-            while(attackNum.get(forceLevel) != 0 && defNum != 0){
-//                int rand_att = random.nextInt(20) + 1;
-//                int rand_def = random.nextInt(20) + 1;
-                int rand_att = 3;
-                int rand_def = 2;
-//                System.out.println("Dice for attacker is :" + rand_att +
-//                        "\nDice for defender is: " + rand_def);
-
-                if(rand_att < rand_def){
-                    int newNum = attackNum.get(forceLevel) - 1;
-                    attackNum.replace(forceLevel, newNum);
-                    attackerLoseTimes ++;
-                }
-                else if(rand_def < rand_att){
-                    defNum --;
-                    defenderLoseTimes ++;
-                }
-                else if(rand_def == rand_att){ //defender wins
-                    int newNum = attackNum.get(forceLevel) - 1;
-                    attackNum.replace(forceLevel, newNum);
-                    attackerLoseTimes ++;
-                }
-            }
-
-            System.out.println("After the battle there are: " + attackNum.get(forceLevel) + "attackers");
-            System.out.println("After the battle there are: " + defNum + "defenders");
-
-            System.out.println("The total attackLoseTime is: " + attackerLoseTimes + "The total defendLostTime is: " + defenderLoseTimes);
-            //The attacker wins, the attack action success
-            Territory toOccupy = getTerr(myattack.getDstName(), defender);
-
-            //The attacker loses, the attack action fails
-            if(attackNum.get(forceLevel) == 0){
-                System.out.println("The defender wins!");
-                toOccupy.decreaseUnit(forceLevel, defenderLoseTimes);
+//    //TODO: check validation
+//    public void executeAttack(Action myattack, Player attacker){
+//        System.out.println("execute attack: ");
+//        System.out.println(myattack);
+//        Random random = new Random();
+//        Player defender = getPlayer(myattack.getDstName());
+////        System.out.println("The defender is: ");
+//        HashMap<Integer, Integer> attackNum = new HashMap<>();//forceLevel, total Number/?????
+//
+//        Territory defenderTerritory = defender.findOwnedTerritoryByName(myattack.getDstName());
+//        int defNum = defenderTerritory.getNumUnits();
+//        for (int forceLevel: myattack.getActionUnits().keySet()) {
+//            attackNum.put(forceLevel, myattack.getActionUnits().get(forceLevel));
+//
+//            //Territory defenderTerritory = getTerr(myattack.getDstName(), defender);
+//            System.out.println("The current defend territory is: " + defenderTerritory);
+//            System.out.println("The defender territory is: " + defenderTerritory.getTerritoryName());
+//
+//
+//            int attackerLoseTimes = 0;
+//            int defenderLoseTimes = 0;
+//
+//            System.out.println("Before the battle there are: " + attackNum.get(forceLevel) + "attackers");
+//            System.out.println("Before the battle there are: " + defNum + "defenders");
+//
+//            while(attackNum.get(forceLevel) != 0 && defNum != 0){
+////                int rand_att = random.nextInt(20) + 1;
+////                int rand_def = random.nextInt(20) + 1;
+//                int rand_att = 3;
+//                int rand_def = 2;
+////                System.out.println("Dice for attacker is :" + rand_att +
+////                        "\nDice for defender is: " + rand_def);
+//
+//                if(rand_att < rand_def){
+//                    int newNum = attackNum.get(forceLevel) - 1;
+//                    attackNum.replace(forceLevel, newNum);
+//                    attackerLoseTimes ++;
+//                }
+//                else if(rand_def < rand_att){
+//                    defNum --;
+//                    defenderLoseTimes ++;
+//                }
+//                else if(rand_def == rand_att){ //defender wins
+//                    int newNum = attackNum.get(forceLevel) - 1;
+//                    attackNum.replace(forceLevel, newNum);
+//                    attackerLoseTimes ++;
+//                }
+//            }
+//
+//            System.out.println("After the battle there are: " + attackNum.get(forceLevel) + "attackers");
+//            System.out.println("After the battle there are: " + defNum + "defenders");
+//
+//            System.out.println("The total attackLoseTime is: " + attackerLoseTimes + "The total defendLostTime is: " + defenderLoseTimes);
+//            //The attacker wins, the attack action success
+//            Territory toOccupy = getTerr(myattack.getDstName(), defender);
+//
+//            //The attacker loses, the attack action fails
+//            if(attackNum.get(forceLevel) == 0){
+//                System.out.println("The defender wins!");
 //                toOccupy.decreaseUnit(forceLevel, defenderLoseTimes);
-                return;
+////                toOccupy.decreaseUnit(forceLevel, defenderLoseTimes);
+//                return;
+//            }
+//            System.out.println("The attacker wins!");
+//            //Adding the territory to the winner's territory
+//            attacker.occupyTerritory(defenderTerritory, attackNum.get(forceLevel), defenderLoseTimes);
+//
+//            //Removing the territory from the loser's territory. It loses the whole territory
+//            defender.loseTerritory(toOccupy);
+////            riscBoard.transferOwnedTerritory();
+//        }
+//
+//    }
+    public void executeAttack(Action myattack, Player attacker){
+        Player defender = getPlayer(myattack.getDstName());
+        Random random = new Random();
+        Territory defenderTerritory = defender.findOwnedTerritoryByName(myattack.getDstName());
+        Integer defNum = defenderTerritory.getNumUnits();
+        Integer attNum = myattack.getNumActionUnits();
+
+        while(attNum != 0 && defNum !=0){
+            int rand_att = random.nextInt(20) + 1;
+            int rand_def = random.nextInt(20) + 1;
+            if(rand_att > rand_def){
+                defNum--;
             }
-            System.out.println("The attacker wins!");
-            //Adding the territory to the winner's territory
-            attacker.occupyTerritory(defenderTerritory, attackNum.get(forceLevel), defenderLoseTimes);
-
-            //Removing the territory from the loser's territory. It loses the whole territory
-            defender.loseTerritory(toOccupy);
-//            riscBoard.transferOwnedTerritory();
+            else{
+                attNum--;
+            }
         }
-
+        if(attNum==0){
+            HashMap<Integer, Integer> hashMap =  new HashMap<>();
+            hashMap.put(1, defNum);
+            defenderTerritory.setWinnerId(defender.getPlayerId());
+            defenderTerritory.setAttackerUnits(hashMap);
+        }
+        else{
+            defenderTerritory.setWinnerId(attacker.getPlayerId());
+            HashMap<Integer, Integer> hashMap =  new HashMap<>();
+            hashMap.put(1, attNum);
+        }
     }
 
 
@@ -394,9 +435,11 @@ public class Server {
         printActionsMap();
         //executeAllMoves:
         executeMoves();
-        int result = executeAttacks();
-        addOneUnits();
-        return result;
+        executeAttacks();
+        if(checkWin() == 2){
+            addOneUnits();
+        }
+        return checkWin();
     }
 
     public void sendEndGameInfo(int gameResult) throws IOException {
