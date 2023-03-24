@@ -14,12 +14,12 @@ public class Territory implements Serializable, Comparable<Territory> {
     private final ArrayList<Territory> neighbors;
     private final HashMap<Integer, Integer> units;
     private int winnerId = -1;
+    private HashMap<Integer, Integer> attackerUnits = new HashMap<>();
 
     public HashMap<Integer, Integer> getAttackerUnits() {
         return attackerUnits;
     }
 
-    private HashMap<Integer, Integer> attackerUnits = new HashMap<>();
 
     public void setWinnerId(int winnerId){
         this.winnerId = winnerId;

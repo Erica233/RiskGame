@@ -241,6 +241,7 @@ public class Server {
             defenderTerritory.setWinnerId(attacker.getPlayerId());
             HashMap<Integer, Integer> hashMap =  new HashMap<>();
             hashMap.put(1, attNum);
+            defenderTerritory.setAttackerUnits(hashMap);
         }
     }
 
