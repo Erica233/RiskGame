@@ -147,6 +147,7 @@ public class Server {
 
     public ArrayList<Action> intergAttack(ArrayList<Action> myattacks){
         ArrayList<Action> newattackers = new ArrayList<>();
+
         HashSet<String> destinations = new HashSet<>();
         //Extracted all destination strings
         for(Action act : myattacks){
@@ -164,20 +165,34 @@ public class Server {
             HashMap<Integer, Integer> units = action.getActionUnits();
             for(String s : destinations) {
                 HashMap<Integer, Integer> integratedUnits = new HashMap<>();
+                integratedUnits.put(1, 0);
                 if (action.getDstName().equals(s)) {
-                    for(int i = 0; i < newattackers.size(); i++){
+                    int size = newattackers.size();
+                    for(int i = 0; i < size; i++){
                         if(newattackers.get(i).getDstName().equals(s)){
 //                            newattackers.get(i).getActionUnits() = newattackers.get(i).getActionUnits();
                             integratedUnits = newattackers.get(i).getActionUnits();
+                            System.out.println("The integrated Units is: " + integratedUnits);
                             for(Integer key : integratedUnits.keySet()){
+                                System.out.println("the key is: " + key + "The action is :" + action);
                                 if(units.containsKey(key)){
                                     integratedUnits.put(key, integratedUnits.get(key)+units.get(key));
+
                                 }
                             }
+                            System.out.println("The updated integratedUnits is: " + integratedUnits);
+                            Action curraction = new Action("A", myattacks.get(0).getSrcName(), s, integratedUnits);
+                            System.out.println("The current action in integrated is: " + curraction);
+                            newattackers.add(curraction);
+                            size = newattackers.size();
                         }
+//                        Action curraction = new Action("A", myattacks.get(0).getSrcName(), s, integratedUnits);
+//                        System.out.println("The current action in integrated is: " + curraction);
+//                        newattackers.add(curraction);
                     }
-                    Action curraction = new Action("A", myattacks.get(0).getSrcName(), s, integratedUnits);
-                    newattackers.add(curraction);
+//                    Action curraction = new Action("A", myattacks.get(0).getSrcName(), s, integratedUnits);
+//                    System.out.println("The current action in integrated is: " + curraction);
+//                    newattackers.add(curraction);
                 }
             }
         }
@@ -235,6 +250,7 @@ public class Server {
         System.out.println(myattack);
         Random random = new Random();
         Player defender = getPlayer(myattack.getDstName());
+//        System.out.println("The defender is: ");
         HashMap<Integer, Integer> attackNum = new HashMap<>();//forceLevel, total Number
 
         for (int forceLevel: myattack.getActionUnits().keySet()) {
@@ -247,8 +263,8 @@ public class Server {
             while(attackNum.get(forceLevel) != 0 && defNum != 0){
                 int rand_att = random.nextInt(20) + 1;
                 int rand_def = random.nextInt(20) + 1;
-                System.out.println("Dice for attacker is :" + rand_att +
-                        "\nDice for defender is: " + rand_def);
+//                System.out.println("Dice for attacker is :" + rand_att +
+//                        "\nDice for defender is: " + rand_def);
 
                 if(rand_att < rand_def){
                     int newNum = attackNum.get(forceLevel) - 1;
@@ -271,17 +287,14 @@ public class Server {
             //The attacker loses, the attack action fails
             if(attackNum.get(forceLevel) == 0){
                 toOccupy.decreaseUnit(forceLevel, defenderLoseTimes);
+                return;
             }
             //Adding the territory to the winner's territory
             attacker.occupyTerritory(myattack, attackerLoseTimes);
 
             //Removing the territory from the loser's territory. It loses the whole territory
             defender.loseTerritory(toOccupy);
-
         }
-
-
-
 
     }
 
