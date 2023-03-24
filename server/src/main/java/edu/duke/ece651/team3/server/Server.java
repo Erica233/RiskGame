@@ -145,56 +145,6 @@ public class Server {
 
 
     public ArrayList<Action> intergAttack(ArrayList<Action> myattacks){
-//        ArrayList<Action> newattackers = new ArrayList<>();
-//        HashSet<String> destinations = new HashSet<>();
-//        //Extracted all destination strings
-//        for(Action act : myattacks){
-//            destinations.add(act.getDstName());
-//        }
-        //Set up all attack actions using the extracted destination names and set src to null
-//        for(String s : destinations){
-//            HashMap<Integer, Integer> hashMap = new HashMap<>();
-//            Action newaction = new Action("A", myattacks.get(0).getSrcName(), s, hashMap);
-////            Action newaction = new Action("A", null, s, hashMap);
-//            newattackers.add(newaction);
-//        }
-
-//        for(Action action : myattacks){
-//            HashMap<Integer, Integer> units = action.getActionUnits();
-//            for(String s : destinations) {
-//                HashMap<Integer, Integer> integratedUnits = new HashMap<>();
-//                integratedUnits.put(1, 0);
-//                if (action.getDstName().equals(s)) {
-//                    int size = newattackers.size();
-//                    for(int i = 0; i < size; i++){
-//                        if(newattackers.get(i).getDstName().equals(s)){
-////                            newattackers.get(i).getActionUnits() = newattackers.get(i).getActionUnits();
-//                            integratedUnits = newattackers.get(i).getActionUnits();
-//                            System.out.println("The integrated Units is: " + integratedUnits);
-//                            for(Integer key : integratedUnits.keySet()){
-//                                System.out.println("the key is: " + key + "The action is :" + action);
-//                                if(units.containsKey(key)){
-//                                    integratedUnits.put(key, integratedUnits.get(key)+units.get(key));
-//
-//                                }
-//                            }
-//                            System.out.println("The updated integratedUnits is: " + integratedUnits);
-//                            Action curraction = new Action("A", myattacks.get(0).getSrcName(), s, integratedUnits);
-//                            System.out.println("The current action in integrated is: " + curraction);
-//                            newattackers.add(curraction);
-//                            size = newattackers.size();
-//                        }
-////                        Action curraction = new Action("A", myattacks.get(0).getSrcName(), s, integratedUnits);
-////                        System.out.println("The current action in integrated is: " + curraction);
-////                        newattackers.add(curraction);
-//                    }
-////                    Action curraction = new Action("A", myattacks.get(0).getSrcName(), s, integratedUnits);
-////                    System.out.println("The current action in integrated is: " + curraction);
-////                    newattackers.add(curraction);
-//                }
-//            }
-//        }
-//        return newattackers;
         ArrayList<Action> newattackers = new ArrayList<>();
         HashSet<String> destinations = new HashSet<>();
         for(Action act : myattacks){
@@ -234,7 +184,6 @@ public class Server {
     //TODO: one player executes once
     public int executeAttacks() throws Exception {
         for(int i : attacksMap.keySet()){
-
             Player player = riscBoard.getAllPlayers().get(i);
             System.out.println("Player "+player.getPlayerId()+"'s execute all attacks");
             ArrayList<Action> myattacks = attacksMap.get(i);
@@ -246,23 +195,15 @@ public class Server {
                 player.executeAttack(myattack);
             }
             //integration
-
             myattacks = intergAttack(myattacks);
-
-//            int totl = totalAttackUnits(player, dstName);
-//            HashMap<Integer, Integer> units = new HashMap<>(1, totl);
-//            Action myattack = new Action("A", myattacks.get(0).getSrcName(), dstName, units);
-
 
             //execution
             for(Action myattack : myattacks){
                 executeAttack(myattack, player);
-//                addOneUnits();
                 if(checkWin() == 0 || checkWin() == 1){
                     return checkWin();
                 }
             }
-//            addOneUnits();
         }
         return 2;
     }

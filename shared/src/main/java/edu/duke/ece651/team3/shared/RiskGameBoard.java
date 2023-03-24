@@ -22,6 +22,21 @@ public class RiskGameBoard implements Board, Serializable {
         //initMap();
     }
 
+    public void updateCombatResult() {
+        for (int id = 0; id < 2; id++) {
+            Player player = allPlayers.get(id);
+            Player enemy = allPlayers.get(1 - id);
+            for (Territory territory: player.getOwnedTerritories()) {
+                if (territory.getWinnerId() != player.getPlayerId()) {
+                    //transfer ownership
+                    enemy.tryOwnTerritory(territory);
+                    player.loseTerritory(territory);
+                }
+                territory.updateCombatResult(player.getPlayerId());
+            }
+        }
+    }
+
     /**
      * This method initialize the map
      * @return A string that contains all information of a map

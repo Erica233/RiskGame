@@ -10,6 +10,17 @@ public class Player implements Serializable {
     private final int totNumUnits;
     private final ArrayList<Territory> ownedTerritories;
 
+//    public void updateCombatResult() {
+//        for (Territory territory: ownedTerritories) {
+//            if (territory.getWinnerId() != playerId) {
+//                //transfer ownership
+//
+//
+//            }
+//            territory.updateCombatResult(playerId);
+//        }
+//    }
+
     /**
      * This constructor builds up the player with 3 input paremeters
      * @param _id the player's id
@@ -151,11 +162,17 @@ public class Player implements Serializable {
     }
 
     /**
-     * This method removes the territory from the current player
+     * If the territory is owned by the player, removes it
+     * else, print out error message
      * @param toLose
      */
     public void loseTerritory(Territory toLose){
-        ownedTerritories.remove(toLose);
+        if (ownedTerritories.contains(toLose)) {
+            ownedTerritories.remove(toLose);
+        } else {
+            System.err.println("Player " + playerId + "cannot lose that Territory " + toLose.getTerritoryName());
+        }
+
     }
 
     /**

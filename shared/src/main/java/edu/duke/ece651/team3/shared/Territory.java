@@ -13,6 +13,23 @@ public class Territory implements Serializable, Comparable<Territory> {
     private int numUnits = 0;
     private final ArrayList<Territory> neighbors;
     private final HashMap<Integer, Integer> units;
+    private int winnerId = -1;
+    private HashMap<Integer, Integer> attackerUnits = new HashMap<>();
+
+    public int getWinnerId() {
+        return winnerId;
+    }
+
+    public void updateCombatResult(int ownerId) {
+        //update units
+        if (winnerId != ownerId) {
+            units.clone();
+        }
+        //reset
+        winnerId = -1;
+        attackerUnits = new HashMap<>();
+
+    }
 
     /**
      * Constructs a Territory with specified name, and number of units
