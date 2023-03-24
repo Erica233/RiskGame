@@ -114,7 +114,18 @@ class RiskGameBoardTest {
 
         Territory to_update = p1.getOwnedTerritories().get(0); //b
         to_update.updateCombatResult(2);
+        assertEquals(-1, to_update.getWinnerId());
         p1.getOwnedTerritories().get(0).setWinnerId(2);
+        assertEquals(2, p1.getOwnedTerritories().get(0).getWinnerId());
+
+        p1.getOwnedTerritories().get(1).setWinnerId(1);
+        assertEquals(1, p1.getOwnedTerritories().get(1).getWinnerId());
+
+        for(Territory t: p1.getOwnedTerritories()){
+            t.setWinnerId(1);
+            assertEquals(0, t.getWinnerId());
+        }
+
         r.updateCombatResult();
     }
 }
