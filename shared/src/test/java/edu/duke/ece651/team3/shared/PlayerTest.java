@@ -175,4 +175,29 @@ class PlayerTest {
         testPlayer.getTerr("a");
 
     }
+
+    @Test
+    public void test_ExecuteAttack() throws Exception {
+        RiskGameBoard r = new RiskGameBoard();
+        r.initMap();
+        Player p1 = r.getAllPlayers().get(0);
+        Player p2 = r.getAllPlayers().get(1);
+        HashMap<Integer, Integer> newUnit = new HashMap<>();
+        newUnit.put(1, 1);
+        newUnit.put(2, 1);
+
+        Territory currAtt = p1.getOwnedTerritories().get(0);
+        Territory currDef = p2.getOwnedTerritories().get(0);
+        currAtt.setAttackerUnits(newUnit);
+        currAtt.setUnits(newUnit);
+        currDef.setAttackerUnits(newUnit);
+        currDef.setUnits(newUnit);
+
+
+        AttackAction attack = new AttackAction("A",
+                p1.getOwnedTerritories().get(0).getTerritoryName(),
+                p2.getOwnedTerritories().get(0).getTerritoryName(), newUnit);
+
+        p1.executeAttack(attack);
+    }
 }

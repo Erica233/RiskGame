@@ -170,4 +170,15 @@ public class TerritoryTest {
         territory.updateCombatResult(ownId2);
         assertEquals(-1, territory.getWinnerId());
     }
+
+    @Test
+    public void test_setUnits(){
+        Territory territory = new Territory("a");
+        HashMap<Integer, Integer> newUnit = new HashMap<>();
+        newUnit.put(1, 2);
+
+        territory.setUnits(newUnit);
+
+        assertEquals(newUnit, territory.getUnits());
+    }
 }
