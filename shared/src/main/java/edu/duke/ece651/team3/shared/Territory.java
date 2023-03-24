@@ -36,7 +36,7 @@ public class Territory implements Serializable, Comparable<Territory> {
     public void updateCombatResult(int ownerId) {
         //update units
         if (winnerId != ownerId) {
-            units.clone();
+            attackerUnits = (HashMap<Integer, Integer>) units.clone();
         }
         //reset
         winnerId = -1;
