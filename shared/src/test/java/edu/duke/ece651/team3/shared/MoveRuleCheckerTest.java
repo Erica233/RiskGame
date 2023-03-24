@@ -115,6 +115,7 @@ public class MoveRuleCheckerTest {
     moveRuleChecker1.checkPath(newMoveAction, riskGameBoard, py1);
   }
 
+
   @Test
   public void test_checkValid() throws Exception {
     RiskGameBoard r = new RiskGameBoard();
@@ -154,13 +155,14 @@ public class MoveRuleCheckerTest {
 
     HashMap<Integer, Integer> units6 = new HashMap<>();
     units6.put(1, 1);
-    Action invalid_move = new MoveAction("M", "i", "h", units6);
+//    Action invalid_move = new MoveAction("M", "i", "h", units6);
 
     RiskGameBoard b = new RiskGameBoard();
-    b.initMap();
-    b.executeAttack(attack1, 0);
-    b.executeAttack(attack2, 1);
-//    assertFalse(mrc.checkValidAction(invalid_move, r, r.getAllPlayers().get(0)));
+    b.initTestMap();
+//    b.executeAttack(attack1, 0);
+//    b.executeAttack(attack2, 1);
+    Action invalid_move = new MoveAction("M", "h", "j", units6);
+    assertFalse(mrc.checkValidAction(invalid_move, b, b.getAllPlayers().get(0)));
 
     //a: invalid path
 

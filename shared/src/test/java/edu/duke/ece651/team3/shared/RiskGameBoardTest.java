@@ -112,7 +112,8 @@ class RiskGameBoardTest {
 
         Territory t_a =  p1.getTerr("a");
 
-
+        Territory to_update = p1.getOwnedTerritories().get(0); //b
+        to_update.updateCombatResult(2);
         r.updateCombatResult();
     }
 }
