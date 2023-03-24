@@ -98,6 +98,7 @@ public class RiskGameBoard implements Board, Serializable {
         }
     }
 
+
     public void executeMove(Action move, int playerId) {
         allPlayers.get(playerId).executeMove(move);
     }
