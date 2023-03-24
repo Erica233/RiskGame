@@ -242,14 +242,14 @@ public class Server {
             defenderTerritory.setWinnerId(defender.getPlayerId());
             defenderTerritory.setUnits(hashMap);
             //defenderTerritory.setAttackerUnits(hashMap);
-            System.out.println("winner is defender");
+            //System.out.println("winner is defender");
         }
         else{
             defenderTerritory.setWinnerId(attacker.getPlayerId());
             HashMap<Integer, Integer> hashMap =  new HashMap<>();
             hashMap.put(1, attNum);
             defenderTerritory.setAttackerUnits(hashMap);
-            System.out.println("winner is attacker");
+            //System.out.println("winner is attacker");
 
         }
     }
