@@ -303,8 +303,9 @@ public class Client {
      * @throws ClassNotFoundException
      */
     public RiskGameBoard recvBoard() throws IOException, ClassNotFoundException {
+
         RiskGameBoard b = (RiskGameBoard) objectFromServer.readObject();
-        //System.out.println(b.displayBoard());
+        System.out.println("received board from server"+b.displayBoard());
         return b;
     }
 

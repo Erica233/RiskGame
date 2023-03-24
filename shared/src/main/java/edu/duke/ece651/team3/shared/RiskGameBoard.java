@@ -68,6 +68,10 @@ public class RiskGameBoard implements Board, Serializable {
         return output;
     }
 
+//    public void transferOwnedTerritory(int originalOwnerId, ) {
+//
+//    }
+
     public void executeMove(Action move, int playerId) {
         allPlayers.get(playerId).executeMove(move);
     }

@@ -286,6 +286,7 @@ public class Server {
         for (int forceLevel: myattack.getActionUnits().keySet()) {
             attackNum.put(forceLevel, myattack.getActionUnits().get(forceLevel));
             Territory defenderTerritory = getTerr(myattack.getDstName(), defender);
+            System.out.println("The defender territory is: " + defenderTerritory.getTerritoryName());
             int defNum = defenderTerritory.getNumUnits();
 
             int attackerLoseTimes = 0;
@@ -331,10 +332,11 @@ public class Server {
             }
             System.out.println("The attacker wins!");
             //Adding the territory to the winner's territory
-            attacker.occupyTerritory(myattack, attackerLoseTimes);
+            attacker.occupyTerritory(defenderTerritory, defenderLoseTimes);
 
             //Removing the territory from the loser's territory. It loses the whole territory
             defender.loseTerritory(toOccupy);
+//            riscBoard.transferOwnedTerritory();
         }
 
     }
@@ -499,7 +501,9 @@ public class Server {
     public void sendBoardToAllClients() throws IOException {
         objectsToClients.get(0).writeObject(riscBoard);
         objectsToClients.get(1).writeObject(riscBoard);
-        System.out.println("send boards to all clients!");
+        objectsToClients.get(0).reset();
+        objectsToClients.get(1).reset();
+        System.out.println("send boards to all clients!\n" + riscBoard.displayBoard());
     }
 
     /**

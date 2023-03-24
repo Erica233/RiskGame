@@ -2,6 +2,7 @@ package edu.duke.ece651.team3.shared;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Player implements Serializable {
     private final int playerId;
@@ -156,10 +157,9 @@ public class Player implements Serializable {
      * The name should be the src name from the attacker
      * The units number should be the remaining + the attack
      */
-    public void occupyTerritory(Action currAttack, int loseTimes){
-        int units_new = currAttack.getActionUnits().get(1) - loseTimes; //TODO: check 1 for force level
-        Territory newOccupy = new Territory(currAttack.getDstName(), units_new);
-        ownedTerritories.add(newOccupy);
+    public void occupyTerritory(Territory defenderTerritory, int loseTimes){
+        ownedTerritories.add(defenderTerritory);
+        defenderTerritory.decreaseUnit(1, loseTimes);
     }
 
     /** getters and setters **/
