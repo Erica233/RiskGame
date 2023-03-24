@@ -101,9 +101,9 @@ public class Server {
      * @param currPlayer
      * @throws Exception
      */
-    public void executeMove(Action mymove, Player currPlayer) throws Exception {
-        Territory srcTerr = getTerr(mymove.getSrcName(), currPlayer);
-        Territory dstTerr = getTerr(mymove.getDstName(), currPlayer);
+    public void executeMove(Action mymove, Player currPlayer) {
+        Territory srcTerr = currPlayer.getTerr(mymove.getSrcName());
+        Territory dstTerr = currPlayer.getTerr(mymove.getDstName());
         for(Integer i : mymove.getActionUnits().keySet()){
             Integer unitNum = mymove.getActionUnits().get(i);
             srcTerr.decreaseUnit(i, unitNum);
@@ -111,23 +111,23 @@ public class Server {
         }
     }
 
-    /**
-     * This method gets the territory based on the territory's name
-     * @param terrName
-     * @param currPlayer
-     * @return
-     */
-    public Territory getTerr(String terrName, Player currPlayer){
-        int length = currPlayer.getOwnedTerritories().size();
-        Territory t = null;
-        for (int i = 0; i < length; i++) {
-            if (currPlayer.getOwnedTerritories().get(i).getTerritoryName().equals(terrName)) {
-                t = currPlayer.getOwnedTerritories().get(i);
-                break;
-            }
-        }
-        return t;
-    }
+//    /**
+//     * This method gets the territory based on the territory's name
+//     * @param terrName
+//     * @param currPlayer
+//     * @return
+//     */
+//    public Territory getTerr(String terrName, Player currPlayer){
+//        int length = currPlayer.getOwnedTerritories().size();
+//        Territory t = null;
+//        for (int i = 0; i < length; i++) {
+//            if (currPlayer.getOwnedTerritories().get(i).getTerritoryName().equals(terrName)) {
+//                t = currPlayer.getOwnedTerritories().get(i);
+//                break;
+//            }
+//        }
+//        return t;
+//    }
 
     /**
      * This method checks attack action
