@@ -147,4 +147,27 @@ public class TerritoryTest {
         assertEquals(false, t1.checkExistNeighbor("b"));
     }
 
+    @Test
+    public void test_setGet(){
+        Territory territory = new Territory("a");
+        territory.setWinnerId(5);
+        assertEquals(5, territory.getWinnerId());
+
+        HashMap<Integer, Integer> units = new HashMap<>();
+        units.put(1, 1);
+        territory.setAttackerUnits(units);
+        assertEquals(units, territory.getAttackerUnits());
+    }
+
+    @Test
+    public void test_UpdateCombat(){
+        Territory territory = new Territory("a");
+        int ownId1 = -1;
+        int ownId2 = 1;
+        territory.updateCombatResult(ownId1);
+        assertEquals(-1, territory.getWinnerId());
+//        territory.setWinnerId();
+        territory.updateCombatResult(ownId2);
+        assertEquals(-1, territory.getWinnerId());
+    }
 }
