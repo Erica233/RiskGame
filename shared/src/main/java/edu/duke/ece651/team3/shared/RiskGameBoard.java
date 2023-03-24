@@ -68,6 +68,12 @@ public class RiskGameBoard implements Board, Serializable {
         return output;
     }
 
+    public void addAUnitEachTurn() {
+        for (Player player: allPlayers) {
+            player.addAUnitForEachTerr();
+        }
+    }
+
 //    public void transferOwnedTerritory(int originalOwnerId, ) {
 //
 //    }

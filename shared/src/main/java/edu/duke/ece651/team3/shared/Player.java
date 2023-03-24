@@ -37,6 +37,12 @@ public class Player implements Serializable {
         this.ownedTerritories = _ownedTerritories;
     }
 
+    public void addAUnitForEachTerr() {
+        for (Territory territory: ownedTerritories) {
+            territory.increaseUnit(1, 1);
+        }
+    }
+
     public void executeMove(Action move) {
         Territory src = findOwnedTerritoryByName(move.getSrcName());
         Territory dst = findOwnedTerritoryByName(move.getDstName());
@@ -157,8 +163,9 @@ public class Player implements Serializable {
      * The name should be the src name from the attacker
      * The units number should be the remaining + the attack
      */
-    public void occupyTerritory(Territory defenderTerritory, int loseTimes){
+    public void occupyTerritory(Territory defenderTerritory, int attackUnits, int loseTimes){
         ownedTerritories.add(defenderTerritory);
+        defenderTerritory.increaseUnit(1, attackUnits);
         defenderTerritory.decreaseUnit(1, loseTimes);
     }
 

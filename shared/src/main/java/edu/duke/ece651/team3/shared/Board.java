@@ -14,6 +14,8 @@ public interface Board {
      */
     String initMap() throws Exception;
 
+    void addAUnitEachTurn();
+
     /**
      * Displays the information on the Risk Game Board
      *

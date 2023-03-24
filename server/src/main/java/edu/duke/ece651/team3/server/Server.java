@@ -1,7 +1,6 @@
 package edu.duke.ece651.team3.server;
 
 import edu.duke.ece651.team3.shared.*;
-import org.checkerframework.checker.units.qual.A;
 
 import java.io.*;
 import java.util.*;
@@ -258,11 +257,12 @@ public class Server {
             //execution
             for(Action myattack : myattacks){
                 executeAttack(myattack, player);
-                addOneUnits();
+//                addOneUnits();
                 if(checkWin() == 0 || checkWin() == 1){
                     return checkWin();
                 }
             }
+//            addOneUnits();
         }
         return 2;
     }
@@ -332,11 +332,12 @@ public class Server {
             if(attackNum.get(forceLevel) == 0){
                 System.out.println("The defender wins!");
                 toOccupy.decreaseUnit(forceLevel, defenderLoseTimes);
+//                toOccupy.decreaseUnit(forceLevel, defenderLoseTimes);
                 return;
             }
             System.out.println("The attacker wins!");
             //Adding the territory to the winner's territory
-            attacker.occupyTerritory(defenderTerritory, defenderLoseTimes);
+            attacker.occupyTerritory(defenderTerritory, attackNum.get(forceLevel), defenderLoseTimes);
 
             //Removing the territory from the loser's territory. It loses the whole territory
             defender.loseTerritory(toOccupy);
@@ -393,9 +394,10 @@ public class Server {
      * This method adds one unit after finishing each turn
      */
     public void addOneUnits(){
-        for(Territory t: riscBoard.getAllTerritories()){
-            t.increaseUnit(1, 1);
-        }
+//        for(Territory t: riscBoard.getAllTerritories()){
+//            t.increaseUnit(1, 1);
+//        }
+        riscBoard.addAUnitEachTurn();
 
     }
 
@@ -451,7 +453,9 @@ public class Server {
         printActionsMap();
         //executeAllMoves:
         executeMoves();
-        return executeAttacks();
+        int result = executeAttacks();
+        addOneUnits();
+        return result;
     }
 
     public void sendEndGameInfo(int gameResult) throws IOException {
