@@ -33,12 +33,12 @@ public class Territory implements Serializable, Comparable<Territory> {
      * @param ownerId the original owner id of the territory before the combat
      */
     public void updateCombatResult(int ownerId) {
-        System.out.print("in updateCombatResult - winnerid=" + winnerId);
-        System.out.println(" - attackerUnits: "+attackerUnits.get(1));
+        //System.out.print("in updateCombatResult - winnerid=" + winnerId);
+        //System.out.println(" - attackerUnits: "+attackerUnits.get(1));
         //update units
         if (winnerId != ownerId) {
             units = attackerUnits;
-            System.out.println("after update - units: "+units.get(1));
+            //System.out.println("after update - units: "+units.get(1));
         }
         //reset
         winnerId = -1;

@@ -98,7 +98,7 @@ public class Client {
         sendActionListsToServer();
         System.out.println("send action list to server");
         printActionsLists();
-        System.out.println("printed action list");
+        //System.out.println("printed action list");
     }
 
     /**
@@ -111,7 +111,7 @@ public class Client {
      */
     public int recvGameResult() throws IOException {
         int gameResult = objectFromServer.readInt();
-        System.out.println("Game result is :" + gameResult);
+        //System.out.println("Game result is :" + gameResult);
         return gameResult;
     }
 

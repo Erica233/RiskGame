@@ -303,7 +303,9 @@ public class Server {
         do {
 //            try {
                 result = runOneTurn();
-                System.out.println("the result is: " + result);
+                if (result == 2) {
+                    System.out.println("game continues");
+                }
                 sendEndGameInfo(result);
                 if (result == 0 || result == 1) {
                     System.out.println("Player " + result + " is the winner!");
