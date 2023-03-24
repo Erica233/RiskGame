@@ -1,6 +1,7 @@
 package edu.duke.ece651.team3.server;
 
 import edu.duke.ece651.team3.shared.*;
+import org.checkerframework.checker.units.qual.A;
 
 import java.io.*;
 import java.util.*;
@@ -152,26 +153,31 @@ public class Server {
             destinations.add(act.getDstName());
         }
         //Set up all attack actions using the extracted destination names and set src to null
-        for(String s : destinations){
-            HashMap<Integer, Integer> hashMap = new HashMap<>();
-            Action newaction = new Action("A", null, s, hashMap);
-            newattackers.add(newaction);
-        }
+//        for(String s : destinations){
+//            HashMap<Integer, Integer> hashMap = new HashMap<>();
+//            Action newaction = new Action("A", myattacks.get(0).getSrcName(), s, hashMap);
+////            Action newaction = new Action("A", null, s, hashMap);
+//            newattackers.add(newaction);
+//        }
 
-        for(Action act : myattacks){
-            HashMap<Integer, Integer> acthp = act.getActionUnits();
+        for(Action action : myattacks){
+            HashMap<Integer, Integer> units = action.getActionUnits();
             for(String s : destinations) {
-                if (act.getDstName().equals(s)) {
+                HashMap<Integer, Integer> integratedUnits = new HashMap<>();
+                if (action.getDstName().equals(s)) {
                     for(int i = 0; i < newattackers.size(); i++){
                         if(newattackers.get(i).getDstName().equals(s)){
-                            HashMap<Integer, Integer> newhp = newattackers.get(i).getActionUnits();
-                            for(Integer key : newhp.keySet()){
-                                if(acthp.containsKey(key)){
-                                    newhp.put(key, newhp.get(key)+acthp.get(key));
+//                            newattackers.get(i).getActionUnits() = newattackers.get(i).getActionUnits();
+                            integratedUnits = newattackers.get(i).getActionUnits();
+                            for(Integer key : integratedUnits.keySet()){
+                                if(units.containsKey(key)){
+                                    integratedUnits.put(key, integratedUnits.get(key)+units.get(key));
                                 }
                             }
                         }
                     }
+                    Action curraction = new Action("A", myattacks.get(0).getSrcName(), s, integratedUnits);
+                    newattackers.add(curraction);
                 }
             }
         }
@@ -185,21 +191,31 @@ public class Server {
     //TODO: one player executes once
     public int executeAttacks() throws Exception {
         for(int i : attacksMap.keySet()){
+
             Player player = riscBoard.getAllPlayers().get(i);
+            System.out.println("Player "+player.getPlayerId()+"'s execute all attacks");
             ArrayList<Action> myattacks = attacksMap.get(i);
-            //integration
-            myattacks = intergAttack(myattacks);
-            //execution
-            for(Action myattack : myattacks){
-                if(!checkAttack(myattack, player)){
+            for(Action myattack : myattacks) {
+                if (!checkAttack(myattack, player)) {
+                    myattacks.remove(myattack);
                     continue;
                 }
+                player.executeAttack(myattack);
+            }
+            //integration
+
+            myattacks = intergAttack(myattacks);
+
+//            int totl = totalAttackUnits(player, dstName);
+//            HashMap<Integer, Integer> units = new HashMap<>(1, totl);
+//            Action myattack = new Action("A", myattacks.get(0).getSrcName(), dstName, units);
+
+
+            //execution
+            for(Action myattack : myattacks){
                 executeAttack(myattack, player);
                 if(checkWin() == 0 || checkWin() == 1){
                     return checkWin();
-                }
-                else{
-                    continue;
                 }
             }
         }
@@ -215,45 +231,57 @@ public class Server {
      */
     //TODO: check validation
     public void executeAttack(Action myattack, Player attacker){
+        System.out.println("execute attack: ");
+        System.out.println(myattack);
         Random random = new Random();
         Player defender = getPlayer(myattack.getDstName());
+        HashMap<Integer, Integer> attackNum = new HashMap<>();//forceLevel, total Number
 
-        int attackNum = myattack.getActionUnits().get(1);
-        int defNum = defender.getTotNumUnits();
+        for (int forceLevel: myattack.getActionUnits().keySet()) {
+            attackNum.put(forceLevel, myattack.getActionUnits().get(forceLevel));
+            int defNum = defender.getTotNumUnits();
 
-        int attackerLoseTimes = 0;
-        int defenderLoseTimes = 0;
+            int attackerLoseTimes = 0;
+            int defenderLoseTimes = 0;
 
-        while(attackNum != 0 && defNum != 0){
-            int rand_att = random.nextInt(20) + 1;
-            int rand_def = random.nextInt(20) + 1;
+            while(attackNum.get(forceLevel) != 0 && defNum != 0){
+                int rand_att = random.nextInt(20) + 1;
+                int rand_def = random.nextInt(20) + 1;
+                System.out.println("Dice for attacker is :" + rand_att +
+                        "\nDice for defender is: " + rand_def);
 
-            if(rand_att < rand_def){
-                attackNum --;
-                attackerLoseTimes ++;
+                if(rand_att < rand_def){
+                    int newNum = attackNum.get(forceLevel) - 1;
+                    attackNum.replace(forceLevel, newNum);
+                    attackerLoseTimes ++;
+                }
+                else if(rand_def < rand_att){
+                    defNum --;
+                    defenderLoseTimes ++;
+                }
+                else if(rand_def == rand_att){ //defender wins
+                    int newNum = attackNum.get(forceLevel) - 1;
+                    attackNum.replace(forceLevel, newNum);
+                    attackerLoseTimes ++;
+                }
             }
-            else if(rand_def < rand_att){
-                defNum --;
-                defenderLoseTimes ++;
+            //The attacker wins, the attack action success
+            Territory toOccupy = getTerr(myattack.getDstName(), defender);
+
+            //The attacker loses, the attack action fails
+            if(attackNum.get(forceLevel) == 0){
+                toOccupy.decreaseUnit(forceLevel, defenderLoseTimes);
             }
-            else if(rand_def == rand_att){ //defender wins
-                attackNum --;
-                attackerLoseTimes ++;
-            }
+            //Adding the territory to the winner's territory
+            attacker.occupyTerritory(myattack, attackerLoseTimes);
+
+            //Removing the territory from the loser's territory. It loses the whole territory
+            defender.loseTerritory(toOccupy);
+
         }
-        //The attacker wins, the attack action success
-        Territory toOccupy = getTerr(myattack.getDstName(), defender);
 
-        //The attacker loses, the attack action fails
-        if(attackNum == 0){
-            toOccupy.decreaseUnit(1, defenderLoseTimes);
-        }
 
-        //Adding the territory to the winner's territory
-        attacker.occupyTerritory(myattack, attackerLoseTimes);
 
-        //Removing the territory from the loser's territory. It loses the whole territory
-        defender.loseTerritory(toOccupy);
 
     }
 
@@ -332,20 +360,21 @@ public class Server {
         }
     }
 
-    public void runGame() {
+    public void runGame() throws Exception {
         int result = -1;
         do {
-            try {
+//            try {
                 result = runOneTurn();
+                System.out.println("the result is: " + result);
                 sendEndGameInfo(result);
                 if (result == 0 || result == 1) {
                     System.out.println("Player " + result + " is the winner!");
                     System.out.println("Game Ends!");
                     return;
                 }
-            } catch (Exception e) {
-                System.err.println(e.getMessage());
-            }
+//            } catch (Exception e) {
+//                System.err.println(e.getMessage());
+//            }
         } while (true);
 
     }

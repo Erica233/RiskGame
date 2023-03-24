@@ -85,12 +85,16 @@ public class Client {
         System.out.println("A new turn: updated new board as below!");
         System.out.println(riskGameBoard.displayBoard());
         handleAllActions();
+        System.out.println("handle all acitons");
         sendActionListsToServer();
+        System.out.println("send action list to server");
         printActionsLists();
+        System.out.println("printed action list");
     }
 
     public int recvGameResult() throws IOException {
         int gameResult = objectFromServer.readInt();
+        System.out.println("Game result is :" + gameResult);
         return gameResult;
     }
 

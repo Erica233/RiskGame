@@ -208,7 +208,6 @@ public class Territory implements Serializable, Comparable<Territory> {
     public void updateNumUnits(){
         int num = 0;
         for(Integer c : units.keySet()){
-            System.out.println(c);
             num += units.get(c);
         }
         numUnits = num;
