@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -90,5 +91,28 @@ class RiskGameBoardTest {
         assertEquals(expected, b.getAllTerritories());
 
         assertEquals(false, b.tryAddTerritory(t1));
+
+
+    }
+
+    @Test
+    void test_updataCombatResult() throws Exception {
+        RiskGameBoard r = new RiskGameBoard();
+        r.initMap();
+
+        Player p1 = r.getAllPlayers().get(0);
+        Player p2 = r.getAllPlayers().get(1);
+
+        //To let player occupy
+        Action m = new MoveAction("M", "c","a", new HashMap<>(1, 5));
+        Action a = new AttackAction("A", "a", "b", new HashMap<>(1, 10));
+
+        r.executeMove(m, 0);
+        r.executeAttack(a, 0);
+
+        Territory t_a =  p1.getTerr("a");
+
+
+        r.updateCombatResult();
     }
 }

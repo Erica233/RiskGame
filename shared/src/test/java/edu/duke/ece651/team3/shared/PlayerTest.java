@@ -124,19 +124,6 @@ class PlayerTest {
 
     }
 
-    public Territory getTerr(String terrName, Player currPlayer){
-        int length = currPlayer.getOwnedTerritories().size();
-        Territory t = null;
-        for (int i = 0; i < length; i++) {
-            if (currPlayer.getOwnedTerritories().get(i).getTerritoryName().equals(terrName)) {
-                t = currPlayer.getOwnedTerritories().get(i);
-                break;
-            }
-        }
-        return t;
-    }
-
-
     @Test
     void test_executeMove() throws Exception {
         RiskGameBoard r = new RiskGameBoard();
@@ -151,11 +138,11 @@ class PlayerTest {
 
         Action action = new MoveAction("M", srcName, dstName, units);
         curr.executeMove(action);
-        Territory src = getTerr(srcName, curr);
-        Territory dst = getTerr(dstName, curr);
+        Territory src = curr.getTerr(srcName);
+        Territory dst = curr.getTerr(dstName);
         assertEquals(4, src.getNumUnits());
         assertEquals(6, dst.getNumUnits());
-        assertNotNull( getTerr(dstName, curr));
+        assertNotNull( curr.getTerr(dstName));
 
 
 
@@ -182,5 +169,10 @@ class PlayerTest {
             assertEquals(7, territory.getNumUnits());
         }
         r.updateCombatResult();
+
+        Player testPlayer = new Player(2, "Black", 0);
+        r.addPlayer(testPlayer);
+        testPlayer.getTerr("a");
+
     }
 }
