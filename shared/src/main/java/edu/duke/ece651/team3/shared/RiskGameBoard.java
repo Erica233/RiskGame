@@ -27,17 +27,34 @@ public class RiskGameBoard implements Board, Serializable {
      *
      */
     public void updateCombatResult() {
+//        HashMap<Integer, ArrayList<Territory>> ownedNames = new HashMap<>();
+//        ownedNames.put(0, new ArrayList<>());
+//        ownedNames.put(1, new ArrayList<>());
+//        for (int id = 0; id < 2; id++) {
+//            for (Territory territory: allPlayers.get(id).getOwnedTerritories()) {
+//                ownedNames.get(id).add(territory);
+//            }
+//        }
+        HashMap<Territory, Integer> terrsToTransfer = new HashMap<>();
         for (int id = 0; id < 2; id++) {
             Player player = allPlayers.get(id);
             Player enemy = allPlayers.get(1 - id);
             for (Territory territory: player.getOwnedTerritories()) {
+                if (territory.getWinnerId() == -1) {
+                    continue;
+                }
                 if (territory.getWinnerId() != player.getPlayerId()) {
+                    terrsToTransfer.put(territory, id);
                     //transfer ownership
-                    enemy.tryOwnTerritory(territory);
-                    player.loseTerritory(territory);
+//                    enemy.tryOwnTerritory(territory);
+//                    player.loseTerritory(territory);
                 }
                 territory.updateCombatResult(player.getPlayerId());
             }
+        }
+        for (Territory territory: terrsToTransfer.keySet()) {
+            allPlayers.get(1 - terrsToTransfer.get(territory)).tryOwnTerritory(territory);
+            allPlayers.get(terrsToTransfer.get(territory)).loseTerritory(territory);
         }
     }
 
