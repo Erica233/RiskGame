@@ -75,9 +75,9 @@ public class Player implements Serializable {
     public void executeMove(Action move) {
         Territory src = findOwnedTerritoryByName(move.getSrcName());
         Territory dst = findOwnedTerritoryByName(move.getDstName());
-        for (Integer forceLevel: move.getActionUnits().keySet()) {
-            src.decreaseUnit(forceLevel, move.getActionUnits().get(forceLevel));
-            dst.increaseUnit(forceLevel, move.getActionUnits().get(forceLevel));
+        for (int level = 0; level < src.getUnits().size(); level++) {
+            src.decreaseUnit(level, move.getUnitsToChange().get(level));
+            dst.increaseUnit(level, move.getUnitsToChange().get(level));
         }
     }
 
@@ -88,8 +88,8 @@ public class Player implements Serializable {
      */
     public void executeAttack(Action attack) {
         Territory src = findOwnedTerritoryByName(attack.getSrcName());
-        for (Integer forceLevel: attack.getActionUnits().keySet()) {
-            src.decreaseUnit(forceLevel, attack.getActionUnits().get(forceLevel));
+        for (int level = 0; level < src.getUnits().size(); level++) {
+            src.decreaseUnit(level, attack.getUnitsToChange().get(level));
         }
     }
 
