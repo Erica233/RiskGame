@@ -16,6 +16,11 @@ public class Territory implements Serializable, Comparable<Territory> {
     private int winnerId = -1;
     private HashMap<Integer, Integer> attackerUnits = new HashMap<>();
 
+    /**
+     * Initialize the units, given the Infantry number
+     *
+     * @param num the number of Infantry units
+     */
     public void initBasicUnits(int num) {
         units.add(new Infantry(num));
         units.add(new Cavalry(0));
@@ -36,9 +41,10 @@ public class Territory implements Serializable, Comparable<Territory> {
     }
 
     /**
-     * This constructor constructs a territory with name, and units
-     * @param _name
-     * @param num
+     * This constructor constructs a territory with name, and num of basic units (Infantry)
+     *
+     * @param _name the name of the Territory
+     * @param num the number of Infantry units
      */
     public Territory(String _name, int num) {
         this.territoryName = _name;
@@ -49,11 +55,11 @@ public class Territory implements Serializable, Comparable<Territory> {
     }
 
     /**
-     * Constructs a Territory with specified name, units, and neighbor territories
+     * Constructs a Territory with specified name, num of basic units (Infantry), and neighbor territories
      *
      * @param _name the name of the Territory
-     * @param _neighborsDist
-     * @param num
+     * @param _neighborsDist neighbors and their relative distance
+     * @param num the number of basic units (Infantry)
      */
     public Territory(String _name, HashMap<Territory, Integer> _neighborsDist, int num) {
         this.territoryName = _name;
@@ -104,17 +110,15 @@ public class Territory implements Serializable, Comparable<Territory> {
     }
 
     /**
-     * check if the two territories has the same neighbors
+     * check if the two territories have the same neighbors and their relative distances
      *
      * @param territoryToCompare
-     * @return ture if the two territories has the same neighbors, else false
+     * @return true if the two territories has the same neighbors and their relative distances, otherwise return false
      */
     public boolean hasSameNeighborsDist(Territory territoryToCompare) {
         if (neighborsDist.size() != territoryToCompare.getNeighborsDist().size()) {
             return false;
         }
-        ArrayList<String> leftNeighborsNames = getSortedNeighborNames();
-        ArrayList<String> rightNeighborsNames = territoryToCompare.getSortedNeighborNames();
         for (Territory territory: neighborsDist.keySet()) {
             if (territoryToCompare.getNeighborsDist().containsKey(territory)) {
                 if (territoryToCompare.getNeighborsDist().get(territory) != neighborsDist.get(territory)) {
@@ -127,6 +131,12 @@ public class Territory implements Serializable, Comparable<Territory> {
         return true;
     }
 
+    /**
+     * check if the two territories have the same set of units
+     *
+     * @param territoryToCompare
+     * @return true if the two territories have the same set of units
+     */
     public boolean hasSameUnits(Territory territoryToCompare) {
         for (int i = 0; i < units.size(); i++) {
             if (units.get(i).getClass() != territoryToCompare.getUnits().get(i).getClass() || units.get(i) != territoryToCompare.getUnits().get(i)) {
