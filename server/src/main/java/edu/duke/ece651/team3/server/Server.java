@@ -19,6 +19,7 @@ public class Server {
     private final RiskGameBoard riscBoard;
     private HashMap<Integer, ArrayList<Action>> movesMap; //player ID and all move actions this player has
     private HashMap<Integer, ArrayList<Action>> attacksMap; //player ID and all attack actions this player has
+    private HashMap<Integer, ArrayList<Action>> actionsMap; //player ID and all attack actions this player has
 
     /**
      * Constructs Server with port number
@@ -44,6 +45,10 @@ public class Server {
             movesMap.put(id, new ArrayList<>());
             attacksMap.put(id, new ArrayList<>());
         }
+    }
+
+    public int findMinDist(){
+
     }
 
 
@@ -79,15 +84,16 @@ public class Server {
 
     /**
      * This method executes one move
-     * @param mymove
+     * @param myMove
      * @param currPlayer
      * @throws Exception
      */
-    public void executeMove(Action mymove, Player currPlayer) {
-        Territory srcTerr = currPlayer.getTerr(mymove.getSrcName());
-        Territory dstTerr = currPlayer.getTerr(mymove.getDstName());
-        for(Integer i : mymove.getActionUnits().keySet()){
-            Integer unitNum = mymove.getActionUnits().get(i);
+    public void executeMove(Action myMove, Player currPlayer) {
+        Territory srcTerr = currPlayer.getTerr(myMove.getSrcName());
+        Territory dstTerr = currPlayer.getTerr(myMove.getDstName());
+
+        for(Integer i : myMove.getActionUnits().keySet()){
+            Integer unitNum = myMove.getActionUnits().get(i);
             srcTerr.decreaseUnit(i, unitNum);
             dstTerr.increaseUnit(i, unitNum);
         }
