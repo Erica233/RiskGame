@@ -256,7 +256,10 @@ public class RiskGameBoard implements Board, Serializable {
             }
             attacksMap.put(player.getPlayerId(), newAttacks);
             myattacks = intergAttack(newAttacks);
-
+        }
+        for(int i : attacksMap.keySet()){
+            Player player = this.getAllPlayers().get(i);
+            ArrayList<Action> myattacks = attacksMap.get(i);
             for(Action myattack : myattacks){
                 this.executeAttack(myattack, player);
             }
