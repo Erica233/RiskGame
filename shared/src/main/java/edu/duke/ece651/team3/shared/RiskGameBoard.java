@@ -44,44 +44,60 @@ public class RiskGameBoard implements Board, Serializable {
         }
     }
 
+    public void connectNeighbors(Territory t1, Territory t2, int dist) throws Exception {
+        t1.addANeighbor(t2, dist);
+        t2.addANeighbor(t1, dist);
+    }
+
     /**
      * This method initialize the map
      * @return A string that contains all information of a map
      * @throws Exception
      */
-    public String initMap() throws Exception {
-        Territory t1 = new Territory("a", 1, 5);
-        Territory t2 = new Territory("b", 1, 5);
-        Territory t3 = new Territory("c", 1, 5);
-        Territory t4 = new Territory("d", 1, 5);
-        Territory t5 = new Territory("e", 1, 5);
-        Territory t6 = new Territory("f", 1, 5);
-        Territory t7 = new Territory("g", 1, 5);
-        Territory t8 = new Territory("h", 1, 5);
-        Territory t9 = new Territory("i", 1, 5);
-        Territory t10 = new Territory("j", 1, 5);
-        Territory t11 = new Territory("k", 1, 5);
-        Territory t12 = new Territory("l", 1, 5);
-        t1.addNeighbors(t2, t3);
-        t2.addNeighbors(t1, t3, t4);
-        t3.addNeighbors(t1, t2, t4, t5, t12);
-        t4.addNeighbors(t2, t3, t5);
-        t5.addNeighbors(t3, t4, t6, t12);
-        t6.addNeighbors(t5, t11, t12);
-        t7.addNeighbors(t8, t9, t12);
-        t8.addNeighbors(t7, t9, t12);
-        t9.addNeighbors(t7, t8, t10, t12);
-        t10.addNeighbors(t9, t11);
-        t11.addNeighbors(t6, t10);
-        t12.addNeighbors(t3, t5, t6, t7, t8, t9);
+    public String initE2Map() throws Exception {
+        Territory a = new Territory("a", 5);
+        Territory b = new Territory("b", 5);
+        Territory c = new Territory("c", 5);
+        Territory d = new Territory("d", 5);
+        Territory e = new Territory("e", 5);
+        Territory f = new Territory("f", 5);
+        Territory g = new Territory("g", 5);
+        Territory h = new Territory("h", 5);
+        Territory i = new Territory("i", 5);
+        Territory j = new Territory("j", 5);
+        Territory k = new Territory("k", 5);
+        Territory l = new Territory("l", 5);
+        connectNeighbors(a, b, 1);
+        connectNeighbors(a, c, 2);
+        connectNeighbors(a, j, 3);
+        connectNeighbors(b, c, 2);
+        connectNeighbors(b, d, 1);
+        connectNeighbors(c, d, 2);
+        connectNeighbors(c, e, 3);
+        connectNeighbors(c, l, 2);
+        connectNeighbors(c, j, 1);
+        connectNeighbors(d, e, 2);
+        connectNeighbors(e, l, 3);
+        connectNeighbors(e, f, 2);
+        connectNeighbors(f, l, 1);
+        connectNeighbors(f, g, 2);
+        connectNeighbors(f, i, 3);
+        connectNeighbors(f, k, 2);
+        connectNeighbors(g, h, 1);
+        connectNeighbors(g, l, 2);
+        connectNeighbors(g, i, 3);
+        connectNeighbors(h, j, 2);
+        connectNeighbors(h, l, 1);
+        connectNeighbors(i, k, 2);
+        connectNeighbors(j, l, 3);
 
         ArrayList<Territory> territoriesOwnedByPlayer1 = new ArrayList<>();
-        Collections.addAll(territoriesOwnedByPlayer1, t1, t3, t7, t8, t9, t12);
+        Collections.addAll(territoriesOwnedByPlayer1, a, g, h, i, j, l);
         ArrayList<Territory> territoriesOwnedByPlayer2 = new ArrayList<>();
-        Collections.addAll(territoriesOwnedByPlayer2, t2, t4, t5, t6, t10, t11);
+        Collections.addAll(territoriesOwnedByPlayer2, b, c, d, e, f, k);
 
         String output = "";
-        Player player1 = new Player(0, "red", 30, territoriesOwnedByPlayer1);
+        Player player1 = new Player(0, "orange", 30, territoriesOwnedByPlayer1);
         Player player2 = new Player(1, "blue", 30, territoriesOwnedByPlayer2);
         allPlayers.add(player1);
         allPlayers.add(player2);
