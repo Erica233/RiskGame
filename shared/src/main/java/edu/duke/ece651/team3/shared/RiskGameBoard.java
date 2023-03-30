@@ -55,18 +55,18 @@ public class RiskGameBoard implements Board, Serializable {
      * @throws Exception
      */
     public String initE2Map() throws Exception {
-        Territory a = new Territory("a", 5);
-        Territory b = new Territory("b", 5);
-        Territory c = new Territory("c", 5);
-        Territory d = new Territory("d", 5);
-        Territory e = new Territory("e", 5);
-        Territory f = new Territory("f", 5);
-        Territory g = new Territory("g", 5);
-        Territory h = new Territory("h", 5);
-        Territory i = new Territory("i", 5);
-        Territory j = new Territory("j", 5);
-        Territory k = new Territory("k", 5);
-        Territory l = new Territory("l", 5);
+        Territory a = new Territory("a", 5, 0, 0);
+        Territory b = new Territory("b", 5, 0, 0);
+        Territory c = new Territory("c", 5, 0, 0);
+        Territory d = new Territory("d", 5, 0, 0);
+        Territory e = new Territory("e", 5, 0, 0);
+        Territory f = new Territory("f", 5, 0, 0);
+        Territory g = new Territory("g", 5, 0, 0);
+        Territory h = new Territory("h", 5, 0, 0);
+        Territory i = new Territory("i", 5, 0, 0);
+        Territory j = new Territory("j", 5, 0, 0);
+        Territory k = new Territory("k", 5, 0, 0);
+        Territory l = new Territory("l", 5, 0, 0);
         connectNeighbors(a, b, 1);
         connectNeighbors(a, c, 2);
         connectNeighbors(a, j, 3);

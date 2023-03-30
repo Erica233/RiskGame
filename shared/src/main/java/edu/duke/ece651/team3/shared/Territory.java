@@ -13,6 +13,8 @@ public class Territory implements Serializable, Comparable<Territory> {
     private int numUnits = 0;
     private HashMap<Territory, Integer> neighborsDist;
     private ArrayList<Unit> units;
+    private int food = 0;
+    private int tech = 0;
     private int winnerId = -1;
     private HashMap<Integer, Integer> attackerUnits = new HashMap<>();
 
@@ -46,10 +48,12 @@ public class Territory implements Serializable, Comparable<Territory> {
      * @param _name the name of the Territory
      * @param num the number of Infantry units
      */
-    public Territory(String _name, int num) {
+    public Territory(String _name, int num, int _food, int _tech) {
         this.territoryName = _name;
         this.neighborsDist = new HashMap<>();
         this.units = new ArrayList<>();
+        this.food = _food;
+        this.tech = _tech;
         initBasicUnits(num);
         updateNumUnits();
     }
@@ -61,10 +65,12 @@ public class Territory implements Serializable, Comparable<Territory> {
      * @param _neighborsDist neighbors and their relative distance
      * @param num the number of basic units (Infantry)
      */
-    public Territory(String _name, HashMap<Territory, Integer> _neighborsDist, int num) {
+    public Territory(String _name, HashMap<Territory, Integer> _neighborsDist, int num, int _food, int _tech) {
         this.territoryName = _name;
         this.units = new ArrayList<>();
         this.neighborsDist = _neighborsDist;
+        this.food = _food;
+        this.tech = _tech;
         initBasicUnits(num);
         updateNumUnits();
     }
