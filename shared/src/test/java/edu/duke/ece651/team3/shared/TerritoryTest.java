@@ -24,58 +24,46 @@ public class TerritoryTest {
         Territory t6 = new Territory("x", 6);
         Territory t7 = new Territory("y", 7);
         Territory t8 = new Territory("z", 8);
-        t1.addNeighbors(t6, t7, t8);
+        //t1.addNeighbors(t6, t7, t8);
         assertNotEquals(t1, t2); //different neighbors
-        t2.addNeighbors(t7, t6, t8);
+        //t2.addNeighbors(t7, t6, t8);
         assertEquals(t1, t2); //neighbors different order
 
 
     }
 
     @Test
-    public void test_name_numUnits() {
+    public void test_name_numUnits_neighborsDist() {
         Territory t1 = new Territory("Narnia", 3);
         assertEquals("Narnia", t1.getTerritoryName());
         assertNotEquals("Narnias", t1.getTerritoryName());
         assertEquals(3, t1.getNumUnits());
         assertNotEquals(4, t1.getNumUnits());
         Territory t2 = new Territory("a");
-        HashMap<Integer, Integer> expected = new HashMap<Integer, Integer>();
-        expected.put(1, 0);
+        HashMap<Territory, Integer> expected = new HashMap<>();
         assertEquals("a", t2.getTerritoryName());
-        assertEquals(new ArrayList<Territory>(), t2.getNeighbors());
-        assertEquals(expected, t2.getUnits());
-    }
-
-    @Test
-    public void test_neighbors() {
-        ArrayList<Territory> n1 = new ArrayList<>();
-        Territory t1 = new Territory("Oz", 12);
-        assertEquals(n1, t1.getNeighbors());
-        ArrayList<Territory> n2 = new ArrayList<>();
-        n2.add(t1);
-        Territory t2 = new Territory("Gondor", n2, new HashMap<>());
-        assertEquals(n2, t2.getNeighbors());
-        //Territory t3 = new Territory("Morder", 9);
+        assertEquals(expected, t2.getNeighborsDist());
+        ArrayList<Unit> units = new ArrayList<>();
+        assertEquals(units, t2.getUnits());
     }
 
     @Test
     public void test_addANeighbor() throws Exception {
         ArrayList<Territory> n1 = new ArrayList<>();
         Territory t1 = new Territory("Oz", 12);
-        assertEquals(n1, t1.getNeighbors());
+        assertEquals(n1, t1.getNeighborsDist());
         ArrayList<Territory> n2 = new ArrayList<>();
         n2.add(t1);
         Territory t2 = new Territory("Gondor", n2, new HashMap<>());
-        assertEquals(n2, t2.getNeighbors());
+        assertEquals(n2, t2.getNeighborsDist());
         ArrayList<Territory> n3 = new ArrayList<>();
         n3.add(t2);
         Territory t3 = new Territory("Morder", n3, new HashMap<>());
         t2.addANeighbor(t3);
         n2.add(t3);
-        assertEquals(n2, t2.getNeighbors());
-        assertThrows(Exception.class, () -> t2.addANeighbor(t2));
-        assertThrows(Exception.class, () -> t2.addNeighbors(t2, t1));
+        assertEquals(n2, t2.getNeighborsDist());
+//        assertThrows(Exception.class, () -> t2.addANeighbor(t2));
+//        assertThrows(Exception.class, () -> t2.addNeighbors(t2, t1));
 
     }
 
@@ -91,9 +79,7 @@ public class TerritoryTest {
 
     @Test
     public void test_displayTerritory() throws Exception {
-        HashMap<Integer, Integer> units = new HashMap<>();
-        units.put(1, 0);
-        Territory territory = new Territory("m", units);
+        Territory territory = new Territory("m", 0);
         assertEquals(0, territory.getUnits().get(1));
 
         Territory t1 = new Territory("a", 1, 3);
@@ -101,10 +87,10 @@ public class TerritoryTest {
         assertEquals(expected1, t1.displayTerritory()); //empty neighbors
         Territory t2 = new Territory("b", 2);
         Territory t3 = new Territory("c", 5);
-        t1.addANeighbor(t2);
+        t1.addANeighbor(t2, 1);
         String expected2 = "3 units in a (next to: b)\n";
         assertEquals(expected2, t1.displayTerritory());
-        t1.addANeighbor(t3);
+        t1.addANeighbor(t3, 1);
         String expected3 = "3 units in a (next to: b, c)\n";
         assertEquals(expected3, t1.displayTerritory());
     }

@@ -12,7 +12,7 @@ public interface Board {
      * @return A String that contains all information of a map
      * @throws Exception
      */
-    String initMap() throws Exception;
+    String initE2Map() throws Exception;
 
     /**
      * add one basic unit for each territory

@@ -18,9 +18,9 @@ public class Territory implements Serializable, Comparable<Territory> {
 
     public void initBasicUnits(int num) {
         units.add(new Infantry(num));
-        units.add(new Cavalry(num));
-        units.add(new Artillery(num));
-        units.add(new SpecialForces(num));
+        units.add(new Cavalry(0));
+        units.add(new Artillery(0));
+        units.add(new SpecialForces(0));
     }
 
     /**
@@ -72,7 +72,7 @@ public class Territory implements Serializable, Comparable<Territory> {
     public boolean equals(Object other) {
         if (other.getClass().equals(getClass())) {
             Territory territory = (Territory) other;
-            return numUnits == territory.getNumUnits() && territoryName.equals(territory.getTerritoryName()) && hasSameNeighbors(territory);
+            return numUnits == territory.getNumUnits() && territoryName.equals(territory.getTerritoryName()) && hasSameNeighborsDist(territory) && hasSameUnits(territory);
         }
         return false;
     }
@@ -109,13 +109,31 @@ public class Territory implements Serializable, Comparable<Territory> {
      * @param territoryToCompare
      * @return ture if the two territories has the same neighbors, else false
      */
-    public boolean hasSameNeighbors(Territory territoryToCompare) {
+    public boolean hasSameNeighborsDist(Territory territoryToCompare) {
         if (neighborsDist.size() != territoryToCompare.getNeighborsDist().size()) {
             return false;
         }
         ArrayList<String> leftNeighborsNames = getSortedNeighborNames();
         ArrayList<String> rightNeighborsNames = territoryToCompare.getSortedNeighborNames();
-        return leftNeighborsNames.equals(rightNeighborsNames);
+        for (Territory territory: neighborsDist.keySet()) {
+            if (territoryToCompare.getNeighborsDist().containsKey(territory)) {
+                if (territoryToCompare.getNeighborsDist().get(territory) != neighborsDist.get(territory)) {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean hasSameUnits(Territory territoryToCompare) {
+        for (int i = 0; i < units.size(); i++) {
+            if (units.get(i).getClass() != territoryToCompare.getUnits().get(i).getClass() || units.get(i) != territoryToCompare.getUnits().get(i)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
