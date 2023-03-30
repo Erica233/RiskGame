@@ -13,6 +13,7 @@ public class MoveRuleChecker extends RuleChecker{
     private String srcName;
     private String dstName;
 
+
     /**
      * Check whether the current player and enemy have the territory from attack's information
      * @param _action attack information
@@ -62,14 +63,28 @@ public class MoveRuleChecker extends RuleChecker{
      */
     public boolean checkNumUnits(Action myMove, Player currPlayer){
         Territory t = findTerritory(myMove, currPlayer);
-        for(Integer c : myMove.getActionUnits().keySet()){
-            int numUnits = myMove.getActionUnits().get(c);
-            System.out.println(" ");
-            //If move units is greater than the current scr unit
-            if(numUnits > t.getUnits().get(c) || numUnits < 0){
-                System.out.println("Invalid numberUnits: " + numUnits + "current territory's unit: " + t.getUnits().get(c));
+        for(int i = 0; i < t.getUnits().size(); i++){
+            int numUnitsChange = myMove.getActionUnits().get(i).getNumUnits();
+            if(numUnitsChange > t.getUnits().get(i).getNumUnits() || numUnitsChange < 0){
+                System.out.println("Invalid numberUnits: " + numUnitsChange + "current territory's unit: " + t.getUnits().get(c));
                 return false;
             }
+        }
+
+        for(Unit unit : myMove.getActionUnits()){
+            int numUnits = unit.getNumUnits(); //Number of units to Change
+            //Get Current Unit
+            ArrayList<Unit> currUnit = t.getUnits();
+
+
+            System.out.println(" ");
+            //If move units is greater than the current scr unit
+            ArrayList<Unit> allUnits = t.getUnits();
+
+//            if(numUnits > t.getUnits().get(c) || numUnits < 0){
+//                System.out.println("Invalid numberUnits: " + numUnits + "current territory's unit: " + t.getUnits().get(c));
+//                return false;
+//            }
         }
         return true;
     }

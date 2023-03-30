@@ -34,7 +34,7 @@ public class ActionTest {
     assertEquals(newSrcName, act.getSrcName());
     assertEquals(newDstName, act.getDstName());
 
-    act.setActionUnits(actionUnits);
+
     assertEquals(actionUnits, act.getActionUnits());
 
     String ss = "null(1 : 2) ";
