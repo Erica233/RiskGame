@@ -88,7 +88,7 @@ public class Player implements Serializable {
      */
     public void executeAttack(Action attack) {
         Territory src = findOwnedTerritoryByName(attack.getSrcName());
-        for (Integer forceLevel: attack.getActionUnits().keySet()) {
+        for (Unit u: attack.getActionUnits()) {
             src.decreaseUnit(forceLevel, attack.getActionUnits().get(forceLevel));
         }
     }
