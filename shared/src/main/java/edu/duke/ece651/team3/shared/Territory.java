@@ -15,6 +15,7 @@ public class Territory implements Serializable, Comparable<Territory> {
     private ArrayList<Unit> units;
     private int winnerId = -1;
     private HashMap<Integer, Integer> attackerUnits = new HashMap<>();
+    private int foodResources;
 
     /**
      * Initialize the units, given the Infantry number
@@ -323,4 +324,8 @@ public class Territory implements Serializable, Comparable<Territory> {
     public HashMap<Territory, Integer> getNeighborsDist() {
         return neighborsDist;
     }
+
+    public int getFoodResources(){return foodResources;}
+
+    public void setFoodResources(int _foodResources){ this.foodResources = _foodResources; }
 }

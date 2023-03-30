@@ -14,7 +14,6 @@ public abstract class Action implements Serializable {
     private String dstName; //The TO territory
 
     //Class of instance of units, number to change
-//    private HashMap<Unit, Integer> unitsToChange;
     private ArrayList<Unit> unitsToChange;
 
     /**

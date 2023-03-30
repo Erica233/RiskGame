@@ -94,4 +94,22 @@ public class AttackRuleChecker extends RuleChecker{
         }
         return true;
     }
+
+    public boolean checkResources(Action myAttack, Player currPlayer){
+        for(int i = 0; i < myAttack.getActionUnits().size(); i++){
+            String src = myAttack.getSrcName();
+            String dst = myAttack.getDstName();
+            Territory terr = currPlayer.getTerr(src);
+            int foodRsc = terr.getFoodResources();
+            int distance = terr.getNeighborsDist().get(dst);
+            ArrayList<Unit> unitsToChange = myAttack.getActionUnits();
+            for(int j = 0; j < unitsToChange.size(); j++){
+                foodRsc -= (j+1) * unitsToChange.get(j).getNumUnits() * distance;
+                if(foodRsc < 0){
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
 }
