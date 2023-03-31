@@ -173,84 +173,92 @@ public class MoveRuleChecker extends RuleChecker{
 
     /**
      * This method gets the path that has the minimal food resource cost
-//     * @param src
+     * @param src the source territory
+     * @param dst the destination territory
+     * @param riskGameBoard the whole board
      * @return the minimal cost of the path
      */
-    public int getMinPath(Territory src, RiskGameBoard riskGameBoard){
-        HashMap<Territory, Integer> neighbors = src.getNeighborsDist();
+    public int getMinPath(Territory src, Territory dst, RiskGameBoard riskGameBoard){
         Player currPlayer = getPlayer(src.getTerritoryName(), riskGameBoard);
+        ArrayList<Territory> allSelfTerritories = currPlayer.getOwnedTerritories();
 
         HashMap<Territory, Boolean> visited = new HashMap<>();
         HashMap<Territory, Integer> distances = new HashMap<>();
 
-        //Initialize
-        for (int i = 0; i < neighbors.size(); i++) {
-//            distances.put(neighbors) [i] = Integer.MAX_VALUE;
-//            visited[i] = false;
+        //Initialize distances to max and visited
+        for (Territory territory : allSelfTerritories) {
+            distances.put(territory, Integer.MAX_VALUE);
+            visited.put(territory, false);
         }
 
-        for(Territory currTerritory : neighbors.keySet()){
+        //Put the source territory's distance to 0
+        distances.put(src, 0);
 
-        }
-        return 0;
+       for(int i = 0; i < allSelfTerritories.size() - 1; i++){
+           Territory minTerr = src;
+
+           //Get the Territory that has the min cost to the current territory
+           for(Territory currTerr : allSelfTerritories){
+               if(!visited.get(currTerr) && (minTerr.equals(src) || distances.get(currTerr) < distances.get(minTerr))){
+                   minTerr = currTerr;
+               }
+           }
+           visited.replace(minTerr, true);
+//           Territory minTerr = selectMinCostTerrToSrc(currTerritory, allTerritories, distances, visited, currPlayer);
+//           visited.replace(minTerr, true);
+
+           //Updating the distance for each neighbors of Territory
+           for(Territory newTerr : allSelfTerritories){
+               if(!visited.get(newTerr) && isNeighbor(minTerr, newTerr)
+                       && distances.get(minTerr) + minTerr.getNeighborsDist().get(newTerr) < distances.get(newTerr)){
+                   distances.replace(newTerr, distances.get(minTerr) + minTerr.getNeighborsDist().get(newTerr));
+               }
+           }
+
+       }
+        return distances.get(dst);
     }
 
-//    public int getMinCostPath(Action myMove, RiskGameBoard r, Player currPlayer) {
-//        String srcName = myMove.getSrcName();
-//        String dstName = myMove.getDstName();
-//        Territory src = findTerritoryByName(srcName, currPlayer);
-//        Territory dst = findTerritoryByName(dstName, currPlayer);
-//
-//        HashMap<Territory, Boolean> visited = new HashMap<>();
-//
-//        Player OtherPlayer1 = r.getAllPlayers().get(0);
-//        Player OtherPlayer2 = r.getAllPlayers().get(1);
-//
-//        //Initialize to false
-//        initVisited(currPlayer, visited);
-//        initVisited(OtherPlayer1, visited);
-//        initVisited(OtherPlayer2, visited);
-//
-//        int costSum =
-//
-//        int minCost = getMinCostPath_helper(src, dst, visited, currPlayer);
-//        return minCost;
-//    }
-//
-//    /**
-//     * This method using dfs, if the path exist, return true. If not, return false
-//     * @param src the source territory
-//     * @param dst the destination territory
-//     * @param visited whether the territory has been visited
-//     * @return
-//     */
-//    public int getMinCostPath_helper(Territory src, Territory dst,
-//                               HashMap<Territory, Boolean> visited, Player currPlayer,
-//                               int minCost) {
-//        if (src.equals(dst) && checkIsSelfTerritory(dst, currPlayer)) {
-//            return true;
-//        }
-//
-//        visited.put(src, true);
-//        int currCost =
-//        HashMap<Territory, Integer> neighbors = src.getNeighborsDist();
-//        for(Territory territory : neighbors.keySet()){
-//            if (!visited.get(territory) && checkIsSelfTerritory(territory, currPlayer) &&
-//                    isValidPath(territory, dst, visited, currPlayer)) {
-//                return true;
+
+
+//    private Territory selectMinCostTerrToSrc(Territory src, ArrayList<Territory> allTerritories, HashMap<Territory, Integer> distances,
+//                                             HashMap<Territory, Boolean> visited, Player currPlayer) {
+//        Territory minCostTerritory = src;
+//        int minCost = Integer.MAX_VALUE;
+//        for (Territory territory : allTerritories) {
+//            if (!visited.get(territory) && distances.get(territory) < minCost) { //TODO: check the distances.get(minTerritory)
+//                minCost = distances.get(territory);
+//                minCostTerritory = territory;
 //            }
 //        }
-//        return false;
+//        return minCostTerritory;
 //    }
 
     /**
+     * This method checks whether the territory is the neighbor of the current territory
+     * @param curr the current territory
+     * @param checkNeighbor the territory to be checked
+     * @return ture if it is the neighbor of curr, false otherwise
+     */
+    public boolean isNeighbor(Territory curr, Territory checkNeighbor){
+        HashMap<Territory, Integer> neighbors = curr.getNeighborsDist();
+        for(Territory territory : neighbors.keySet()){
+            if(checkNeighbor.equals(territory)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
      * This method checks whether there is enough resource for the move action
-     * @param territory
+     * @param src the source territory
+     * @param dst the destination territory
      * @return boolean true if it is enough, false if it is nor.
      */
-    public boolean checkResource(Territory territory, RiskGameBoard riskGameBoard){
-        int totalResourceCost = getMinPath(territory, riskGameBoard);
-        if(totalResourceCost > territory.getFoodResource()){
+    public boolean checkResource(Territory src, Territory dst, RiskGameBoard riskGameBoard){
+        int totalResourceCost = getMinPath(src, dst, riskGameBoard);
+        if(totalResourceCost > src.getFoodResource()){
             System.out.println("Invalid move! The resource is not enough!");
             return false;
         }
