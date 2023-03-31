@@ -16,7 +16,6 @@ public class Territory implements Serializable, Comparable<Territory> {
     private int winnerId = -1;
 
 
-
     private int foodResource;
     private HashMap<Integer, Integer> attackerUnits = new HashMap<>();
 
@@ -233,8 +232,9 @@ public class Territory implements Serializable, Comparable<Territory> {
      */
     public void updateNumUnits(){
         int num = 0;
-        for(Integer c : units.keySet()){
-            num += units.get(c);
+        for(Unit unit : units){
+            int currNum = unit.getNumUnits();
+            num += currNum;
         }
         numUnits = num;
     }
@@ -289,6 +289,9 @@ public class Territory implements Serializable, Comparable<Territory> {
         return true;
     }
 
+    public void reduceFoodResource(int cost){
+        foodResource -= cost;
+    }
 
     /** getters and setters **/
     public String getTerritoryName() {

@@ -220,20 +220,6 @@ public class MoveRuleChecker extends RuleChecker{
     }
 
 
-
-//    private Territory selectMinCostTerrToSrc(Territory src, ArrayList<Territory> allTerritories, HashMap<Territory, Integer> distances,
-//                                             HashMap<Territory, Boolean> visited, Player currPlayer) {
-//        Territory minCostTerritory = src;
-//        int minCost = Integer.MAX_VALUE;
-//        for (Territory territory : allTerritories) {
-//            if (!visited.get(territory) && distances.get(territory) < minCost) { //TODO: check the distances.get(minTerritory)
-//                minCost = distances.get(territory);
-//                minCostTerritory = territory;
-//            }
-//        }
-//        return minCostTerritory;
-//    }
-
     /**
      * This method checks whether the territory is the neighbor of the current territory
      * @param curr the current territory
