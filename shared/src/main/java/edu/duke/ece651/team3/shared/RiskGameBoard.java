@@ -207,6 +207,93 @@ public class RiskGameBoard implements Board, Serializable {
         return true;
     }
 
+    /**
+     * get the number of unit number from units
+     * @param units arraylist of Unit
+     * @return sum of the number of unit number from units
+     */
+    public int getUpdatedUnits(ArrayList<Unit> units){
+        int sum = 0;
+        for(int i = 0; i < units.size(); i++){
+            sum += units.get(i).getNumUnits();
+        }
+        return sum;
+    }
+
+    /**
+     * get the strongest unit's index
+     * @param units
+     * @return the strongest unit's index
+     */
+    public int getStrongest(ArrayList<Unit> units){
+        for(int i = 0; i < units.size(); i++){
+            if(units.get(i).getNumUnits() != 0){
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    /**
+     * get the weakest unit's index
+     * @param units
+     * @return the weakest unit's index
+     */
+    public int getWeakest(ArrayList<Unit> units){
+        for(int i = 0; i < units.size(); i++){
+            if(units.get(units.size()-i).getNumUnits() != 0){
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    /**
+     * when the round of attack's process is the even number
+     * @param attUnits attack units
+     * @param defUnits defend units
+     */
+    public void evenRoundGame(ArrayList<Unit> attUnits, ArrayList<Unit> defUnits){
+        Random random = new Random();
+        Unit attUnit = attUnits.get(getStrongest(attUnits));
+        Unit defUnit = defUnits.get(getWeakest(defUnits));
+        int attBonus = attUnit.getNumUnits();
+        int defBonus = defUnit.getNumUnits();
+        int rand_att = random.nextInt(20) + 1;
+        int rand_def = random.nextInt(20) + 1;
+        if(rand_att+attBonus > rand_def+defBonus){
+            attUnit.setNumUnits(attUnit.getNumUnits()-1);
+            //System.out.println(" - attacker large");
+        }
+        else{
+            defUnit.setNumUnits(defUnit.getNumUnits()-1);
+            //System.out.println(" - defender large");
+        }
+    }
+
+    /**
+     * when the round of attack's process is the odd number
+     * @param attUnits attack units
+     * @param defUnits defend units
+     */
+    public void oddRoundGame(ArrayList<Unit> attUnits, ArrayList<Unit> defUnits){
+        Random random = new Random();
+        Unit attUnit = attUnits.get(getStrongest(attUnits));
+        Unit defUnit = defUnits.get(getWeakest(defUnits));
+        int attBonus = attUnit.getNumUnits();
+        int defBonus = defUnit.getNumUnits();
+        int rand_att = random.nextInt(20) + 1;
+        int rand_def = random.nextInt(20) + 1;
+        if(rand_att+attBonus > rand_def+defBonus){
+            attUnit.setNumUnits(attUnit.getNumUnits()-1);
+            //System.out.println(" - attacker large");
+        }
+        else{
+            defUnit.setNumUnits(defUnit.getNumUnits()-1);
+            //System.out.println(" - defender large");
+        }
+    }
+
 
     /**
      * This method rolls two 20-sided dice until one player runs out of units.
@@ -217,38 +304,33 @@ public class RiskGameBoard implements Board, Serializable {
      */
     public void executeAttack(Action myattack, Player attacker){
         Player defender = allPlayers.get(1-attacker.getPlayerId());
-        Random random = new Random();
         Territory defenderTerritory = defender.findOwnedTerritoryByName(myattack.getDstName());
-        Integer defNum = defenderTerritory.getNumUnits();
-        Integer attNum = myattack.getNumActionUnits();
-
+        ArrayList<Unit> defUnits = defenderTerritory.getUnits();
+        ArrayList<Unit> attUnits = myattack.getActionUnits();
+        int defNum = getUpdatedUnits(defUnits);
+        int attNum = getUpdatedUnits(attUnits);
+        int roundNum = 0;
         while(attNum != 0 && defNum !=0){
-            int rand_att = random.nextInt(20) + 1;
-            int rand_def = random.nextInt(20) + 1;
-            //System.out.print("attacker: "+rand_att+" defender: "+rand_def);
-            if(rand_att > rand_def){
-                defNum--;
-                //System.out.println(" - attacker large");
+            if(roundNum%2 == 0){
+                evenRoundGame(attUnits, defUnits);
             }
             else{
-                attNum--;
-                //System.out.println(" - defender large");
+                oddRoundGame(attUnits, defUnits);
             }
+            //System.out.print("attacker: "+rand_att+" defender: "+rand_def);
+            defNum = getUpdatedUnits(defUnits);
+            attNum = getUpdatedUnits(attUnits);
+            roundNum++;
         }
         if(attNum==0){
-            HashMap<Integer, Integer> hashMap = new HashMap<>();
-            hashMap.put(1, defNum);
             defenderTerritory.setWinnerId(defender.getPlayerId());
-            defenderTerritory.setUnits(hashMap);
+            defenderTerritory.setUnits(defUnits);
             //System.out.println("winner is defender");
         }
         else{
             defenderTerritory.setWinnerId(attacker.getPlayerId());
-            HashMap<Integer, Integer> hashMap =  new HashMap<>();
-            hashMap.put(1, attNum);
-            defenderTerritory.setAttackerUnits(hashMap);
+            defenderTerritory.setAttackerUnits(attUnits);
             //System.out.println("winner is attacker");
-
         }
     }
 
@@ -257,21 +339,20 @@ public class RiskGameBoard implements Board, Serializable {
      * @throws Exception
      */
     //TODO: one player executes once
-    public void executeAttacks(HashMap<Integer, ArrayList<Action>> attacksMap) throws Exception {
-        for(int i : attacksMap.keySet()){
+    public void executeAttacks(HashMap<Integer, ArrayList<Action>> actionsMap) throws Exception {
+        HashMap<Integer, ArrayList<Action>> attacksMap = new HashMap<>();
+        for(int i : actionsMap.keySet()){
             Player player = this.getAllPlayers().get(i);
             System.out.println("Player "+player.getPlayerId()+"'s execute all attacks");
-            ArrayList<Action> myattacks = attacksMap.get(i);
             ArrayList<Action> newAttacks = new ArrayList<>();
-            for(Action myattack : myattacks) {
-                if (!this.checkAttack(myattack, player)) {
-                    continue;
-                }
+            for(Action myattack : actionsMap.get(i)) {
+                if(myattack.getActionType() == "A" || !this.checkAttack(myattack, player)){continue;}
                 newAttacks.add(myattack);
                 player.executeAttack(myattack);
             }
+            intergAttack(newAttacks);
             attacksMap.put(player.getPlayerId(), newAttacks);
-            myattacks = intergAttack(newAttacks);
+
         }
         for(int i : attacksMap.keySet()){
             Player player = this.getAllPlayers().get(i);
@@ -282,41 +363,49 @@ public class RiskGameBoard implements Board, Serializable {
         }
     }
 
+    public ArrayList<Unit> initializeArrUnits(){
+        ArrayList<Unit> arrUnits = new ArrayList<>();
+        arrUnits.add(new Infantry(0));
+        arrUnits.add(new Cavalry(0));
+        arrUnits.add(new Artillery(0));
+        arrUnits.add(new SpecialForces(0));
+        return arrUnits;
+    }
+
+
     /**
      * combine all attacks into one new attack if they have the same destination
      *
      * @param myattacks
      * @return
      */
-    public ArrayList<Action> intergAttack(ArrayList<Action> myattacks){
+    public void intergAttack(ArrayList<Action> myattacks){
         ArrayList<Action> newattackers = new ArrayList<>();
         HashSet<String> destinations = new HashSet<>();
         for(Action act : myattacks){
             destinations.add(act.getDstName());
         }
         for(String s : destinations){
-            HashMap<Integer, Integer> hashMap = new HashMap();
-            hashMap.put(1, 0);
-            Action newaction = new Action("A", null, s, hashMap);
+            Action newaction = new AttackAction(null, s, initializeArrUnits());
             newattackers.add(newaction);
         }
         for(Action act : myattacks){
-            HashMap<Integer, Integer> acthp = act.getActionUnits();
+            ArrayList<Unit> unitsToChange = act.getActionUnits();
             for(String s : destinations) {
                 if (act.getDstName().equals(s)) {
-                    for(int i = 0; i < newattackers.size(); i++){
-                        if(newattackers.get(i).getDstName().equals(s)){
-                            HashMap<Integer, Integer> newhp = newattackers.get(i).getActionUnits();
-                            for(Integer key : newhp.keySet()){
-                                int num = newhp.get(key);
-                                newhp.put(key, num + acthp.get(key));
+                    for(int i = 0; i < unitsToChange.size(); i++){
+                        for(Action newact : newattackers){
+                            if(newact.getDstName().equals(s)){
+                                int val = newact.getActionUnits().get(i).getNumUnits();
+                                val += act.getActionUnits().get(i).getNumUnits();
+
                             }
                         }
                     }
                 }
             }
         }
-        return newattackers;
+        myattacks = newattackers;
     }
 
 

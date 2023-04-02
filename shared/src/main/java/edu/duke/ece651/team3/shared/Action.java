@@ -14,7 +14,6 @@ public abstract class Action implements Serializable {
     private String dstName; //The TO territory
 
     //Class of instance of units, number to change
-//    private HashMap<Unit, Integer> unitsToChange;
     private ArrayList<Unit> unitsToChange;
 
     /**
@@ -105,6 +104,7 @@ public abstract class Action implements Serializable {
     public void setActionUnits(ArrayList<Unit> _unitsToChange) {
         this.unitsToChange = _unitsToChange;
     }
+
 
 
     @Override

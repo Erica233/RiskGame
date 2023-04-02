@@ -79,17 +79,45 @@ public class AttackRuleChecker extends RuleChecker{
     }
 
     /**
-     * Check whether the attack's num of units is valid, if valid return true if invalid return false
+     * Check whether the attack's num of units is valid for each level of unit
+     * if valid return true if invalid return false
      * @param myAttack attack information
      * @param currPlayer current player
      * @return if valid return true, invalid return false
      */
     public boolean checkNumUnits(Action myAttack, Player currPlayer){
         Territory t = findTerritory(myAttack, currPlayer);
-        for(Integer c : myAttack.getActionUnits().keySet()){
-            int numUnits = myAttack.getActionUnits().get(c);
-            if(numUnits > t.getUnits().get(c) || numUnits < 0){
+        for(int i = 0; i < t.getUnits().size(); i++){
+            int numUnitsChange = myAttack.getActionUnits().get(i).getNumUnits();
+            if(numUnitsChange > t.getUnits().get(i).getNumUnits() || numUnitsChange < 0){
+                System.out.println("Invalid numberUnits: " + numUnitsChange + " current territory's unit: "
+                        + t.getUnits().get(i).getNumUnits());
                 return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Check whether the attack's cost of food is valid
+     * if valid return true if invalid return false
+     * @param myAttack attack information
+     * @param currPlayer current player
+     * @return if valid return true, invalid return false
+     */
+    public boolean checkResources(Action myAttack, Player currPlayer){
+        for(int i = 0; i < myAttack.getActionUnits().size(); i++){
+            String src = myAttack.getSrcName();
+            String dst = myAttack.getDstName();
+            Territory terr = currPlayer.getTerr(src);
+            int foodRsc = terr.getFood();
+            int distance = terr.getNeighborsDist().get(dst);
+            ArrayList<Unit> unitsToChange = myAttack.getActionUnits();
+            for(int j = 0; j < unitsToChange.size(); j++){
+                foodRsc -= (j+1) * unitsToChange.get(j).getNumUnits() * distance;
+                if(foodRsc < 0){
+                    return false;
+                }
             }
         }
         return true;
