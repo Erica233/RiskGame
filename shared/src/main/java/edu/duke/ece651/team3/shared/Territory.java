@@ -11,16 +11,89 @@ import java.util.HashMap;
 public class Territory implements Serializable, Comparable<Territory> {
     private final String territoryName;
     private int numUnits = 0;
-    private final ArrayList<Territory> neighbors;
-    private HashMap<Integer, Integer> units;
+    private HashMap<Territory, Integer> neighborsDist;
+    private ArrayList<Unit> units;
+    private int food = 0;
+    private int tech = 0;
     private int winnerId = -1;
     private HashMap<Integer, Integer> attackerUnits = new HashMap<>();
+
+    /**
+     * Initialize the units, given the Infantry number
+     *
+     * @param num the number of Infantry units
+     */
+    public void initBasicUnits(int num) {
+        units.add(new Infantry(num));
+        units.add(new Cavalry(0));
+        units.add(new Artillery(0));
+        units.add(new SpecialForces(0));
+    }
+
+    /**
+     * Constructs an empty Territory with specified name, (no neighbors, no units)
+     *
+     * @param _name the name of the Territory
+     */
+    public Territory(String _name) {
+        this.territoryName = _name;
+        this.neighborsDist = new HashMap<>();
+        this.units = new ArrayList<>();
+        initBasicUnits(0);
+    }
+
+    /**
+     * This constructor constructs a territory with name, and num of basic units (Infantry)
+     *
+     * @param _name the name of the Territory
+     * @param num the number of Infantry units
+     */
+    public Territory(String _name, int num, int _food, int _tech) {
+        this.territoryName = _name;
+        this.neighborsDist = new HashMap<>();
+        this.units = new ArrayList<>();
+        this.food = _food;
+        this.tech = _tech;
+        initBasicUnits(num);
+        updateNumUnits();
+    }
+
+    /**
+     * Constructs a Territory with specified name, num of basic units (Infantry), and neighbor territories
+     *
+     * @param _name the name of the Territory
+     * @param _neighborsDist neighbors and their relative distance
+     * @param num the number of basic units (Infantry)
+     */
+    public Territory(String _name, HashMap<Territory, Integer> _neighborsDist, int num, int _food, int _tech) {
+        this.territoryName = _name;
+        this.units = new ArrayList<>();
+        this.neighborsDist = _neighborsDist;
+        this.food = _food;
+        this.tech = _tech;
+        initBasicUnits(num);
+        updateNumUnits();
+    }
+
+    @Override
+    public int compareTo(Territory aTerritory) {
+        return this.territoryName.compareTo(aTerritory.getTerritoryName());
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other.getClass().equals(getClass())) {
+            Territory territory = (Territory) other;
+            return numUnits == territory.getNumUnits() && territoryName.equals(territory.getTerritoryName()) && hasSameNeighborsDist(territory) && hasSameUnits(territory);
+        }
+        return false;
+    }
 
     public HashMap<Integer, Integer> getAttackerUnits() {
         return attackerUnits;
     }
 
-    public void setUnits(HashMap<Integer, Integer> _units) {
+    public void setUnits(ArrayList<Unit> _units) {
         units = _units;
     }
 
@@ -43,98 +116,40 @@ public class Territory implements Serializable, Comparable<Territory> {
     }
 
     /**
-     * Constructs an empty Territory with specified name, and number of units
-     *
-     * @param _name the name of the Territory
-     */
-    public Territory(String _name) {
-        this.territoryName = _name;
-        this.neighbors = new ArrayList<>();
-        this.units = new HashMap<>();
-        units.put(1, 0);
-    }
-
-    /**
-     * This constructor constructs a territory with name, forcelevel, and num
-     * @param _name
-     * @param forcelevel
-     * @param num
-     */
-    public Territory(String _name, int forcelevel, int num) {
-        this.territoryName = _name;
-        this.neighbors = new ArrayList<>();
-        this.units = new HashMap<>();
-        units.put(forcelevel, num);
-        updateNumUnits();
-    }
-
-    /**
-     * Constructs a Territory with specified name, and number of units
-     *
-     * @param _name the name of the Territory
-     * @param _numUnits the number of units in the Territory
-     */
-    //fake constructor: used to test
-    public Territory(String _name, int _numUnits) {
-        this.territoryName = _name;
-        this.numUnits = _numUnits;
-        this.neighbors = new ArrayList<>();
-        this.units = new HashMap<>();
-    }
-
-    /**
-     * Constructs the territory with name, and the units
-     * @param _name the name of the Territory
-     * @param _units the number of units in the Territory
-     */
-    public Territory(String _name, HashMap<Integer, Integer> _units) {
-        this.territoryName = _name;
-        this.neighbors = new ArrayList<>();
-        this.units = _units;
-        updateNumUnits();
-    }
-
-    /**
-     * Constructs a Territory with specified name, number of units, and neighbor territories
-     *
-     * @param _name the name of the Territory
-     * @param _neighbors the neighbors of the Territory
-     * @param _units units in this Territory
-     */
-    public Territory(String _name, ArrayList<Territory> _neighbors, HashMap<Integer, Integer> _units) {
-        this.territoryName = _name;
-        this.neighbors = _neighbors;
-        this.units = _units;
-        updateNumUnits();
-    }
-
-    @Override
-    public int compareTo(Territory aTerritory) {
-        return this.territoryName.compareTo(aTerritory.getTerritoryName());
-    }
-
-    @Override
-    public boolean equals(Object other) {
-        if (other.getClass().equals(getClass())) {
-            Territory territory = (Territory) other;
-            return numUnits == territory.getNumUnits() && territoryName.equals(territory.getTerritoryName()) && hasSameNeighbors(territory);
-        }
-        return false;
-    }
-
-    /**
-     * check if the two territories are the same
+     * check if the two territories have the same neighbors and their relative distances
      *
      * @param territoryToCompare
-     * @return ture if the two territories are the same, else false
+     * @return true if the two territories has the same neighbors and their relative distances, otherwise return false
      */
-    public boolean hasSameNeighbors(Territory territoryToCompare) {
-        if (neighbors.size() != territoryToCompare.getNeighbors().size()) {
+    public boolean hasSameNeighborsDist(Territory territoryToCompare) {
+        if (neighborsDist.size() != territoryToCompare.getNeighborsDist().size()) {
             return false;
         }
-        ArrayList<String> leftNeighborsNames = getSortedNeighborNames();
-        ArrayList<String> rightNeighborsNames = territoryToCompare.getSortedNeighborNames();
-        return leftNeighborsNames.equals(rightNeighborsNames);
+        for (Territory territory: neighborsDist.keySet()) {
+            if (territoryToCompare.getNeighborsDist().containsKey(territory)) {
+                if (territoryToCompare.getNeighborsDist().get(territory) != neighborsDist.get(territory)) {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * check if the two territories have the same set of units
+     *
+     * @param territoryToCompare
+     * @return true if the two territories have the same set of units
+     */
+    public boolean hasSameUnits(Territory territoryToCompare) {
+        for (int i = 0; i < units.size(); i++) {
+            if (units.get(i).getClass() != territoryToCompare.getUnits().get(i).getClass() || units.get(i) != territoryToCompare.getUnits().get(i)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
@@ -143,9 +158,10 @@ public class Territory implements Serializable, Comparable<Territory> {
      */
     public ArrayList<String> getSortedNeighborNames() {
         ArrayList<String> sortedNeighborNames = new ArrayList<>();
-        for (Territory aNeighbor: neighbors) {
+        for (Territory aNeighbor: neighborsDist.keySet()) {
             sortedNeighborNames.add(aNeighbor.getTerritoryName());
         }
+        Collections.sort(sortedNeighborNames);
         return sortedNeighborNames;
     }
 
@@ -155,29 +171,12 @@ public class Territory implements Serializable, Comparable<Territory> {
      * @param aNeighbor the Territory to add to the neighbors
      * @throws Exception if the Territory to add is invalid
      */
-    public void addANeighbor(Territory aNeighbor) throws Exception {
+    public void addANeighbor(Territory aNeighbor, int dist) throws Exception {
         if (!checkValidNeighbor(aNeighbor)) {
             throw new Exception("addANeighbor(): invalid neighbor to add!");
         }
-        neighbors.add(aNeighbor);
-        Collections.sort(neighbors);
-    }
-
-    /**
-     * Add multiple valid Territories to the neighbors
-     * !!Attention: if invalid neighbor in the middle, it will not remove the added neighbors
-     *
-     * @param territories the Territories to add to the neighbors
-     * @throws Exception if a Territory to add is invalid
-     */
-    public void addNeighbors(Territory... territories) throws Exception {
-        for (Territory aNeighbor: territories) {
-            if (!checkValidNeighbor(aNeighbor)) {
-                throw new Exception("addANeighbors(): invalid neighbor to add!");
-            }
-            neighbors.add(aNeighbor);
-        }
-        Collections.sort(neighbors);
+        neighborsDist.put(aNeighbor, dist);
+        //Collections.sort(neighborsDist);
     }
 
     /**
@@ -189,7 +188,7 @@ public class Territory implements Serializable, Comparable<Territory> {
         if (territoryName.equals(territoryToAddAsNeighbor.getTerritoryName())) {
             return false;
         }
-        for (Territory aNeighbor: neighbors) {
+        for (Territory aNeighbor: neighborsDist.keySet()) {
             if (aNeighbor.getTerritoryName().equals(territoryToAddAsNeighbor.getTerritoryName())) {
                 return false;
             }
@@ -217,20 +216,14 @@ public class Territory implements Serializable, Comparable<Territory> {
      * @return a String about its name, number of units and the neighbor territories
      */
     public String displayTerritory() {
-        int forceLevel = 1;
         StringBuilder output = new StringBuilder();
-
-        output.append(units.get(forceLevel)).append(" units in ").append(territoryName);
-        if (neighbors.isEmpty()) {
+        output.append(numUnits).append(" units in ").append(territoryName);
+        if (neighborsDist.isEmpty()) {
             output.append(" (no neighbors)\n");
         } else {
             output.append(" (next to: ");
-            for (int i = 0; i < neighbors.size(); i++) {
-                if (i < neighbors.size() - 1) {
-                    output.append(neighbors.get(i).getTerritoryName()).append(", ");
-                } else {
-                    output.append(neighbors.get(i).getTerritoryName());
-                }
+            for (Territory neigh: neighborsDist.keySet()) {
+                output.append(neighborsDist.get(neigh.getTerritoryName()) + " " + neigh.getTerritoryName() + ", ");
             }
             output.append(")\n");
         }
@@ -312,19 +305,12 @@ public class Territory implements Serializable, Comparable<Territory> {
         return numUnits;
     }
 
-    /**
-     * This method gets all the neighbors of this territory
-     * @return ArrayList<Territory> contains all neighbor territories
-     */
-    public ArrayList<Territory> getNeighbors() {
-        return neighbors;
-    }
 
     /**
      * This method gets a hashmap of units
      * @return hashmap of units with <level, num>
      */
-    public HashMap<Integer, Integer> getUnits() {
+    public ArrayList<Unit> getUnits() {
         return units;
     }
 
@@ -338,5 +324,9 @@ public class Territory implements Serializable, Comparable<Territory> {
 
     public int getWinnerId() {
         return winnerId;
+    }
+
+    public HashMap<Territory, Integer> getNeighborsDist() {
+        return neighborsDist;
     }
 }
