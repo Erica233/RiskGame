@@ -88,7 +88,7 @@ public class AttackRuleChecker extends RuleChecker{
     public boolean checkNumUnits(Action myAttack, Player currPlayer){
         Territory t = findTerritory(myAttack, currPlayer);
         for(int i = 0; i < t.getUnits().size(); i++){
-            int numUnitsChange = myAttack.getActionUnits().get(i).getNumUnits();
+            int numUnitsChange = myAttack.getUnitsToChange().get(i).getNumUnits();
             if(numUnitsChange > t.getUnits().get(i).getNumUnits() || numUnitsChange < 0){
                 System.out.println("Invalid numberUnits: " + numUnitsChange + " current territory's unit: "
                         + t.getUnits().get(i).getNumUnits());
@@ -106,13 +106,13 @@ public class AttackRuleChecker extends RuleChecker{
      * @return if valid return true, invalid return false
      */
     public boolean checkResources(Action myAttack, Player currPlayer){
-        for(int i = 0; i < myAttack.getActionUnits().size(); i++){
+        for(int i = 0; i < myAttack.getUnitsToChange().size(); i++){
             String src = myAttack.getSrcName();
             String dst = myAttack.getDstName();
             Territory terr = currPlayer.getTerr(src);
             int foodRsc = terr.getFood();
             int distance = terr.getNeighborsDist().get(dst);
-            ArrayList<Unit> unitsToChange = myAttack.getActionUnits();
+            ArrayList<Unit> unitsToChange = myAttack.getUnitsToChange();
             for(int j = 0; j < unitsToChange.size(); j++){
                 foodRsc -= (j+1) * unitsToChange.get(j).getNumUnits() * distance;
                 if(foodRsc < 0){

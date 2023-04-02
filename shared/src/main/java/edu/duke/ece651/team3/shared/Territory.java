@@ -202,7 +202,7 @@ public class Territory implements Serializable, Comparable<Territory> {
      * @return true if it is neighbrr false if it is not neighbor
      */
     public boolean checkExistNeighbor(String territoryToCheck){
-        for (Territory neighbor : neighbors) {
+        for (Territory neighbor : neighborsDist.keySet()) {
             if (territoryToCheck.equals(neighbor.getTerritoryName())) {
                 return true;
             }
@@ -244,34 +244,30 @@ public class Territory implements Serializable, Comparable<Territory> {
 
     /**
      * Add specific type and number of unit to units
-     * @param unitToAdd specific type of unit to add
-     * @param num number of this type of unit
+     * @param unitsToChange specific types and numbers of unit to remove
      */
-    public void increaseUnit(int unitToAdd, int num) {
-        if (units.containsKey(unitToAdd)) {
-            int value = units.get(unitToAdd) + num;
-            units.put(unitToAdd, value);
-        } else {
-            units.put(unitToAdd, num);
+    public void increaseUnit(ArrayList<Unit> unitsToChange) {
+        for (int level = 0; level < units.size(); level++) {
+            units.get(level).setNumUnits(units.get(level).getNumUnits() + unitsToChange.get(level).getNumUnits());
         }
+        updateNumUnits();
+    }
+
+    public void increaseOneBasicUnit() {
+        units.get(0).setNumUnits(units.get(0).getNumUnits() + 1);
         updateNumUnits();
     }
 
     /**
      * Delete specific type and number of unit to units
-     * @param unitToRemove specific type of unit to remove
-     * @param num number of this type of unit
+     * @param unitsToChange specific types and numbers of unit to remove
      */
-    public void decreaseUnit(int unitToRemove, int num) {
-        if (units.containsKey(unitToRemove)) {
-            int value = units.get(unitToRemove) - num;
-            //System.out.println(unitToRemove);
-            if (value < 0) {
+    public void decreaseUnit(ArrayList<Unit> unitsToChange) {
+        for (int level = 0; level < units.size(); level++) {
+            if (units.get(level).getNumUnits() < unitsToChange.get(level).getNumUnits()) {
                 throw new IllegalArgumentException("Can't delete too much num of unit");
             }
-            units.put(unitToRemove, value);
-        } else {
-            throw new IllegalArgumentException("Can't delete non-existing unit");
+            units.get(level).setNumUnits(units.get(level).getNumUnits() + unitsToChange.get(level).getNumUnits());
         }
         updateNumUnits();
     }

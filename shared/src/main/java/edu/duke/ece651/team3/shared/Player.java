@@ -46,7 +46,7 @@ public class Player implements Serializable {
      */
     public void addAUnitForEachTerr() {
         for (Territory territory: ownedTerritories) {
-            territory.increaseUnit(1, 1);
+            territory.increaseOneBasicUnit();
         }
     }
     /**
@@ -75,10 +75,9 @@ public class Player implements Serializable {
     public void executeMove(Action move) {
         Territory src = findOwnedTerritoryByName(move.getSrcName());
         Territory dst = findOwnedTerritoryByName(move.getDstName());
-        for (int level = 0; level < src.getUnits().size(); level++) {
-            src.decreaseUnit(level, move.getUnitsToChange().get(level));
-            dst.increaseUnit(level, move.getUnitsToChange().get(level));
-        }
+
+        src.decreaseUnit(move.getUnitsToChange());
+        dst.increaseUnit(move.getUnitsToChange());
     }
 
     /**
@@ -88,9 +87,7 @@ public class Player implements Serializable {
      */
     public void executeAttack(Action attack) {
         Territory src = findOwnedTerritoryByName(attack.getSrcName());
-        for (int level = 0; level < src.getUnits().size(); level++) {
-            src.decreaseUnit(level, attack.getUnitsToChange().get(level));
-        }
+        src.decreaseUnit(attack.getUnitsToChange());
     }
 
     /**
@@ -199,18 +196,6 @@ public class Player implements Serializable {
         } else {
             System.err.println("Player " + playerId + "cannot lose that Territory " + toLose.getTerritoryName());
         }
-
-    }
-
-    /**
-     * This method adds the new occupied territory when the current player attacks successfully
-     * The name should be the src name from the attacker
-     * The units number should be the remaining + the attack
-     */
-    public void occupyTerritory(Territory defenderTerritory, int attackUnits, int loseTimes){
-        ownedTerritories.add(defenderTerritory);
-        defenderTerritory.increaseUnit(1, attackUnits);
-        defenderTerritory.decreaseUnit(1, loseTimes);
     }
 
     /** getters and setters **/

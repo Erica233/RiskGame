@@ -112,7 +112,7 @@ class PlayerTest {
 
         Territory defenderT = p.getOwnedTerritories().get(2); //e
         Player attacker = r.getAllPlayers().get(0);
-        attacker.occupyTerritory(defenderT, 1, 1);
+        //attacker.occupyTerritory(defenderT, 1, 1);
         boolean isContain = false;
         for(Territory territory: attacker.getOwnedTerritories()){
             if(territory.equals(defenderT)){

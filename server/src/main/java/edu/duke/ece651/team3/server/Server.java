@@ -40,11 +40,9 @@ public class Server {
      * This method sets up the action list
      */
     public void setUpActionsLists() {
-        this.movesMap = new HashMap<>();
-        this.attacksMap = new HashMap<>();
+        this.actionsMap = new HashMap<>();
         for (int id = 0; id < 2; id++) {
-            movesMap.put(id, new ArrayList<>());
-            attacksMap.put(id, new ArrayList<>());
+            actionsMap.put(id, new ArrayList<>());
         }
     }
 
@@ -118,14 +116,16 @@ public class Server {
      */
     public void executeMoves() throws Exception {
         //Execute all move actions for both players
-        for(int i : movesMap.keySet()){
+        for(int i : actionsMap.keySet()){
             Player player = riscBoard.getAllPlayers().get(i);
-            ArrayList<Action> myMoves = movesMap.get(i);
+            ArrayList<Action> myMoves = actionsMap.get(i);
             //Execute all moves
             for (Action myMove : myMoves) {
-                //If the move is invalid, continue
-                if(!checkMove(myMove, player)) continue;
-                executeMove(myMove, player);
+                if (myMove.isMoveType()) {
+                    //If the move is invalid, continue
+                    if(!checkMove(myMove, player)) continue;
+                    executeMove(myMove, player);
+                }
             }
         }
     }
@@ -154,18 +154,19 @@ public class Server {
     public void executeMove(Action myMove, Player currPlayer) {
         Territory srcTerr = currPlayer.getTerr(myMove.getSrcName());
         Territory dstTerr = currPlayer.getTerr(myMove.getDstName());
+        ArrayList<Unit> units = myMove.getUnitsToChange();
 
         //Move all the units in their corresponding levels
-        for(int i = 0; i < myMove.getActionUnits().size(); i++) {
-            int unitNum = myMove.getActionUnits().get(i).getNumUnits(); //The num to move
-            srcTerr.decreaseUnit(unitNum, srcTerr.getUnits().get(i).getNumUnits());
-            dstTerr.increaseUnit(unitNum, dstTerr.getUnits().get(i).getNumUnits());
+        for(int i = 0; i < myMove.getUnitsToChange().size(); i++) {
+            int unitNum = myMove.getUnitsToChange().get(i).getNumUnits(); //The num to move
+            srcTerr.decreaseUnit(units);
+            dstTerr.increaseUnit(units);
 
             //Reduce the cost on the current territory
             int minPathCost = getMinPath(srcTerr, dstTerr);
-            int moveCost = myMove.getActionUnits().get(i).getMoveCost();
+            int moveCost = myMove.getUnitsToChange().get(i).getMoveCost();
             int cost = C * minPathCost * unitNum * moveCost; //TODO:check the formula
-            srcTerr.reduceFoodResource(cost);
+            srcTerr.reduceFood(cost);
         }
     }
 
@@ -246,7 +247,7 @@ public class Server {
         printActionsMap();
         //executeAllMoves:
         executeMoves();
-        riscBoard.executeAttacks(attacksMap);
+        riscBoard.executeAttacks(actionsMap);
         riscBoard.updateCombatResult();
         if(riscBoard.checkWin() == 2){
             riscBoard.addAUnitEachTurn();
@@ -275,14 +276,18 @@ public class Server {
         String output = "";
         for (int id = 0; id < 2; id++) {
             output = output + "Player " + id + " move actions:\n";
-            for (Action move: movesMap.get(id)) {
-                output = output + move + "\n";
+            for (Action move: actionsMap.get(id)) {
+                if (move.isMoveType()) {
+                    output = output + move + "\n";
+                }
             }
             output += "\n";
 
             output = output + "Player " + id + " attack actions:\n";
-            for (Action attack: attacksMap.get(id)) {
-                output = output + attack + "\n";
+            for (Action attack: actionsMap.get(id)) {
+                if (attack.isAttackType()) {
+                    output = output + attack + "\n";
+                }
             }
             output += "\n";
         }
@@ -296,12 +301,9 @@ public class Server {
      */
     public void recvActionsFromAllClients() throws IOException, ClassNotFoundException {
         for (int id = 0; id < 2; id++) {
-            movesMap.get(id).clear();
-            attacksMap.get(id).clear();
-            ArrayList<Action> movesList = (ArrayList<Action>) objectsFromClients.get(id).readObject();
-            ArrayList<Action> attacksList = (ArrayList<Action>) objectsFromClients.get(id).readObject();
-            movesMap.put(id, movesList);
-            attacksMap.put(id, attacksList);
+            actionsMap.get(id).clear();
+            ArrayList<Action> actionsList = (ArrayList<Action>) objectsFromClients.get(id).readObject();
+            actionsMap.put(id, actionsList);
             objectsFromClients.get(id).readObject(); //read 'D'
         }
     }
@@ -334,7 +336,7 @@ public class Server {
      * @throws Exception
      */
     public void initGame() throws Exception {
-        riscBoard.initMap();
+        riscBoard.initE2Map();
         assignPlayerIdToClients();
         //sendBoardToAllClients();
     }
@@ -343,10 +345,10 @@ public class Server {
      * The test map
      * @throws Exception
      */
-    public void initTestGame() throws Exception {
-        riscBoard.initSmallMap();
-        assignPlayerIdToClients();
-    }
+//    public void initTestGame() throws Exception {
+//        riscBoard.initSmallMap();
+//        assignPlayerIdToClients();
+//    }
 
     /**
      * This method connects the client using ObjectOutputStream and ObjectInputStream

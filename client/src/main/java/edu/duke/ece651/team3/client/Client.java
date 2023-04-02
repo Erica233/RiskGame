@@ -23,8 +23,8 @@ public class Client {
     }
 
     private BufferedReader inputReader;
-    private final ArrayList<Action> moveActions;
-    private final ArrayList<Action> attackActions;
+    private ArrayList<Action> actionsList; //player ID and all attack actions this player has
+
 
     /**
      * Constructs the Client with the hostname and the port number
@@ -38,8 +38,7 @@ public class Client {
         this.objectToServer = new ObjectOutputStream(socket.getOutputStream());
         this.inputReader = new BufferedReader(new InputStreamReader(System.in));
 
-        this.moveActions = new ArrayList<>();
-        this.attackActions = new ArrayList<>();
+        this.actionsList = new ArrayList<>();
     }
 
     public static void main(String[] args) {
@@ -123,14 +122,18 @@ public class Client {
     public String printActionsLists() {
         String output = "";
         output = output + "Player " + playerId + " move actions:\n";
-        for (Action move: moveActions) {
-            output = output + move + "\n";
+        for (Action move: actionsList) {
+            if (move.isMoveType()) {
+                output = output + move + "\n";
+            }
         }
         output += "\n";
 
         output = output + "Player " + playerId + " attack actions:\n";
-        for (Action attack: attackActions) {
-            output = output + attack + "\n";
+        for (Action attack: actionsList) {
+            if (attack.isAttackType()) {
+                output = output + attack + "\n";
+            }
         }
         output += "\n";
         System.out.println(output);
@@ -142,12 +145,11 @@ public class Client {
      * It checks whether the action is valid and store it into the action list
      */
     public void handleAllActions() {
-        moveActions.clear();
-        attackActions.clear();
+        actionsList.clear();
         do {
             try {
                 Action action = readOneAction();
-                if (action.getActionType().toUpperCase(Locale.ROOT).equals("D")) {
+                if (action == null) {
                     break;
                 }
                 checkValidAction(action);
@@ -181,9 +183,7 @@ public class Client {
      * @throws IOException
      */
     public void sendActionListsToServer() throws IOException {
-        objectToServer.writeObject(moveActions);
-        objectToServer.reset();
-        objectToServer.writeObject(attackActions);
+        objectToServer.writeObject(actionsList);
         objectToServer.reset();
         objectToServer.writeObject("D");
     }
@@ -193,11 +193,8 @@ public class Client {
      * @param action the action need to store
      */
     public void storeActionToList(Action action) {
-        if (action.getActionType().toUpperCase(Locale.ROOT).equals("M")) {
-            moveActions.add(action);
-        }
-        if (action.getActionType().toUpperCase(Locale.ROOT).equals("A")) {
-            attackActions.add(action);
+        if (action.isValidType()) {
+            actionsList.add(action);
         }
     }
 
@@ -207,13 +204,13 @@ public class Client {
      * @throws Exception
      */
     public void checkValidAction(Action action) throws Exception {
-        if (action.getActionType().toUpperCase(Locale.ROOT).equals("M")) {
+        if (action.isMoveType()) {
             MoveRuleChecker moveRuleChecker = new MoveRuleChecker(action, riskGameBoard);
             if (!moveRuleChecker.checkValidAction(action, (RiskGameBoard) riskGameBoard, riskGameBoard.getAllPlayers().get(playerId))) {
                 //problem = "Invalid Move!\n";
                 throw new IllegalArgumentException("Your move is invalid!\n");
             }
-        } else if (action.getActionType().toUpperCase(Locale.ROOT).equals("A")) {
+        } else if (action.isAttackType()) {
             AttackRuleChecker attackRuleChecker = new AttackRuleChecker(action, riskGameBoard);
             if (!attackRuleChecker.checkValidAction(action, (RiskGameBoard) riskGameBoard, riskGameBoard.getAllPlayers().get(playerId))) {
                 //problem = "Invalid Attack!\n";
@@ -263,14 +260,23 @@ public class Client {
      * @return the numUnitsMap it reads from user
      * @throws IOException
      */
-    public HashMap<Integer, Integer> readNumUnitsMap() throws IOException {
-        HashMap<Integer, Integer> unitsMap = new HashMap<>();
-        for (int forceLevel = 1; forceLevel < 2; forceLevel++) {
-            String prompt = "Please enter the number of units (whose force level is " + forceLevel + ") you want to use:";
+    public ArrayList<Unit> readNumUnitsMap() throws IOException {
+        ArrayList<Unit> unitsChange = initializeArrUnits();
+        for (Unit unit: unitsChange) {
+            String prompt = "Please enter the number of units (whose force level is " + unit.getLevel() + ") you want to use:";
             int numUnits = readIntFromUser(prompt);
-            unitsMap.put(forceLevel, numUnits);
+            unit.setNumUnits(numUnits);
         }
-        return unitsMap;
+        return unitsChange;
+    }
+
+    public ArrayList<Unit> initializeArrUnits(){
+        ArrayList<Unit> arrUnits = new ArrayList<>();
+        arrUnits.add(new Infantry(0));
+        arrUnits.add(new Cavalry(0));
+        arrUnits.add(new Artillery(0));
+        arrUnits.add(new SpecialForces(0));
+        return arrUnits;
     }
 
     /**
@@ -286,7 +292,7 @@ public class Client {
                 " (D)one";
         String actionType = readStringFromUser(choicePrompt);
         if (actionType.toUpperCase(Locale.ROOT).equals("D")) {
-            return new Action(actionType, "", "", null);
+            return null;
         }
 
         String srcPrompt = "Please enter the name of your source territory:";
@@ -294,7 +300,7 @@ public class Client {
         String dstPrompt = "Please enter the name of your destination territory:";
         String dstName = readStringFromUser(dstPrompt);
 
-        HashMap<Integer, Integer> unitsToMove = readNumUnitsMap();
+        ArrayList<Unit> unitsToMove = readNumUnitsMap();
 
         return new Action(actionType, srcName, dstName, unitsToMove);
 

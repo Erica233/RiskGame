@@ -7,7 +7,7 @@ import java.util.HashMap;
  * A class of rule checker for only checking moves actions
  *
  */
-public class MoveRuleChecker extends RuleChecker{
+public class MoveRuleChecker{
     private final Board riskGameBoard;
     private final Action action;
     private String srcName;
@@ -21,12 +21,33 @@ public class MoveRuleChecker extends RuleChecker{
      * @return if valid return true, invalid return false
      */
     public MoveRuleChecker(Action _action, Board _riskGameBoard){
-        super(_action);
+//        super(_action);
         this.action = _action;
         this.srcName = this.action.getSrcName();
         this.dstName = this.action.getDstName();
         this.riskGameBoard = _riskGameBoard;
     }
+
+    public boolean checkValidAction(Action myAction, RiskGameBoard r, Player currPlayer) throws Exception {
+        if (!checkSrcDst(myAction, currPlayer)) {
+            System.out.printf("src dst invalid");
+            return false;
+        }
+        if (!checkNumUnits(myAction, currPlayer)) {
+            System.out.printf("checkNumUnits invalid");
+            return false;
+        }
+        if (!checkPath(myAction, r, currPlayer)) {
+            System.out.printf("checkPath invalid");
+            return false;
+        }
+        if(!checkResources(myAction, currPlayer, r)){
+            System.out.printf("checkResources invalid");
+            return false;
+        }
+        return true;
+    }
+
 
     /**
      * Check whether the current player's src and dst territory are both in its owned territory
@@ -65,7 +86,7 @@ public class MoveRuleChecker extends RuleChecker{
     public boolean checkNumUnits(Action myMove, Player currPlayer){
         Territory t = findTerritory(myMove, currPlayer);
         for(int i = 0; i < t.getUnits().size(); i++){
-            int numUnitsChange = myMove.getActionUnits().get(i).getNumUnits();
+            int numUnitsChange = myMove.getUnitsToChange().get(i).getNumUnits();
             if(numUnitsChange > t.getUnits().get(i).getNumUnits() || numUnitsChange < 0){
                 System.out.println("Invalid numberUnits: " + numUnitsChange + " current territory's unit: "
                         + t.getUnits().get(i).getNumUnits());
@@ -238,13 +259,15 @@ public class MoveRuleChecker extends RuleChecker{
 
     /**
      * This method checks whether there is enough resource for the move action
-     * @param src the source territory
-     * @param dst the destination territory
+     * @param
      * @return boolean true if it is enough, false if it is nor.
      */
-    public boolean checkResource(Territory src, Territory dst, RiskGameBoard riskGameBoard){
+    public boolean checkResources(Action myAction, Player currPlayer, RiskGameBoard riskGameBoard){
+        Territory src = currPlayer.findOwnedTerritoryByName(myAction.getSrcName());
+        Territory dst = currPlayer.findOwnedTerritoryByName(myAction.getDstName());
+
         int totalResourceCost = getMinPath(src, dst, riskGameBoard);
-        if(totalResourceCost > src.getFoodResource()){
+        if(totalResourceCost > src.getFood()){
             System.out.println("Invalid move! The resource is not enough!");
             return false;
         }

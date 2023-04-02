@@ -8,7 +8,7 @@ import java.util.Locale;
 /**
  * action class to store move or attack action information
  */
-public abstract class Action implements Serializable {
+public class Action implements Serializable {
     private String actionType;
     private String srcName; //The FROM territory
     private String dstName; //The TO territory
@@ -63,7 +63,6 @@ public abstract class Action implements Serializable {
         return isAttackType() || isMoveType() || isDone();
     }
 
-
     public String getActionType() {
         return actionType;
     }
@@ -76,7 +75,7 @@ public abstract class Action implements Serializable {
         return dstName;
     }
 
-    public ArrayList<Unit> getActionUnits() {
+    public ArrayList<Unit> getUnitsToChange() {
         return unitsToChange;
     }
 
@@ -89,7 +88,7 @@ public abstract class Action implements Serializable {
 //    }
 
     //Since the actions are read from the user, it supports set methods
-    public void setActionType(String actionType) {
+    public void setUnitsToChange(String actionType) {
         this.actionType = actionType;
     }
 
