@@ -115,7 +115,7 @@ public class ClientTest {
         System.out.println(client + " connect to the Server successfully!");
 
         BufferedReader mockInput1 = Mockito.mock(BufferedReader.class);
-        when(mockInput1.readLine()).thenReturn("M", "a", "j", "1", "D");
+        when(mockInput1.readLine()).thenReturn("M", "a", "j", "1", "0", "0", "0", "D");
         client.setInputReader(mockInput1);
 
         client.recvPlayerId();
@@ -182,83 +182,83 @@ public class ClientTest {
         server5.join();
     }
 
-//    @Test
-//    @Timeout(2500)
-//    void test_otherCases() throws Exception {
-//        int port = 12348;
-//        Thread server6 = new Thread() {
-//            @Override()
-//            public void run() {
-//                try {
-//                    RiskGameBoard b1 = new RiskGameBoard();
-//                    b1.initE2Map();
-//                    ArrayList<Action> actions = new ArrayList<>();
-//
-//                    //mock server
-//                    ServerSocket serverSock = new ServerSocket(port);
-//                    Socket clientSockets = serverSock.accept();
-//                    ObjectOutputStream out = new ObjectOutputStream(clientSockets.getOutputStream());
-//                    ObjectInputStream in = new ObjectInputStream(clientSockets.getInputStream());
-//                    out.writeInt(0);
-//                    out.reset();
-//
-//                    int gameResult = -1;
-//                    int cnt = 0;
-//
-//                    while (gameResult != 1 && gameResult != 0) {
-//                        //send board to client
-//                        out.writeObject(b1);
+    @Test
+    @Timeout(2500)
+    void test_otherCases() throws Exception {
+        int port = 12348;
+        Thread server6 = new Thread() {
+            @Override()
+            public void run() {
+                try {
+                    RiskGameBoard b1 = new RiskGameBoard();
+                    b1.initE2Map();
+                    ArrayList<Action> actions = new ArrayList<>();
+
+                    //mock server
+                    ServerSocket serverSock = new ServerSocket(port);
+                    Socket clientSockets = serverSock.accept();
+                    ObjectOutputStream out = new ObjectOutputStream(clientSockets.getOutputStream());
+                    ObjectInputStream in = new ObjectInputStream(clientSockets.getInputStream());
+                    out.writeInt(0);
+                    out.reset();
+
+                    int gameResult = -1;
+                    int cnt = 0;
+
+                    while (gameResult != 1 && gameResult != 0) {
+                        //send board to client
+                        out.writeObject(b1);
+                        out.reset();
+                        //receive action lists to client
+                        actions = (ArrayList<Action>) in.readObject();
+                        String done = (String) in.readObject();
+                        //send game result to client
+////                        out.writeInt(gameResult);
 //                        out.reset();
-//                        //receive action lists to client
-//                        actions = (ArrayList<Action>) in.readObject();
-//                        String done = (String) in.readObject();
-//                        //send game result to client
-//////                        out.writeInt(gameResult);
-////                        out.reset();
-//                        if(cnt == 1){
-//                            gameResult = 0;
-//                            out.writeInt(gameResult);
-//                        }
-//                        if(cnt == 0){
-//                            gameResult = 2;
-//                            out.writeInt(gameResult);
-//                            cnt++;
-//                        }
-//
-//                        out.reset();
-//                    }
-//
-//                    out.close();
-//                    in.close();
-//                    serverSock.close();
-//                    clientSockets.close();
-//                } catch (Exception e) {
-//                }
-//            }
-//        };
-//        server6.start();
-//        Thread.sleep(100);
-//
-//        Client client = new Client("localhost", port);
-//        System.out.println(client + " connect to the Server successfully!");
-//
-//        client.recvPlayerId();
-//
-//        BufferedReader mockInput1 = Mockito.mock(BufferedReader.class);
-//        when(mockInput1.readLine()).thenReturn("S", "a", "b", "1",
-//                                                     "A", "a", "c", "1",
-//                                                     "A", "a", "b", "1",
-//                                                     "M", "a", "b", "1",
-//                                                     "M", "a", "b", "a",
-//                                                     "M", "a", "c", "1", "D",
-//                                                        "D");
-//        client.setInputReader(mockInput1);
-//        client.playGame();
-//        client.closePipes();
-//
-//
-//        server6.interrupt();
-//        server6.join();
-//    }
+                        if(cnt == 1){
+                            gameResult = 0;
+                            out.writeInt(gameResult);
+                        }
+                        if(cnt == 0){
+                            gameResult = 2;
+                            out.writeInt(gameResult);
+                            cnt++;
+                        }
+
+                        out.reset();
+                    }
+
+                    out.close();
+                    in.close();
+                    serverSock.close();
+                    clientSockets.close();
+                } catch (Exception e) {
+                }
+            }
+        };
+        server6.start();
+        Thread.sleep(100);
+
+        Client client = new Client("localhost", port);
+        System.out.println(client + " connect to the Server successfully!");
+
+        client.recvPlayerId();
+
+        BufferedReader mockInput1 = Mockito.mock(BufferedReader.class);
+        when(mockInput1.readLine()).thenReturn("S", "a", "b", "1", "0", "0", "0",
+                                                     "A", "a", "c", "1", "0", "0", "0",
+                                                     "A", "a", "b", "1", "0", "0", "0",
+                                                     "M", "a", "b", "1", "0", "0", "0",
+                                                     "M", "a", "b", "a", "0", "0", "0",
+                                                     "M", "a", "c", "1", "0", "0", "0",
+                                                     "D");
+        client.setInputReader(mockInput1);
+        client.playGame();
+        client.closePipes();
+
+
+        server6.interrupt();
+        server6.join();
+    }
 }
 
