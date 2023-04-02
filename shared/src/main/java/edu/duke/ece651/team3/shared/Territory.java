@@ -24,10 +24,10 @@ public class Territory implements Serializable, Comparable<Territory> {
      * @param num the number of Infantry units
      */
     public void initBasicUnits(int num) {
-        units.add(new Infantry(num));
-        units.add(new Cavalry(0));
-        units.add(new Artillery(0));
-        units.add(new SpecialForces(0));
+        units.add(new Private(num));
+        units.add(new Corporal(0));
+        units.add(new Specialist(0));
+        units.add(new Sergeant(0));
     }
 
     /**

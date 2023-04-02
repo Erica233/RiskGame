@@ -5,20 +5,11 @@ import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
-import jdk.jfr.Timespan;
-import org.checkerframework.checker.units.qual.A;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
-import org.mockito.Mockito;
-
-import javax.sound.midi.Soundbank;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
 
 
 public class ServerTest {
@@ -90,9 +81,9 @@ public class ServerTest {
         HashMap<Integer, Integer> units = new HashMap<>();
         units.put(1, 1);
 
-        Infantry infantry = new Infantry(1);
+        Private aPrivate = new Private(1);
         HashMap<Class<?>, Integer> unitsWithLevel = new HashMap<>();
-        unitsWithLevel.put(infantry, )
+        unitsWithLevel.put(aPrivate, )
 
         Action move1 = new MoveAction("M","a", "c", units);
         moveActions1.add(move1);

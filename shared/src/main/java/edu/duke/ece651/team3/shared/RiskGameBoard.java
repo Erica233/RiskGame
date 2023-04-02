@@ -377,10 +377,10 @@ public class RiskGameBoard implements Board, Serializable {
 
     public ArrayList<Unit> initializeArrUnits(){
         ArrayList<Unit> arrUnits = new ArrayList<>();
-        arrUnits.add(new Infantry(0));
-        arrUnits.add(new Cavalry(0));
-        arrUnits.add(new Artillery(0));
-        arrUnits.add(new SpecialForces(0));
+        arrUnits.add(new Private(0));
+        arrUnits.add(new Corporal(0));
+        arrUnits.add(new Specialist(0));
+        arrUnits.add(new Sergeant(0));
         return arrUnits;
     }
 

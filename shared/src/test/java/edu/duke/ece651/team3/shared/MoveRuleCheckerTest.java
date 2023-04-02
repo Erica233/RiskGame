@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -27,16 +26,16 @@ public class MoveRuleCheckerTest {
     unit3.put(1, 3);
 
     ArrayList<Unit> unitsToChange = new ArrayList<>();
-    unitsToChange.add(new Infantry(1));
-    unitsToChange.add(new Cavalry(0));
-    unitsToChange.add(new Artillery(0));
-    unitsToChange.add(new SpecialForces(0));
+    unitsToChange.add(new Private(1));
+    unitsToChange.add(new Corporal(0));
+    unitsToChange.add(new Specialist(0));
+    unitsToChange.add(new Sergeant(0));
 
     ArrayList<Unit> unitsToChange1 = new ArrayList<>();
-    unitsToChange1.add(new Infantry(-1));
-    unitsToChange1.add(new Cavalry(0));
-    unitsToChange1.add(new Artillery(0));
-    unitsToChange1.add(new SpecialForces(0));
+    unitsToChange1.add(new Private(-1));
+    unitsToChange1.add(new Corporal(0));
+    unitsToChange1.add(new Specialist(0));
+    unitsToChange1.add(new Sergeant(0));
 
     //a-c: valid path
     Action a = new MoveAction("a", "c", unitsToChange);
@@ -131,10 +130,10 @@ public class MoveRuleCheckerTest {
     RiskGameBoard r = new RiskGameBoard();
     r.initE2Map();
     ArrayList<Unit> unitsToChange = new ArrayList<>();
-    unitsToChange.add(new Infantry(1));
-    unitsToChange.add(new Cavalry(0));
-    unitsToChange.add(new Artillery(0));
-    unitsToChange.add(new SpecialForces(0));
+    unitsToChange.add(new Private(1));
+    unitsToChange.add(new Corporal(0));
+    unitsToChange.add(new Specialist(0));
+    unitsToChange.add(new Sergeant(0));
 
 
     //Correct case
@@ -154,10 +153,10 @@ public class MoveRuleCheckerTest {
     HashMap<Integer, Integer> units2 = new HashMap<>();
     units2.put(1, -1);
     ArrayList<Unit> unitsToChange1 = new ArrayList<>();
-    unitsToChange1.add(new Infantry(-1));
-    unitsToChange1.add(new Cavalry(0));
-    unitsToChange1.add(new Artillery(0));
-    unitsToChange1.add(new SpecialForces(0));
+    unitsToChange1.add(new Private(-1));
+    unitsToChange1.add(new Corporal(0));
+    unitsToChange1.add(new Specialist(0));
+    unitsToChange1.add(new Sergeant(0));
 
     Action a2 = new MoveAction("a", "c", unitsToChange1);
     assertFalse(mrc.checkValidAction(a2, r, r.getAllPlayers().get(0)));
@@ -167,10 +166,10 @@ public class MoveRuleCheckerTest {
     assertTrue(mrc.checkValidAction(a3, r, r.getAllPlayers().get(0)));
 
     ArrayList<Unit> unitsToChange2 = new ArrayList<>();
-    unitsToChange2.add(new Infantry(-1));
-    unitsToChange2.add(new Cavalry(0));
-    unitsToChange2.add(new Artillery(0));
-    unitsToChange2.add(new SpecialForces(0));
+    unitsToChange2.add(new Private(-1));
+    unitsToChange2.add(new Corporal(0));
+    unitsToChange2.add(new Specialist(0));
+    unitsToChange2.add(new Sergeant(0));
 
     RiskGameBoard b = new RiskGameBoard();
     b.initE2Map();

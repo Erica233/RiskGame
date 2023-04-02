@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class UnitTest {
     @Test
     public void test_infantry() {
-        Unit u1 = new Infantry(3);
+        Unit u1 = new Private(3);
         assertEquals("Infantry", u1.getUnitName());
         assertEquals(0, u1.getLevel());
         assertEquals(0, u1.getBonus());
@@ -22,7 +22,7 @@ public class UnitTest {
 
     @Test
     public void test_cavalry() {
-        Unit u1 = new Cavalry(3);
+        Unit u1 = new Corporal(3);
         assertEquals("Cavalry", u1.getUnitName());
         assertEquals(1, u1.getLevel());
         assertEquals(1, u1.getBonus());
@@ -36,7 +36,7 @@ public class UnitTest {
 
     @Test
     public void test_artillery() {
-        Unit u1 = new Artillery(3);
+        Unit u1 = new Specialist(3);
         assertEquals("Artillery", u1.getUnitName());
         assertEquals(2, u1.getLevel());
         assertEquals(3, u1.getBonus());
@@ -50,7 +50,7 @@ public class UnitTest {
 
     @Test
     public void test_specialForces() {
-        Unit u1 = new SpecialForces(3);
+        Unit u1 = new Sergeant(3);
         assertEquals("SpecialForces", u1.getUnitName());
         assertEquals(3, u1.getLevel());
         assertEquals(5, u1.getBonus());
