@@ -94,7 +94,7 @@ public class Client {
         System.out.println("A new turn: updated new board as below!");
         System.out.println(riskGameBoard.displayBoard());
         handleAllActions();
-        System.out.println("handle all acitons");
+        System.out.println("handle all actions");
         sendActionListsToServer();
         System.out.println("send action list to server");
         printActionsLists();

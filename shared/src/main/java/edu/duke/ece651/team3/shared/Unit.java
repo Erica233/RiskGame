@@ -1,12 +1,14 @@
 package edu.duke.ece651.team3.shared;
 
+import java.io.Serializable;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * a class for unit
  *
  */
-public abstract class Unit {
+public abstract class Unit implements Serializable {
     private final String unitName;
     private final int level;
     private final int bonus;
