@@ -13,6 +13,7 @@ public class MoveRuleChecker extends RuleChecker{
     private String srcName;
     private String dstName;
 
+
     /**
      * Check whether the current player and enemy have the territory from attack's information
      * @param _action attack information
@@ -55,19 +56,19 @@ public class MoveRuleChecker extends RuleChecker{
     }
 
     /**
-     * Check whether the attack's num of units is valid, if valid return true if invalid return false
+     * Check whether the move's num of units is valid for each level of unit
+     * if valid return true if invalid return false
      * @param myMove move information
      * @param currPlayer current player
      * @return if valid return true, invalid return false
      */
     public boolean checkNumUnits(Action myMove, Player currPlayer){
         Territory t = findTerritory(myMove, currPlayer);
-        for(Integer c : myMove.getActionUnits().keySet()){
-            int numUnits = myMove.getActionUnits().get(c);
-            System.out.println(" ");
-            //If move units is greater than the current scr unit
-            if(numUnits > t.getUnits().get(c) || numUnits < 0){
-                System.out.println("Invalid numberUnits: " + numUnits + "current territory's unit: " + t.getUnits().get(c));
+        for(int i = 0; i < t.getUnits().size(); i++){
+            int numUnitsChange = myMove.getActionUnits().get(i).getNumUnits();
+            if(numUnitsChange > t.getUnits().get(i).getNumUnits() || numUnitsChange < 0){
+                System.out.println("Invalid numberUnits: " + numUnitsChange + " current territory's unit: "
+                        + t.getUnits().get(i).getNumUnits());
                 return false;
             }
         }
@@ -116,10 +117,10 @@ public class MoveRuleChecker extends RuleChecker{
         }
 
         visited.put(src, true);
-        ArrayList<Territory> Neighbors = src.getNeighbors();
-        for(int i = 0; i < Neighbors.size(); i++){
-            if (!visited.get(Neighbors.get(i)) && checkIsSelfTerritory(Neighbors.get(i), currPlayer) &&
-                    isValidPath(Neighbors.get(i), dst, visited, currPlayer)) {
+        HashMap<Territory, Integer> neighbors = src.getNeighborsDist();
+        for(Territory territory : neighbors.keySet()){
+            if (!visited.get(territory) && checkIsSelfTerritory(territory, currPlayer) &&
+                    isValidPath(territory, dst, visited, currPlayer)) {
                 return true;
             }
         }
@@ -167,5 +168,106 @@ public class MoveRuleChecker extends RuleChecker{
         for(int i = 0; i < player.getOwnedTerritories().size(); i++){
             visited.put(player.getOwnedTerritories().get(i), false);
         }
+    }
+
+
+    /**
+     * This method gets the path that has the minimal food resource cost
+     * @param src the source territory
+     * @param dst the destination territory
+     * @param riskGameBoard the whole board
+     * @return the minimal cost of the path
+     */
+    public int getMinPath(Territory src, Territory dst, RiskGameBoard riskGameBoard){
+        Player currPlayer = getPlayer(src.getTerritoryName(), riskGameBoard);
+        ArrayList<Territory> allSelfTerritories = currPlayer.getOwnedTerritories();
+
+        HashMap<Territory, Boolean> visited = new HashMap<>();
+        HashMap<Territory, Integer> distances = new HashMap<>();
+
+        //Initialize distances to max and visited
+        for (Territory territory : allSelfTerritories) {
+            distances.put(territory, Integer.MAX_VALUE);
+            visited.put(territory, false);
+        }
+
+        //Put the source territory's distance to 0
+        distances.put(src, 0);
+
+       for(int i = 0; i < allSelfTerritories.size() - 1; i++){
+           Territory minTerr = src;
+
+           //Get the Territory that has the min cost to the current territory
+           for(Territory currTerr : allSelfTerritories){
+               if(!visited.get(currTerr) && (minTerr.equals(src) || distances.get(currTerr) < distances.get(minTerr))){
+                   minTerr = currTerr;
+               }
+           }
+           visited.replace(minTerr, true);
+//           Territory minTerr = selectMinCostTerrToSrc(currTerritory, allTerritories, distances, visited, currPlayer);
+//           visited.replace(minTerr, true);
+
+           //Updating the distance for each neighbors of Territory
+           for(Territory newTerr : allSelfTerritories){
+               if(!visited.get(newTerr) && isNeighbor(minTerr, newTerr)
+                       && distances.get(minTerr) + minTerr.getNeighborsDist().get(newTerr) < distances.get(newTerr)){
+                   distances.replace(newTerr, distances.get(minTerr) + minTerr.getNeighborsDist().get(newTerr));
+               }
+           }
+
+       }
+        return distances.get(dst);
+    }
+
+
+    /**
+     * This method checks whether the territory is the neighbor of the current territory
+     * @param curr the current territory
+     * @param checkNeighbor the territory to be checked
+     * @return ture if it is the neighbor of curr, false otherwise
+     */
+    public boolean isNeighbor(Territory curr, Territory checkNeighbor){
+        HashMap<Territory, Integer> neighbors = curr.getNeighborsDist();
+        for(Territory territory : neighbors.keySet()){
+            if(checkNeighbor.equals(territory)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * This method checks whether there is enough resource for the move action
+     * @param src the source territory
+     * @param dst the destination territory
+     * @return boolean true if it is enough, false if it is nor.
+     */
+    public boolean checkResource(Territory src, Territory dst, RiskGameBoard riskGameBoard){
+        int totalResourceCost = getMinPath(src, dst, riskGameBoard);
+        if(totalResourceCost > src.getFoodResource()){
+            System.out.println("Invalid move! The resource is not enough!");
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * This method gets the player that owns the given territory.
+     * @param territoryName the territory's name
+     * @return the current player
+     */
+    public Player getPlayer(String territoryName, RiskGameBoard riskGameBoard){
+        Player currPlayer = null;
+        ArrayList<Player> allPlayers = riskGameBoard.getAllPlayers();
+
+        for(Player p : allPlayers){
+            for(Territory t: p.getOwnedTerritories()){
+                if(t.getTerritoryName().equals(territoryName)){ //If the territory name under current player equals to the source name
+                    currPlayer = p;
+                    break;
+                }
+            }
+        }
+        return currPlayer;
     }
 }

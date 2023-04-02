@@ -19,7 +19,9 @@ public class Server {
     private final RiskGameBoard riscBoard;
     private HashMap<Integer, ArrayList<Action>> movesMap; //player ID and all move actions this player has
     private HashMap<Integer, ArrayList<Action>> attacksMap; //player ID and all attack actions this player has
+    private HashMap<Integer, ArrayList<Action>> actionsMap; //player ID and all attack actions this player has
 
+    public int C; //The expected constant for the move cost
     /**
      * Constructs Server with port number
      * @param _portNum
@@ -46,32 +48,98 @@ public class Server {
         }
     }
 
+    /**
+     * This method gets the path that has the minimal food resource cost
+     * @param src the source territory
+     * @param dst the destination territory
+     * @return the minimal cost of the path
+     */
+    public int getMinPath(Territory src, Territory dst){
+        Player currPlayer = getPlayer(src.getTerritoryName());
+        ArrayList<Territory> allSelfTerritories = currPlayer.getOwnedTerritories();
+
+        HashMap<Territory, Boolean> visited = new HashMap<>();
+        HashMap<Territory, Integer> distances = new HashMap<>();
+
+        //Initialize distances to max and visited
+        for (Territory territory : allSelfTerritories) {
+            distances.put(territory, Integer.MAX_VALUE);
+            visited.put(territory, false);
+        }
+
+        //Put the source territory's distance to 0
+        distances.put(src, 0);
+
+        for(int i = 0; i < allSelfTerritories.size() - 1; i++){
+            Territory minTerr = src;
+
+            //Get the Territory that has the min cost to the current territory
+            for(Territory currTerr : allSelfTerritories){
+                if(!visited.get(currTerr) && (minTerr.equals(src) || distances.get(currTerr) < distances.get(minTerr))){
+                    minTerr = currTerr;
+                }
+            }
+
+            visited.replace(minTerr, true);
+
+            //Updating the distance for each neighbors of Territory
+            for(Territory newTerr : allSelfTerritories){
+                if(!visited.get(newTerr) && isNeighbor(minTerr, newTerr)
+                        && distances.get(minTerr) + minTerr.getNeighborsDist().get(newTerr) < distances.get(newTerr)){
+                    distances.replace(newTerr, distances.get(minTerr) + minTerr.getNeighborsDist().get(newTerr));
+                }
+            }
+
+        }
+        return distances.get(dst);
+    }
+
+
+    /**
+     * This method checks whether the territory is the neighbor of the current territory
+     * @param curr the current territory
+     * @param checkNeighbor the territory to be checked
+     * @return ture if it is the neighbor of curr, false otherwise
+     */
+    public boolean isNeighbor(Territory curr, Territory checkNeighbor){
+        HashMap<Territory, Integer> neighbors = curr.getNeighborsDist();
+        for(Territory territory : neighbors.keySet()){
+            if(checkNeighbor.equals(territory)){
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     /**
      * This method executes all moves for all players
      * @throws Exception
      */
     public void executeMoves() throws Exception {
+        //Execute all move actions for both players
         for(int i : movesMap.keySet()){
             Player player = riscBoard.getAllPlayers().get(i);
-            ArrayList<Action> mymoves = movesMap.get(i);
-            for (Action mymove : mymoves) {
-                if(!checkMove(mymove, player)) continue;
-                executeMove(mymove, player);
+            ArrayList<Action> myMoves = movesMap.get(i);
+            //Execute all moves
+            for (Action myMove : myMoves) {
+                //If the move is invalid, continue
+                if(!checkMove(myMove, player)) continue;
+                executeMove(myMove, player);
             }
         }
     }
 
     /**
      * This method checks whether the move action is valid
-     * @param mymove
+     * @param myMove
      * @param currPlayer
      * @return true if it is valid, false if it is not
      * @throws Exception
      */
-    public boolean checkMove(Action mymove, Player currPlayer) throws Exception {
-        MoveRuleChecker moveRulechecker = new MoveRuleChecker(mymove, (RiskGameBoard) riscBoard);
-        if (!moveRulechecker.checkValidAction(mymove, (RiskGameBoard) riscBoard, currPlayer)) {
+    public boolean checkMove(Action myMove, Player currPlayer) throws Exception {
+        MoveRuleChecker moveRulechecker = new MoveRuleChecker(myMove, riscBoard);
+        if (!moveRulechecker.checkValidAction(myMove, riscBoard, currPlayer)) {
             return false;
         }
         return true;
@@ -79,17 +147,25 @@ public class Server {
 
     /**
      * This method executes one move
-     * @param mymove
+     * @param myMove
      * @param currPlayer
      * @throws Exception
      */
-    public void executeMove(Action mymove, Player currPlayer) {
-        Territory srcTerr = currPlayer.getTerr(mymove.getSrcName());
-        Territory dstTerr = currPlayer.getTerr(mymove.getDstName());
-        for(Integer i : mymove.getActionUnits().keySet()){
-            Integer unitNum = mymove.getActionUnits().get(i);
-            srcTerr.decreaseUnit(i, unitNum);
-            dstTerr.increaseUnit(i, unitNum);
+    public void executeMove(Action myMove, Player currPlayer) {
+        Territory srcTerr = currPlayer.getTerr(myMove.getSrcName());
+        Territory dstTerr = currPlayer.getTerr(myMove.getDstName());
+
+        //Move all the units in their corresponding levels
+        for(int i = 0; i < myMove.getActionUnits().size(); i++) {
+            int unitNum = myMove.getActionUnits().get(i).getNumUnits(); //The num to move
+            srcTerr.decreaseUnit(unitNum, srcTerr.getUnits().get(i).getNumUnits());
+            dstTerr.increaseUnit(unitNum, dstTerr.getUnits().get(i).getNumUnits());
+
+            //Reduce the cost on the current territory
+            int minPathCost = getMinPath(srcTerr, dstTerr);
+            int moveCost = myMove.getActionUnits().get(i).getMoveCost();
+            int cost = C * minPathCost * unitNum * moveCost; //TODO:check the formula
+            srcTerr.reduceFoodResource(cost);
         }
     }
 

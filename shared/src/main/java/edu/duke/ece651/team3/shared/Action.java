@@ -1,30 +1,34 @@
 package edu.duke.ece651.team3.shared;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
 
 /**
  * action class to store move or attack action information
  */
-public class Action implements Serializable {
+public abstract class Action implements Serializable {
     private String actionType;
     private String srcName; //The FROM territory
     private String dstName; //The TO territory
-    private HashMap<Integer, Integer> actionUnits;
+
+    //Class of instance of units, number to change
+//    private HashMap<Unit, Integer> unitsToChange;
+    private ArrayList<Unit> unitsToChange;
 
     /**
      * This constructor takes 4 elements
      * @param _actionType the string indicates the action type, i.e : M, A, D
      * @param _srcName the string indicates the src territory name
      * @param _dstName the string indicates the dst territory name
-     * @param _actionUnits the action units (i.e the move or attack units)
      */
-    public Action(String _actionType, String _srcName, String _dstName, HashMap<Integer, Integer> _actionUnits){
+    public Action(String _actionType, String _srcName, String _dstName,
+                  ArrayList<Unit> _unitsToChange){
         this.actionType = _actionType;
         this.srcName = _srcName;
         this.dstName = _dstName;
-        this.actionUnits = _actionUnits;
+        this.unitsToChange = _unitsToChange;
     }
 
     /**
@@ -73,17 +77,17 @@ public class Action implements Serializable {
         return dstName;
     }
 
-    public HashMap<Integer, Integer> getActionUnits() {
-        return actionUnits;
+    public ArrayList<Unit> getActionUnits() {
+        return unitsToChange;
     }
 
-    public Integer getNumActionUnits(){
-        int res = 0;
-        for(Integer i : actionUnits.keySet()){
-            res+=actionUnits.get(i);
-        }
-        return res;
-    }
+//    public Integer getNumActionUnits(){
+//        int res = 0;
+//        for(Unit i : unitsToChange){
+//            res += unitsToChange.;
+//        }
+//        return res;
+//    }
 
     //Since the actions are read from the user, it supports set methods
     public void setActionType(String actionType) {
@@ -98,16 +102,16 @@ public class Action implements Serializable {
         this.dstName = dstName;
     }
 
-    public void setActionUnits(HashMap<Integer, Integer> actionUnits) {
-        this.actionUnits = actionUnits;
+    public void setActionUnits(ArrayList<Unit> _unitsToChange) {
+        this.unitsToChange = _unitsToChange;
     }
 
 
     @Override
     public String toString() {
         String s = null;
-        for(Integer c : actionUnits.keySet()){
-            s += "("+c.toString()+" : "+actionUnits.get(c)+") ";
+        for(Unit c : unitsToChange){
+            s += "(" + c.toString() + " : " + c.getUnitName() + c.getNumUnits() +  ") ";
         }
         return "Action{" +
                 "actionType='" + actionType + '\'' +

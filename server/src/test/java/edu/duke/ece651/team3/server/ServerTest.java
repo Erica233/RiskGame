@@ -90,6 +90,10 @@ public class ServerTest {
         HashMap<Integer, Integer> units = new HashMap<>();
         units.put(1, 1);
 
+        Infantry infantry = new Infantry(1);
+        HashMap<Class<?>, Integer> unitsWithLevel = new HashMap<>();
+        unitsWithLevel.put(infantry, )
+
         Action move1 = new MoveAction("M","a", "c", units);
         moveActions1.add(move1);
         Action move1_invalid = new MoveAction("M","a", "b", units);
