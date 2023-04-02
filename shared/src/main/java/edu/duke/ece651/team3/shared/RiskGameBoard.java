@@ -306,7 +306,7 @@ public class RiskGameBoard implements Board, Serializable {
         Player defender = allPlayers.get(1-attacker.getPlayerId());
         Territory defenderTerritory = defender.findOwnedTerritoryByName(myattack.getDstName());
         ArrayList<Unit> defUnits = defenderTerritory.getUnits();
-        ArrayList<Unit> attUnits = myattack.getActionUnits();
+        ArrayList<Unit> attUnits = myattack.getUnitsToChange();
         int defNum = getUpdatedUnits(defUnits);
         int attNum = getUpdatedUnits(attUnits);
         int roundNum = 0;
@@ -402,14 +402,14 @@ public class RiskGameBoard implements Board, Serializable {
             newattackers.add(newaction);
         }
         for(Action act : myattacks){
-            ArrayList<Unit> unitsToChange = act.getActionUnits();
+            ArrayList<Unit> unitsToChange = act.getUnitsToChange();
             for(String s : destinations) {
                 if (act.getDstName().equals(s)) {
                     for(int i = 0; i < unitsToChange.size(); i++){
                         for(Action newact : newattackers){
                             if(newact.getDstName().equals(s)){
-                                int val = newact.getActionUnits().get(i).getNumUnits();
-                                val += act.getActionUnits().get(i).getNumUnits();
+                                int val = newact.getUnitsToChange().get(i).getNumUnits();
+                                val += act.getUnitsToChange().get(i).getNumUnits();
 
                             }
                         }

@@ -60,25 +60,44 @@ public class Server {
         HashMap<Territory, Integer> distances = new HashMap<>();
 
         //Initialize distances to max and visited
-        for (Territory territory : allSelfTerritories) {
-            distances.put(territory, Integer.MAX_VALUE);
-            visited.put(territory, false);
+        for(int i = 0; i < allSelfTerritories.size(); i++){
+            Territory currT = allSelfTerritories.get(i);
+            //If the current territory is the neighbor of the src
+            //its distance should be the direct distance
+            if(isNeighbor(src, currT)){
+                distances.put(currT, src.getNeighborsDist().get(currT));
+            }
+            else {
+                distances.put(allSelfTerritories.get(i), Integer.MAX_VALUE);
+            }
+            visited.put(allSelfTerritories.get(i), false);
         }
 
         //Put the source territory's distance to 0
         distances.put(src, 0);
 
+        Territory minTerr = src;
+
         for(int i = 0; i < allSelfTerritories.size() - 1; i++){
-            Territory minTerr = src;
+            int isUpdate = 0;
 
             //Get the Territory that has the min cost to the current territory
             for(Territory currTerr : allSelfTerritories){
-                if(!visited.get(currTerr) && (minTerr.equals(src) || distances.get(currTerr) < distances.get(minTerr))){
+                if(currTerr.equals(minTerr)){
+                    visited.replace(minTerr, true);
+                }
+
+                if(i != 0 && isUpdate == 0 && !visited.get(currTerr) && isNeighbor(minTerr, currTerr)){
+                    minTerr = currTerr;
+                    isUpdate = 1;
+                }
+                if(!visited.get(currTerr) && isNeighbor(minTerr, currTerr) &&
+                        (distances.get(minTerr) != 0 && distances.get(currTerr) < distances.get(minTerr)
+                                || distances.get(minTerr) == 0)){
                     minTerr = currTerr;
                 }
             }
-
-            visited.replace(minTerr, true);
+            visited.replace(minTerr, true); //Have used the minTerr as the middle node
 
             //Updating the distance for each neighbors of Territory
             for(Territory newTerr : allSelfTerritories){
