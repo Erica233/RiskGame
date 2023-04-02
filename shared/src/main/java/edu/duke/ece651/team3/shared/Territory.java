@@ -267,7 +267,7 @@ public class Territory implements Serializable, Comparable<Territory> {
             if (units.get(level).getNumUnits() < unitsToChange.get(level).getNumUnits()) {
                 throw new IllegalArgumentException("Can't delete too much num of unit");
             }
-            units.get(level).setNumUnits(units.get(level).getNumUnits() + unitsToChange.get(level).getNumUnits());
+            units.get(level).setNumUnits(units.get(level).getNumUnits() - unitsToChange.get(level).getNumUnits());
         }
         updateNumUnits();
     }
