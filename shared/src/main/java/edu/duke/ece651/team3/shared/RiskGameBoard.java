@@ -334,6 +334,18 @@ public class RiskGameBoard implements Board, Serializable {
         }
     }
 
+
+    public void attackConsumeFood(Action myattack, Player player){
+        String src = myattack.getSrcName();
+        String dst = myattack.getDstName();
+        Territory terr = player.getTerr(src);
+        int distance = terr.getNeighborsDist().get(dst);
+        ArrayList<Unit> unitsToChange = myattack.getUnitsToChange();
+        for(int j = 0; j < unitsToChange.size(); j++){
+            player.findOwnedTerritoryByName(myattack.getSrcName()).reduceFood((j+1) * unitsToChange.get(j).getNumUnits() * distance);
+        }
+    }
+
     /**
      * This method executes all attacks for all players
      * @throws Exception
@@ -346,13 +358,13 @@ public class RiskGameBoard implements Board, Serializable {
             System.out.println("Player "+player.getPlayerId()+"'s execute all attacks");
             ArrayList<Action> newAttacks = new ArrayList<>();
             for(Action myattack : actionsMap.get(i)) {
-                if(myattack.getActionType() == "A" || !this.checkAttack(myattack, player)){continue;}
+                if(!myattack.isAttackType() || !this.checkAttack(myattack, player)){continue;}
                 newAttacks.add(myattack);
+                attackConsumeFood(myattack, player);
                 player.executeAttack(myattack);
             }
             intergAttack(newAttacks);
             attacksMap.put(player.getPlayerId(), newAttacks);
-
         }
         for(int i : attacksMap.keySet()){
             Player player = this.getAllPlayers().get(i);
