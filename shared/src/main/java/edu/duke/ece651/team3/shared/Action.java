@@ -46,13 +46,13 @@ public class Action implements Serializable {
         return actionType.toUpperCase(Locale.ROOT).equals("A");
     }
 
-    /**
-     * This method checks whether the action is Done
-     * @return true if it is Done, false if it is not
-     */
-    public boolean isDone(){
-        return actionType.toUpperCase(Locale.ROOT).equals("D");
-    }
+//    /**
+//     * This method checks whether the action is Done
+//     * @return true if it is Done, false if it is not
+//     */
+//    public boolean isDone(){
+//        return actionType.toUpperCase(Locale.ROOT).equals("D");
+//    }
 
     /**
      * This method checks whether the action type is valid(Move, Attack, Done)
@@ -60,7 +60,8 @@ public class Action implements Serializable {
      */
 
     public boolean isValidType(){
-        return isAttackType() || isMoveType() || isDone();
+//        return isAttackType() || isMoveType() || isDone();
+        return isAttackType() || isMoveType();
     }
 
     public String getActionType() {
@@ -79,16 +80,8 @@ public class Action implements Serializable {
         return unitsToChange;
     }
 
-//    public Integer getNumActionUnits(){
-//        int res = 0;
-//        for(Unit i : unitsToChange){
-//            res += unitsToChange.;
-//        }
-//        return res;
-//    }
-
     //Since the actions are read from the user, it supports set methods
-    public void setUnitsToChange(String actionType) {
+    public void setActionType(String actionType) {
         this.actionType = actionType;
     }
 
@@ -116,7 +109,6 @@ public class Action implements Serializable {
                 "actionType='" + actionType + '\'' +
                 ", src=" + srcName +
                 ", dst=" + dstName +
-                ", actionUnits=" + s +
                 '}';
     }
 

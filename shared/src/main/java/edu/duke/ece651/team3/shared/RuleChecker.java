@@ -31,7 +31,7 @@ public abstract class RuleChecker {
             System.out.printf("checkPath invalid");
             return false;
         }
-        if(!checkResources(myAction, currPlayer)){
+        if(!checkResources(myAction, r, currPlayer)){
             System.out.printf("checkResources invalid");
             return false;
         }
@@ -62,6 +62,6 @@ public abstract class RuleChecker {
      */
     public abstract boolean checkPath(Action myAction, RiskGameBoard r, Player currPlayer) throws Exception;
 
-    public abstract boolean checkResources(Action myAttack, Player currPlayer) throws Exception;
+    public abstract boolean checkResources(Action myAttack, RiskGameBoard r,  Player currPlayer) throws Exception;
 
 }

@@ -42,6 +42,7 @@ public class MoveRuleCheckerTest {
         //a-c: invalid dst for move
         Action a1 = new MoveAction("a", "c", unitsToChange);
         MoveRuleChecker mrc1 = new MoveRuleChecker(a1, r);
+//        RuleChecker mrc0 = new RuleChecker(a1, r);
         assertEquals(false, mrc1.checkSrcDst(a1, p1));
         assertEquals(false, mrc1.checkValidAction(a1, r, p1));
 

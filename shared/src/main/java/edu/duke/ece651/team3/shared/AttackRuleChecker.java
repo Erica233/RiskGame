@@ -102,10 +102,11 @@ public class AttackRuleChecker extends RuleChecker{
      * Check whether the attack's cost of food is valid
      * if valid return true if invalid return false
      * @param myAttack attack information
+     * @param r the whole board
      * @param currPlayer current player
      * @return if valid return true, invalid return false
      */
-    public boolean checkResources(Action myAttack, Player currPlayer){
+    public boolean checkResources(Action myAttack, RiskGameBoard r, Player currPlayer){
         for(int i = 0; i < myAttack.getUnitsToChange().size(); i++){
             String src = myAttack.getSrcName();
             String dst = myAttack.getDstName();

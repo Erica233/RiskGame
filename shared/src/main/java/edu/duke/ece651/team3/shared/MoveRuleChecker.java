@@ -8,7 +8,7 @@ import java.util.HashMap;
  * A class of rule checker for only checking moves actions
  *
  */
-public class MoveRuleChecker{
+public class MoveRuleChecker extends RuleChecker{
     private final Board riskGameBoard;
     private final Action action;
     private String srcName;
@@ -22,31 +22,11 @@ public class MoveRuleChecker{
      * @return if valid return true, invalid return false
      */
     public MoveRuleChecker(Action _action, Board _riskGameBoard){
-//        super(_action);
+        super(_action);
         this.action = _action;
         this.srcName = this.action.getSrcName();
         this.dstName = this.action.getDstName();
         this.riskGameBoard = _riskGameBoard;
-    }
-
-    public boolean checkValidAction(Action myAction, RiskGameBoard r, Player currPlayer) throws Exception {
-        if (!checkSrcDst(myAction, currPlayer)) {
-            System.out.printf("src dst invalid");
-            return false;
-        }
-        if (!checkNumUnits(myAction, currPlayer)) {
-            System.out.printf("checkNumUnits invalid");
-            return false;
-        }
-        if (!checkPath(myAction, r, currPlayer)) {
-            System.out.printf("checkPath invalid");
-            return false;
-        }
-        if(!checkResources(myAction, r, currPlayer)){
-            System.out.printf("checkResources invalid");
-            return false;
-        }
-        return true;
     }
 
 
@@ -56,6 +36,7 @@ public class MoveRuleChecker{
      * @param currPlayer current player
      * @return if valid return true, invalid return false
      */
+    @Override
     public boolean checkSrcDst(Action myAttack, Player currPlayer){
         return currPlayer.checkTerrOwner(myAttack.getSrcName()) && currPlayer.checkTerrOwner(myAttack.getDstName());
     }
@@ -279,7 +260,9 @@ public class MoveRuleChecker{
 
     /**
      * This method checks whether there is enough resource for the move action
-     * @param
+     * @param myAction the current action
+     * @param riskGameBoard the whole board
+     * @param currPlayer the current player
      * @return boolean true if it is enough, false if it is nor.
      */
     public boolean checkResources(Action myAction, RiskGameBoard riskGameBoard, Player currPlayer){
@@ -298,6 +281,7 @@ public class MoveRuleChecker{
     /**
      * This method gets the player that owns the given territory.
      * @param territoryName the territory's name
+     * @param riskGameBoard the whole board
      * @return the current player
      */
     public Player getPlayer(String territoryName, RiskGameBoard riskGameBoard){
