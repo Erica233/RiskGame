@@ -89,10 +89,6 @@ public class Territory implements Serializable, Comparable<Territory> {
         return false;
     }
 
-    public ArrayList<Unit> getAttackerUnits() {
-        return attackerUnits;
-    }
-
     public void setUnits(ArrayList<Unit> _units) {
         units = _units;
     }

@@ -1,36 +1,74 @@
-//package edu.duke.ece651.team3.shared;
-//
-//import static org.junit.jupiter.api.Assertions.*;
-//import static org.junit.jupiter.api.Assertions.assertNotEquals;
-//
-//import org.junit.jupiter.api.Test;
-//
-//import java.util.ArrayList;
-//import java.util.HashMap;
-//
-//public class TerritoryTest {
-//    @Test
-//    public void test_equals() throws Exception {
-//        Territory t1 = new Territory("a", 2);
-//        Territory t2 = new Territory("a", 2);
-//        Territory t3 = new Territory("b", 2);
-//        Territory t4 = new Territory("a", 3);
-//        Territory t5 = new Territory("A", 2);
-//        assertNotEquals(t1, "(a, 2)"); //different objects
-//        assertEquals(t1, t2); //different address
-//        assertNotEquals(t1, t3); //different name
-//        assertNotEquals(t1, t4); //different numUnits
-//        assertFalse(t1.equals(t5)); // upper & lower case name
-//        Territory t6 = new Territory("x", 6);
-//        Territory t7 = new Territory("y", 7);
-//        Territory t8 = new Territory("z", 8);
-//        //t1.addNeighbors(t6, t7, t8);
-//        assertNotEquals(t1, t2); //different neighbors
-//        //t2.addNeighbors(t7, t6, t8);
-//        assertEquals(t1, t2); //neighbors different order
-//
-//
-//    }
+package edu.duke.ece651.team3.shared;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+
+import org.junit.jupiter.api.Test;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+
+public class TerritoryTest {
+    @Test
+    public void test_equals() throws Exception {
+        Territory t1 = new Territory("a");
+        Territory t2 = new Territory("a");
+        Territory t3 = new Territory("b");
+        Territory t4 = new Territory("a");
+        Territory t5 = new Territory("A");
+
+        assertNotEquals(t1, "(a, 2)"); //different objects
+        assertEquals(0, t1.compareTo(t2));//different address
+        assertNotEquals(t1, t3); //different name
+        assertNotEquals(t1, t4); //different numUnits
+        assertFalse(t1.equals(t5)); // upper & lower case name
+        assertNotEquals(t1, t2); //different neighbors
+        assertEquals(0, t1.compareTo(t2)); //neighbors different order
+    }
+
+    @Test
+    public void test_all() throws Exception {
+        RiskGameBoard r = new RiskGameBoard();
+        Territory a = new Territory("a", 5, 10, 10);
+        Territory b = new Territory("b", 5, 10, 10);
+        Territory c = new Territory("c", 5, 10, 10);
+        Territory d = new Territory("d", 5, 10, 10);
+
+        r.connectNeighbors(a, b, 1);
+        r.connectNeighbors(a, d, 1);
+        r.connectNeighbors(b, c, 1);
+        r.connectNeighbors(c, d, 1);
+        r.connectNeighbors(b, d, 1);
+
+        ArrayList<Territory> player1T = new ArrayList<>();
+        player1T.add(a);
+        player1T.add(c);
+
+        ArrayList<Territory> player2T = new ArrayList<>();
+        player2T.add(b);
+        player2T.add(d);
+
+        Player p1 = new Player(0, "Orange", 10, player1T);
+        Player p2 = new Player(1, "Blue", 5, player2T);
+
+        r.addPlayer(p1);
+        r.addPlayer(p2);
+
+
+        ArrayList<Unit> unitsToChange = new ArrayList<>();
+        unitsToChange.add(new Private(1));
+        unitsToChange.add(new Corporal(0));
+        unitsToChange.add(new Specialist(0));
+        unitsToChange.add(new Sergeant(0));
+
+        assertFalse(a.hasSameNeighborsDist(b));
+        assertTrue(a.hasSameNeighborsDist(c));
+
+        ArrayList<String> exp_sorted = new ArrayList<>();
+        exp_sorted.add("b");
+        exp_sorted.add("d");
+        assertEquals(exp_sorted, a.getSortedNeighborNames());
+    }
 //
 //    @Test
 //    public void test_name_numUnits_neighborsDist() {
@@ -167,4 +205,4 @@
 //
 //        assertEquals(newUnit, territory.getUnits());
 //    }
-//}
+}

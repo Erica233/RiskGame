@@ -170,52 +170,54 @@ class RiskGameBoardTest {
         assertEquals(0, r.getStrongest(units));
         assertEquals(0, r.getWeakest(units));
 
-
+        ArrayList<Unit> units_empty = new ArrayList<>();
+        assertEquals(-1, r.getStrongest(units_empty));
+        assertEquals(-1, r.getWeakest(units_empty));
 
     }
-//
-//    @Test
-//    void test_executeAttack() throws Exception {
-//        RiskGameBoard b = new RiskGameBoard();
-//        b.initE2Map();
-//        Player p1 = b.getAllPlayers().get(0);
-//        Player p2 = b.getAllPlayers().get(1);
-//        ArrayList<Unit> units = new ArrayList<>();
-//        units.add(new Private(5));
-//        units.add(new Corporal(0));
-//        units.add(new Specialist(0));
-//        units.add(new Sergeant(0));
-//
-//        Action action = new Action("M", "a", "j", units);
-//        p1.executeMove(action);
-//        Action action1 = new Action("A", "b", "a", units);
-//        b.executeAttack(action1, p2);
-//        assertEquals(2, b.getAllPlayers().size());
-//    }
-//
-//    @Test
-//    void test_executeAttacks() throws Exception {
-//        RiskGameBoard b = new RiskGameBoard();
-//        b.initE2Map();
-//
-//        ArrayList<Unit> units = new ArrayList<>();
-//        units.add(new Private(1));
-//        units.add(new Corporal(0));
-//        units.add(new Specialist(0));
-//        units.add(new Sergeant(0));
-//
-//        Action action1 = new Action("A", "b", "d", units);
-//
-//        ArrayList<Action> arrayList = new ArrayList<>();
-//        ArrayList<Action> arrayList1 = new ArrayList<>();
-//        arrayList1.add(action1);
-//
-//        HashMap<Integer, ArrayList<Action>> attacksMap = new HashMap<>();
-//        attacksMap.put(0, arrayList);
-//        attacksMap.put(1, arrayList1);
-//        b.executeAttacks(attacksMap);
-//        assertEquals(2, b.getAllPlayers().size());
-//    }
+
+    @Test
+    void test_executeAttack() throws Exception {
+        RiskGameBoard b = new RiskGameBoard();
+        b.initE2Map();
+        Player p1 = b.getAllPlayers().get(0);
+        Player p2 = b.getAllPlayers().get(1);
+        ArrayList<Unit> units = new ArrayList<>();
+        units.add(new Private(5));
+        units.add(new Corporal(0));
+        units.add(new Specialist(0));
+        units.add(new Sergeant(0));
+
+        Action action = new Action("M", "a", "j", units);
+        p1.executeMove(action);
+        Action action1 = new Action("A", "b", "a", units);
+        b.executeAttack(action1, p2);
+        assertEquals(2, b.getAllPlayers().size());
+    }
+
+    @Test
+    void test_executeAttacks() throws Exception {
+        RiskGameBoard b = new RiskGameBoard();
+        b.initE2Map();
+
+        ArrayList<Unit> units = new ArrayList<>();
+        units.add(new Private(1));
+        units.add(new Corporal(0));
+        units.add(new Specialist(0));
+        units.add(new Sergeant(0));
+
+        Action action1 = new Action("A", "b", "d", units);
+
+        ArrayList<Action> arrayList = new ArrayList<>();
+        ArrayList<Action> arrayList1 = new ArrayList<>();
+        arrayList1.add(action1);
+
+        HashMap<Integer, ArrayList<Action>> attacksMap = new HashMap<>();
+        attacksMap.put(0, arrayList);
+        attacksMap.put(1, arrayList1);
+        b.executeAttacks(attacksMap);
+        assertEquals(2, b.getAllPlayers().size());
+    }
 //
 //    @Test
 //    void test_multipleAttacks() throws Exception {
