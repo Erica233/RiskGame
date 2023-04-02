@@ -222,8 +222,15 @@ public class Territory implements Serializable, Comparable<Territory> {
             output.append(" (no neighbors)\n");
         } else {
             output.append(" (next to: ");
+            int i = 0;
             for (Territory neigh: neighborsDist.keySet()) {
-                output.append(neighborsDist.get(neigh.getTerritoryName()) + " " + neigh.getTerritoryName() + ", ");
+                ++ i;
+                if(i != neighborsDist.size()){
+                    output.append(neigh.getTerritoryName() +  "（" + neighborsDist.get(neigh)  + "), ");
+                }
+                else{
+                    output.append(neigh.getTerritoryName() +  "（" + neighborsDist.get(neigh)  + ")");
+                }
             }
             output.append(")\n");
         }

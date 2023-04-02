@@ -108,11 +108,13 @@ public class AttackRuleChecker extends RuleChecker{
      */
     public boolean checkResources(Action myAttack, RiskGameBoard r, Player currPlayer){
         for(int i = 0; i < myAttack.getUnitsToChange().size(); i++){
+            Player defender = r.getAllPlayers().get(1 - currPlayer.getPlayerId());
             String src = myAttack.getSrcName();
             String dst = myAttack.getDstName();
             Territory terr = currPlayer.getTerr(src);
+            Territory terr_dst = defender.getTerr(dst);
             int foodRsc = terr.getFood();
-            int distance = terr.getNeighborsDist().get(dst);
+            int distance = terr.getNeighborsDist().get(terr_dst);
             ArrayList<Unit> unitsToChange = myAttack.getUnitsToChange();
             for(int j = 0; j < unitsToChange.size(); j++){
                 foodRsc -= (j+1) * unitsToChange.get(j).getNumUnits() * distance;

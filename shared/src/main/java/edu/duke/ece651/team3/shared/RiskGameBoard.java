@@ -240,8 +240,8 @@ public class RiskGameBoard implements Board, Serializable {
      * @return the weakest unit's index
      */
     public int getWeakest(ArrayList<Unit> units){
-        for(int i = 0; i < units.size(); i++){
-            if(units.get(units.size()-i).getNumUnits() != 0){
+        for(int i = units.size() - 1; i >= 0; i--){
+            if(units.get(i).getNumUnits() != 0){
                 return i;
             }
         }
