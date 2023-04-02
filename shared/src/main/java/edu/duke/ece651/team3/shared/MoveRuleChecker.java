@@ -42,7 +42,7 @@ public class MoveRuleChecker{
             System.out.printf("checkPath invalid");
             return false;
         }
-        if(!checkResources(myAction, currPlayer, r)){
+        if(!checkResources(myAction, r, currPlayer)){
             System.out.printf("checkResources invalid");
             return false;
         }
@@ -282,7 +282,7 @@ public class MoveRuleChecker{
      * @param
      * @return boolean true if it is enough, false if it is nor.
      */
-    public boolean checkResources(Action myAction, Player currPlayer, RiskGameBoard riskGameBoard){
+    public boolean checkResources(Action myAction, RiskGameBoard riskGameBoard, Player currPlayer){
         Territory src = currPlayer.findOwnedTerritoryByName(myAction.getSrcName());
         Territory dst = currPlayer.findOwnedTerritoryByName(myAction.getDstName());
 
