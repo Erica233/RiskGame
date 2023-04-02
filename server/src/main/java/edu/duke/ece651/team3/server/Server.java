@@ -17,8 +17,8 @@ public class Server {
     private final ArrayList<ObjectOutputStream> objectsToClients;
     private final ArrayList<ObjectInputStream> objectsFromClients;
     private final RiskGameBoard riscBoard;
-    private HashMap<Integer, ArrayList<Action>> movesMap; //player ID and all move actions this player has
-    private HashMap<Integer, ArrayList<Action>> attacksMap; //player ID and all attack actions this player has
+//    private HashMap<Integer, ArrayList<Action>> movesMap; //player ID and all move actions this player has
+//    private HashMap<Integer, ArrayList<Action>> attacksMap; //player ID and all attack actions this player has
     private HashMap<Integer, ArrayList<Action>> actionsMap; //player ID and all attack actions this player has
 
     /**

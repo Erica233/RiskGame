@@ -16,7 +16,7 @@ public class Territory implements Serializable, Comparable<Territory> {
     private int food = 0;
     private int tech = 0;
     private int winnerId = -1;
-    private HashMap<Integer, Integer> attackerUnits = new HashMap<>();
+    private ArrayList<Unit> attackerUnits = new ArrayList<>();
 
 
     /**
@@ -90,7 +90,7 @@ public class Territory implements Serializable, Comparable<Territory> {
         return false;
     }
 
-    public HashMap<Integer, Integer> getAttackerUnits() {
+    public ArrayList<Unit> getAttackerUnits() {
         return attackerUnits;
     }
 
@@ -113,7 +113,7 @@ public class Territory implements Serializable, Comparable<Territory> {
         }
         //reset
         winnerId = -1;
-        attackerUnits = new HashMap<>();
+        attackerUnits = new ArrayList<>();
     }
 
     /**
@@ -315,19 +315,11 @@ public class Territory implements Serializable, Comparable<Territory> {
         return units;
     }
 
-    public int getFoodResource() {
-        return foodResource;
-    }
-
-    public void setFoodResource(int foodResource) {
-        this.foodResource = foodResource;
-    }
-
     public void setWinnerId(int winnerId){
         this.winnerId = winnerId;
     }
 
-    public void setAttackerUnits(HashMap<Integer, Integer> newUnites){
+    public void setAttackerUnits(ArrayList<Unit> newUnites){
         this.attackerUnits = newUnites;
     }
 
