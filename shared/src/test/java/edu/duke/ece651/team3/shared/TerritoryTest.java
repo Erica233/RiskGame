@@ -3,6 +3,7 @@ package edu.duke.ece651.team3.shared;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
+import org.checkerframework.checker.units.qual.A;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -69,6 +70,17 @@ public class TerritoryTest {
         exp_sorted.add("d");
         assertEquals(exp_sorted, a.getSortedNeighborNames());
     }
+
+    @Test
+    public void test_constructor() throws Exception {
+        HashMap<Territory, Integer> neighborsDist = new HashMap<>();
+        Territory m = new Territory("m", 5, 0, 0);
+        neighborsDist.put(m, 2);
+
+        Territory a = new Territory("a", neighborsDist, 5, 0, 0);
+        assertEquals(neighborsDist, a.getNeighborsDist());
+
+    }
 //
 //    @Test
 //    public void test_name_numUnits_neighborsDist() {
@@ -85,25 +97,68 @@ public class TerritoryTest {
 //        assertEquals(units, t2.getUnits());
 //    }
 //
-//    @Test
-//    public void test_addANeighbor() throws Exception {
-//        ArrayList<Territory> n1 = new ArrayList<>();
-//        Territory t1 = new Territory("Oz", 12);
-//        assertEquals(n1, t1.getNeighborsDist());
-//        ArrayList<Territory> n2 = new ArrayList<>();
-//        n2.add(t1);
-//        Territory t2 = new Territory("Gondor", n2, new HashMap<>());
-//        assertEquals(n2, t2.getNeighborsDist());
-//        ArrayList<Territory> n3 = new ArrayList<>();
-//        n3.add(t2);
-//        Territory t3 = new Territory("Morder", n3, new HashMap<>());
-//        t2.addANeighbor(t3);
-//        n2.add(t3);
-//        assertEquals(n2, t2.getNeighborsDist());
-////        assertThrows(Exception.class, () -> t2.addANeighbor(t2));
-////        assertThrows(Exception.class, () -> t2.addNeighbors(t2, t1));
-//
-//    }
+    @Test
+    public void test_addANeighbor() throws Exception {
+        RiskGameBoard r = new RiskGameBoard();
+        r.initE2Map();
+
+        Player p1 = r.getAllPlayers().get(0);
+        Player p2 = r.getAllPlayers().get(1);
+        Territory a = p1.getTerr("a");
+        a.setFood(10);
+        assertEquals(10, a.getFood());
+        a.reduceFood(5);
+        assertEquals(5, a.getFood());
+
+        Territory b = p2.getTerr("b"); //b is already a neighbor of a
+//        a.addANeighbor(b, 1);
+
+        assertFalse(a.checkValidNeighbor(a));
+        assertFalse(a.checkExistNeighbor("i"));
+
+    }
+
+    @Test
+    public void test_others(){
+        ArrayList<Territory> allTerr = new ArrayList<>();
+
+        Territory a = new Territory("a");
+        Territory b = new Territory("b");
+
+        allTerr.add(a);
+
+        assertEquals(true, a.isValidToAdd(allTerr, b));
+
+
+
+    }
+
+    @Test
+    public void test_tech() throws Exception {
+        RiskGameBoard r = new RiskGameBoard();
+        r.initE2Map();
+
+        assertEquals(0, r.getAllPlayers().get(0).getOwnedTerritories().get(0).getTech());
+    }
+
+    @Test
+    public void test_neighborDist() throws Exception {
+        RiskGameBoard r = new RiskGameBoard();
+        r.initE2Map();
+
+        Player p1 = r.getAllPlayers().get(0);
+        Player p2 = r.getAllPlayers().get(1);
+        Territory a = p1.getTerr("a");
+        Territory i = p1.getTerr("i");
+        Territory j = p1.getTerr("j");
+
+        Territory b = p2.getTerr("b");
+        assertFalse(a.hasSameNeighborsDist(i));
+        assertFalse(a.hasSameNeighborsDist(j));
+        assertFalse(a.checkValidNeighbor(b));
+
+//        a.addANeighbor(b, 1); //TODO throws exception
+    }
 //
 //    @Test
 //    public void test_checkValidNeighbor() throws Exception {
