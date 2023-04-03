@@ -364,10 +364,10 @@ public class Server {
      * The test map
      * @throws Exception
      */
-//    public void initTestGame() throws Exception {
-//        riscBoard.initSmallMap();
-//        assignPlayerIdToClients();
-//    }
+    public void initSmallGame() throws Exception {
+        riscBoard.initSmallMap();
+        assignPlayerIdToClients();
+    }
 
     /**
      * This method connects the client using ObjectOutputStream and ObjectInputStream

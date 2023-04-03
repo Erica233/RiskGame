@@ -31,7 +31,7 @@ class RiskGameBoardTest {
 
     @Test
     public void test_displayBoard() throws Exception {
-        Board m1 = new RiskGameBoard();
+        RiskGameBoard m1 = new RiskGameBoard();
         assertEquals("No players in the Board!\n", m1.displayBoard());
         m1.initE2Map();
 
@@ -53,8 +53,11 @@ class RiskGameBoardTest {
                 "5 units in f (next to: g（2), i（3), k（2), e（2), l（1))\n" +
                 "5 units in k (next to: i（2), f（2))\n\n";
         System.out.println(m1.displayBoard());
-//        assertEquals(expected, m1.displayBoard()); //TODO: HashMap unordered
+        m1.initSmallMap();
+//        assertEquals(expected , m1.displayBoard()); //TODO: HashMap unordered
     }
+
+
 
     @Test
     void test_tryAddTerritory() throws Exception {

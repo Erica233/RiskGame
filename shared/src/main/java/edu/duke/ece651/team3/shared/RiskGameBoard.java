@@ -105,74 +105,35 @@ public class RiskGameBoard implements Board, Serializable {
         System.out.println("initialize map successfully!");
         return output;
     }
-//
-//    public String initTestMap() throws Exception {
-//        Territory t1 = new Territory("a", 1, 5);
-//        Territory t2 = new Territory("b", 1, 5);
-//        Territory t3 = new Territory("c", 1, 5);
-//        Territory t4 = new Territory("d", 1, 5);
-//        Territory t5 = new Territory("e", 1, 5);
-//        Territory t6 = new Territory("f", 1, 5);
-//        Territory t7 = new Territory("g", 1, 5);
-//        Territory t8 = new Territory("h", 1, 5);
-//        Territory t9 = new Territory("i", 1, 5);
-//        Territory t10 = new Territory("j", 1, 5);
-//        Territory t11 = new Territory("k", 1, 5);
-//        Territory t12 = new Territory("l", 1, 5);
-//        t1.addNeighbors(t2, t3);
-//        t2.addNeighbors(t1, t3, t4);
-//        t3.addNeighbors(t1, t2, t4, t5, t12);
-//        t4.addNeighbors(t2, t3, t5);
-//        t5.addNeighbors(t3, t4, t6, t12);
-//        t6.addNeighbors(t5, t11, t12);
-//        t7.addNeighbors(t8, t9, t12);
-//        t8.addNeighbors(t7, t9, t12);
-//        t9.addNeighbors(t7, t8, t10, t12);
-//        t10.addNeighbors(t9, t11);
-//        t11.addNeighbors(t6, t10);
-//        t12.addNeighbors(t3, t5, t6, t7, t8, t9);
-//
-//        ArrayList<Territory> territoriesOwnedByPlayer1 = new ArrayList<>();
-//        Collections.addAll(territoriesOwnedByPlayer1, t1, t3, t7, t8, t10, t12);
-//        ArrayList<Territory> territoriesOwnedByPlayer2 = new ArrayList<>();
-//        Collections.addAll(territoriesOwnedByPlayer2, t2, t4, t5, t6, t9, t11);
-//
-//        String output = "";
-//        Player player1 = new Player(0, "red", 30, territoriesOwnedByPlayer1);
-//        Player player2 = new Player(1, "blue", 30, territoriesOwnedByPlayer2);
-//        allPlayers.add(player1);
-//        allPlayers.add(player2);
-//        output = output + player1.displayPlayer() + "\n" + player2.displayPlayer() + "\n";
-//        System.out.println("initialize map successfully!");
-//        return output;
-//    }
-//
-//    public String initSmallMap() throws Exception {
-//        Territory t1 = new Territory("a", 1, 10);
-//        Territory t2 = new Territory("b", 1, 1);
-//        Territory t3 = new Territory("c", 1, 10);
-//        Territory t4 = new Territory("d", 1, 1);
-//
-//        t1.addNeighbors(t2, t3, t4);
-//        t2.addNeighbors(t1, t3);
-//        t3.addNeighbors(t1, t2, t4);
-//        t4.addNeighbors(t1, t3);
-//
-//        ArrayList<Territory> territoriesOwnedByPlayer1 = new ArrayList<>();
-//        Collections.addAll(territoriesOwnedByPlayer1, t1, t3);
-//        ArrayList<Territory> territoriesOwnedByPlayer2 = new ArrayList<>();
-//        Collections.addAll(territoriesOwnedByPlayer2, t2, t4);
-//
-//        String output = "";
-//        Player player1 = new Player(0, "red", 4, territoriesOwnedByPlayer1);
-//        Player player2 = new Player(1, "blue", 4, territoriesOwnedByPlayer2);
-//        allPlayers.add(player1);
-//        allPlayers.add(player2);
-//        output = output + player1.displayPlayer() + "\n" + player2.displayPlayer() + "\n";
-//        System.out.println("initialize map successfully!");
-//        return output;
-//    }
 
+    /**
+     * This method initialize the small map that is used for testing
+     * @throws Exception
+     */
+    public void initSmallMap() throws Exception{
+        Territory a = new Territory("a", 1, 5, 5);
+        Territory b = new Territory("b", 1, 5, 5);
+        Territory c = new Territory("c", 1, 5, 5);
+//        Territory d = new Territory("d", 1, 5, 5);
+
+        connectNeighbors(a, b, 1);
+        connectNeighbors(a, c, 1);
+//        connectNeighbors(a, d, 1);
+        connectNeighbors(b, c, 1);
+//        connectNeighbors(b, d, 1);
+//        connectNeighbors(c, d, 1);
+
+        ArrayList<Territory> territories1 = new ArrayList<>();
+        Collections.addAll(territories1, a, c);
+        ArrayList<Territory> territories2 = new ArrayList<>();
+        Collections.addAll(territories2, b);
+
+        Player player1 = new Player(0, "orange", 10, territories1);
+        Player player2 = new Player(1, "blue", 5, territories2);
+        addPlayer(player1);
+        addPlayer(player2);
+
+    }
     /**
      * This method checks which player wins
      * @return 1 if player 1 wins, 0 if player 0 wins, 2 to continue
@@ -336,10 +297,12 @@ public class RiskGameBoard implements Board, Serializable {
 
 
     public void attackConsumeFood(Action myattack, Player player){
-        String src = myattack.getSrcName();
-        String dst = myattack.getDstName();
-        Territory terr = player.getTerr(src);
-        int distance = terr.getNeighborsDist().get(dst);
+        Player defender = allPlayers.get(1 - player.getPlayerId());
+        String srcName = myattack.getSrcName();
+        String dstName = myattack.getDstName();
+        Territory src = player.getTerr(srcName);
+        Territory dst = defender.getTerr(dstName);
+        int distance = src.getNeighborsDist().get(dst);
         ArrayList<Unit> unitsToChange = myattack.getUnitsToChange();
         for(int j = 0; j < unitsToChange.size(); j++){
             player.findOwnedTerritoryByName(myattack.getSrcName()).reduceFood((j+1) * unitsToChange.get(j).getNumUnits() * distance);
