@@ -1,5 +1,6 @@
 package edu.duke.ece651.team3.shared;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Ac class of rule checker for only checking attacks actions
@@ -109,9 +110,16 @@ public class AttackRuleChecker extends RuleChecker{
         for(int i = 0; i < myAttack.getUnitsToChange().size(); i++){
             String src = myAttack.getSrcName();
             String dst = myAttack.getDstName();
-            Territory terr = currPlayer.getTerr(src);
+            Territory terr = currPlayer.findOwnedTerritoryByName(src);
             int foodRsc = terr.getFood();
-            int distance = terr.getNeighborsDist().get(dst);
+            HashMap<Territory, Integer> neighbors = terr.getNeighborsDist();
+            int distance = 0;
+            for(Territory t : neighbors.keySet()){
+                if(t.getTerritoryName().equals(dst)){
+                    distance = neighbors.get(t);
+                }
+            }
+
             ArrayList<Unit> unitsToChange = myAttack.getUnitsToChange();
             for(int j = 0; j < unitsToChange.size(); j++){
                 foodRsc -= (j+1) * unitsToChange.get(j).getNumUnits() * distance;

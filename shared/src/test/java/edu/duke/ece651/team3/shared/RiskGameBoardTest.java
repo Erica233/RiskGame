@@ -1,14 +1,14 @@
-//package edu.duke.ece651.team3.shared;
-//
-//import org.junit.jupiter.api.Disabled;
-//import org.junit.jupiter.api.Test;
-//
-//import java.util.ArrayList;
-//import java.util.HashMap;
-//
-//import static org.junit.jupiter.api.Assertions.*;
-//
-//class RiskGameBoardTest {
+package edu.duke.ece651.team3.shared;
+
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+class RiskGameBoardTest {
 //    @Test
 //    public void test_allPlayers() throws Exception {
 //        Board b0 = new RiskGameBoard();
@@ -112,21 +112,20 @@
 //        b.updateCombatResult();
 //    }
 //
-//    @Test
-//    void test_checkWin() throws Exception {
-//        RiskGameBoard b = new RiskGameBoard();
-//        Player p1 = new Player(0, "red", 0);
-//        Player p2 = new Player(1, "blue", 0);
-//        b.getAllPlayers().add(p1);
-//        b.getAllPlayers().add(p2);
-//        Territory territory = new Territory("a");
-//        assertEquals(1,b.checkWin());
-//        p1.tryOwnTerritory(territory);
-//        assertEquals(0,b.checkWin());
-//
-//        RiskGameBoard b1 = new RiskGameBoard();
-//        assertEquals(2, b1.checkWin());
-//    }
+    @Test
+    void test_checkWin() throws Exception {
+        RiskGameBoard b = new RiskGameBoard();
+        Player p1 = new Player(0, "orange", 0);
+        Player p2 = new Player(1, "blue", 0);
+        b.getAllPlayers().add(p1);
+        b.getAllPlayers().add(p2);
+        Territory territory = new Territory("a");
+        assertEquals(1,b.checkWin());
+        p1.tryOwnTerritory(territory);
+        assertEquals(0,b.checkWin());
+        RiskGameBoard b1 = new RiskGameBoard();
+        assertEquals(2, b1.checkWin());
+    }
 //
 //
 //    @Test
@@ -143,49 +142,77 @@
 //        assertTrue(b.checkAttack(action1, p1));
 //
 //    }
-//
-//    @Test
-//    void test_executeAttack() throws Exception {
-//        RiskGameBoard b = new RiskGameBoard();
-//        b.initMap();
-//        Player p1 = b.getAllPlayers().get(0);
-//        Player p2 = b.getAllPlayers().get(1);
-//        HashMap<Integer, Integer> hashmapHelper = new HashMap<>();
-//        hashmapHelper.put(1, 5);
-//        Action action = new Action("M", "a", "c", hashmapHelper);
-//        p1.executeMove(action);
-//        Action action1 = new Action("A", "b", "a", hashmapHelper);
-//        b.executeAttack(action1, p2);
-//        assertEquals(2, b.getAllPlayers().size());
-//    }
-//
-//    @Test
-//    void test_executeAttacks() throws Exception {
-//        RiskGameBoard b = new RiskGameBoard();
-//        b.initMap();
-////        Player p1 = b.getAllPlayers().get(0);
-////        Player p2 = b.getAllPlayers().get(1);
-//
-//        HashMap<Integer, Integer> hashmapHelper = new HashMap<>();
-//        hashmapHelper.put(1, 1);
-////        Action action = new Action("M", "a", "c", hashmapHelper);
-////        //p1.executeMove(action);
-//
-//        Action action1 = new Action("A", "b", "d", hashmapHelper);
-//        //b.executeAttack(action1, p2);
-//
-//        ArrayList<Action> arrayList = new ArrayList<>();
-//        //arrayList.add(action);
-//        ArrayList<Action> arrayList1 = new ArrayList<>();
-//        arrayList1.add(action1);
-//
-//        HashMap<Integer, ArrayList<Action>> attacksMap = new HashMap<>();
-//        attacksMap.put(0, arrayList);
-//        attacksMap.put(1, arrayList1);
-//        b.executeAttacks(attacksMap);
-//        assertEquals(2, b.getAllPlayers().size());
-//    }
-//
+//'
+    @Test
+    void test_checkAttack() throws Exception {
+        RiskGameBoard b = new RiskGameBoard();
+        b.initE2Map();
+        //Player p1 = b.getAllPlayers().get(0);
+        Player p2 = b.getAllPlayers().get(1);
+        ArrayList<Unit> units = b.initializeArrUnits();
+        units.get(0).setNumUnits(3);
+        Action action1 = new Action("A", "a", "b", units);
+        assertFalse(b.checkAttack(action1, p2));
+    }
+
+
+
+    @Test
+    void test_executeAttack() throws Exception {
+        RiskGameBoard b = new RiskGameBoard();
+        b.initE2Map();
+        //Player p1 = b.getAllPlayers().get(0);
+        Player p2 = b.getAllPlayers().get(1);
+        ArrayList<Unit> units = b.initializeArrUnits();
+        units.get(0).setNumUnits(2);
+        Action action1 = new Action("A", "b", "a", units);
+        b.executeAttack(action1, p2);
+        assertEquals(2, b.getAllPlayers().size());
+    }
+
+    @Test
+    void test_executeAttacks() throws Exception {
+        RiskGameBoard b = new RiskGameBoard();
+        b.initE2Map();
+        Player p1 = b.getAllPlayers().get(0);
+        Player p2 = b.getAllPlayers().get(1);
+        p1.findOwnedTerritoryByName("a").setFood(100);
+        p2.findOwnedTerritoryByName("b").setFood(100);
+        ArrayList<Unit> units = b.initializeArrUnits();
+        units.get(0).setNumUnits(2);
+        Action action = new Action("A", "a", "b", units);
+        Action action1 = new Action("A", "b", "a", units);
+
+        //b.executeAttack(action1, p2);
+
+        ArrayList<Action> arrayList = new ArrayList<>();
+        arrayList.add(action);
+        ArrayList<Action> arrayList1 = new ArrayList<>();
+        arrayList1.add(action1);
+
+        HashMap<Integer, ArrayList<Action>> attacksMap = new HashMap<>();
+        attacksMap.put(0, arrayList);
+        attacksMap.put(1, arrayList1);
+        b.executeAttacks(attacksMap);
+        assertEquals(2, b.getAllPlayers().size());
+    }
+
+    @Test
+    public void test_getWeakest() throws Exception {
+        RiskGameBoard b = new RiskGameBoard();
+        b.initE2Map();
+        ArrayList<Unit> units = b.initializeArrUnits();
+        assertEquals(-1, b.getWeakest(units));
+    }
+
+    @Test
+    public void test_getStrongest() throws Exception {
+        RiskGameBoard b = new RiskGameBoard();
+        b.initE2Map();
+        ArrayList<Unit> units = b.initializeArrUnits();
+        assertEquals(-1, b.getStrongest(units));
+    }
+
 //    @Test
 //    void test_multipleAttacks() throws Exception {
 //        RiskGameBoard b = new RiskGameBoard();
@@ -266,4 +293,4 @@
 //    }
 //
 //
-//}
+}

@@ -227,7 +227,7 @@ public class RiskGameBoard implements Board, Serializable {
      */
     public int getStrongest(ArrayList<Unit> units){
         for(int i = 0; i < units.size(); i++){
-            if(units.get(i).getNumUnits() != 0){
+            if(units.get(units.size()-i-1).getNumUnits() != 0){
                 return i;
             }
         }
@@ -241,7 +241,7 @@ public class RiskGameBoard implements Board, Serializable {
      */
     public int getWeakest(ArrayList<Unit> units){
         for(int i = 0; i < units.size(); i++){
-            if(units.get(units.size()-i).getNumUnits() != 0){
+            if(units.get(i).getNumUnits() != 0){
                 return i;
             }
         }
@@ -306,7 +306,7 @@ public class RiskGameBoard implements Board, Serializable {
         Player defender = allPlayers.get(1-attacker.getPlayerId());
         Territory defenderTerritory = defender.findOwnedTerritoryByName(myattack.getDstName());
         ArrayList<Unit> defUnits = defenderTerritory.getUnits();
-        ArrayList<Unit> attUnits = myattack.getActionUnits();
+        ArrayList<Unit> attUnits = myattack.getUnitsToChange();
         int defNum = getUpdatedUnits(defUnits);
         int attNum = getUpdatedUnits(attUnits);
         int roundNum = 0;
@@ -338,8 +338,14 @@ public class RiskGameBoard implements Board, Serializable {
     public void attackConsumeFood(Action myattack, Player player){
         String src = myattack.getSrcName();
         String dst = myattack.getDstName();
-        Territory terr = player.getTerr(src);
-        int distance = terr.getNeighborsDist().get(dst);
+        Territory terr = player.findOwnedTerritoryByName(src);
+        HashMap<Territory, Integer> neighbors = terr.getNeighborsDist();
+        int distance = 0;
+        for(Territory t : neighbors.keySet()){
+            if(t.getTerritoryName().equals(dst)){
+                distance = neighbors.get(t);
+            }
+        }
         ArrayList<Unit> unitsToChange = myattack.getUnitsToChange();
         for(int j = 0; j < unitsToChange.size(); j++){
             player.findOwnedTerritoryByName(myattack.getSrcName()).reduceFood((j+1) * unitsToChange.get(j).getNumUnits() * distance);
@@ -381,6 +387,9 @@ public class RiskGameBoard implements Board, Serializable {
         arrUnits.add(new Corporal(0));
         arrUnits.add(new Specialist(0));
         arrUnits.add(new Sergeant(0));
+        arrUnits.add(new MasterSergeant(0));
+        arrUnits.add(new FirstSergeant(0));
+        arrUnits.add(new SergeantMajor(0));
         return arrUnits;
     }
 
@@ -402,15 +411,15 @@ public class RiskGameBoard implements Board, Serializable {
             newattackers.add(newaction);
         }
         for(Action act : myattacks){
-            ArrayList<Unit> unitsToChange = act.getActionUnits();
+            ArrayList<Unit> unitsToChange = act.getUnitsToChange();
             for(String s : destinations) {
                 if (act.getDstName().equals(s)) {
                     for(int i = 0; i < unitsToChange.size(); i++){
                         for(Action newact : newattackers){
                             if(newact.getDstName().equals(s)){
-                                int val = newact.getActionUnits().get(i).getNumUnits();
-                                val += act.getActionUnits().get(i).getNumUnits();
-
+                                int val = newact.getUnitsToChange().get(i).getNumUnits();
+                                val += act.getUnitsToChange().get(i).getNumUnits();
+                                newact.getUnitsToChange().get(i).setNumUnits(val);
                             }
                         }
                     }

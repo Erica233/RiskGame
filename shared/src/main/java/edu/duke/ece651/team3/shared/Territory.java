@@ -28,6 +28,9 @@ public class Territory implements Serializable, Comparable<Territory> {
         units.add(new Corporal(0));
         units.add(new Specialist(0));
         units.add(new Sergeant(0));
+        units.add(new MasterSergeant(0));
+        units.add(new FirstSergeant(0));
+        units.add(new SergeantMajor(0));
     }
 
     /**
