@@ -289,6 +289,7 @@ public class Client {
         String choicePrompt = "You are the " + riskGameBoard.getAllPlayers().get(playerId).getColor() + " player, what would you like to do?\n" +
                 " (M)ove\n" +
                 " (A)ttack\n" +
+                " (U)pgrade\n" +
                 " (D)one";
         String actionType = readStringFromUser(choicePrompt);
         if (actionType.toUpperCase(Locale.ROOT).equals("D")) {
