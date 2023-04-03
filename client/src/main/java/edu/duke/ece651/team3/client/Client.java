@@ -192,9 +192,10 @@ public class Client {
      * @param action the action need to store
      */
     public void storeActionToList(Action action) {
-        if (action.isValidType()) {
-            actionsList.add(action);
-        }
+//        if (action.isValidType()) {
+//            actionsList.add(action);
+//        }
+        actionsList.add(action);
     }
 
     /**

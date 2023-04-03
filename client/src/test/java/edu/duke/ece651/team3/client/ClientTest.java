@@ -192,6 +192,11 @@ public class ClientTest {
                 try {
                     RiskGameBoard b1 = new RiskGameBoard();
                     b1.initE2Map();
+                    //Adding food resources to a
+                    Player p1 = b1.getAllPlayers().get(0);
+                    Territory a = p1.getTerr("a");
+                    a.setFood(10);
+
                     ArrayList<Action> actions = new ArrayList<>();
 
                     //mock server
@@ -246,7 +251,8 @@ public class ClientTest {
 
         BufferedReader mockInput1 = Mockito.mock(BufferedReader.class);
         when(mockInput1.readLine()).thenReturn("S", "a", "b", "1", "0", "0", "0",
-                                                     "A", "a", "c", "1", "0", "0", "0",
+                                                     "M", "a", "j", "1", "0", "0", "0",
+                                                     "A", "a", "j", "1", "0", "0", "0",
                                                      "A", "a", "b", "1", "0", "0", "0",
                                                      "M", "a", "b", "1", "0", "0", "0",
                                                      "M", "a", "b", "a", "0", "0", "0",
