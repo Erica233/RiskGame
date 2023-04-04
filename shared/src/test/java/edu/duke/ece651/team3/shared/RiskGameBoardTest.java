@@ -85,8 +85,8 @@ class RiskGameBoardTest {
         Action move = new MoveAction("j", "a", units);
         Action attack = new AttackAction("a", "b", units);
 
-        Territory a = r.getAllPlayers().get(0).getTerr("a");
-        Territory j = r.getAllPlayers().get(0).getTerr("j");
+        Territory a = r.getAllPlayers().get(0).findOwnedTerritoryByName("a");
+        Territory j = r.getAllPlayers().get(0).findOwnedTerritoryByName("j");
 
         r.executeMove(move, 0);
         assertEquals(6, a.getNumUnits());
@@ -217,35 +217,8 @@ class RiskGameBoardTest {
         b.executeAttacks(attacksMap);
         assertEquals(2, b.getAllPlayers().size());
     }
-}
-//
-//    @Test
-//    void test_multipleAttacks() throws Exception {
-//        RiskGameBoard b = new RiskGameBoard();
-//        b.initMap();
-////        Player p1 = b.getAllPlayers().get(0);
-////        Player p2 = b.getAllPlayers().get(1);
-//
-//        HashMap<Integer, Integer> units = new HashMap<>();
-//        units.put(1, 1);
-//
-//        Action action1 = new Action("A", "a", "b", units);
-//        Action action2 = new Action("A", "c", "b", units);
-//        Action invalidAttack = new Action("A", "a", "c", units);
-//
-//        ArrayList<Action> attacks0 = new ArrayList<>();
-//        ArrayList<Action> attacks1 = new ArrayList<>();
-//        attacks0.add(action1);
-//        attacks0.add(action2);
-//        attacks0.add(invalidAttack);
-//
-//        HashMap<Integer, ArrayList<Action>> attacksMap = new HashMap<>();
-//        attacksMap.put(0, attacks0);
-//        attacksMap.put(1, attacks1);
-//        b.executeAttacks(attacksMap);
-//        assertEquals(2, b.getAllPlayers().size());
-//    }
-//
+
+    
     @Test
     void test_integra() throws Exception {
         RiskGameBoard b = new RiskGameBoard();

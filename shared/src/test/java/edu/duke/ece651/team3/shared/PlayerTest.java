@@ -117,11 +117,11 @@ class PlayerTest {
 
         Action action = new MoveAction(srcName, dstName, newUnit);
         curr.executeMove(action);
-        Territory src = curr.getTerr(srcName);
-        Territory dst = curr.getTerr(dstName);
+        Territory src = curr.findOwnedTerritoryByName(srcName);
+        Territory dst = curr.findOwnedTerritoryByName(dstName);
         assertEquals(4, src.getNumUnits());
         assertEquals(6, dst.getNumUnits());
-        assertNotNull(curr.getTerr(dstName));
+        assertNotNull(curr.findOwnedTerritoryByName(dstName));
 
     }
 
@@ -151,7 +151,7 @@ class PlayerTest {
 
         Player testPlayer = new Player(2, "Black", 0);
         r.addPlayer(testPlayer);
-        testPlayer.getTerr("a");
+        testPlayer.findOwnedTerritoryByName("a");
     }
 
     @Test

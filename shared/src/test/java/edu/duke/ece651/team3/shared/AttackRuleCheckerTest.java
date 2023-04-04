@@ -90,7 +90,7 @@ public class AttackRuleCheckerTest {
         actionUnits.get(0).setNumUnits(3);
         Action a = new AttackAction("j", "c", actionUnits);
         AttackRuleChecker attackRuleChecker = new AttackRuleChecker(a, r);
-        assertFalse(attackRuleChecker.checkResources(a, currPlayer));
+        assertFalse(attackRuleChecker.checkResources(a, r, currPlayer));
 
     }
 

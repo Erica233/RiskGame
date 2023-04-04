@@ -104,13 +104,13 @@ public class TerritoryTest {
 
         Player p1 = r.getAllPlayers().get(0);
         Player p2 = r.getAllPlayers().get(1);
-        Territory a = p1.getTerr("a");
+        Territory a = p1.findOwnedTerritoryByName("a");
         a.setFood(10);
         assertEquals(10, a.getFood());
         a.reduceFood(5);
         assertEquals(5, a.getFood());
 
-        Territory b = p2.getTerr("b"); //b is already a neighbor of a
+        Territory b = p2.findOwnedTerritoryByName("b"); //b is already a neighbor of a
 //        a.addANeighbor(b, 1);
 
         assertFalse(a.checkValidNeighbor(a));
@@ -148,11 +148,11 @@ public class TerritoryTest {
 
         Player p1 = r.getAllPlayers().get(0);
         Player p2 = r.getAllPlayers().get(1);
-        Territory a = p1.getTerr("a");
-        Territory i = p1.getTerr("i");
-        Territory j = p1.getTerr("j");
+        Territory a = p1.findOwnedTerritoryByName("a");
+        Territory i = p1.findOwnedTerritoryByName("i");
+        Territory j = p1.findOwnedTerritoryByName("j");
 
-        Territory b = p2.getTerr("b");
+        Territory b = p2.findOwnedTerritoryByName("b");
         assertFalse(a.hasSameNeighborsDist(i));
         assertFalse(a.hasSameNeighborsDist(j));
         assertFalse(a.checkValidNeighbor(b));
