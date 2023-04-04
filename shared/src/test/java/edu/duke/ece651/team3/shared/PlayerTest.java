@@ -114,6 +114,9 @@ class PlayerTest {
         newUnit.add(new Corporal(0));
         newUnit.add(new Specialist(0));
         newUnit.add(new Sergeant(0));
+        newUnit.add(new MasterSergeant(0));
+        newUnit.add(new FirstSergeant(0));
+        newUnit.add(new SergeantMajor(0));
 
         Action action = new MoveAction(srcName, dstName, newUnit);
         curr.executeMove(action);

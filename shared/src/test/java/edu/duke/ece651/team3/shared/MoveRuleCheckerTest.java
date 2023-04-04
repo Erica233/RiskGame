@@ -23,13 +23,18 @@ public class MoveRuleCheckerTest {
         unitsToChange.add(new Corporal(0));
         unitsToChange.add(new Specialist(0));
         unitsToChange.add(new Sergeant(0));
-
+        unitsToChange.add(new MasterSergeant(0));
+        unitsToChange.add(new FirstSergeant(0));
+        unitsToChange.add(new SergeantMajor(0));
         //Invalid unitToChange: negative
         ArrayList<Unit> unitsToChange1 = new ArrayList<>();
         unitsToChange1.add(new Private(-1));
         unitsToChange1.add(new Corporal(0));
         unitsToChange1.add(new Specialist(0));
         unitsToChange1.add(new Sergeant(0));
+        unitsToChange1.add(new MasterSergeant(0));
+        unitsToChange1.add(new FirstSergeant(0));
+        unitsToChange1.add(new SergeantMajor(0));
 
         //Invalid unitToChange: more
         ArrayList<Unit> unitsToChange2 = new ArrayList<>();
@@ -37,6 +42,9 @@ public class MoveRuleCheckerTest {
         unitsToChange2.add(new Corporal(0));
         unitsToChange2.add(new Specialist(0));
         unitsToChange2.add(new Sergeant(0));
+        unitsToChange2.add(new MasterSergeant(0));
+        unitsToChange2.add(new FirstSergeant(0));
+        unitsToChange2.add(new SergeantMajor(0));
 
 
         //a-c: invalid dst for move
@@ -119,6 +127,9 @@ public class MoveRuleCheckerTest {
         unitsToChange.add(new Corporal(0));
         unitsToChange.add(new Specialist(0));
         unitsToChange.add(new Sergeant(0));
+        unitsToChange.add(new MasterSergeant(0));
+        unitsToChange.add(new FirstSergeant(0));
+        unitsToChange.add(new SergeantMajor(0));
 
         //a->c invalid path a-b-c. a, c belongs to player 1
         Action a1 = new MoveAction("a", "c", unitsToChange);
