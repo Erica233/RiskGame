@@ -171,8 +171,8 @@ public class Server {
      * @throws Exception
      */
     public void executeMove(Action myMove, Player currPlayer) {
-        Territory srcTerr = currPlayer.getTerr(myMove.getSrcName());
-        Territory dstTerr = currPlayer.getTerr(myMove.getDstName());
+        Territory srcTerr = currPlayer.findOwnedTerritoryByName(myMove.getSrcName());
+        Territory dstTerr = currPlayer.findOwnedTerritoryByName(myMove.getDstName());
         ArrayList<Unit> units = myMove.getUnitsToChange();
 
         //Move all the units in their corresponding levels

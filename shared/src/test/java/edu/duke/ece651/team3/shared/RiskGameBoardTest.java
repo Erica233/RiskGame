@@ -58,7 +58,6 @@ class RiskGameBoardTest {
     }
 
 
-
     @Test
     void test_tryAddTerritory() throws Exception {
         Board b = new RiskGameBoard();
@@ -83,8 +82,8 @@ class RiskGameBoardTest {
         units.add(new Sergeant(0));
 
         //To let player occupy j->a 1
-        Action move = new MoveAction("j","a", units);
-        Action attack = new AttackAction( "a", "b", units);
+        Action move = new MoveAction("j", "a", units);
+        Action attack = new AttackAction("a", "b", units);
 
         Territory a = r.getAllPlayers().get(0).getTerr("a");
         Territory j = r.getAllPlayers().get(0).getTerr("j");
@@ -103,7 +102,7 @@ class RiskGameBoardTest {
         p1.getOwnedTerritories().get(1).setWinnerId(1);
         assertEquals(1, p1.getOwnedTerritories().get(1).getWinnerId());
 
-        for(Territory t: p1.getOwnedTerritories()){
+        for (Territory t : p1.getOwnedTerritories()) {
             t.setWinnerId(1);
             assertEquals(1, t.getWinnerId());
         }
@@ -127,9 +126,9 @@ class RiskGameBoardTest {
         b.getAllPlayers().add(p1);
         b.getAllPlayers().add(p2);
         Territory territory = new Territory("a");
-        assertEquals(1,b.checkWin());
+        assertEquals(1, b.checkWin());
         p1.tryOwnTerritory(territory);
-        assertEquals(0,b.checkWin());
+        assertEquals(0, b.checkWin());
 
         RiskGameBoard b1 = new RiskGameBoard();
         assertEquals(2, b1.checkWin());
@@ -152,10 +151,10 @@ class RiskGameBoardTest {
         units.add(new MasterSergeant(0));
         units.add(new SergeantMajor(0));
 
-        Action action = new AttackAction( "a","c", units);
+        Action action = new AttackAction("a", "c", units);
         assertFalse(b.checkAttack(action, p1));
 
-        Action action1 = new AttackAction( "a","b", units);
+        Action action1 = new AttackAction("a", "b", units);
         assertFalse(b.checkAttack(action1, p1));
 
     }
@@ -183,16 +182,10 @@ class RiskGameBoardTest {
     void test_executeAttack() throws Exception {
         RiskGameBoard b = new RiskGameBoard();
         b.initE2Map();
-        Player p1 = b.getAllPlayers().get(0);
+        //Player p1 = b.getAllPlayers().get(0);
         Player p2 = b.getAllPlayers().get(1);
-        ArrayList<Unit> units = new ArrayList<>();
-        units.add(new Private(5));
-        units.add(new Corporal(0));
-        units.add(new Specialist(0));
-        units.add(new Sergeant(0));
-
-        Action action = new Action("M", "a", "j", units);
-        p1.executeMove(action);
+        ArrayList<Unit> units = b.initializeArrUnits();
+        units.get(0).setNumUnits(2);
         Action action1 = new Action("A", "b", "a", units);
         b.executeAttack(action1, p2);
         assertEquals(2, b.getAllPlayers().size());
@@ -202,16 +195,19 @@ class RiskGameBoardTest {
     void test_executeAttacks() throws Exception {
         RiskGameBoard b = new RiskGameBoard();
         b.initE2Map();
+        Player p1 = b.getAllPlayers().get(0);
+        Player p2 = b.getAllPlayers().get(1);
+        p1.findOwnedTerritoryByName("a").setFood(100);
+        p2.findOwnedTerritoryByName("b").setFood(100);
+        ArrayList<Unit> units = b.initializeArrUnits();
+        units.get(0).setNumUnits(2);
+        Action action = new Action("A", "a", "b", units);
+        Action action1 = new Action("A", "b", "a", units);
 
-        ArrayList<Unit> units = new ArrayList<>();
-        units.add(new Private(1));
-        units.add(new Corporal(0));
-        units.add(new Specialist(0));
-        units.add(new Sergeant(0));
-
-        Action action1 = new Action("A", "b", "d", units);
+        //b.executeAttack(action1, p2);
 
         ArrayList<Action> arrayList = new ArrayList<>();
+        arrayList.add(action);
         ArrayList<Action> arrayList1 = new ArrayList<>();
         arrayList1.add(action1);
 
@@ -221,19 +217,17 @@ class RiskGameBoardTest {
         b.executeAttacks(attacksMap);
         assertEquals(2, b.getAllPlayers().size());
     }
+}
 //
 //    @Test
 //    void test_multipleAttacks() throws Exception {
 //        RiskGameBoard b = new RiskGameBoard();
-//        b.initE2Map();
+//        b.initMap();
 ////        Player p1 = b.getAllPlayers().get(0);
 ////        Player p2 = b.getAllPlayers().get(1);
 //
-//        ArrayList<Unit> units = new ArrayList<>();
-//        units.add(new Private(1));
-//        units.add(new Corporal(0));
-//        units.add(new Specialist(0));
-//        units.add(new Sergeant(0));
+//        HashMap<Integer, Integer> units = new HashMap<>();
+//        units.put(1, 1);
 //
 //        Action action1 = new Action("A", "a", "b", units);
 //        Action action2 = new Action("A", "c", "b", units);

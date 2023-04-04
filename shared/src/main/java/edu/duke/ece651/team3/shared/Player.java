@@ -49,22 +49,7 @@ public class Player implements Serializable {
             territory.increaseOneBasicUnit();
         }
     }
-    /**
-     * This method gets the territory based on the territory's name
-     * @param terrName
-     * @return
-     */
-    public Territory getTerr(String terrName){
-        int length = getOwnedTerritories().size();
-        Territory t = null;
-        for (int i = 0; i < length; i++) {
-            if (getOwnedTerritories().get(i).getTerritoryName().equals(terrName)) {
-                t = getOwnedTerritories().get(i);
-                break;
-            }
-        }
-        return t;
-    }
+
 
 
     /**
