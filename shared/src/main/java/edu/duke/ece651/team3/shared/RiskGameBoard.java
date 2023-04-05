@@ -381,6 +381,9 @@ public class RiskGameBoard implements Board, Serializable {
         arrUnits.add(new Corporal(0));
         arrUnits.add(new Specialist(0));
         arrUnits.add(new Sergeant(0));
+        arrUnits.add(new MasterSergeant(0));
+        arrUnits.add(new FirstSergeant(0));
+        arrUnits.add(new SergeantMajor(0));
         return arrUnits;
     }
 

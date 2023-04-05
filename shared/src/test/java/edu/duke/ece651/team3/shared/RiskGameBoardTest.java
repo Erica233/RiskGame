@@ -1,33 +1,32 @@
-//package edu.duke.ece651.team3.shared;
-//
-//import org.junit.jupiter.api.Disabled;
-//import org.junit.jupiter.api.Test;
-//
-//import java.util.ArrayList;
-//import java.util.HashMap;
-//
-//import static org.junit.jupiter.api.Assertions.*;
-//
-//class RiskGameBoardTest {
-//    @Test
-//    public void test_allPlayers() throws Exception {
-//        Board b0 = new RiskGameBoard();
-//        Board b1 = new RiskGameBoard();
-//        assertEquals(b0.getAllPlayers(), b1.getAllPlayers());
-//    }
-//
-//    @Test
-//    public void test_equals() throws Exception {
-//        Board b0 = new RiskGameBoard();
-//        Board b1 = new RiskGameBoard();
-//        b0.initE2Map();
-//        b1.initE2Map();
-//        assertEquals(b0, b1);
-//        assertNotEquals(b0, "(player 1)");
-//        b1.getAllPlayers().get(0).getOwnedTerritories().get(0).addANeighbor(new Territory("x", 3), 1);
-//        assertNotEquals(b0, b1);
-//
-//    }
+package edu.duke.ece651.team3.shared;
+
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+class RiskGameBoardTest {
+    @Test
+    public void test_allPlayers() throws Exception {
+        Board b0 = new RiskGameBoard();
+        Board b1 = new RiskGameBoard();
+        assertEquals(b0.getAllPlayers(), b1.getAllPlayers());
+    }
+
+    @Test
+    public void test_equals() throws Exception {
+        Board b0 = new RiskGameBoard();
+        Board b1 = new RiskGameBoard();
+        b0.initE2Map();
+        b1.initE2Map();
+        assertEquals(b0, b1);
+        assertNotEquals(b0, "(player 1)");
+        b1.getAllPlayers().get(0).getOwnedTerritories().get(0).addANeighbor(new Territory("x", 3, 0, 0), 1);
+        assertNotEquals(b0, b1);
+    }
 //
 //    @Test
 //    public void test_displayBoard() throws Exception {
@@ -112,21 +111,21 @@
 //        b.updateCombatResult();
 //    }
 //
-//    @Test
-//    void test_checkWin() throws Exception {
-//        RiskGameBoard b = new RiskGameBoard();
-//        Player p1 = new Player(0, "red", 0);
-//        Player p2 = new Player(1, "blue", 0);
-//        b.getAllPlayers().add(p1);
-//        b.getAllPlayers().add(p2);
-//        Territory territory = new Territory("a");
-//        assertEquals(1,b.checkWin());
-//        p1.tryOwnTerritory(territory);
-//        assertEquals(0,b.checkWin());
-//
-//        RiskGameBoard b1 = new RiskGameBoard();
-//        assertEquals(2, b1.checkWin());
-//    }
+    @Test
+    void test_checkWin() throws Exception {
+        RiskGameBoard b = new RiskGameBoard();
+        Player p1 = new Player(0, "red", 0);
+        Player p2 = new Player(1, "blue", 0);
+        b.getAllPlayers().add(p1);
+        b.getAllPlayers().add(p2);
+        Territory territory = new Territory("a");
+        assertEquals(1,b.checkWin());
+        p1.tryOwnTerritory(territory);
+        assertEquals(0,b.checkWin());
+
+        RiskGameBoard b1 = new RiskGameBoard();
+        assertEquals(2, b1.checkWin());
+    }
 //
 //
 //    @Test
@@ -264,6 +263,4 @@
 //                "\n";
 //        assertEquals(expected, r.initSmallMap());
 //    }
-//
-//
-//}
+}
