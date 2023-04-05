@@ -7,6 +7,17 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class UnitTest {
     @Test
+    public void test_equals() {
+        Unit u1 = new Private(3);
+        Unit u2 = new Corporal(3);
+        Unit u3 = new Corporal(4);
+        Unit u4 = new Corporal(4);
+        assertNotEquals(u1, u2);
+        assertNotEquals(u3, u2);
+        assertEquals(u3, u4);
+    }
+
+    @Test
     public void test_Private() {
         Unit u1 = new Private(3);
         assertEquals("Private", u1.getUnitName());

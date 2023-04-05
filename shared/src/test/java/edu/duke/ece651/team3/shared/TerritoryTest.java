@@ -1,14 +1,13 @@
-//package edu.duke.ece651.team3.shared;
-//
-//import static org.junit.jupiter.api.Assertions.*;
-//import static org.junit.jupiter.api.Assertions.assertNotEquals;
-//
-//import org.junit.jupiter.api.Test;
-//
-//import java.util.ArrayList;
-//import java.util.HashMap;
-//
-//public class TerritoryTest {
+package edu.duke.ece651.team3.shared;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+import org.junit.jupiter.api.Test;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+
+public class TerritoryTest {
 //    @Test
 //    public void test_equals() throws Exception {
 //        Territory t1 = new Territory("a", 2);
@@ -32,20 +31,27 @@
 //
 //    }
 //
-//    @Test
-//    public void test_name_numUnits_neighborsDist() {
-//        Territory t1 = new Territory("Narnia", 3);
-//        assertEquals("Narnia", t1.getTerritoryName());
-//        assertNotEquals("Narnias", t1.getTerritoryName());
-//        assertEquals(3, t1.getNumUnits());
-//        assertNotEquals(4, t1.getNumUnits());
-//        Territory t2 = new Territory("a");
-//        HashMap<Territory, Integer> expected = new HashMap<>();
-//        assertEquals("a", t2.getTerritoryName());
-//        assertEquals(expected, t2.getNeighborsDist());
-//        ArrayList<Unit> units = new ArrayList<>();
-//        assertEquals(units, t2.getUnits());
-//    }
+    @Test
+    public void test_fields() {
+        Territory t1 = new Territory("Narnia", 3, 0, 0);
+        assertEquals("Narnia", t1.getTerritoryName());
+        assertNotEquals("Narnias", t1.getTerritoryName());
+        assertEquals(3, t1.getNumUnits());
+        assertNotEquals(4, t1.getNumUnits());
+        Territory t2 = new Territory("a");
+        HashMap<Territory, Integer> expected = new HashMap<>();
+        assertEquals("a", t2.getTerritoryName());
+        assertEquals(expected, t2.getNeighborsDist());
+        ArrayList<Unit> units = new ArrayList<>();
+        units.add(new Private(0));
+        units.add(new Corporal(0));
+        units.add(new Specialist(0));
+        units.add(new Sergeant(0));
+        units.add(new MasterSergeant(0));
+        units.add(new FirstSergeant(0));
+        units.add(new SergeantMajor(0));
+        assertEquals(units, t2.getUnits());
+    }
 //
 //    @Test
 //    public void test_addANeighbor() throws Exception {
@@ -167,4 +173,4 @@
 //
 //        assertEquals(newUnit, territory.getUnits());
 //    }
-//}
+}
