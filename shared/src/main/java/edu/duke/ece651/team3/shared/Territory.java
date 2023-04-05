@@ -87,7 +87,7 @@ public class Territory implements Serializable, Comparable<Territory> {
     public boolean equals(Object other) {
         if (other.getClass().equals(getClass())) {
             Territory territory = (Territory) other;
-            return numUnits == territory.getNumUnits() && territoryName.equals(territory.getTerritoryName()) && hasSameNeighborsDist(territory) && hasSameUnits(territory);
+            return numUnits == territory.getNumUnits() && territoryName.equals(territory.getTerritoryName()) && hasSameNeighborsDist(territory) && hasSameUnits(territory) && food == territory.getFood() && tech == territory.getTech();
         }
         return false;
     }
@@ -147,6 +147,9 @@ public class Territory implements Serializable, Comparable<Territory> {
      * @return true if the two territories have the same set of units
      */
     public boolean hasSameUnits(Territory territoryToCompare) {
+        if (units.size() != territoryToCompare.getUnits().size()) {
+            return false;
+        }
         for (int i = 0; i < units.size(); i++) {
             if (units.get(i).getClass() != territoryToCompare.getUnits().get(i).getClass() || units.get(i) != territoryToCompare.getUnits().get(i)) {
                 return false;

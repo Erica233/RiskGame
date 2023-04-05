@@ -32,12 +32,12 @@ public class TerritoryTest {
 //    }
 //
     @Test
-    public void test_fields() {
+    public void test_fields_equals() {
         Territory t1 = new Territory("Narnia", 3, 0, 0);
         assertEquals("Narnia", t1.getTerritoryName());
-        assertNotEquals("Narnias", t1.getTerritoryName());
         assertEquals(3, t1.getNumUnits());
         assertNotEquals(4, t1.getNumUnits());
+
         Territory t2 = new Territory("a");
         HashMap<Territory, Integer> expected = new HashMap<>();
         assertEquals("a", t2.getTerritoryName());
@@ -51,6 +51,11 @@ public class TerritoryTest {
         units.add(new FirstSergeant(0));
         units.add(new SergeantMajor(0));
         assertEquals(units, t2.getUnits());
+
+        HashMap<Territory, Integer> neighDist = new HashMap<>();
+        Territory t3 = new Territory("a", neighDist, 0, 0, 0);
+        Territory t4 = new Territory("a", 0, 0, 0);
+        assertEquals(t3, t4);
     }
 //
 //    @Test
