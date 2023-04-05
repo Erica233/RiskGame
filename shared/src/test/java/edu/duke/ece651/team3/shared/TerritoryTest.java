@@ -8,29 +8,81 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class TerritoryTest {
-//    @Test
-//    public void test_equals() throws Exception {
-//        Territory t1 = new Territory("a", 2);
-//        Territory t2 = new Territory("a", 2);
-//        Territory t3 = new Territory("b", 2);
-//        Territory t4 = new Territory("a", 3);
-//        Territory t5 = new Territory("A", 2);
-//        assertNotEquals(t1, "(a, 2)"); //different objects
-//        assertEquals(t1, t2); //different address
-//        assertNotEquals(t1, t3); //different name
-//        assertNotEquals(t1, t4); //different numUnits
-//        assertFalse(t1.equals(t5)); // upper & lower case name
-//        Territory t6 = new Territory("x", 6);
-//        Territory t7 = new Territory("y", 7);
-//        Territory t8 = new Territory("z", 8);
-//        //t1.addNeighbors(t6, t7, t8);
-//        assertNotEquals(t1, t2); //different neighbors
-//        //t2.addNeighbors(t7, t6, t8);
-//        assertEquals(t1, t2); //neighbors different order
-//
-//
-//    }
-//
+    @Test
+    public void test_equals() throws Exception {
+        Territory t1 = new Territory("a", 2, 0, 0);
+        Territory t2 = new Territory("a", 2, 0, 0);
+        Territory t3 = new Territory("b", 2, 0, 0);
+        Territory t4 = new Territory("a", 3, 0, 0);
+        Territory t5 = new Territory("A", 2, 0, 0);
+        assertNotEquals(t1, "(a, 2)"); //different objects
+        assertEquals(t1, t2); //different address
+        assertNotEquals(t1, t3); //different name
+        assertNotEquals(t1, t4); //different numUnits
+        assertFalse(t1.equals(t5)); // upper & lower case name
+        Territory t6 = new Territory("x", 6, 0, 0);
+        Territory t7 = new Territory("y", 7, 0, 0);
+        Territory t8 = new Territory("z", 8, 0, 0);
+        //t1.addNeighbors(t6, t7, t8);
+        t1.addANeighbor(t6, 6);
+        t1.addANeighbor(t7, 7);
+        t1.addANeighbor(t8, 8);
+        assertNotEquals(t1, t2); //different neighbors
+        //t2.addNeighbors(t7, t6, t8);
+        t2.addANeighbor(t8, 8);
+        t2.addANeighbor(t7, 7);
+        t2.addANeighbor(t6, 6);
+        assertEquals(t1, t2); //neighbors different order
+        Territory t9 = new Territory("a", 2, 1, 0);
+        Territory t10 = new Territory("a", 2, 0, 2);
+        assertNotEquals(t1, t9); //different food
+        assertNotEquals(t1, t10); //different tech
+    }
+
+    @Test
+    void test_hasSameUnits() {
+        Territory t1 = new Territory("a", 0, 0, 0);
+        Territory t2 = new Territory("a", 0, 0, 0);
+        assertTrue(t1.hasSameUnits(t2));
+
+        t1.setUnits(new ArrayList<>()); //different size of units
+        assertFalse(t1.hasSameUnits(t2));
+
+        ArrayList<Unit> units1 = new ArrayList<>();
+        ArrayList<Unit> units2 = new ArrayList<>();
+        units1.add(new Private(2));
+        units2.add(new Private(1));
+        t1.setUnits(units1);
+        t2.setUnits(units2);
+        assertFalse(t1.hasSameUnits(t2)); //different unit num
+
+        units1.add(new Sergeant(1));
+        units2.add(new Private(1));
+        assertFalse(t1.hasSameUnits(t2)); //different unit type
+
+    }
+
+    @Test
+    void test_hasSameNeighborsDist() throws Exception {
+        Territory t1 = new Territory("a", 0, 0, 0);
+        Territory t2 = new Territory("a", 0, 0, 0);
+        assertTrue(t1.hasSameNeighborsDist(t2));
+
+        Territory t3 = new Territory("b");
+        Territory t4 = new Territory("b");
+        t3.addANeighbor(t1, 3);
+        t4.addANeighbor(t2, 3);
+        assertTrue(t1.hasSameNeighborsDist(t2));
+
+        Territory t5 = new Territory("c");
+        Territory t6 = new Territory("c");
+        t5.addANeighbor(t1, 3);
+        t5.addANeighbor(t3, 4);
+        t6.addANeighbor(t4, 4);
+        t6.addANeighbor(t2, 3);
+        assertTrue(t5.hasSameNeighborsDist(t6));
+    }
+
     @Test
     public void test_fields_equals() {
         Territory t1 = new Territory("Narnia", 3, 0, 0);
