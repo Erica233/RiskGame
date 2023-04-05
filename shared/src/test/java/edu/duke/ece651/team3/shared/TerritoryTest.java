@@ -109,36 +109,36 @@ public class TerritoryTest {
         Territory t4 = new Territory("a", 0, 0, 0);
         assertEquals(t3, t4);
     }
-//
-//    @Test
-//    public void test_addANeighbor() throws Exception {
-//        ArrayList<Territory> n1 = new ArrayList<>();
-//        Territory t1 = new Territory("Oz", 12);
-//        assertEquals(n1, t1.getNeighborsDist());
-//        ArrayList<Territory> n2 = new ArrayList<>();
-//        n2.add(t1);
-//        Territory t2 = new Territory("Gondor", n2, new HashMap<>());
-//        assertEquals(n2, t2.getNeighborsDist());
-//        ArrayList<Territory> n3 = new ArrayList<>();
-//        n3.add(t2);
-//        Territory t3 = new Territory("Morder", n3, new HashMap<>());
-//        t2.addANeighbor(t3);
-//        n2.add(t3);
-//        assertEquals(n2, t2.getNeighborsDist());
-////        assertThrows(Exception.class, () -> t2.addANeighbor(t2));
-////        assertThrows(Exception.class, () -> t2.addNeighbors(t2, t1));
-//
-//    }
-//
-//    @Test
-//    public void test_checkValidNeighbor() throws Exception {
-//        Territory t1 = new Territory("Narnia", 3);
-//        Territory t2 = new Territory("Oz", 3);
-//        assertTrue(t1.checkValidNeighbor(t2));
-//        t1.addANeighbor(t2);
-//        assertFalse(t1.checkValidNeighbor(t2));
-//        assertFalse(t1.checkValidNeighbor(t1));
-//    }
+
+    @Test
+    public void test_addANeighbor() throws Exception {
+        HashMap<Territory, Integer> n1 = new HashMap<>();
+        Territory t1 = new Territory("Oz", 12, 0 , 0);
+        assertEquals(n1, t1.getNeighborsDist());
+
+        HashMap<Territory, Integer> n2 = new HashMap<>();
+        n2.put(t1, 1);
+        Territory t2 = new Territory("Gondor", n2, 0,  0 , 0);
+        assertEquals(n2, t2.getNeighborsDist());
+
+        HashMap<Territory, Integer> n3 = new HashMap<>();
+        n3.put(t2, 2);
+        Territory t3 = new Territory("Morder", n3, 0, 0, 0);
+        t2.addANeighbor(t3, 2);
+        n2.put(t3, 3);
+        assertEquals(n2, t2.getNeighborsDist());
+        assertThrows(Exception.class, () -> t2.addANeighbor(t2, 3));
+    }
+
+    @Test
+    public void test_checkValidNeighbor() throws Exception {
+        Territory t1 = new Territory("Narnia", 3, 0, 0);
+        Territory t2 = new Territory("Oz", 3, 0, 0);
+        assertTrue(t1.checkValidNeighbor(t2));
+        t1.addANeighbor(t2, 2);
+        assertFalse(t1.checkValidNeighbor(t2));
+        assertFalse(t1.checkValidNeighbor(t1));
+    }
 //
 //    @Test
 //    public void test_displayTerritory() throws Exception {
@@ -208,17 +208,17 @@ public class TerritoryTest {
 //        assertEquals(units, territory.getAttackerUnits());
 //    }
 //
-//    @Test
-//    public void test_UpdateCombat(){
-//        Territory territory = new Territory("a");
-//        int ownId1 = -1;
-//        int ownId2 = 1;
-//        territory.updateCombatResult(ownId1);
-//        assertEquals(-1, territory.getWinnerId());
-////        territory.setWinnerId();
-//        territory.updateCombatResult(ownId2);
-//        assertEquals(-1, territory.getWinnerId());
-//    }
+    @Test
+    public void test_UpdateCombat(){
+        Territory territory = new Territory("a");
+        int ownId1 = -1;
+        int ownId2 = 1;
+        territory.updateCombatResult(ownId1);
+        assertEquals(-1, territory.getWinnerId());
+//        territory.setWinnerId();
+        territory.updateCombatResult(ownId2);
+        assertEquals(-1, territory.getWinnerId());
+    }
 //
 //    @Test
 //    public void test_setUnits(){
