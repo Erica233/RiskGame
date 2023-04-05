@@ -30,7 +30,7 @@ public abstract class Unit {
     public boolean equals(Object other) {
         if (other.getClass().equals(getClass())) {
             Unit unit = (Unit) other;
-            return numUnits == ((Unit) other).getNumUnits();
+            return numUnits == unit.getNumUnits();
         }
         return false;
     }
