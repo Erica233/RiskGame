@@ -18,7 +18,7 @@ public interface Board {
      * add one basic unit for each territory
      *
      */
-    void addAUnitEachTurn();
+    void addAfterEachTurn();
 
     /**
      * Displays the information on the Risk Game Board

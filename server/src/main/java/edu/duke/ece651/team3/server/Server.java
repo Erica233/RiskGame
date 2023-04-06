@@ -269,7 +269,7 @@ public class Server {
         riscBoard.executeAttacks(actionsMap);
         riscBoard.updateCombatResult();
         if(riscBoard.checkWin() == 2){
-            riscBoard.addAUnitEachTurn();
+            riscBoard.addAfterEachTurn();
         }
         return riscBoard.checkWin();
     }

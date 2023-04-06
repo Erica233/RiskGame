@@ -53,18 +53,18 @@ public class RiskGameBoard implements Board, Serializable {
      * @throws Exception
      */
     public String initE2Map() throws Exception {
-        Territory a = new Territory("a", 5, 0, 0);
-        Territory b = new Territory("b", 5, 0, 0);
-        Territory c = new Territory("c", 5, 0, 0);
-        Territory d = new Territory("d", 5, 0, 0);
-        Territory e = new Territory("e", 5, 0, 0);
-        Territory f = new Territory("f", 5, 0, 0);
-        Territory g = new Territory("g", 5, 0, 0);
-        Territory h = new Territory("h", 5, 0, 0);
-        Territory i = new Territory("i", 5, 0, 0);
-        Territory j = new Territory("j", 5, 0, 0);
-        Territory k = new Territory("k", 5, 0, 0);
-        Territory l = new Territory("l", 5, 0, 0);
+        Territory a = new Territory("a", 5, 10, 0);
+        Territory b = new Territory("b", 5, 10, 0);
+        Territory c = new Territory("c", 5, 10, 0);
+        Territory d = new Territory("d", 5, 10, 0);
+        Territory e = new Territory("e", 5, 10, 0);
+        Territory f = new Territory("f", 5, 10, 0);
+        Territory g = new Territory("g", 5, 10, 0);
+        Territory h = new Territory("h", 5, 10, 0);
+        Territory i = new Territory("i", 5, 10, 0);
+        Territory j = new Territory("j", 5, 10, 0);
+        Territory k = new Territory("k", 5, 10, 0);
+        Territory l = new Territory("l", 5, 10, 0);
         connectNeighbors(a, b, 1);
         connectNeighbors(a, c, 2);
         connectNeighbors(a, j, 3);
@@ -394,9 +394,10 @@ public class RiskGameBoard implements Board, Serializable {
      * Increase the number of the basic unit (whose force level is one) by one in each player's owned territory
      *
      */
-    public void addAUnitEachTurn() {
+    public void addAfterEachTurn() {
         for (Player player: allPlayers) {
             player.addAUnitForEachTerr();
+            player.addResourceForEachTerr();
         }
     }
 

@@ -245,7 +245,7 @@ public class Territory implements Serializable, Comparable<Territory> {
                     output.append(neigh.getTerritoryName() +  "（" + neighborsDist.get(neigh)  + ")");
                 }
             }
-            output.append(")\n");
+            output.append(") ").append("food=" + getFood() + ", tech=" + getTech() + "\n");
         }
         return String.valueOf(output);
     }
@@ -276,6 +276,11 @@ public class Territory implements Serializable, Comparable<Territory> {
     public void increaseOneBasicUnit() {
         units.get(0).setNumUnits(units.get(0).getNumUnits() + 1);
         updateNumUnits();
+    }
+
+    public void increaseResource() {
+        setFood(getFood() + 10);
+        setTech(getTech() + 10);
     }
 
     /**

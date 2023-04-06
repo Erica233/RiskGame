@@ -50,6 +50,12 @@ public class Player implements Serializable {
         }
     }
 
+    public void addResourceForEachTerr() {
+        for (Territory territory: ownedTerritories) {
+            territory.increaseResource();
+        }
+    }
+
     /**
      * execute the given move action, update the number of units
      *
