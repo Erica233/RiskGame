@@ -28,6 +28,14 @@ public abstract class Unit implements Serializable {
         this.numUnits = _numUnits;
     }
 
+    @Override
+    public boolean equals(Object other) {
+        if (other.getClass().equals(getClass())) {
+            Unit unit = (Unit) other;
+            return numUnits == unit.getNumUnits();
+        }
+        return false;
+    }
 
     public String getUnitName() {
         return unitName;

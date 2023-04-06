@@ -1,9 +1,7 @@
 package edu.duke.ece651.team3.shared;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
+import java.util.*;
 
 /**
  * A class for Territory
@@ -87,7 +85,7 @@ public class Territory implements Serializable, Comparable<Territory> {
     public boolean equals(Object other) {
         if (other.getClass().equals(getClass())) {
             Territory territory = (Territory) other;
-            return numUnits == territory.getNumUnits() && territoryName.equals(territory.getTerritoryName()) && hasSameNeighborsDist(territory) && hasSameUnits(territory);
+            return numUnits == territory.getNumUnits() && territoryName.equals(territory.getTerritoryName()) && hasSameNeighborsDist(territory) && hasSameUnits(territory) && food == territory.getFood() && tech == territory.getTech();
         }
         return false;
     }
@@ -124,16 +122,10 @@ public class Territory implements Serializable, Comparable<Territory> {
         if (neighborsDist.size() != territoryToCompare.getNeighborsDist().size()) {
             return false;
         }
-        for (Territory territory: neighborsDist.keySet()) {
-            if (territoryToCompare.getNeighborsDist().containsKey(territory)) {
-                if (territoryToCompare.getNeighborsDist().get(territory) != neighborsDist.get(territory)) {
-                    return false;
-                }
-            } else {
-                return false;
-            }
-        }
-        return true;
+        HashMap<String, Integer> leftNeighNameDist = sortNeighDistByTerriName();
+        HashMap<String, Integer> rightNeighNameDist = territoryToCompare.sortNeighDistByTerriName();
+
+        return leftNeighNameDist.equals(rightNeighNameDist);
     }
 
     /**
@@ -143,12 +135,34 @@ public class Territory implements Serializable, Comparable<Territory> {
      * @return true if the two territories have the same set of units
      */
     public boolean hasSameUnits(Territory territoryToCompare) {
+        if (units.size() != territoryToCompare.getUnits().size()) {
+            return false;
+        }
         for (int i = 0; i < units.size(); i++) {
-            if (units.get(i).getClass() != territoryToCompare.getUnits().get(i).getClass() || units.get(i) != territoryToCompare.getUnits().get(i)) {
+            if (units.get(i).getClass() != territoryToCompare.getUnits().get(i).getClass() || units.get(i).getNumUnits() != territoryToCompare.getUnits().get(i).getNumUnits()) {
                 return false;
             }
         }
         return true;
+    }
+
+    public HashMap<String, Integer> sortNeighDistByTerriName() {
+        ArrayList<Map.Entry<Territory, Integer>> list = new ArrayList<>(neighborsDist.entrySet());
+        Collections.sort(list, new Comparator<Map.Entry<Territory, Integer> >() {
+            public int compare(
+                    Map.Entry<Territory, Integer> entry1,
+                    Map.Entry<Territory, Integer> entry2)
+            {
+                return (entry1.getKey().getTerritoryName())
+                        .compareTo(entry2.getKey().getTerritoryName());
+            }
+        });
+
+        HashMap<String, Integer> sortedMap = new LinkedHashMap<>();
+        for (Map.Entry<Territory, Integer> entry : list) {
+            sortedMap.put(entry.getKey().getTerritoryName(), entry.getValue());
+        }
+        return sortedMap;
     }
 
     /**
