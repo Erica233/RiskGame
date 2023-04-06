@@ -3,6 +3,7 @@ package edu.duke.ece651.team3.server;
 import edu.duke.ece651.team3.shared.*;
 
 import java.io.*;
+import java.sql.SQLOutput;
 import java.util.*;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -177,6 +178,7 @@ public class Server {
 
         srcTerr.decreaseUnit(units);
         dstTerr.increaseUnit(units);
+//        System.out.println("The size of myMove units is: " +  myMove.getUnitsToChange().size());
         //Move all the units in their corresponding levels
         for(int i = 0; i < myMove.getUnitsToChange().size(); i++) {
             int unitNum = myMove.getUnitsToChange().get(i).getNumUnits(); //The num to move
@@ -184,6 +186,7 @@ public class Server {
             int minPathCost = getMinPath(srcTerr, dstTerr);
             int moveCost = myMove.getUnitsToChange().get(i).getMoveCost();
             int cost = C * minPathCost * unitNum * moveCost; //TODO:check the formula
+//            System.out.println("The cost is " + cost);
             srcTerr.reduceFood(cost);
         }
     }
