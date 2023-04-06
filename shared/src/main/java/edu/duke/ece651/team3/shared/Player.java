@@ -50,8 +50,6 @@ public class Player implements Serializable {
         }
     }
 
-
-
     /**
      * execute the given move action, update the number of units
      *

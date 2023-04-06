@@ -7,7 +7,6 @@ import java.util.*;
  * A Risk Game Board
  */
 public class RiskGameBoard implements Board, Serializable {
-    private final ArrayList<Territory> allTerritories; //only for test
     private final ArrayList<Player> allPlayers;
 
     /**
@@ -15,7 +14,6 @@ public class RiskGameBoard implements Board, Serializable {
      *
      */
     public RiskGameBoard() throws Exception {
-        this.allTerritories = new ArrayList<>();
         this.allPlayers = new ArrayList<>();
         //initMap();
     }
@@ -110,6 +108,7 @@ public class RiskGameBoard implements Board, Serializable {
      * This method initialize the small map that is used for testing
      * @throws Exception
      */
+    //TODO: move to test class
     public void initSmallMap() throws Exception{
         Territory a = new Territory("a", 1, 5, 5);
         Territory b = new Territory("b", 1, 5, 5);
@@ -436,19 +435,6 @@ public class RiskGameBoard implements Board, Serializable {
     }
 
     /**
-     * This method tries to add a territory to the whole territory list
-     * @param territoryToAdd the Territory to add to the Board
-     * @return true if it successfully added, false otherwise
-     */
-    public boolean tryAddTerritory(Territory territoryToAdd) {
-        if (!territoryToAdd.isValidToAdd(allTerritories, territoryToAdd)) {
-            return false;
-        }
-        allTerritories.add(territoryToAdd);
-        return true;
-    }
-
-    /**
      * This method displays the board
      * @return String contains the info of the board
      */
@@ -477,14 +463,6 @@ public class RiskGameBoard implements Board, Serializable {
      */
     public ArrayList<Player> getAllPlayers() {
         return allPlayers;
-    }
-
-    /**
-     * This method gets all territories
-     * @return the ArrayList<Territory>
-     */
-    public ArrayList<Territory> getAllTerritories() {
-        return allTerritories;
     }
 
 }

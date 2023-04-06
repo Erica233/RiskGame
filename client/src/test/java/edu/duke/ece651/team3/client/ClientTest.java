@@ -194,7 +194,7 @@ public class ClientTest {
                     b1.initE2Map();
                     //Adding food resources to a
                     Player p1 = b1.getAllPlayers().get(0);
-                    Territory a = p1.getTerr("a");
+                    Territory a = p1.findOwnedTerritoryByName("a");
                     a.setFood(10);
 
                     ArrayList<Action> actions = new ArrayList<>();

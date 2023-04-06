@@ -126,6 +126,7 @@ public class TerritoryTest {
         t6.addANeighbor(t2, 3);
         assertTrue(t5.hasSameNeighborsDist(t6));
     }
+
     @Test
     public void test_others(){
         ArrayList<Territory> allTerr = new ArrayList<>();
@@ -136,9 +137,6 @@ public class TerritoryTest {
         allTerr.add(a);
 
         assertEquals(true, a.isValidToAdd(allTerr, b));
-
-
-
     }
 
     @Test
@@ -205,95 +203,28 @@ public class TerritoryTest {
 
         assertEquals(0, r.getAllPlayers().get(0).getOwnedTerritories().get(0).getTech());
     }
-//
-//    @Test
-//    public void test_displayTerritory() throws Exception {
-//        Territory territory = new Territory("m", 0);
-//        assertEquals(0, territory.getUnits().get(1));
-//
-//        Territory t1 = new Territory("a", 1, 3);
-//        String expected1 = "3 units in a (no neighbors)\n";
-//        assertEquals(expected1, t1.displayTerritory()); //empty neighbors
-//        Territory t2 = new Territory("b", 2);
-//        Territory t3 = new Territory("c", 5);
-//        t1.addANeighbor(t2, 1);
-//        String expected2 = "3 units in a (next to: b)\n";
-//        assertEquals(expected2, t1.displayTerritory());
-//        t1.addANeighbor(t3, 1);
-//        String expected3 = "3 units in a (next to: b, c)\n";
-//        assertEquals(expected3, t1.displayTerritory());
-//    }
-//
-//    @Test
-//    public void test_increaseUnit(){
-//        HashMap<Integer, Integer> units = new HashMap<>();
-//        //units.put(unit1.getClass(), 1);
-//        ArrayList<Territory> n = new ArrayList<>();
-//        Territory t = new Territory("Gondor", n, units);
-//        t.increaseUnit(1, 1);
-//        t.increaseUnit(1, 2);
-//        assertEquals(3, t.getNumUnits());
-//
-//    }
-//
-//    @Test
-//    public void test_decreaseUnit(){
-//        HashMap<Integer, Integer> units = new HashMap<>();
-//        units.put(1, 1);
-//        ArrayList<Territory> n = new ArrayList<>();
-//        Territory t = new Territory("Gondor", n, units);
-//        t.decreaseUnit(1, 1);
-//        assertEquals(0, t.getNumUnits());
-//        assertThrows(IllegalArgumentException.class, ()->t.decreaseUnit(1, 1));
-//        assertThrows(IllegalArgumentException.class, ()->t.decreaseUnit(2, 1));
-//    }
-//
-//    @Test
-//    public void test_checkExistNeighbor() throws Exception {
-//        HashMap<Integer, Integer> units = new HashMap<>();
-//        units.put(1, 1);
-//        ArrayList<Territory> n = new ArrayList<>();
-//        Territory t = new Territory("Gondor", n, units);
-//        Territory t1 = new Territory("a", 1);
-//        Territory t2 = new Territory("b", 1);
-//        t1.addANeighbor(t);
-//        assertEquals(false, t.checkExistNeighbor("a"));
-//        assertEquals(true, t1.checkExistNeighbor("Gondor"));
-//        assertEquals(false, t1.checkExistNeighbor("b"));
-//    }
-//
-//    @Test
-//    public void test_setGet(){
-//        Territory territory = new Territory("a");
-//        territory.setWinnerId(5);
-//        assertEquals(5, territory.getWinnerId());
-//
-//        HashMap<Integer, Integer> units = new HashMap<>();
-//        units.put(1, 1);
-//        territory.setAttackerUnits(units);
-//        assertEquals(units, territory.getAttackerUnits());
-//    }
-//
-//    @Test
-//    public void test_UpdateCombat(){
-//        Territory territory = new Territory("a");
-//        int ownId1 = -1;
-//        int ownId2 = 1;
-//        territory.updateCombatResult(ownId1);
-//        assertEquals(-1, territory.getWinnerId());
-////        territory.setWinnerId();
-//        territory.updateCombatResult(ownId2);
-//        assertEquals(-1, territory.getWinnerId());
-//    }
-//
-//    @Test
-//    public void test_setUnits(){
-//        Territory territory = new Territory("a");
-//        HashMap<Integer, Integer> newUnit = new HashMap<>();
-//        newUnit.put(1, 2);
-//
-//        territory.setUnits(newUnit);
-//
-//        assertEquals(newUnit, territory.getUnits());
-//    }
-//}
+
+    @Test
+    public void test_addANeighbor2() throws Exception {
+        RiskGameBoard r = new RiskGameBoard();
+        r.initE2Map();
+
+        Player p1 = r.getAllPlayers().get(0);
+        Player p2 = r.getAllPlayers().get(1);
+        Territory a = p1.findOwnedTerritoryByName("a");
+        a.setFood(10);
+        assertEquals(10, a.getFood());
+        a.reduceFood(5);
+        assertEquals(5, a.getFood());
+
+        Territory b = p2.findOwnedTerritoryByName("b"); //b is already a neighbor of a
+//        a.addANeighbor(b, 1);
+
+        assertFalse(a.checkValidNeighbor(a));
+        assertFalse(a.checkExistNeighbor("i"));
+
+    }
+
+
+
+}
