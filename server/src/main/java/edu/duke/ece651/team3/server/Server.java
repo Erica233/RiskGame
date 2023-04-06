@@ -175,12 +175,11 @@ public class Server {
         Territory dstTerr = currPlayer.findOwnedTerritoryByName(myMove.getDstName());
         ArrayList<Unit> units = myMove.getUnitsToChange();
 
+        srcTerr.decreaseUnit(units);
+        dstTerr.increaseUnit(units);
         //Move all the units in their corresponding levels
         for(int i = 0; i < myMove.getUnitsToChange().size(); i++) {
             int unitNum = myMove.getUnitsToChange().get(i).getNumUnits(); //The num to move
-            srcTerr.decreaseUnit(units);
-            dstTerr.increaseUnit(units);
-
             //Reduce the cost on the current territory
             int minPathCost = getMinPath(srcTerr, dstTerr);
             int moveCost = myMove.getUnitsToChange().get(i).getMoveCost();

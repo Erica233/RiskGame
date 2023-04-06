@@ -270,9 +270,12 @@ public class MoveRuleChecker extends RuleChecker{
         Territory src = currPlayer.findOwnedTerritoryByName(myAction.getSrcName());
         Territory dst = currPlayer.findOwnedTerritoryByName(myAction.getDstName());
 
-        int costPerDist = 1;
-        int totalResourceCost = costPerDist * getMinPath(src, dst, riskGameBoard);
-
+        int totalResourceCost = 0;
+        ArrayList<Unit> units = myAction.getUnitsToChange();
+        for(Unit unit : units){
+            int currUnitCost = unit.getMoveCost();
+            totalResourceCost += getMinPath(src, dst, riskGameBoard) * currUnitCost * unit.getNumUnits();
+        }
         System.out.println("The total number of food cost is: " + totalResourceCost);
         if(totalResourceCost > src.getFood()){
             System.out.println("Invalid move! The resource is not enough!");
