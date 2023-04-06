@@ -358,7 +358,7 @@ public class RiskGameBoard implements Board, Serializable {
     /**
      * combine all attacks into one new attack if they have the same destination
      *
-     * @param myattacks
+     * @param myattacks my attack actions
      * @return
      */
     public void intergAttack(ArrayList<Action> myattacks){
