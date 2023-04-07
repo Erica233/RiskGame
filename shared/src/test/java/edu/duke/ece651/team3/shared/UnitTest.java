@@ -37,8 +37,8 @@ public class UnitTest {
         assertEquals("Corporal", u1.getUnitName());
         assertEquals(1, u1.getLevel());
         assertEquals(1, u1.getBonus());
-        assertEquals(1, u1.getMoveCost());
-        assertEquals(1, u1.getAttackCost());
+        assertEquals(2, u1.getMoveCost());
+        assertEquals(2, u1.getAttackCost());
         assertEquals(3, u1.getUpgradeCost());
         assertEquals(3, u1.getNumUnits());
         u1.setNumUnits(5);
@@ -51,8 +51,8 @@ public class UnitTest {
         assertEquals("Specialist", u1.getUnitName());
         assertEquals(2, u1.getLevel());
         assertEquals(3, u1.getBonus());
-        assertEquals(2, u1.getMoveCost());
-        assertEquals(2, u1.getAttackCost());
+        assertEquals(3, u1.getMoveCost());
+        assertEquals(3, u1.getAttackCost());
         assertEquals(11, u1.getUpgradeCost());
         assertEquals(3, u1.getNumUnits());
         u1.setNumUnits(5);
@@ -65,8 +65,8 @@ public class UnitTest {
         assertEquals("Sergeant", u1.getUnitName());
         assertEquals(3, u1.getLevel());
         assertEquals(5, u1.getBonus());
-        assertEquals(3, u1.getMoveCost());
-        assertEquals(3, u1.getAttackCost());
+        assertEquals(4, u1.getMoveCost());
+        assertEquals(4, u1.getAttackCost());
         assertEquals(30, u1.getUpgradeCost());
         assertEquals(3, u1.getNumUnits());
         u1.setNumUnits(5);
@@ -79,8 +79,8 @@ public class UnitTest {
         assertEquals("MasterSergeant", u1.getUnitName());
         assertEquals(4, u1.getLevel());
         assertEquals(8, u1.getBonus());
-        assertEquals(4, u1.getMoveCost());
-        assertEquals(4, u1.getAttackCost());
+        assertEquals(5, u1.getMoveCost());
+        assertEquals(5, u1.getAttackCost());
         assertEquals(55, u1.getUpgradeCost());
         assertEquals(3, u1.getNumUnits());
         u1.setNumUnits(5);
@@ -93,8 +93,8 @@ public class UnitTest {
         assertEquals("FirstSergeant", u1.getUnitName());
         assertEquals(5, u1.getLevel());
         assertEquals(11, u1.getBonus());
-        assertEquals(5, u1.getMoveCost());
-        assertEquals(5, u1.getAttackCost());
+        assertEquals(6, u1.getMoveCost());
+        assertEquals(6, u1.getAttackCost());
         assertEquals(90, u1.getUpgradeCost());
         assertEquals(3, u1.getNumUnits());
         u1.setNumUnits(5);
@@ -107,8 +107,8 @@ public class UnitTest {
         assertEquals("SergeantMajor", u1.getUnitName());
         assertEquals(6, u1.getLevel());
         assertEquals(15, u1.getBonus());
-        assertEquals(6, u1.getMoveCost());
-        assertEquals(6, u1.getAttackCost());
+        assertEquals(7, u1.getMoveCost());
+        assertEquals(7, u1.getAttackCost());
         assertEquals(140, u1.getUpgradeCost());
         assertEquals(3, u1.getNumUnits());
         u1.setNumUnits(5);
