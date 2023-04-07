@@ -18,16 +18,6 @@ import java.io.IOException;
 import java.net.URL;
 
 public class App extends Application{
-//  public String getMessage() {
-//    return "Hello from the client for "+ MyName.getName();
-//  }
-//  public static void main(String[] args) {
-//    App a = new App();
-//    System.out.println(a.getMessage());
-////    for (int i = 0; i < args.length; i++) {
-////      System.out.println("args["+i+"]="+ args[i]);
-////    }
-//  }
 
   @Override
   public void start(Stage stage) throws IOException {

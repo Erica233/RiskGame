@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.paint.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+
+<AnchorPane prefHeight="982.0" prefWidth="1512.0" style="-fx-background-color: #e6e6ff;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" >
+   <children>
+      <Label layoutX="544.0" layoutY="243.0" prefHeight="280.0" prefWidth="526.0" text="     RISC Game" textAlignment="CENTER" textFill="#141472">
+         <font>
+            <Font size="64.0" />
+         </font>
+      </Label>
+      <Button layoutX="544.0" layoutY="629.0" mnemonicParsing="false" prefHeight="134.0" prefWidth="495.0" style="-fx-background-color: #3333ff;" text="START" textFill="#f8f8f8">
+         <font>
+            <Font size="52.0" />
+         </font>
+      </Button>
+   </children>
+</AnchorPane>
