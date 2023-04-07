@@ -70,6 +70,34 @@ public class Player implements Serializable {
     }
 
     /**
+     * calculate the total cost of attack
+     * @param myAttack
+     * @param currPlayer
+     * @return
+     */
+    public int decreaseFood(Action myAttack, Player currPlayer){
+        String src = myAttack.getSrcName();
+        String dst = myAttack.getDstName();
+        Territory terr = currPlayer.findOwnedTerritoryByName(src);
+        int foodRsc = terr.getFood();
+        for(int i = 0; i < myAttack.getUnitsToChange().size(); i++){
+            HashMap<Territory, Integer> neighbors = terr.getNeighborsDist();
+            int distance = 0;
+            for(Territory t : neighbors.keySet()){
+                if(t.getTerritoryName().equals(dst)){
+                    distance = neighbors.get(t);
+                }
+            }
+            foodRsc -= (i+1) * myAttack.getUnitsToChange().get(i).getNumUnits() * distance;
+            if(foodRsc < 0){
+                return foodRsc;
+            }
+        }
+        return terr.getFood()-foodRsc;
+    }
+
+
+    /**
      * execute the given attack action (only decrease the units in the source territory)
      *
      * @param attack the attack action
@@ -77,6 +105,7 @@ public class Player implements Serializable {
     public void executeAttack(Action attack) {
         Territory src = findOwnedTerritoryByName(attack.getSrcName());
         src.decreaseUnit(attack.getUnitsToChange());
+        src.setFood(src.getFood()-decreaseFood(attack, this));
     }
 
     /**

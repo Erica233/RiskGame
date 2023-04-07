@@ -326,7 +326,7 @@ public class RiskGameBoard implements Board, Serializable {
             for(Action myattack : actionsMap.get(i)) {
                 if(!myattack.isAttackType() || !this.checkAttack(myattack, player)){continue;}
                 newAttacks.add(myattack);
-                attackConsumeFood(myattack, player);
+                //attackConsumeFood(myattack, player);
                 player.executeAttack(myattack);
             }
             intergAttack(newAttacks);
