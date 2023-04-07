@@ -14,6 +14,7 @@ public class Player implements Serializable {
     private final int totNumUnits;
     private final ArrayList<Territory> ownedTerritories;
 
+
     /**
      * This constructor builds up the player with 3 input paremeters
      * @param _id the player's id
@@ -57,6 +58,86 @@ public class Player implements Serializable {
     }
 
     /**
+     * This method checks whether the territory is the neighbor of the current territory
+     * @param curr the current territory
+     * @param checkNeighbor the territory to be checked
+     * @return ture if it is the neighbor of curr, false otherwise
+     */
+    public boolean isNeighbor(Territory curr, Territory checkNeighbor){
+        HashMap<Territory, Integer> neighbors = curr.getNeighborsDist();
+        for(Territory territory : neighbors.keySet()){
+            if(checkNeighbor.equals(territory)){
+                return true;
+            }
+        }
+        return false;
+    }
+    /**
+     * This method gets the path that has the minimal food resource cost
+     * @param src the source territory
+     * @param dst the destination territory
+     * @return the minimal cost of the path
+     */
+    public int getMinPath(Territory src, Territory dst){
+        ArrayList<Territory> allSelfTerritories = getOwnedTerritories();
+
+        HashMap<Territory, Boolean> visited = new HashMap<>();
+        HashMap<Territory, Integer> distances = new HashMap<>();
+
+        //Initialize distances to max and visited
+        for(int i = 0; i < allSelfTerritories.size(); i++){
+            Territory currT = allSelfTerritories.get(i);
+            //If the current territory is the neighbor of the src
+            //its distance should be the direct distance
+            if(isNeighbor(src, currT)){
+                distances.put(currT, src.getNeighborsDist().get(currT));
+            }
+            else {
+                distances.put(allSelfTerritories.get(i), Integer.MAX_VALUE);
+            }
+            visited.put(allSelfTerritories.get(i), false);
+        }
+
+        //Put the source territory's distance to 0
+        distances.put(src, 0);
+
+        Territory minTerr = src;
+
+        for(int i = 0; i < allSelfTerritories.size() - 1; i++){
+            int isUpdate = 0;
+
+            //Get the Territory that has the min cost to the current territory
+            for(Territory currTerr : allSelfTerritories){
+                if(currTerr.equals(minTerr)){
+                    visited.replace(minTerr, true);
+                }
+
+                if(i != 0 && isUpdate == 0 && !visited.get(currTerr) && isNeighbor(minTerr, currTerr)){
+                    minTerr = currTerr;
+                    isUpdate = 1;
+                }
+                if(!visited.get(currTerr) && isNeighbor(minTerr, currTerr) &&
+                        (distances.get(minTerr) != 0 && distances.get(currTerr) < distances.get(minTerr)
+                                || distances.get(minTerr) == 0)){
+                    minTerr = currTerr;
+                }
+            }
+            visited.replace(minTerr, true); //Have used the minTerr as the middle node
+
+            //Updating the distance for each neighbors of Territory
+            for(Territory newTerr : allSelfTerritories){
+                if(!visited.get(newTerr) && isNeighbor(minTerr, newTerr)
+                        && distances.get(minTerr) + minTerr.getNeighborsDist().get(newTerr) < distances.get(newTerr)){
+                    distances.replace(newTerr, distances.get(minTerr) + minTerr.getNeighborsDist().get(newTerr));
+                }
+            }
+
+        }
+        return distances.get(dst);
+    }
+
+
+    /**
      * execute the given move action, update the number of units
      *
      * @param move the move action
@@ -67,6 +148,16 @@ public class Player implements Serializable {
 
         src.decreaseUnit(move.getUnitsToChange());
         dst.increaseUnit(move.getUnitsToChange());
+
+        for(int i = 0; i < move.getUnitsToChange().size(); i++) {
+            int unitNum = move.getUnitsToChange().get(i).getNumUnits(); //The num to move
+            //Reduce the cost on the current territory
+            int minPathCost = getMinPath(src, dst);
+            int moveCost = move.getUnitsToChange().get(i).getMoveCost();
+            int cost = minPathCost * unitNum * moveCost; //TODO:check the formula
+            src.reduceFood(cost);
+        }
+
     }
 
     /**

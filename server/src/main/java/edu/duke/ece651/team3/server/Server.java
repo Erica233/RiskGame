@@ -22,7 +22,6 @@ public class Server {
 //    private HashMap<Integer, ArrayList<Action>> attacksMap; //player ID and all attack actions this player has
     private HashMap<Integer, ArrayList<Action>> actionsMap; //player ID and all attack actions this player has
 
-    public int C; //The expected constant for the move cost
     /**
      * Constructs Server with port number
      * @param _portNum
@@ -63,8 +62,8 @@ public class Server {
         //Initialize distances to max and visited
         for(int i = 0; i < allSelfTerritories.size(); i++){
             Territory currT = allSelfTerritories.get(i);
-            //If the current territory is the neighbor of the src
-            //its distance should be the direct distance
+
+            //If the current territory is the neighbor of the src its distance should be the direct distance
             if(isNeighbor(src, currT)){
                 distances.put(currT, src.getNeighborsDist().get(currT));
             }
@@ -178,15 +177,15 @@ public class Server {
 
         srcTerr.decreaseUnit(units);
         dstTerr.increaseUnit(units);
-//        System.out.println("The size of myMove units is: " +  myMove.getUnitsToChange().size());
+        System.out.println("The size of myMove units is: " +  myMove.getUnitsToChange().size());
         //Move all the units in their corresponding levels
         for(int i = 0; i < myMove.getUnitsToChange().size(); i++) {
             int unitNum = myMove.getUnitsToChange().get(i).getNumUnits(); //The num to move
             //Reduce the cost on the current territory
             int minPathCost = getMinPath(srcTerr, dstTerr);
             int moveCost = myMove.getUnitsToChange().get(i).getMoveCost();
-            int cost = C * minPathCost * unitNum * moveCost; //TODO:check the formula
-//            System.out.println("The cost is " + cost);
+            int cost = minPathCost * unitNum * moveCost; //TODO:check the formula
+            System.out.println("The cost is " + cost);
             srcTerr.reduceFood(cost);
         }
     }
