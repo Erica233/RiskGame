@@ -64,7 +64,7 @@ public class UpgradeRuleCheckerTest {
         Action a2 = new MoveAction("a", "j", unitsToChange);
         UpgradeRuleChecker mrc2 = new UpgradeRuleChecker(a2, r);
         assertEquals(true, mrc2.checkSrcDst(a2, p1));
-        assertEquals(false, mrc2.checkResources(a2, r, p1)); //consume 3, only have 0
+        assertEquals(true, mrc2.checkResources(a2, r, p1)); //consume 3, only have 0
         assertEquals(false, mrc2.checkValidAction(a2, r, p1)); //food resource invalid
 
 

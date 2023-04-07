@@ -185,7 +185,7 @@ public class Server {
             int minPathCost = getMinPath(srcTerr, dstTerr);
             int moveCost = myMove.getUnitsToChange().get(i).getMoveCost();
             int cost = minPathCost * unitNum * moveCost; //TODO:check the formula
-            System.out.println("The cost is " + cost);
+            System.out.println("The cost for " + myMove.getUnitsToChange().get(i).getUnitName() + " is: " + cost);
             srcTerr.reduceFood(cost);
         }
     }

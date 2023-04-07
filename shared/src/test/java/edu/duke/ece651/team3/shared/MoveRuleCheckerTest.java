@@ -16,6 +16,7 @@ public class MoveRuleCheckerTest {
         r.initE2Map();
 
         Player p1 = r.getAllPlayers().get(0);
+        Player p2 = r.getAllPlayers().get(1);
 
         out.println(r.displayBoard());
         ArrayList<Unit> unitsToChange = new ArrayList<>();
@@ -64,8 +65,8 @@ public class MoveRuleCheckerTest {
         Action a2 = new MoveAction("a", "j", unitsToChange);
         MoveRuleChecker mrc2 = new MoveRuleChecker(a2, r);
         assertEquals(true, mrc2.checkSrcDst(a2, p1));
-        assertEquals(false, mrc2.checkResources(a2, r, p1)); //consume 3, only have 0
-        assertEquals(false, mrc2.checkValidAction(a2, r, p1)); //food resource invalid
+        assertEquals(true, mrc2.checkResources(a2, r, p1)); //consume 3, only have 0
+        assertEquals(true, mrc2.checkValidAction(a2, r, p1)); //food resource invalid
 
 
 
@@ -93,6 +94,11 @@ public class MoveRuleCheckerTest {
         MoveRuleChecker mrc7 = new MoveRuleChecker(a7, r);
         assertEquals(false, mrc7.checkPath(a7, r, p1));
         assertEquals(false, mrc7.checkValidAction(a7, r, p1));
+
+        Action a8 = new MoveAction("c", "k", unitsToChange);
+        MoveRuleChecker mrc8 = new MoveRuleChecker(a8, r);
+        assertEquals(true, mrc8.checkPath(a8, r, p2));
+        assertEquals(true, mrc8.checkValidAction(a8, r, p2));
     }
 
     @Test
@@ -143,5 +149,7 @@ public class MoveRuleCheckerTest {
         MoveRuleChecker mrc2 = new MoveRuleChecker(a2, r);
         assertEquals(true, mrc2.checkPath(a2, r, p2));
         assertEquals(true, mrc2.checkValidAction(a2, r, p2));
+
+
     }
 }

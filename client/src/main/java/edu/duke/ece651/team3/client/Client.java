@@ -250,6 +250,7 @@ public class Client {
         try {
             output = Integer.parseInt(s);
         } catch (NumberFormatException e) {
+            System.out.println("empty number!");
             throw new NumberFormatException("it is not a integer: " + e.getMessage());
         }
         return output;
