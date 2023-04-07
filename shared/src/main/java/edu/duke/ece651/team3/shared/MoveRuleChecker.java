@@ -69,7 +69,6 @@ public class MoveRuleChecker extends RuleChecker{
     public boolean checkNumUnits(Action myMove, Player currPlayer){
         Territory t = findTerritory(myMove, currPlayer);
         for(int i = 0; i < t.getUnits().size(); i++){
-            ArrayList<Unit> curr = myMove.getUnitsToChange();
             int numUnitsChange = myMove.getUnitsToChange().get(i).getNumUnits();
             if(numUnitsChange > t.getUnits().get(i).getNumUnits() || numUnitsChange < 0){
                 System.out.println("Invalid numberUnits: " + numUnitsChange + " current territory's unit: "

@@ -190,6 +190,7 @@ public class Server {
         }
     }
 
+
     /**
      * This method gets the player that owns the given territory.
      * @param territoryName the territory's name
@@ -268,6 +269,7 @@ public class Server {
         //executeAllMoves:
         executeMoves();
         riscBoard.executeAttacks(actionsMap);
+        riscBoard.executeUpgrades(actionsMap);
         riscBoard.updateCombatResult();
         if(riscBoard.checkWin() == 2){
             riscBoard.addAfterEachTurn();

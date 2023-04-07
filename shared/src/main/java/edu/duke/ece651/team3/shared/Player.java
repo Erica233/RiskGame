@@ -171,6 +171,26 @@ public class Player implements Serializable {
     }
 
     /**
+     * execute the given attack action (only decrease the units in the source territory)
+     *
+     * @param upgrade the attack action
+     */
+    public void executeUpgrade(Action upgrade) {
+        Territory src = findOwnedTerritoryByName(upgrade.getSrcName());
+        src.decreaseUnit(upgrade.getUnitsToChange());
+        src.increaseUpgradeUnit(upgrade.getUnitsToChange());
+
+        //Consume the tech resources
+        int techCost = 0;
+        for(Unit unit : upgrade.getUnitsToChange()){
+            int currTechCost = unit.getUpgradeCost();
+            techCost += unit.getNumUnits() * currTechCost;
+        }
+
+        src.reduceTechnology(techCost);
+    }
+
+    /**
      * get the territory given its territory name, if not find, returns null
      *
      * @param territoryName the name of the territory want to find

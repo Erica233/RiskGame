@@ -174,6 +174,9 @@ public class Client {
         if (action.isAttackType()) {
             riskGameBoard.executeAttack(action, playerId);
         }
+        if (action.isUpgradeType()) {
+            riskGameBoard.executeUpgrade(action, playerId);
+        }
         System.out.println("board after execution check: \n" + riskGameBoard.displayBoard());
     }
 
@@ -192,9 +195,6 @@ public class Client {
      * @param action the action need to store
      */
     public void storeActionToList(Action action) {
-//        if (action.isValidType()) {
-//            actionsList.add(action);
-//        }
         actionsList.add(action);
     }
 
@@ -216,7 +216,13 @@ public class Client {
                 //problem = "Invalid Attack!\n";
                 throw new IllegalArgumentException("Your attack is invalid!\n");
             }
-        } else {
+        } else if (action.isUpgradeType()) {
+            UpgradeRuleChecker upgradeRuleChecker = new UpgradeRuleChecker(action, riskGameBoard);
+            if (!upgradeRuleChecker.checkValidAction(action, (RiskGameBoard) riskGameBoard, riskGameBoard.getAllPlayers().get(playerId))) {
+                //problem = "Invalid Attack!\n";
+                throw new IllegalArgumentException("Your upgrade is invalid!\n");
+            }
+        }else {
             throw new IllegalArgumentException("Your action type is invalid!\n");
         }
     }

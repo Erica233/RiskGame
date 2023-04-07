@@ -168,6 +168,21 @@ public class RiskGameBoard implements Board, Serializable {
     }
 
     /**
+     * This method checks Upgrade action
+     * @param myUpgrade
+     * @param currPlayer
+     * @return true if it is valid, false if it is not
+     * @throws Exception
+     */
+    public boolean checkUpgrade(Action myUpgrade, Player currPlayer) throws Exception{
+        UpgradeRuleChecker upgradeRuleChecker = new UpgradeRuleChecker(myUpgrade,  this);
+        if (!upgradeRuleChecker.checkValidAction(myUpgrade, this, currPlayer)) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
      * get the number of unit number from units
      * @param units arraylist of Unit
      * @return sum of the number of unit number from units
@@ -341,6 +356,19 @@ public class RiskGameBoard implements Board, Serializable {
         }
     }
 
+    public void executeUpgrades(HashMap<Integer, ArrayList<Action>> actionsMap) throws Exception {
+        for(int i : actionsMap.keySet()){ //Go through each players
+            Player player = this.getAllPlayers().get(i);
+            System.out.println("Player " + player.getPlayerId() + "'s execute upgrade");
+            for(Action myUpgrade : actionsMap.get(i)) {
+                if(!myUpgrade.isUpgradeType() || !this.checkUpgrade(myUpgrade, player)){
+                    continue;
+                }
+                executeUpgrade(myUpgrade, i);
+            }
+        }
+    }
+
     public ArrayList<Unit> initializeArrUnits(){
         ArrayList<Unit> arrUnits = new ArrayList<>();
         arrUnits.add(new Private(0));
@@ -419,6 +447,16 @@ public class RiskGameBoard implements Board, Serializable {
      */
     public void executeAttack(Action attack, int playerId) {
         allPlayers.get(playerId).executeAttack(attack);
+    }
+
+    /**
+     * execute an upgrade
+     *
+     * @param upgrade the upgrade to execute
+     * @param playerId the id of the player who need to execute the action
+     */
+    public void executeUpgrade(Action upgrade, int playerId) {
+        allPlayers.get(playerId).executeUpgrade(upgrade);
     }
 
     /**
