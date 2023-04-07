@@ -53,18 +53,18 @@ public class RiskGameBoard implements Board, Serializable {
      * @throws Exception
      */
     public String initE2Map() throws Exception {
-        Territory a = new Territory("a", 5, 10, 0);
-        Territory b = new Territory("b", 5, 10, 0);
-        Territory c = new Territory("c", 5, 10, 0);
-        Territory d = new Territory("d", 5, 10, 0);
-        Territory e = new Territory("e", 5, 10, 0);
-        Territory f = new Territory("f", 5, 10, 0);
-        Territory g = new Territory("g", 5, 10, 0);
-        Territory h = new Territory("h", 5, 10, 0);
-        Territory i = new Territory("i", 5, 10, 0);
-        Territory j = new Territory("j", 5, 10, 0);
-        Territory k = new Territory("k", 5, 10, 0);
-        Territory l = new Territory("l", 5, 10, 0);
+        Territory a = new Territory("a", 5, 10, 10);
+        Territory b = new Territory("b", 5, 10, 10);
+        Territory c = new Territory("c", 5, 10, 10);
+        Territory d = new Territory("d", 5, 10, 10);
+        Territory e = new Territory("e", 5, 10, 10);
+        Territory f = new Territory("f", 5, 10, 10);
+        Territory g = new Territory("g", 5, 10, 10);
+        Territory h = new Territory("h", 5, 10, 10);
+        Territory i = new Territory("i", 5, 10, 10);
+        Territory j = new Territory("j", 5, 10, 10);
+        Territory k = new Territory("k", 5, 10, 10);
+        Territory l = new Territory("l", 5, 10, 10);
         connectNeighbors(a, b, 1);
         connectNeighbors(a, c, 2);
         connectNeighbors(a, j, 3);
@@ -357,7 +357,7 @@ public class RiskGameBoard implements Board, Serializable {
     }
 
     public void executeUpgrades(HashMap<Integer, ArrayList<Action>> actionsMap) throws Exception {
-        for(int i : actionsMap.keySet()){ //Go through each players
+        for(int i : actionsMap.keySet()){ //Go through each player
             Player player = this.getAllPlayers().get(i);
             System.out.println("Player " + player.getPlayerId() + "'s execute upgrade");
             for(Action myUpgrade : actionsMap.get(i)) {

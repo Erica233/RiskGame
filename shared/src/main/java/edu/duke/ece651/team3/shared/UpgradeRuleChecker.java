@@ -67,16 +67,8 @@ public class UpgradeRuleChecker extends RuleChecker{
      */
     public boolean checkNumUnits(Action myUpgrade, Player currPlayer){
         Territory t = findTerritory(myUpgrade, currPlayer);
-        int cntChangeUnits = 0;
         for(int i = 0; i < t.getUnits().size(); i++){
-            Unit currUnit = myUpgrade.getUnitsToChange().get(i);
             int numUnitsChange = myUpgrade.getUnitsToChange().get(i).getNumUnits();
-
-            //If the upgrade unit has already been the highest level
-            if(currUnit.getUnitName().equals("SergeantMajor")){
-                System.out.println("Invalid numberUnits! current Unit is already the highest level");
-                return false;
-            }
             if(numUnitsChange > t.getUnits().get(i).getNumUnits() || numUnitsChange < 0){
                 System.out.println("Invalid numberUnits: " + numUnitsChange + " current territory's unit: "
                         + t.getUnits().get(i).getNumUnits());
@@ -104,7 +96,7 @@ public class UpgradeRuleChecker extends RuleChecker{
             int numUnitsChange = myUpgrade.getUnitsToChange().get(i).getNumUnits();
 
             //If the upgrade unit has already been the highest level
-            if(currUnit.getUnitName().equals("SergeantMajor")){
+            if(currUnit.getUnitName().equals("SergeantMajor") && currUnit.getNumUnits() != 0){
                 System.out.println("Invalid numberUnits! current Unit is already the highest level");
                 return false;
             }
@@ -132,15 +124,17 @@ public class UpgradeRuleChecker extends RuleChecker{
      */
     public boolean checkResources(Action myAction, RiskGameBoard riskGameBoard, Player currPlayer){
         Territory src = currPlayer.findOwnedTerritoryByName(myAction.getSrcName());
-
         int totalResourceCost = 0;
-        ArrayList<Unit> units = myAction.getUnitsToChange();
-        for(Unit unit : units){
-            int currUnitCost = unit.getUpgradeCost();
-            totalResourceCost += currUnitCost * unit.getNumUnits();
+
+        for(int i = 0; i < myAction.getUnitsToChange().size() - 1; i++){
+            Unit unitFrom = myAction.getUnitsToChange().get(i);
+            Unit unitTo = myAction.getUnitsToChange().get(i + 1);
+
+            int currUnitCost = unitTo.getUpgradeCost() - unitFrom.getUpgradeCost();
+//            System.out.println("The current upgrade cost is: " + currUnitCost);
+            totalResourceCost += currUnitCost * unitFrom.getNumUnits();
         }
         System.out.println("The total upgrade cost is: " + totalResourceCost);
-
         if(totalResourceCost > src.getTech()){
             System.out.println("Invalid move! The technology is not enough!");
             return false;

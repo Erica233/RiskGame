@@ -173,20 +173,22 @@ public class Player implements Serializable {
     /**
      * execute the given attack action (only decrease the units in the source territory)
      *
-     * @param upgrade the attack action
+     * @param myUpgrade the attack action
      */
-    public void executeUpgrade(Action upgrade) {
-        Territory src = findOwnedTerritoryByName(upgrade.getSrcName());
-        src.decreaseUnit(upgrade.getUnitsToChange());
-        src.increaseUpgradeUnit(upgrade.getUnitsToChange());
+    public void executeUpgrade(Action myUpgrade) {
+        Territory src = findOwnedTerritoryByName(myUpgrade.getSrcName());
+        src.decreaseUnit(myUpgrade.getUnitsToChange());
+        src.increaseUpgradeUnit(myUpgrade.getUnitsToChange());
 
         //Consume the tech resources
         int techCost = 0;
-        for(Unit unit : upgrade.getUnitsToChange()){
-            int currTechCost = unit.getUpgradeCost();
-            techCost += unit.getNumUnits() * currTechCost;
+        for(int i = 0; i < myUpgrade.getUnitsToChange().size() - 1; i++){
+            Unit unitTo = myUpgrade.getUnitsToChange().get(i + 1);
+            Unit unitFrom = myUpgrade.getUnitsToChange().get(i);
+            int currUnitCost = unitTo.getUpgradeCost() - unitFrom.getUpgradeCost();
+            techCost += currUnitCost * unitFrom.getNumUnits();
         }
-
+        System.out.println("The current total tech cost is: " + techCost);
         src.reduceTechnology(techCost);
     }
 

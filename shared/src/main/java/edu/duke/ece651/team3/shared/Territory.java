@@ -294,7 +294,7 @@ public class Territory implements Serializable, Comparable<Territory> {
 
     public void increaseResource() {
         setFood(getFood() + 10);
-        setTech(getTech() + 10);
+        setTech(getTech() + 50);
     }
 
     /**
