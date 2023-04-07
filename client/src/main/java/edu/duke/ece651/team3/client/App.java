@@ -32,11 +32,14 @@ public class App extends Application{
   @Override
   public void start(Stage stage) throws IOException {
     URL xmlResource = getClass().getResource("/ui/calc-split.xml");
+    System.out.println("xmlResource: " + xmlResource);
     GridPane gp = FXMLLoader.load(xmlResource);
+    System.out.println("gp: " + gp);
 
     Scene scene = new Scene(gp, 640, 480);
 
     URL cssResource = getClass().getResource("/ui/calcbuttons.css");
+    System.out.println("cssResource: " + cssResource);
     scene.getStylesheets().add(cssResource.toString());
 
     stage.setScene(scene);

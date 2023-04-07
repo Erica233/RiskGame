@@ -9,7 +9,7 @@
 
 
 <GridPane xmlns:fx="http://javafx.com/fxml"
-          fx:controller="edu.duke.ece651.team3.client.controller.testController">
+          fx:controller="edu.duke.ece651.team3.client.controller.CalculatorController">
     <columnConstraints>
         <ColumnConstraints percentWidth="60" />
         <ColumnConstraints percentWidth="20" />
