@@ -135,6 +135,14 @@ public class Client {
             }
         }
         output += "\n";
+
+        output = output + "Player " + playerId + " upgrade actions:\n";
+        for (Action upgrade: actionsList) {
+            if (upgrade.isUpgradeType()) {
+                output = output + upgrade + "\n";
+            }
+        }
+        output += "\n";
         System.out.println(output);
         return output;
     }
@@ -174,6 +182,9 @@ public class Client {
         if (action.isAttackType()) {
             riskGameBoard.executeAttack(action, playerId);
         }
+        if (action.isUpgradeType()) {
+            riskGameBoard.executeUpgrade(action, playerId);
+        }
         System.out.println("board after execution check: \n" + riskGameBoard.displayBoard());
     }
 
@@ -192,9 +203,6 @@ public class Client {
      * @param action the action need to store
      */
     public void storeActionToList(Action action) {
-//        if (action.isValidType()) {
-//            actionsList.add(action);
-//        }
         actionsList.add(action);
     }
 
@@ -216,7 +224,13 @@ public class Client {
                 //problem = "Invalid Attack!\n";
                 throw new IllegalArgumentException("Your attack is invalid!\n");
             }
-        } else {
+        } else if (action.isUpgradeType()) {
+            UpgradeRuleChecker upgradeRuleChecker = new UpgradeRuleChecker(action, riskGameBoard);
+            if (!upgradeRuleChecker.checkValidAction(action, (RiskGameBoard) riskGameBoard, riskGameBoard.getAllPlayers().get(playerId))) {
+                //problem = "Invalid Attack!\n";
+                throw new IllegalArgumentException("Your upgrade is invalid!\n");
+            }
+        }else {
             throw new IllegalArgumentException("Your action type is invalid!\n");
         }
     }
@@ -250,6 +264,7 @@ public class Client {
         try {
             output = Integer.parseInt(s);
         } catch (NumberFormatException e) {
+            System.out.println("empty number!");
             throw new NumberFormatException("it is not a integer: " + e.getMessage());
         }
         return output;
@@ -299,11 +314,14 @@ public class Client {
             return null;
         }
 
+
         String srcPrompt = "Please enter the name of your source territory:";
         String srcName = readStringFromUser(srcPrompt);
-        String dstPrompt = "Please enter the name of your destination territory:";
-        String dstName = readStringFromUser(dstPrompt);
-
+        String dstName = srcName;
+        if(!actionType.toUpperCase(Locale.ROOT).equals("U")){
+            String dstPrompt = "Please enter the name of your destination territory:";
+            dstName = readStringFromUser(dstPrompt);
+        }
         ArrayList<Unit> unitsToMove = readNumUnitsMap();
 
         return new Action(actionType, srcName, dstName, unitsToMove);

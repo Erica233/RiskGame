@@ -3,6 +3,7 @@ package edu.duke.ece651.team3.server;
 import edu.duke.ece651.team3.shared.*;
 
 import java.io.*;
+import java.sql.SQLOutput;
 import java.util.*;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -21,7 +22,6 @@ public class Server {
 //    private HashMap<Integer, ArrayList<Action>> attacksMap; //player ID and all attack actions this player has
     private HashMap<Integer, ArrayList<Action>> actionsMap; //player ID and all attack actions this player has
 
-    public int C; //The expected constant for the move cost
     /**
      * Constructs Server with port number
      * @param _portNum
@@ -62,8 +62,8 @@ public class Server {
         //Initialize distances to max and visited
         for(int i = 0; i < allSelfTerritories.size(); i++){
             Territory currT = allSelfTerritories.get(i);
-            //If the current territory is the neighbor of the src
-            //its distance should be the direct distance
+
+            //If the current territory is the neighbor of the src its distance should be the direct distance
             if(isNeighbor(src, currT)){
                 distances.put(currT, src.getNeighborsDist().get(currT));
             }
@@ -175,19 +175,21 @@ public class Server {
         Territory dstTerr = currPlayer.findOwnedTerritoryByName(myMove.getDstName());
         ArrayList<Unit> units = myMove.getUnitsToChange();
 
+        srcTerr.decreaseUnit(units);
+        dstTerr.increaseUnit(units);
+        System.out.println("The size of myMove units is: " +  myMove.getUnitsToChange().size());
         //Move all the units in their corresponding levels
         for(int i = 0; i < myMove.getUnitsToChange().size(); i++) {
             int unitNum = myMove.getUnitsToChange().get(i).getNumUnits(); //The num to move
-            srcTerr.decreaseUnit(units);
-            dstTerr.increaseUnit(units);
-
             //Reduce the cost on the current territory
             int minPathCost = getMinPath(srcTerr, dstTerr);
             int moveCost = myMove.getUnitsToChange().get(i).getMoveCost();
-            int cost = C * minPathCost * unitNum * moveCost; //TODO:check the formula
+            int cost = minPathCost * unitNum * moveCost; //TODO:check the formula
+            System.out.println("The cost for " + myMove.getUnitsToChange().get(i).getUnitName() + " is: " + cost);
             srcTerr.reduceFood(cost);
         }
     }
+
 
     /**
      * This method gets the player that owns the given territory.
@@ -267,6 +269,7 @@ public class Server {
         //executeAllMoves:
         executeMoves();
         riscBoard.executeAttacks(actionsMap);
+        riscBoard.executeUpgrades(actionsMap);
         riscBoard.updateCombatResult();
         if(riscBoard.checkWin() == 2){
             riscBoard.addAfterEachTurn();

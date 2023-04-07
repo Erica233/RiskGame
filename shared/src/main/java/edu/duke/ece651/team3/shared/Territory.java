@@ -230,6 +230,10 @@ public class Territory implements Serializable, Comparable<Territory> {
      */
     public String displayTerritory() {
         StringBuilder output = new StringBuilder();
+        for(Unit currUnit : units){
+            output.append(currUnit.getUnitName() + ": " + currUnit.getNumUnits() + " ");
+        }
+        output.append("\n");
         output.append(numUnits).append(" units in ").append(territoryName);
         if (neighborsDist.isEmpty()) {
             output.append(" (no neighbors)\n");
@@ -273,6 +277,20 @@ public class Territory implements Serializable, Comparable<Territory> {
         updateNumUnits();
     }
 
+    /**
+     * Upgrade the current level of unit to the next level
+     * @param unitsToChange specific types and numbers of unit to remove
+     */
+    public void increaseUpgradeUnit(ArrayList<Unit> unitsToChange) {
+        //Upgrading the highest level is invalid
+        for (int level = 0; level < units.size() - 1; level++) {
+            int nextLevel = level + 1;
+            units.get(nextLevel).setNumUnits(units.get(nextLevel).getNumUnits()
+                    + unitsToChange.get(level).getNumUnits());
+        }
+        updateNumUnits();
+    }
+
     public void increaseOneBasicUnit() {
         units.get(0).setNumUnits(units.get(0).getNumUnits() + 1);
         updateNumUnits();
@@ -280,7 +298,7 @@ public class Territory implements Serializable, Comparable<Territory> {
 
     public void increaseResource() {
         setFood(getFood() + 10);
-        setTech(getTech() + 10);
+        setTech(getTech() + 50);
     }
 
     /**
@@ -313,8 +331,20 @@ public class Territory implements Serializable, Comparable<Territory> {
         return true;
     }
 
+    /**
+     * This method reduces the food resource
+     * @param cost
+     */
     public void reduceFood(int cost){
         food -= cost;
+    }
+
+    /**
+     * This mehthod reduces the tech resource
+     * @param cost
+     */
+    public void reduceTechnology(int cost){
+        tech -= cost;
     }
 
     /** getters and setters **/

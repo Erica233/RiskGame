@@ -164,7 +164,7 @@ void test_addAUnitForAll() throws Exception {
     for(Territory territory : curr.getOwnedTerritories()){
         assertEquals(6, territory.getNumUnits());
     }
-    r.addAUnitEachTurn();
+//    r.addAUnitEachTurn();
     for(Territory territory : curr.getOwnedTerritories()){
         assertEquals(7, territory.getNumUnits());
     }

@@ -46,13 +46,14 @@ public class Action implements Serializable {
         return actionType.toUpperCase(Locale.ROOT).equals("A");
     }
 
-//    /**
-//     * This method checks whether the action is Done
-//     * @return true if it is Done, false if it is not
-//     */
-//    public boolean isDone(){
-//        return actionType.toUpperCase(Locale.ROOT).equals("D");
-//    }
+    /**
+     * This method checks whether the action type is the move type
+     * @return true if it is Move type, false if it not
+     */
+    public boolean isUpgradeType(){
+        return actionType.toUpperCase(Locale.ROOT).equals("U");
+    }
+
 
     /**
      * This method checks whether the action type is valid(Move, Attack, Done)
