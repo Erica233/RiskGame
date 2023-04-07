@@ -135,6 +135,14 @@ public class Client {
             }
         }
         output += "\n";
+
+        output = output + "Player " + playerId + " upgrade actions:\n";
+        for (Action upgrade: actionsList) {
+            if (upgrade.isUpgradeType()) {
+                output = output + upgrade + "\n";
+            }
+        }
+        output += "\n";
         System.out.println(output);
         return output;
     }

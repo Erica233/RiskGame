@@ -230,6 +230,10 @@ public class Territory implements Serializable, Comparable<Territory> {
      */
     public String displayTerritory() {
         StringBuilder output = new StringBuilder();
+        for(Unit currUnit : units){
+            output.append(currUnit.getUnitName() + ": " + currUnit.getNumUnits() + " ");
+        }
+        output.append("\n");
         output.append(numUnits).append(" units in ").append(territoryName);
         if (neighborsDist.isEmpty()) {
             output.append(" (no neighbors)\n");
