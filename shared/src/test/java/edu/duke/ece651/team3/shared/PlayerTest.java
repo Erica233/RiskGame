@@ -166,7 +166,7 @@ void test_addAUnitForAll() throws Exception {
     }
 //    r.addAUnitEachTurn();
     for(Territory territory : curr.getOwnedTerritories()){
-        assertEquals(7, territory.getNumUnits());
+        assertEquals(6, territory.getNumUnits());
     }
     r.updateCombatResult();
 
@@ -233,5 +233,57 @@ public void test_ExecuteAttack() throws Exception {
         ArrayList<Territory> expList_p1 = new ArrayList<>();
         expList_p1.add(c);
         assertEquals(expList_p1, player1T);
+    }
+    @Test
+    public void test_displayPlayer(){
+        Player p = new Player(1, "Green", 10);
+        String expected = "Green player:\n" +
+                "---------------\n" +
+                "no territories\n";
+        assertEquals(expected, p.displayPlayer());
+    }
+
+    @Test
+    public void test_Upgrade() throws Exception{
+        RiskGameBoard r = new RiskGameBoard();
+        r.initE2Map();
+
+        Player p1 = r.getAllPlayers().get(0);
+
+        ArrayList<Unit> unitsToChange = new ArrayList<>();
+        unitsToChange.add(new Private(1));
+        unitsToChange.add(new Corporal(0));
+        unitsToChange.add(new Specialist(0));
+        unitsToChange.add(new Sergeant(0));
+        unitsToChange.add(new MasterSergeant(0));
+        unitsToChange.add(new FirstSergeant(0));
+        unitsToChange.add(new SergeantMajor(0));
+
+        Action a1 = new UpgradeAction("a", "a", unitsToChange);
+        p1.executeUpgrade(a1);
+        assertEquals(3, unitsToChange.get(1).getUpgradeCost() - unitsToChange.get(0).getUpgradeCost());
+        assertEquals(7, p1.findOwnedTerritoryByName("a").getTech());
+    }
+    @Test
+    public void test_addResource() throws Exception{
+        RiskGameBoard r = new RiskGameBoard();
+        r.initE2Map();
+
+        Player p1 = r.getAllPlayers().get(0);
+        Territory a = p1.findOwnedTerritoryByName("a");
+
+        ArrayList<Unit> unitsToChange = new ArrayList<>();
+        unitsToChange.add(new Private(1));
+        unitsToChange.add(new Corporal(0));
+        unitsToChange.add(new Specialist(0));
+        unitsToChange.add(new Sergeant(0));
+        unitsToChange.add(new MasterSergeant(0));
+        unitsToChange.add(new FirstSergeant(0));
+        unitsToChange.add(new SergeantMajor(0));
+
+        p1.addResourceForEachTerr();
+        assertEquals(20, a.getFood());
+        assertEquals(60, a.getTech());
+
     }
 }

@@ -109,7 +109,8 @@ public class RiskGameBoard implements Board, Serializable {
      * @throws Exception
      */
     //TODO: move to test class
-    public void initSmallMap() throws Exception{
+    public String initSmallMap() throws Exception{
+        String output = "";
         Territory a = new Territory("a", 1, 5, 5);
         Territory b = new Territory("b", 1, 5, 5);
         Territory c = new Territory("c", 1, 5, 5);
@@ -131,6 +132,9 @@ public class RiskGameBoard implements Board, Serializable {
         Player player2 = new Player(1, "blue", 5, territories2);
         addPlayer(player1);
         addPlayer(player2);
+        output = output + player1.displayPlayer() + "\n" + player2.displayPlayer() + "\n";
+        System.out.println("initialize map successfully!");
+        return output;
 
     }
     /**
@@ -215,12 +219,14 @@ public class RiskGameBoard implements Board, Serializable {
      * @return the weakest unit's index
      */
     public int getWeakest(ArrayList<Unit> units){
+        int ans = -1;
         for(int i = 0; i < units.size(); i++){
             if(units.get(i).getNumUnits() != 0){
-                return i;
+                ans = i;
+                break;
             }
         }
-        return -1;
+        return ans;
     }
 
     /**
