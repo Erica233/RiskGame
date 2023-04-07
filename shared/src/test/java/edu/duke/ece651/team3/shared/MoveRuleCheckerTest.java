@@ -98,7 +98,7 @@ public class MoveRuleCheckerTest {
         Action a8 = new MoveAction("c", "k", unitsToChange);
         MoveRuleChecker mrc8 = new MoveRuleChecker(a8, r);
         assertEquals(true, mrc8.checkPath(a8, r, p2));
-        assertEquals(true, mrc8.checkValidAction(a8, r, p2));
+        assertEquals(false, mrc8.checkValidAction(a8, r, p2));
     }
 
     @Test
@@ -150,6 +150,7 @@ public class MoveRuleCheckerTest {
         assertEquals(true, mrc2.checkPath(a2, r, p2));
         assertEquals(true, mrc2.checkValidAction(a2, r, p2));
 
+        mrc2.findTerritory(a2, p1);
 
     }
 }

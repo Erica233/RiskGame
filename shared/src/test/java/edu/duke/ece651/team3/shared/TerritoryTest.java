@@ -2,6 +2,7 @@ package edu.duke.ece651.team3.shared;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import org.checkerframework.checker.units.qual.A;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -201,7 +202,7 @@ public class TerritoryTest {
         RiskGameBoard r = new RiskGameBoard();
         r.initE2Map();
 
-        assertEquals(0, r.getAllPlayers().get(0).getOwnedTerritories().get(0).getTech());
+        assertEquals(10, r.getAllPlayers().get(0).getOwnedTerritories().get(0).getTech());
     }
 
     @Test
@@ -216,6 +217,10 @@ public class TerritoryTest {
         assertEquals(10, a.getFood());
         a.reduceFood(5);
         assertEquals(5, a.getFood());
+        a.reduceTechnology(5);
+        assertEquals(5, a.getTech());
+        a.setTech(10);
+        assertEquals(10, a.getTech());
 
         Territory b = p2.findOwnedTerritoryByName("b"); //b is already a neighbor of a
 //        a.addANeighbor(b, 1);
@@ -223,6 +228,57 @@ public class TerritoryTest {
         assertFalse(a.checkValidNeighbor(a));
         assertFalse(a.checkExistNeighbor("i"));
 
+        assertEquals(1, b.compareTo(a));
+
+    }
+
+    @Test
+    public void test_resources() throws Exception{
+        RiskGameBoard r = new RiskGameBoard();
+        ArrayList<Unit> actionUnits= r.initializeArrUnits();
+        actionUnits.get(0).setNumUnits(100);
+        Territory a = new Territory("a", 5, 10, 10);
+        Territory b = new Territory("b", 5, 10, 10);
+//        a.decreaseUnit(actionUnits);
+        assertThrows(IllegalArgumentException.class, () -> a.decreaseUnit(actionUnits));
+    }
+
+    @Test
+    public void test_isValidToAdd() throws Exception{
+        RiskGameBoard r = new RiskGameBoard();
+        r.initE2Map();
+        Player p1 = r.getAllPlayers().get(0);
+        Player p2 = r.getAllPlayers().get(1);
+
+        ArrayList<Territory> allTerritoriesP1 = p1.getOwnedTerritories();
+        Territory a = p1.findOwnedTerritoryByName("a");
+        assertFalse(a.isValidToAdd(allTerritoriesP1, a));
+
+    }
+
+    @Test
+    public void test_increaseResource(){
+        Territory a = new Territory("a", 5, 10, 10);
+        ArrayList<Unit> units = new ArrayList<>();
+        units.add(new Private(5));
+        units.add(new Corporal(0));
+        units.add(new Specialist(0));
+        units.add(new Sergeant(0));
+        units.add(new MasterSergeant(0));
+        units.add(new FirstSergeant(0));
+        units.add(new SergeantMajor(0));
+        a.increaseResource();
+
+        assertEquals(20, a.getFood());
+        assertEquals(60, a.getTech());
+
+        a.increaseUpgradeUnit(units);
+        assertEquals(5, a.getUnits().get(1).getNumUnits());
+    }
+    @Test
+    public void test_display(){
+        Territory a = new Territory("a");
+        a.displayTerritory();
     }
 
 

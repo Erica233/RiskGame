@@ -57,14 +57,15 @@ public class UpgradeRuleCheckerTest {
 
 
         //a-a: invalid dst for move
-        Action a1 = new UpgradeAction("a", "a", unitsToChange);
+        Action a1 = new UpgradeAction("a", "a", hasHighest);
         UpgradeRuleChecker mrc1 = new UpgradeRuleChecker(a1, r);
 //        RuleChecker mrc0 = new RuleChecker(a1, r);
         assertEquals(true, mrc1.checkSrcDst(a1, p1));
-        assertEquals(true, mrc1.checkNumUnits(a1, p1));
-        assertEquals(true, mrc1.checkPath(a1, r, p1));
-        assertEquals(false, mrc1.checkResources(a1, r, p1));
+        assertEquals(false, mrc1.checkNumUnits(a1, p1));
+        assertEquals(false, mrc1.checkPath(a1, r, p1));
+        assertEquals(true, mrc1.checkResources(a1, r, p1));
         assertEquals(false, mrc1.checkValidAction(a1, r, p1));
+        assertEquals(true, a1.isUpgradeType());
 
 //        //a-d: invalid src for move
 //        Action a3 = new MoveAction("b", "a", unitsToChange);

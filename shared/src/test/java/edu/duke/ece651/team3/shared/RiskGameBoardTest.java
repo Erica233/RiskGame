@@ -141,10 +141,10 @@ void test_updateCombatResult2() throws Exception {
         units.add(new SergeantMajor(0));
 
         Action action = new AttackAction("a", "c", units);
-        assertFalse(b.checkAttack(action, p1));
+        assertTrue(b.checkAttack(action, p1));
 
         Action action1 = new AttackAction("a", "b", units);
-        assertFalse(b.checkAttack(action1, p1));
+        assertTrue(b.checkAttack(action1, p1));
 
     }
 

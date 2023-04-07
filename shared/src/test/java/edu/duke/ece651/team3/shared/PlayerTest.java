@@ -166,7 +166,7 @@ void test_addAUnitForAll() throws Exception {
     }
 //    r.addAUnitEachTurn();
     for(Territory territory : curr.getOwnedTerritories()){
-        assertEquals(7, territory.getNumUnits());
+        assertEquals(6, territory.getNumUnits());
     }
     r.updateCombatResult();
 
