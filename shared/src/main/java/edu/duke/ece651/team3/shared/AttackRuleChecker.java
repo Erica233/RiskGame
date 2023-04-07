@@ -120,17 +120,12 @@ public class AttackRuleChecker extends RuleChecker{
                     distance = neighbors.get(t);
                 }
             }
-
-            ArrayList<Unit> unitsToChange = myAttack.getUnitsToChange();
-            for(int j = 0; j < unitsToChange.size(); j++){
-                foodRsc -= (j+1) * unitsToChange.get(j).getNumUnits() * distance;
-                if(foodRsc < 0){
-                    return false;
-                }
+            foodRsc -= (i+1) * myAttack.getUnitsToChange().get(i).getNumUnits() * distance;
+            if(foodRsc < 0){
+                return false;
             }
             System.out.println("The total number of food cost is: " + (terr.getFood()-foodRsc));
         }
-
         return true;
     }
 }
