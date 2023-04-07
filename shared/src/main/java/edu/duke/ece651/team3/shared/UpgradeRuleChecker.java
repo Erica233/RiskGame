@@ -102,15 +102,15 @@ public class UpgradeRuleChecker extends RuleChecker{
             }
 
             //If the unit is to be upgraded, increase the count
-            if(numUnitsChange != 0){
-                cntChangeUnits ++;
-            }
+//            if(numUnitsChange != 0){
+//                cntChangeUnits ++;
+//            }
         }
-        if(cntChangeUnits != 1){
-            System.out.println("Invalid Upgrades! You should " +
-                    "only upgrade 1 unit each turn but you did " + cntChangeUnits);
-            return false;
-        }
+//        if(cntChangeUnits != 1){
+//            System.out.println("Invalid Upgrades! You should " +
+//                    "only upgrade 1 unit each turn but you did " + cntChangeUnits);
+//            return false;
+//        }
         return true;
     }
 
@@ -136,7 +136,7 @@ public class UpgradeRuleChecker extends RuleChecker{
         }
         System.out.println("The total upgrade cost is: " + totalResourceCost);
         if(totalResourceCost > src.getTech()){
-            System.out.println("Invalid move! The technology is not enough!");
+            System.out.println("Invalid upgrade! The technology is not enough!");
             return false;
         }
         return true;

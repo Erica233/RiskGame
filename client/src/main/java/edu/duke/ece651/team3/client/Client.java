@@ -306,11 +306,14 @@ public class Client {
             return null;
         }
 
+
         String srcPrompt = "Please enter the name of your source territory:";
         String srcName = readStringFromUser(srcPrompt);
-        String dstPrompt = "Please enter the name of your destination territory:";
-        String dstName = readStringFromUser(dstPrompt);
-
+        String dstName = srcName;
+        if(!actionType.toUpperCase(Locale.ROOT).equals("U")){
+            String dstPrompt = "Please enter the name of your destination territory:";
+            dstName = readStringFromUser(dstPrompt);
+        }
         ArrayList<Unit> unitsToMove = readNumUnitsMap();
 
         return new Action(actionType, srcName, dstName, unitsToMove);
