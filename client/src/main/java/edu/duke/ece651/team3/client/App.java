@@ -3,6 +3,7 @@
  */
 package edu.duke.ece651.team3.client;
 
+import edu.duke.ece651.team3.client.controller.StartController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -13,6 +14,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.HashMap;
 
 public class App extends Application{
   //  public String getMessage() {
@@ -28,17 +30,25 @@ public class App extends Application{
 
   @Override
   public void start(Stage stage) throws IOException {
-    URL xmlResource = getClass().getResource("/ui/start.fxml");
-    AnchorPane gp = FXMLLoader.load(xmlResource);
+    Thread.setDefaultUncaughtExceptionHandler(new ErrorReporter());
 
+    URL xmlResource = getClass().getResource("/ui/start.fxml");
+    FXMLLoader loader = new FXMLLoader(xmlResource);
+    //models
+    //RPNStack model = new RPNStack();
+    HashMap<Class<?>,Object> controllers = new HashMap<>();
+    //put controllers
+    controllers.put(StartController.class, new StartController());
+    loader.setControllerFactory((c) -> {
+      return controllers.get(c);
+    });
+    GridPane gp = loader.load();
     Scene scene = new Scene(gp, 924, 600);
 
 //    URL cssResource = getClass().getResource("/ui/calcbuttons.css");
 //    scene.getStylesheets().add(cssResource.toString());
-
     stage.setScene(scene);
     stage.show();
-
   }
 
   public static void main(String[] args) {
