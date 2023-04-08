@@ -45,7 +45,7 @@ run{
 
 application {
     // Define the main class for the application.
-    mainClassName = 'edu.duke.ece651.team3.client.StartPage' //TODO: change ot Client
+    mainClassName = 'edu.duke.ece651.team3.client.App' //TODO: change ot Client
 }
 
 tasks.named('test') {
