@@ -16,39 +16,35 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
 
-public class App extends Application{
-  //  public String getMessage() {
-//    return "Hello from the client for "+ MyName.getName();
-//  }
-//  public static void main(String[] args) {
-//    App a = new App();
-//    System.out.println(a.getMessage());
-////    for (int i = 0; i < args.length; i++) {
-////      System.out.println("args["+i+"]="+ args[i]);
-////    }
-//  }
-
-  @Override
-  public void start(Stage stage) throws IOException {
-    Thread.setDefaultUncaughtExceptionHandler(new ErrorReporter());
-
+public class App extends Application {
+  public void startView(Stage stage) throws IOException {
     URL xmlResource = getClass().getResource("/ui/start.fxml");
     FXMLLoader loader = new FXMLLoader(xmlResource);
-    //models
-    //RPNStack model = new RPNStack();
     HashMap<Class<?>,Object> controllers = new HashMap<>();
     //put controllers
     controllers.put(StartController.class, new StartController());
     loader.setControllerFactory((c) -> {
       return controllers.get(c);
     });
-    GridPane gp = loader.load();
+    AnchorPane gp = loader.load();
     Scene scene = new Scene(gp, 924, 600);
 
 //    URL cssResource = getClass().getResource("/ui/calcbuttons.css");
 //    scene.getStylesheets().add(cssResource.toString());
     stage.setScene(scene);
     stage.show();
+  }
+
+  @Override
+  public void start(Stage stage) throws IOException {
+    Thread.setDefaultUncaughtExceptionHandler(new ErrorReporter());
+
+    startView(stage);
+
+    //models
+    //RPNStack model = new RPNStack();
+
+
   }
 
   public static void main(String[] args) {
