@@ -14,177 +14,186 @@
         <items>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                <children>
-                  <Group fx:id="darkBay" layoutX="451.0" layoutY="321.0">
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="598.0" prefWidth="550.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
-                        <ImageView fitHeight="130.0" fitWidth="75.0">
-                           <image>
-                              <Image url="@../pic/darkbay.png" />
-                           </image>
-                        </ImageView>
-                        <Text layoutX="14.0" layoutY="56.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Dark Bay(k)" wrappingWidth="47.656341552734375">
-                           <font>
-                              <Font size="9.0" />
-                           </font>
-                        </Text>
+                        <Group fx:id="DarkBay" layoutX="451.0" layoutY="321.0">
+                           <children>
+                              <ImageView fitHeight="130.0" fitWidth="75.0">
+                                 <image>
+                                    <Image url="@../pic/darkbay.png" />
+                                 </image>
+                              </ImageView>
+                              <Text layoutX="14.0" layoutY="56.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Dark Bay(k)" wrappingWidth="47.656341552734375">
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                        </Group>
+                        <Group fx:id="TheSouth" layoutX="86.0" layoutY="314.0">
+                           <children>
+                              <ImageView fitHeight="104.0" fitWidth="131.0" layoutX="56.0" layoutY="33.0">
+                                 <image>
+                                    <Image url="@../pic/thesouth.png" />
+                                 </image>
+                              </ImageView>
+                              <Text layoutX="97.0" layoutY="90.0" strokeType="OUTSIDE" strokeWidth="0.0" text="The South(d)">
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                        </Group>
+                        <Group fx:id="TheIronIslands" layoutX="238.0" layoutY="313.0">
+                           <children>
+                              <ImageView fitHeight="74.0" fitWidth="151.0">
+                                 <image>
+                                    <Image url="@../pic/ironisland.png" />
+                                 </image>
+                              </ImageView>
+                              <Text layoutX="36.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" text="The Iron Islands(e)">
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                        </Group>
+                        <Group fx:id="GoldenFields" layoutY="-13.0">
+                           <children>
+                              <ImageView fitHeight="87.0" fitWidth="128.0" layoutX="243.0" layoutY="258.0">
+                                 <image>
+                                    <Image url="@../pic/goldenfield.png" />
+                                 </image>
+                              </ImageView>
+                              <Text layoutX="275.0" layoutY="301.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Golden Fields(l)">
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                        </Group>
+                        <Group fx:id="Pyke" layoutX="56.0" layoutY="310.0">
+                           <children>
+                              <ImageView fitHeight="132.0" fitWidth="99.0" layoutX="1.0">
+                                 <image>
+                                    <Image url="@../pic/pyke.png" />
+                                 </image>
+                              </ImageView>
+                              <Text layoutX="35.0" layoutY="66.298828125" strokeType="OUTSIDE" strokeWidth="0.0" text="Pyke(b)">
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                        </Group>
+                        <Group fx:id="TheEyrie" layoutY="-13.0">
+                           <children>
+                              <ImageView fitHeight="174.0" fitWidth="111.0" layoutX="24.0" layoutY="160.0">
+                                 <image>
+                                    <Image url="@../pic/eyrie.png" />
+                                 </image>
+                              </ImageView>
+                              <Text layoutX="58.0" layoutY="292.0" strokeType="OUTSIDE" strokeWidth="0.0" text="The Eyrie(a)">
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                        </Group>
+                        <Group fx:id="MistyHollow" layoutY="-13.0">
+                           <children>
+                              <ImageView fitHeight="75.0" fitWidth="110.0" layoutX="364.0" layoutY="316.0">
+                                 <image>
+                                    <Image url="@../pic/mistyhollow.png" />
+                                 </image>
+                              </ImageView>
+                              <Text layoutX="388.0" layoutY="355.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Misty Hollow(f)">
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                        </Group>
+                        <Group fx:id="TheNorth" layoutY="-13.0" onMouseClicked="#getNorth">
+                           <children>
+                              <ImageView fitHeight="116.0" fitWidth="190.0" layoutX="69.0" layoutY="164.0">
+                                 <image>
+                                    <Image url="@../pic/thenorth.png" />
+                                 </image>
+                              </ImageView>
+                              <Text layoutX="133.0" layoutY="227.0" strokeType="OUTSIDE" strokeWidth="0.0" text="The North(j)">
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font>
+                              </Text>
+                              <AnchorPane prefHeight="200.0" prefWidth="200.0" visible="false">
+                                 <children>
+                                    <Text layoutX="67.0" layoutY="29.0" strokeType="OUTSIDE" strokeWidth="0.0" text="The North" wrappingWidth="80.94871818970705" />
+                                    <Text layoutX="55.0" layoutY="84.0" strokeType="OUTSIDE" strokeWidth="0.0" text="abcd" wrappingWidth="116.1435829509453" />
+                                 </children>
+                              </AnchorPane>
+                           </children>
+                        </Group>
+                        <Group fx:id="SouthHeaven" layoutY="-13.0">
+                           <children>
+                              <ImageView fitHeight="75.0" fitWidth="122.0" layoutX="247.0" layoutY="190.0">
+                                 <image>
+                                    <Image url="@../pic/sunheaven.png" />
+                                 </image>
+                              </ImageView>
+                              <Text layoutX="276.0" layoutY="231.0" strokeType="OUTSIDE" strokeWidth="0.0" text="South Heaven(h)">
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                        </Group>
+                        <Group fx:id="Drone" layoutX="120.0" layoutY="253.0">
+                           <children>
+                              <ImageView fitHeight="108.0" fitWidth="132.0">
+                                 <image>
+                                    <Image url="@../pic/drone.png" />
+                                 </image>
+                              </ImageView>
+                              <Text layoutX="49.0" layoutY="57.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Drone(c)">
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                        </Group>
+                        <Group fx:id="Stormlands" layoutY="-13.0">
+                           <children>
+                              <ImageView fitHeight="134.0" fitWidth="122.0" layoutX="357.0" layoutY="185.0">
+                                 <image>
+                                    <Image url="@../pic/stormlands.png" />
+                                 </image>
+                              </ImageView>
+                              <Text layoutX="372.0" layoutY="255.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Stormlands(g)">
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                        </Group>
+                        <Group fx:id="RiverRun" layoutY="-13.0">
+                           <children>
+                              <ImageView fitHeight="103.0" fitWidth="94.0" layoutX="425.0" layoutY="236.0">
+                                 <image>
+                                    <Image url="@../pic/riverrun.png" />
+                                 </image>
+                              </ImageView>
+                              <Text layoutX="451.0" layoutY="291.0" strokeType="OUTSIDE" strokeWidth="0.0" text="River Run(i)">
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                        </Group>
                      </children>
-                  </Group>
-                  <Group fx:id="theSouth" layoutX="86.0" layoutY="314.0">
-                     <children>
-                        <ImageView fitHeight="104.0" fitWidth="131.0" layoutX="56.0" layoutY="33.0">
-                           <image>
-                              <Image url="@../pic/thesouth.png" />
-                           </image>
-                        </ImageView>
-                        <Text layoutX="97.0" layoutY="90.0" strokeType="OUTSIDE" strokeWidth="0.0" text="The South(d)">
-                           <font>
-                              <Font size="9.0" />
-                           </font>
-                        </Text>
-                     </children>
-                  </Group>
-                  <Group layoutX="238.0" layoutY="313.0">
-                     <children>
-                        <ImageView fitHeight="74.0" fitWidth="151.0">
-                           <image>
-                              <Image url="@../pic/ironisland.png" />
-                           </image>
-                        </ImageView>
-                        <Text layoutX="36.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" text="The Iron Islands(e)">
-                           <font>
-                              <Font size="9.0" />
-                           </font>
-                        </Text>
-                     </children>
-                  </Group>
-                  <Group layoutY="-13.0">
-                     <children>
-                        <ImageView fitHeight="87.0" fitWidth="128.0" layoutX="243.0" layoutY="258.0">
-                           <image>
-                              <Image url="@../pic/goldenfield.png" />
-                           </image>
-                        </ImageView>
-                        <Text layoutX="275.0" layoutY="301.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Golden Fields(l)">
-                           <font>
-                              <Font size="9.0" />
-                           </font>
-                        </Text>
-                     </children>
-                  </Group>
-                  <Group layoutX="56.0" layoutY="310.0">
-                     <children>
-                        <ImageView fitHeight="132.0" fitWidth="99.0" layoutX="1.0">
-                           <image>
-                              <Image url="@../pic/pyke.png" />
-                           </image>
-                        </ImageView>
-                        <Text layoutX="35.0" layoutY="66.298828125" strokeType="OUTSIDE" strokeWidth="0.0" text="Pyke(b)">
-                           <font>
-                              <Font size="9.0" />
-                           </font>
-                        </Text>
-                     </children>
-                  </Group>
-                  <Group layoutY="-13.0">
-                     <children>
-                        <ImageView fitHeight="174.0" fitWidth="111.0" layoutX="24.0" layoutY="160.0">
-                           <image>
-                              <Image url="@../pic/eyrie.png" />
-                           </image>
-                        </ImageView>
-                        <Text layoutX="58.0" layoutY="292.0" strokeType="OUTSIDE" strokeWidth="0.0" text="The Eyrie(a)">
-                           <font>
-                              <Font size="9.0" />
-                           </font>
-                        </Text>
-                     </children>
-                  </Group>
-                  <Group layoutY="-13.0">
-                     <children>
-                        <ImageView fitHeight="75.0" fitWidth="110.0" layoutX="364.0" layoutY="316.0">
-                           <image>
-                              <Image url="@../pic/mistyhollow.png" />
-                           </image>
-                        </ImageView>
-                        <Text layoutX="388.0" layoutY="355.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Misty Hollow(f)">
-                           <font>
-                              <Font size="9.0" />
-                           </font>
-                        </Text>
-                     </children>
-                  </Group>
-                  <Group layoutY="-13.0">
-                     <children>
-                        <ImageView fitHeight="116.0" fitWidth="190.0" layoutX="69.0" layoutY="164.0">
-                           <image>
-                              <Image url="@../pic/thenorth.png" />
-                           </image>
-                        </ImageView>
-                        <Text layoutX="133.0" layoutY="227.0" strokeType="OUTSIDE" strokeWidth="0.0" text="The North(j)">
-                           <font>
-                              <Font size="9.0" />
-                           </font>
-                        </Text>
-                     </children>
-                  </Group>
-                  <Group layoutY="-13.0">
-                     <children>
-                        <ImageView fitHeight="75.0" fitWidth="122.0" layoutX="247.0" layoutY="190.0">
-                           <image>
-                              <Image url="@../pic/sunheaven.png" />
-                           </image>
-                        </ImageView>
-                        <Text layoutX="276.0" layoutY="231.0" strokeType="OUTSIDE" strokeWidth="0.0" text="South Heaven(h)">
-                           <font>
-                              <Font size="9.0" />
-                           </font>
-                        </Text>
-                     </children>
-                  </Group>
-                  <Group fx:id="drone" layoutX="120.0" layoutY="253.0">
-                     <children>
-                        <ImageView fitHeight="108.0" fitWidth="132.0">
-                           <image>
-                              <Image url="@../pic/drone.png" />
-                           </image>
-                        </ImageView>
-                        <Text layoutX="49.0" layoutY="57.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Drone(c)">
-                           <font>
-                              <Font size="9.0" />
-                           </font>
-                        </Text>
-                     </children>
-                  </Group>
-                  <Group layoutY="-13.0">
-                     <children>
-                        <ImageView fitHeight="134.0" fitWidth="122.0" layoutX="357.0" layoutY="185.0">
-                           <image>
-                              <Image url="@../pic/stormlands.png" />
-                           </image>
-                        </ImageView>
-                        <Text layoutX="372.0" layoutY="255.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Stormlands(g)">
-                           <font>
-                              <Font size="9.0" />
-                           </font>
-                        </Text>
-                     </children>
-                  </Group>
-                  <Group layoutY="-13.0">
-                     <children>
-                        <ImageView fitHeight="103.0" fitWidth="94.0" layoutX="425.0" layoutY="236.0">
-                           <image>
-                              <Image url="@../pic/riverrun.png" />
-                           </image>
-                        </ImageView>
-                        <Text layoutX="451.0" layoutY="291.0" strokeType="OUTSIDE" strokeWidth="0.0" text="River Run(i)">
-                           <font>
-                              <Font size="9.0" />
-                           </font>
-                        </Text>
-                     </children>
-                  </Group>
-               </children>
-            </AnchorPane>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" />
+                  </AnchorPane>
+               </children></AnchorPane>
+            <AnchorPane prefHeight="200.0" prefWidth="200.0" />
         </items>
       </SplitPane>
    </children>
