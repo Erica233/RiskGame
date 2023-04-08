@@ -8,10 +8,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.RowConstraints;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -31,13 +28,13 @@ public class App extends Application{
 
   @Override
   public void start(Stage stage) throws IOException {
-    URL xmlResource = getClass().getResource("/ui/calc-split.xml");
-    GridPane gp = FXMLLoader.load(xmlResource);
+    URL xmlResource = getClass().getResource("/ui/map.fxml");
+    AnchorPane ap = FXMLLoader.load(xmlResource);
 
-    Scene scene = new Scene(gp, 640, 480);
+    Scene scene = new Scene(ap, 924, 600);
 
-    URL cssResource = getClass().getResource("/ui/calcbuttons.css");
-    scene.getStylesheets().add(cssResource.toString());
+    //URL cssResource = getClass().getResource("/ui/calcbuttons.css");
+    //scene.getStylesheets().add(cssResource.toString());
 
     stage.setScene(scene);
     stage.show();
