@@ -21,6 +21,7 @@ public class StartController implements Initializable {
     private Button startButton;
     @FXML
     private Button quitButton;
+    private CheckBoxController checkBoxController;
 
     Game gameEntity;
     Stage stage;
@@ -40,8 +41,9 @@ public class StartController implements Initializable {
     @FXML
     public void onStartButton(ActionEvent ae) throws Exception {
         gameEntity.storePlayerId();
-        System.out.println("playerId=" + gameEntity.getPlayerId());
-        if (gameEntity.getPlayerId() != 0 && gameEntity.getPlayerId() != 1) {
+        int playerID = gameEntity.getPlayerId();
+        System.out.println("playerId=" + playerID);
+        if (playerID != 0 && playerID != 1) {
             throw new Exception("Failed to receive valid playerId!");
         }
         ShowViews.showGameView(stage, "/ui/whole.fxml", gameEntity);

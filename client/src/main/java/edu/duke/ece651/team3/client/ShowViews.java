@@ -29,6 +29,7 @@ public class ShowViews {
         });
 
         Scene scene = new Scene(loader.load(), 924, 600);
+
         stage.setTitle("RISC Game");
         stage.setScene(scene);
         stage.show();
