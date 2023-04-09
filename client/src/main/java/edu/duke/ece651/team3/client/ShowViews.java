@@ -27,8 +27,8 @@ public class ShowViews {
         loader.setControllerFactory((c) -> {
             return controllers.get(c);
         });
-        Scene scene = new Scene(loader.load(), 924, 600);
 
+        Scene scene = new Scene(loader.load(), 924, 600);
         stage.setTitle("RISC Game");
         stage.setScene(scene);
         stage.show();
