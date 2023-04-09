@@ -1,5 +1,7 @@
 package edu.duke.ece651.team3.client.controller;
 
+import edu.duke.ece651.team3.client.App;
+import edu.duke.ece651.team3.client.ShowViews;
 import edu.duke.ece651.team3.client.model.ClientCommunicator;
 import edu.duke.ece651.team3.client.model.Game;
 import edu.duke.ece651.team3.shared.RiskGameBoard;
@@ -36,25 +38,16 @@ public class StartController implements Initializable {
     }
 
     @FXML
-    public void onStartButton(ActionEvent ae) throws IOException {
-//        Object source = ae.getSource();
-//        if (source instanceof Button) {
-//            Button btn = (Button) source;
-//            currentNumber.setText(currentNumber.getText() + btn.getText());
-//        } else {
-//            throw new IllegalArgumentException("Invalid source " + source + " for ActionEvent");
-//        }
-//        if (playerId == 0 || playerId == 1) {
-//            System.out.println("playerId=" + playerId);
-//
-//        }
+    public void onStartButton(ActionEvent ae) throws Exception {
         gameEntity.storePlayerId();
         System.out.println("playerId=" + gameEntity.getPlayerId());
-
+        if (gameEntity.getPlayerId() != 0 && gameEntity.getPlayerId() != 1) {
+            throw new Exception("Failed to receive valid playerId!");
+        }
+        ShowViews.showGameView(App.stage, "/ui/whole.fxml", gameEntity);
 
     }
 
-    @Override
     public void initialize(URL location, ResourceBundle resources) {
 
     }

@@ -18,6 +18,7 @@ import java.net.URL;
 import java.util.HashMap;
 
 public class App extends Application {
+  public static Stage stage;
   public void startView(Stage stage, String xmlPath, Game gameEntity) throws IOException {
     URL xmlResource = getClass().getResource(xmlPath);
     FXMLLoader loader = new FXMLLoader(xmlResource);
@@ -25,15 +26,15 @@ public class App extends Application {
       return new StartController(gameEntity);
     });
     Scene scene = new Scene(loader.load(), 924, 600);
-//    URL cssResource = getClass().getResource("/ui/calcbuttons.css");
-//    scene.getStylesheets().add(cssResource.toString());
+
     stage.setTitle("RISC Game");
     stage.setScene(scene);
     stage.show();
   }
 
   @Override
-  public void start(Stage stage) throws IOException {
+  public void start(Stage primaryStage) throws IOException {
+    App.stage = primaryStage;
     Thread.setDefaultUncaughtExceptionHandler(new ErrorReporter());
 
     Game gameEntity = new Game();

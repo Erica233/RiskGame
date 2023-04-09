@@ -15,17 +15,7 @@
                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
             </padding>
             <children>
-               <TextField layoutX="53.0" layoutY="24.0" style="-fx-background-color: #FACD91; -fx-alignment: red;" text="You are Orange Player">
-                  <font>
-                     <Font size="20.0" />
-                  </font>
-               </TextField>
-               <TextField layoutX="37.0" layoutY="76.0" prefHeight="40.0" prefWidth="261.0" style="-fx-background-color: #FACD91;" text="What would you like to do?">
-                  <font>
-                     <Font size="20.0" />
-                  </font>
-               </TextField>
-               <Button fx:id="next" layoutX="100.0" layoutY="398.0" mnemonicParsing="false" onMouseClicked="#goToActionPage" prefHeight="40.0" prefWidth="111.0" text="Next">
+               <Button fx:id="nextButton" layoutX="80.0" layoutY="398.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="111.0" text="Next">
                   <font>
                      <Font size="20.0" />
                   </font>
@@ -53,6 +43,20 @@
                      <Font size="17.0" />
                   </font>
                </RadioButton>
+            <Group fx:id="choicePrompt">
+               <children>
+                  <Label layoutX="33.0" layoutY="93.0" prefHeight="26.0" prefWidth="234.0" text="What would you like to do?">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="52.0" layoutY="45.0" text="You are Orange Player">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Group>
             </children>
          </AnchorPane>
       </children>
