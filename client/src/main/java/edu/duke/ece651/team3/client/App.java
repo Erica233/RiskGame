@@ -28,7 +28,7 @@ public class App extends Application{
 
   @Override
   public void start(Stage stage) throws IOException {
-    URL xmlResource = getClass().getResource("/ui/map.fxml");
+    URL xmlResource = getClass().getResource("/ui/whole.fxml");
     AnchorPane ap = FXMLLoader.load(xmlResource);
 
     Scene scene = new Scene(ap, 924, 600);
