@@ -5,7 +5,7 @@ package edu.duke.ece651.team3.client;
 
 import edu.duke.ece651.team3.client.controller.StartController;
 import edu.duke.ece651.team3.client.model.Game;
-import edu.duke.ece651.team3.shared.RiskGameBoard;
+import edu.duke.ece651.team3.shared.*;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -19,6 +19,7 @@ import java.util.HashMap;
 
 public class App extends Application {
   public static Stage stage;
+
   public void startView(Stage stage, String xmlPath, Game gameEntity) throws IOException {
     URL xmlResource = getClass().getResource(xmlPath);
     FXMLLoader loader = new FXMLLoader(xmlResource);
@@ -40,9 +41,6 @@ public class App extends Application {
     Game gameEntity = new Game();
 
     startView(stage, "/ui/start.fxml", gameEntity);
-
-
-
 
   }
 

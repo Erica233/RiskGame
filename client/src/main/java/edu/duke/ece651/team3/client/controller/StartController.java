@@ -22,8 +22,6 @@ public class StartController implements Initializable {
     @FXML
     private Button quitButton;
 
-//    RiskGameBoard riskGameBoard;
-//    int playerId = -1;
     Game gameEntity;
 
     public StartController(Game _gameEntity) {
