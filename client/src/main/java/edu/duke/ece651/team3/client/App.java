@@ -41,9 +41,6 @@ public class App extends Application {
 
     startView(stage, "/ui/start.fxml", gameEntity);
 
-
-
-
   }
 
   public static void main(String[] args) {

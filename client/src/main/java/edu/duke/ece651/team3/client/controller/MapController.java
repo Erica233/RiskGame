@@ -1,9 +1,13 @@
 package edu.duke.ece651.team3.client.controller;
 
 import edu.duke.ece651.team3.client.model.Game;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
+import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.text.Text;
 
 public class MapController {
     @FXML
@@ -30,13 +34,39 @@ public class MapController {
     private Group TheNorth;
     @FXML
     private Group TheSouth;
+    @FXML
+    private Button hideInfoButton;
 
     Game gameEntity;
 
     @FXML
-    void getNorth(MouseEvent event) {
-        String text = TheNorth.getAccessibleText();
+    private Text terrInfo;
 
+    @FXML
+    private Text terrName;
+
+    @FXML
+    private AnchorPane wholeInfoBox;
+
+    @FXML
+    void showTerrInfo(MouseEvent event){
+        Object source = event.getSource();
+        if (source instanceof Group) {
+            Group clickedGroup = (Group) source;
+            String clickedTerrName = clickedGroup.getId();
+            if (clickedTerrName.equals("TheNorth")) {
+                String terrInfoText = gameEntity.getTerritoryInfo(clickedTerrName);
+                String terrNameText = gameEntity.getTerritoryName(clickedTerrName);
+                terrInfo.setText(terrInfoText);
+                terrName.setText(terrNameText);
+                wholeInfoBox.setVisible(true);
+            }
+        }
+    }
+
+    @FXML
+    void hideTerrInfo(ActionEvent event) {
+        wholeInfoBox.setVisible(false);
     }
 
     public MapController(Game _gameEntity) {

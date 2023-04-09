@@ -1,11 +1,11 @@
 package edu.duke.ece651.team3.client.model;
 
-import edu.duke.ece651.team3.client.Client;
 import edu.duke.ece651.team3.client.PrintHelper;
 import edu.duke.ece651.team3.shared.*;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Locale;
 
 public class Game {
@@ -21,6 +21,14 @@ public class Game {
         this.inputHandler = new InputHandler();
         this.actionsList = new ArrayList<>();
 
+    }
+
+    public String getTerritoryInfo(String terr){
+        return "abc";
+    }
+
+    public String getTerritoryName(String terr){
+        return "The North(j)";
     }
 
     public static void main(String[] args) {

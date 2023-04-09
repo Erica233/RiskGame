@@ -8,6 +8,7 @@ import java.util.*;
  */
 public class RiskGameBoard implements Board, Serializable {
     private final ArrayList<Player> allPlayers;
+    private HashMap<String, String> hashName;
 
     /**
      * Constructs a RiskGameBoard
@@ -15,8 +16,29 @@ public class RiskGameBoard implements Board, Serializable {
      */
     public RiskGameBoard() throws Exception {
         this.allPlayers = new ArrayList<>();
+        fxidHash();
         //initMap();
     }
+
+    /**
+     * create the fxid hashmap, key is the fxid, value is the letter
+     */
+    public void fxidHash(){
+        this.hashName.put("DarkBay", "k");
+        this.hashName.put("Drone","c");
+        this.hashName.put("GoldenFields","l");
+        this.hashName.put("MistyHollow","f");
+        this.hashName.put("Pyke","b");
+        this.hashName.put("RiverRun","i");
+        this.hashName.put("SouthHeaven","h");
+        this.hashName.put("Stormlands","g");
+        this.hashName.put("TheEyrie","a");
+        this.hashName.put("TheIronIslands","e");
+        this.hashName.put("TheNorth","j");
+        this.hashName.put("TheSouth","d");
+    }
+
+
 
     /**
      * Initialize the units, given the Infantry number
@@ -406,6 +428,7 @@ public class RiskGameBoard implements Board, Serializable {
     }
 
 
+
     /**
      * combine all attacks into one new attack if they have the same destination
      *
@@ -419,7 +442,7 @@ public class RiskGameBoard implements Board, Serializable {
             destinations.add(act.getDstName());
         }
         for(String s : destinations){
-            Action newaction = new AttackAction(null, s, initializeArrUnits());
+            Action newaction = new AttackAction(null, s, initBasicUnits(0));
             newattackers.add(newaction);
         }
         for(Action act : myattacks){
