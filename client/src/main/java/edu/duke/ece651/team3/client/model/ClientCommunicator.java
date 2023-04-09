@@ -1,4 +1,4 @@
-package edu.duke.ece651.team3.client;
+package edu.duke.ece651.team3.client.model;
 
 import edu.duke.ece651.team3.shared.Action;
 import edu.duke.ece651.team3.shared.RiskGameBoard;

@@ -4,6 +4,7 @@
 package edu.duke.ece651.team3.client;
 
 import edu.duke.ece651.team3.client.controller.StartController;
+import edu.duke.ece651.team3.shared.RiskGameBoard;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -17,20 +18,18 @@ import java.net.URL;
 import java.util.HashMap;
 
 public class App extends Application {
-  public void startView(Stage stage) throws IOException {
-    URL xmlResource = getClass().getResource("/ui/start.fxml");
+  public void startView(Stage stage, String xmlPath, RiskGameBoard riskGameBoard) throws IOException {
+    URL xmlResource = getClass().getResource(xmlPath);
     FXMLLoader loader = new FXMLLoader(xmlResource);
-    HashMap<Class<?>,Object> controllers = new HashMap<>();
-    //put controllers
-    controllers.put(StartController.class, new StartController());
     loader.setControllerFactory((c) -> {
-      return controllers.get(c);
+      return new StartController();
     });
     AnchorPane gp = loader.load();
     Scene scene = new Scene(gp, 924, 600);
 
 //    URL cssResource = getClass().getResource("/ui/calcbuttons.css");
 //    scene.getStylesheets().add(cssResource.toString());
+    stage.setTitle("RISC Game");
     stage.setScene(scene);
     stage.show();
   }
@@ -39,10 +38,10 @@ public class App extends Application {
   public void start(Stage stage) throws IOException {
     Thread.setDefaultUncaughtExceptionHandler(new ErrorReporter());
 
-    startView(stage);
 
-    //models
-    //RPNStack model = new RPNStack();
+    startView(stage, "/ui/start.fxml", new RiskGameBoard());
+
+
 
 
   }
