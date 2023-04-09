@@ -50,11 +50,15 @@
                         <Font size="20.0" />
                      </font>
                   </Label>
-                  <Label layoutX="52.0" layoutY="45.0" text="You are Orange Player">
+                  <Label layoutX="47.0" layoutY="46.0" text="You are                  Player">
                      <font>
                         <Font size="20.0" />
                      </font>
                   </Label>
+                  <Label fx:id="playerColor" layoutX="115.0" layoutY="46.0" text=" ">
+                     <font>
+                        <Font size="20.0" />
+                     </font></Label>
                </children>
             </Group>
             </children>

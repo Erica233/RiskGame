@@ -21,7 +21,8 @@ public class ShowViews {
         FXMLLoader loader = new FXMLLoader(xmlResource);
 
         HashMap<Class<?>,Object> controllers = new HashMap<>();
-        controllers.put(CheckBoxController.class, new CheckBoxController());
+        CheckBoxController checkController = new CheckBoxController(game.getPlayerId());
+        controllers.put(CheckBoxController.class, checkController);
         controllers.put(MapController.class, new MapController(game));
         controllers.put(SliderController.class, new SliderController());
         loader.setControllerFactory((c) -> {
