@@ -76,12 +76,12 @@ public class CheckBoxController {
         }
     }
 
-    @FXML
+//    @FXML
     public void initialize() {
         if (playerId == 0) {
-            playerColor.setText("Orange");
+            playerColor.setText("You are the Orange Player. What would you like to do?");
         } else {
-            playerColor.setText("Blue");
+            playerColor.setText("You are the Blue Player. What would you like to do?");
         }
     }
 }

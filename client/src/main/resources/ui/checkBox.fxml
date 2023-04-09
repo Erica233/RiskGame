@@ -45,17 +45,7 @@
             </RadioButton>
             <Group fx:id="choicePrompt">
                <children>
-                  <Label layoutX="33.0" layoutY="93.0" prefHeight="26.0" prefWidth="234.0" text="What would you like to do?">
-                     <font>
-                        <Font size="20.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="47.0" layoutY="46.0" text="You are                  Player">
-                     <font>
-                        <Font size="20.0" />
-                     </font>
-                  </Label>
-                  <Label fx:id="playerColor" layoutX="115.0" layoutY="46.0" text="Orange">
+                  <Label fx:id="playerColor" alignment="CENTER" contentDisplay="CENTER" layoutX="30.0" layoutY="23.0" prefHeight="128.0" prefWidth="227.0" text="You are the Orange Player. What would you like to do?" textAlignment="CENTER" wrapText="true">
                      <font>
                         <Font size="20.0" />
                      </font>
