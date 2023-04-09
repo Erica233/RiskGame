@@ -6,6 +6,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.MouseEvent;
@@ -15,24 +16,27 @@ import java.io.IOException;
 import java.util.Objects;
 
 public class CheckBoxController {
-
     @FXML
     private Button next;
-
     @FXML
     private RadioButton move;
-
     @FXML
     private ToggleGroup Action;
-
     @FXML
     private RadioButton upgrade;
-
     @FXML
     private RadioButton attack;
-
     @FXML
     private RadioButton done;
+    @FXML
+    private Label playerColor;
+
+    private String color;
+    private int playerId;
+
+    public CheckBoxController(int id) {
+        this.playerId = id;
+    }
 
     @FXML
     void goToActionPage(MouseEvent event) throws IOException {
@@ -69,9 +73,15 @@ public class CheckBoxController {
             Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
             window.setScene(nextPageScene);
             window.show();
-
         }
-
     }
 
+//    @FXML
+    public void initialize() {
+        if (playerId == 0) {
+            playerColor.setText("You are the Orange Player. What would you like to do?");
+        } else {
+            playerColor.setText("You are the Blue Player. What would you like to do?");
+        }
+    }
 }

@@ -21,15 +21,13 @@ public class ShowViews {
         FXMLLoader loader = new FXMLLoader(xmlResource);
 
         HashMap<Class<?>,Object> controllers = new HashMap<>();
-        controllers.put(CheckBoxController.class, new CheckBoxController());
+        controllers.put(CheckBoxController.class, new CheckBoxController(game.getPlayerId()));
         controllers.put(MapController.class, new MapController(game));
         controllers.put(SliderController.class, new SliderController());
         loader.setControllerFactory((c) -> {
             return controllers.get(c);
         });
-        loader.setControllerFactory((c) -> {
-            return new MapController(game);
-        });
+
         Scene scene = new Scene(loader.load(), 924, 600);
 
         stage.setTitle("RISC Game");
