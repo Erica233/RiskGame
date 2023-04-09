@@ -18,29 +18,29 @@ import java.net.URL;
 import java.util.HashMap;
 
 public class App extends Application {
-  public static Stage stage;
+  private Stage stage;
 
-  public void startView(Stage stage, String xmlPath, Game gameEntity) throws IOException {
+  public void startView(Stage currStage, String xmlPath, Game gameEntity) throws IOException {
     URL xmlResource = getClass().getResource(xmlPath);
     FXMLLoader loader = new FXMLLoader(xmlResource);
     loader.setControllerFactory((c) -> {
-      return new StartController(gameEntity);
+      return new StartController(currStage, gameEntity);
     });
     Scene scene = new Scene(loader.load(), 924, 600);
 
-    stage.setTitle("RISC Game");
-    stage.setScene(scene);
-    stage.show();
+    currStage.setTitle("RISC Game");
+    currStage.setScene(scene);
+    currStage.show();
   }
 
   @Override
   public void start(Stage primaryStage) throws IOException {
-    App.stage = primaryStage;
+    this.stage = primaryStage;
     Thread.setDefaultUncaughtExceptionHandler(new ErrorReporter());
 
     Game gameEntity = new Game();
 
-    startView(stage, "/ui/start.fxml", gameEntity);
+    startView(this.stage, "/ui/start.fxml", gameEntity);
 
   }
 

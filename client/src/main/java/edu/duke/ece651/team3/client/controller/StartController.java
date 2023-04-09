@@ -23,16 +23,18 @@ public class StartController implements Initializable {
     private Button quitButton;
 
     Game gameEntity;
+    Stage stage;
 
-    public StartController(Game _gameEntity) {
+    public StartController(Stage _stage, Game _gameEntity) {
         this.gameEntity = _gameEntity;
+        this.stage = _stage;
     }
 
 
     @FXML
     public void onQuitButton(ActionEvent ae) {
-        Stage stage = (Stage) quitButton.getScene().getWindow();
-        stage.close();
+        Stage currStage = (Stage) quitButton.getScene().getWindow();
+        currStage.close();
     }
 
     @FXML
@@ -42,7 +44,7 @@ public class StartController implements Initializable {
         if (gameEntity.getPlayerId() != 0 && gameEntity.getPlayerId() != 1) {
             throw new Exception("Failed to receive valid playerId!");
         }
-        ShowViews.showGameView(App.stage, "/ui/whole.fxml", gameEntity);
+        ShowViews.showGameView(stage, "/ui/whole.fxml", gameEntity);
 
     }
 
