@@ -27,9 +27,6 @@ public class ShowViews {
         loader.setControllerFactory((c) -> {
             return controllers.get(c);
         });
-        loader.setControllerFactory((c) -> {
-            return new MapController(game);
-        });
         Scene scene = new Scene(loader.load(), 924, 600);
 
         stage.setTitle("RISC Game");
