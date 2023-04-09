@@ -17,11 +17,10 @@ public class Game {
 
     public Game() throws IOException {
         this.clientCommunicator = new ClientCommunicator("localhost", 12345);
-        System.out.println(clientCommunicator + " connect to the Server successfully!");
+        System.out.println("Create ClientCommunicator-" + clientCommunicator + " successfully!");
         this.inputHandler = new InputHandler();
         this.actionsList = new ArrayList<>();
 
-        this.playerId = clientCommunicator.recvPlayerId();
     }
 
     public static void main(String[] args) {
@@ -34,6 +33,10 @@ public class Game {
 //            System.exit(-1);
         }
 
+    }
+
+    public void storePlayerId() throws IOException {
+        this.playerId = clientCommunicator.recvPlayerId();
     }
 
     /**
@@ -195,5 +198,13 @@ public class Game {
 
     public void setPlayerId(int playerId) {
         this.playerId = playerId;
+    }
+
+    public RiskGameBoard getRiskGameBoard() {
+        return riskGameBoard;
+    }
+
+    public ClientCommunicator getClientCommunicator() {
+        return clientCommunicator;
     }
 }

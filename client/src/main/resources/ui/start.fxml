@@ -15,7 +15,7 @@
             <Font size="96.0" />
          </font>
       </Label>
-      <Button fx:id="startButton" alignment="CENTER" contentDisplay="CENTER" layoutX="227.0" layoutY="385.0" mnemonicParsing="false" prefHeight="80.0" prefWidth="200.0" style="-fx-background-color: #3333ff;" text="START" textAlignment="CENTER" textFill="#f8f8f8">
+      <Button fx:id="startButton" alignment="CENTER" contentDisplay="CENTER" layoutX="227.0" layoutY="385.0" mnemonicParsing="false" onAction="#onStartButton" prefHeight="80.0" prefWidth="200.0" style="-fx-background-color: #3333ff;" text="START" textAlignment="CENTER" textFill="#f8f8f8">
          <font>
             <Font size="36.0" />
          </font>
