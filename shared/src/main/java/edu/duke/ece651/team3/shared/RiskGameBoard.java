@@ -375,6 +375,7 @@ public class RiskGameBoard implements Board, Serializable {
         }
     }
 
+    //TODO
     public ArrayList<Unit> initializeArrUnits(){
         ArrayList<Unit> arrUnits = new ArrayList<>();
         arrUnits.add(new Private(0));
