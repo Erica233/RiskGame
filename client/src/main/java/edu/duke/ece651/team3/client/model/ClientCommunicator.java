@@ -52,9 +52,10 @@ public class ClientCommunicator {
      * This method receives the player id from the server
      * @throws IOException
      */
-    public void recvPlayerId() throws IOException {
+    public int recvPlayerId() throws IOException {
         int playerId = objectFromServer.readInt();
         System.out.println("received playerId = " + playerId + " successfully!");
+        return playerId;
     }
 
     /**
