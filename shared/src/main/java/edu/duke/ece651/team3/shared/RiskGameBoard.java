@@ -19,6 +19,23 @@ public class RiskGameBoard implements Board, Serializable {
     }
 
     /**
+     * Initialize the units, given the Infantry number
+     *
+     * @param num the number of Infantry units
+     */
+    public static ArrayList<Unit> initBasicUnits(int num) {
+        ArrayList<Unit> units = new ArrayList<>();
+        units.add(new Private(num));
+        units.add(new Corporal(0));
+        units.add(new Specialist(0));
+        units.add(new Sergeant(0));
+        units.add(new MasterSergeant(0));
+        units.add(new FirstSergeant(0));
+        units.add(new SergeantMajor(0));
+        return units;
+    }
+
+    /**
      * Update combat results for each territory and transfer ownership if the territory is occupied by enemny
      *
      */

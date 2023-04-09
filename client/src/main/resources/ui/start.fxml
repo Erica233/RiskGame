@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.paint.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="600.0" prefWidth="924.0" style="-fx-background-color: #e6e6ff;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.duke.ece651.team3.client.controller.StartController">
+   <children>
+      <Label fx:id="RISCGameLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="180.0" layoutY="131.0" prefHeight="135.0" prefWidth="573.0" text="RISC Game" textAlignment="CENTER" textFill="#141472">
+         <font>
+            <Font size="96.0" />
+         </font>
+      </Label>
+      <Button fx:id="startButton" alignment="CENTER" contentDisplay="CENTER" layoutX="227.0" layoutY="385.0" mnemonicParsing="false" onAction="#onStartButton" prefHeight="80.0" prefWidth="200.0" style="-fx-background-color: #3333ff;" text="START" textAlignment="CENTER" textFill="#f8f8f8">
+         <font>
+            <Font size="36.0" />
+         </font>
+      </Button>
+      <Button fx:id="quitButton" alignment="CENTER" contentDisplay="CENTER" layoutX="509.0" layoutY="385.0" mnemonicParsing="false" onAction="#onQuitButton" prefHeight="80.0" prefWidth="200.0" style="-fx-background-color: #afacb4;" text="QUIT" textAlignment="CENTER" textFill="#f8f8f8">
+         <font>
+            <Font size="36.0" />
+         </font>
+      </Button>
+   </children>
+</AnchorPane>
