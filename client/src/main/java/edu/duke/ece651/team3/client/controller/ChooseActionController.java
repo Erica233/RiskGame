@@ -53,21 +53,10 @@ public class ChooseActionController {
             ShowViews.showGameView(stage, "/ui/upgradePage.fxml", gameEntity);
         }
         else if(attack.isSelected()){
-            Parent nextPageParent = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/ui/attackPage.fxml")));
-            Scene nextPageScene = new Scene(nextPageParent);
-
-            Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
-            window.setScene(nextPageScene);
-            window.show();
-
+            ShowViews.showGameView(stage, "/ui/attackPage.fxml", gameEntity);
         }
         else if(done.isSelected()){
-            Parent nextPageParent = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/ui/slider.fxml")));
-            Scene nextPageScene = new Scene(nextPageParent);
-
-            Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
-            window.setScene(nextPageScene);
-            window.show();
+            ShowViews.showGameView(stage, "/ui/donePage.fxml", gameEntity);
         }
     }
 
