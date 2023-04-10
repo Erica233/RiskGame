@@ -1,20 +1,21 @@
 package edu.duke.ece651.team3.client.controller;
-import edu.duke.ece651.team3.client.ShowViews;
+
 import edu.duke.ece651.team3.client.model.Game;
-import edu.duke.ece651.team3.shared.*;
-import javafx.event.ActionEvent;
+import edu.duke.ece651.team3.shared.Player;
+import edu.duke.ece651.team3.shared.Territory;
+import edu.duke.ece651.team3.shared.Unit;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
-import org.checkerframework.checker.units.qual.A;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
-public class MovePageController {
+public class UpgradePageController {
     @FXML
     private ChoiceBox<Integer> LV0_choice;
     @FXML
@@ -45,30 +46,15 @@ public class MovePageController {
     private ArrayList<ChoiceBox<Integer>> allChoiceBoxes; //All choice boxes
 
     private Game gameEntity;
-    Stage stage;
+    private Stage stage;
 
-    public MovePageController(int id, Stage _stage, Game _gameEntity) {
+
+
+
+    public UpgradePageController(int id, Stage _stage, Game _gameEntity) {
         this.gameEntity = _gameEntity;
-        this.playerID = id;
         this.stage = _stage;
-    }
-
-    @FXML
-    public void onCheckValidMove(ActionEvent ae) throws Exception {
-        ArrayList<Unit> units = RiskGameBoard.initBasicUnits(0);
-        units.get(0).setNumUnits(LV0_choice.getValue());
-        units.get(1).setNumUnits(LV1_choice.getValue());
-        units.get(2).setNumUnits(LV2_choice.getValue());
-        units.get(3).setNumUnits(LV3_choice.getValue());
-        units.get(4).setNumUnits(LV4_choice.getValue());
-        units.get(5).setNumUnits(LV5_choice.getValue());
-        units.get(6).setNumUnits(LV6_choice.getValue());
-        MoveAction moveAction = new MoveAction(choice_source.getValue(), choice_source.getValue(), units);
-        gameEntity.checkValidAction(moveAction);
-        gameEntity.storeActionToList(moveAction);
-        gameEntity.executeAction(moveAction);
-        ShowViews.showGameView(stage, "/ui/whole.fxml", gameEntity);
-
+        this.playerID = id;
     }
 
     /**
@@ -128,19 +114,6 @@ public class MovePageController {
         }
     }
 
-    private void initializeDestChoice(Territory currTerr) {
-        Player currPlayer = gameEntity.getRiskGameBoard().getAllPlayers().get(playerID);
-        choice_Dest.getItems().clear();
-        ArrayList<Territory> selfTerr = currPlayer.getOwnedTerritories();
-        for (Territory Terr : selfTerr) {
-            if(Terr.equals(currTerr)){
-                continue;
-            }
-            choice_Dest.getItems().add(Terr.getTerritoryName());
-
-        }
-    }
-
     public void onSelectSrcCheckBox(){
         choice_source.setOnAction(e -> {
             // Retrieve the selected value from the choice box
@@ -153,7 +126,6 @@ public class MovePageController {
             Player currPlayer = gameEntity.getRiskGameBoard().getAllPlayers().get(playerID);
             Territory currTerr = currPlayer.findOwnedTerritoryByName(currTerrName);
             wrapUpUnitChoices(currTerr);
-            initializeDestChoice(currTerr);
             initializeUnitChoice(currTerr);
         });
     }
@@ -179,12 +151,15 @@ public class MovePageController {
      */
     @FXML
     public void initializeId() {
+
         if (playerID == 0) {
-            playerColor.setText("You are the Orange Player. What would you like to do?");
+            playerColor.setText("You are the Orange Player. You Chose MOVE");
+
         } else {
-            playerColor.setText("You are the Blue Player. What would you like to do?");
+            playerColor.setText("You are the Blue Player. You Chose MOVE");
         }
+        System.out.println("set id" + playerColor);
     }
 
-}
 
+}
