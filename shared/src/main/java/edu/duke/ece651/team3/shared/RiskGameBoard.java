@@ -16,27 +16,10 @@ public class RiskGameBoard implements Board, Serializable {
      */
     public RiskGameBoard() throws Exception {
         this.allPlayers = new ArrayList<>();
-        fxidHash();
         //initMap();
     }
 
-    /**
-     * create the fxid hashmap, key is the fxid, value is the letter
-     */
-    public void fxidHash(){
-        this.hashName.put("DarkBay", "k");
-        this.hashName.put("Drone","c");
-        this.hashName.put("GoldenFields","l");
-        this.hashName.put("MistyHollow","f");
-        this.hashName.put("Pyke","b");
-        this.hashName.put("RiverRun","i");
-        this.hashName.put("SouthHeaven","h");
-        this.hashName.put("Stormlands","g");
-        this.hashName.put("TheEyrie","a");
-        this.hashName.put("TheIronIslands","e");
-        this.hashName.put("TheNorth","j");
-        this.hashName.put("TheSouth","d");
-    }
+
 
 
 

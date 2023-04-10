@@ -15,7 +15,6 @@ public class Territory implements Serializable, Comparable<Territory> {
     private int tech = 0;
     private int winnerId = -1;
     private ArrayList<Unit> attackerUnits = new ArrayList<>();
-    private HashMap<String, String> terrHash;
 
     /**
      * Initialize the units, given the Infantry number
@@ -30,34 +29,6 @@ public class Territory implements Serializable, Comparable<Territory> {
         units.add(new MasterSergeant(0));
         units.add(new FirstSergeant(0));
         units.add(new SergeantMajor(0));
-    }
-
-    /**
-     * init terr hashmap, key is the territory name, value is the letter
-     */
-    public void initTerrHash(){
-        this.terrHash.put("j", "The North(j)");
-        this.terrHash.put("a", "The Eyrie(a)");
-        this.terrHash.put("h", "Sun Heaven(h)");
-        this.terrHash.put("l", "Golden");
-        this.terrHash.put("g", "Stormlands");
-        this.terrHash.put("i", "Riverrun");
-        this.terrHash.put("k", "Dark Bay");
-    }
-
-
-    /**
-     *
-     */
-    String getTerrInfo(){
-        String output = "Number of Units: " + this.getNumUnits() + "\n";
-        for(int i = 0; i < units.size(); i++){
-            output += String.valueOf(i)+". " + units.get(i).getUnitName() + units.get(i).getNumUnits() +"\n";
-        }
-        output += "\n";
-        output += "Neighbors: ";
-
-        return output;
     }
 
     /**
