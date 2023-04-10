@@ -21,7 +21,6 @@ public class StartController implements Initializable {
     private Button startButton;
     @FXML
     private Button quitButton;
-    private CheckBoxController checkBoxController;
 
     Game gameEntity;
     Stage stage;
