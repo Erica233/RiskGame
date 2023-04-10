@@ -24,7 +24,7 @@ public class ShowViews {
         controllers.put(MapController.class, new MapController(game));
         controllers.put(SliderController.class, new SliderController());
         controllers.put(MovePageController.class, new MovePageController(game.getPlayerId(), stage, game));
-
+        //TODO: add new controller
         loader.setControllerFactory((c) -> {
             return controllers.get(c);
         });
