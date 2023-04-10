@@ -113,7 +113,7 @@
             <Group fx:id="TheNorth" layoutY="-13.0" onMouseClicked="#showTerrInfo">
 
                <children>
-                  <ImageView fitHeight="116.0" fitWidth="190.0" layoutX="69.0" layoutY="164.0">
+                  <ImageView fx:id="theNorthView" fitHeight="116.0" fitWidth="190.0" layoutX="69.0" layoutY="164.0">
                      <image>
                         <Image url="@../pic/thenorth.png" />
                      </image>
@@ -188,6 +188,7 @@
                   <Text fx:id="terrInfo" layoutX="55.0" layoutY="58.0" strokeType="OUTSIDE" strokeWidth="0.0" text="" textAlignment="CENTER" wrappingWidth="360.1435829509453" AnchorPane.topAnchor="60.0" />
                </children>
             </AnchorPane>
+            <Button fx:id="testButton" layoutX="246.0" layoutY="541.0" mnemonicParsing="false" onAction="#changenorthcolor" text="Button" />
          </children>
       </AnchorPane>
    </children>

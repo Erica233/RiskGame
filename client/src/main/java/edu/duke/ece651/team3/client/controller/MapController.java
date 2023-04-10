@@ -8,14 +8,17 @@ import edu.duke.ece651.team3.shared.Unit;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.image.ImageView;
+import javafx.scene.image.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 
 public class MapController {
     @FXML
@@ -47,10 +50,29 @@ public class MapController {
     @FXML
     private ImageView theNorthView;
 
+
+    public void collectGroups(){
+        this.groups = new HashSet<>();
+        groups.add(DarkBay);
+        groups.add(Drone);
+        groups.add(GoldenFields);
+        groups.add(MistyHollow);
+        groups.add(Pyke);
+        groups.add(SouthHeaven);
+        groups.add(Stormlands);
+        groups.add(TheEyrie);
+        groups.add(TheIronIslands);
+        groups.add(TheNorth);
+        groups.add(TheSouth);
+    }
+
     Game gameEntity;
     HashMap<String, String> hashName;
     HashMap<String, String> hashLetter;
+    HashSet<Group> groups;
 
+    @FXML
+    private Button testButton;
 
     @FXML
     private Text terrInfo;
@@ -89,6 +111,27 @@ public class MapController {
         }
     }
 
+//    @FXML
+//    void setMap(Color orange, Color blue){
+//        int playerid = gameEntity.getPlayerId();
+//        ImageView iv = null;
+//        for(Group group : groups) {
+//            for (Node node : group.getChildren()) {
+//                if (node instanceof ImageView) {
+//                    iv = (ImageView) node;
+//                    break;
+//                }
+//                ArrayList<Territory> territoryArrayList = gameEntity.getRiskGameBoard().getAllPlayers().get(playerid).getOwnedTerritories();
+//                for(Territory t : territoryArrayList){
+//
+//                }
+//                setColor(iv, orange, blue);
+//            }
+//
+//        }
+//
+//    }
+
 
     /**
      * click the ok button then the whole box of territory information disappear
@@ -126,16 +169,51 @@ public class MapController {
         return output;
     }
 
-    public void setColor(Game gameEntity){
+    @FXML
+    public void setColor(ImageView iv, Color sourceColor, Color finalColor){
+        Image image = iv.getImage();
+        int W = (int) image.getWidth();
+        int H = (int) image.getHeight();
+        WritableImage outputImage = new WritableImage(W, H);
+        PixelReader reader      = image.getPixelReader();
+        PixelWriter writer      = outputImage.getPixelWriter();
+        int ob=(int) sourceColor.getBlue()*255;
+        int or=(int) sourceColor.getRed()*255;
+        int og=(int) sourceColor.getGreen()*255;
+        int nb=(int) finalColor.getBlue()*255;
+        int nr=(int) finalColor.getRed()*255;
+        int ng=(int) finalColor.getGreen()*255;
+        for (int y = 0; y < H; y++) {
+            for (int x = 0; x < W; x++) {
+                int argb = reader.getArgb(x, y);
+                int a = (argb >> 24) & 0xFF;
+                int r = (argb >> 16) & 0xFF;
+                int g = (argb >>  8) & 0xFF;
+                int b =  argb        & 0xFF;
+                if (g==og && r==or && b==ob) {
+                    r=nr;
+                    g=ng;
+                    b=nb;
+                }
+                argb = (a << 24) | (r << 16) | (g << 8) | b;
+                writer.setArgb(x, y, argb);
+            }
+        }
+        ImageView newImageView = new ImageView(outputImage);
+        theNorthView = newImageView;
 
     }
+
 
 
     public MapController(Game _gameEntity) {
         this.gameEntity = _gameEntity;
         fxidHash();
         letterHash();
-        setColor(gameEntity);
+        collectGroups();
+        Color orange = Color.web("#f4b183");
+        Color blue = Color.web("#9dc3e6");
+        //setMap(orange, blue);
     }
 
 
@@ -179,5 +257,12 @@ public class MapController {
         this.hashLetter.put("d","The South(d)");
     }
 
-
+    @FXML
+    public void changenorthcolor(ActionEvent actionEvent) {
+        Image darkbay = new Image("@../../pic/stormlands.png");
+        theNorthView.setImage(darkbay);
+        Color orange = Color.web("#f4b183");
+        Color blue = Color.web("#9dc3e6");
+        setColor(theNorthView, blue, orange);
+    }
 }
