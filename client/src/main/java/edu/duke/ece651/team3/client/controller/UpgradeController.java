@@ -40,22 +40,5 @@ public class UpgradeController {
 
     }
 
-    @FXML
-    public void onUpgradePage(ActionEvent ae) throws Exception {
-        gameEntity.storePlayerId();
-        int playerID = gameEntity.getPlayerId();
-        System.out.println("playerId=" + playerID);
-        if (playerID != 0 && playerID != 1) {
-            throw new Exception("Failed to receive valid playerId!");
-        }
-        gameEntity.storeNewBoard();
-        System.out.println("A new turn: updated new board as below!");
-        System.out.println(gameEntity.getRiskGameBoard().displayBoard());
-        ShowViews.showGameView(stage, "/ui/whole.fxml", gameEntity);
-
-
-
-    }
-
 
 }
