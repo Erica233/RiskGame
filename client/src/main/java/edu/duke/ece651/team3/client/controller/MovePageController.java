@@ -10,6 +10,7 @@ import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
+import javafx.stage.Stage;
 import org.checkerframework.checker.units.qual.A;
 
 import java.net.URL;
@@ -48,16 +49,15 @@ public class MovePageController {
     private ArrayList<ChoiceBox<Integer>> allChoiceBoxes; //All choice boxes
 
     private Game gameEntity;
+    private Stage stage;
 
 
 
 
-    public MovePageController(Game _gameEntity, int id) {
+    public MovePageController(int id, Stage _stage, Game _gameEntity) {
         this.gameEntity = _gameEntity;
-        playerID = id;
-    }
-    public MovePageController(){
-
+        this.stage = _stage;
+        this.playerID = id;
     }
 
     /**
@@ -111,6 +111,7 @@ public class MovePageController {
 
         ArrayList<Territory> selfTerr = currPlayer.getOwnedTerritories();
         for (Territory Terr : selfTerr) {
+//            System.out.println("territory:" + );
             choice_source.getItems().add(Terr.getTerritoryName());
         }
     }
@@ -120,7 +121,7 @@ public class MovePageController {
 
         ArrayList<Territory> selfTerr = currPlayer.getOwnedTerritories();
         for (Territory Terr : selfTerr) {
-            choice_source.getItems().add(Terr.getTerritoryName());
+            choice_Dest.getItems().add(Terr.getTerritoryName());
         }
     }
 
@@ -131,9 +132,12 @@ public class MovePageController {
      */
     @FXML
     public void initialize() {
+        System.out.println("initialize all entities");
+        initializeId();
         wrapUpChoices();
         wrapUpUnitChoices();
         initializeUnitChoice();
+
         initializeSourceChoice();
         initializeDestChoice();
 
@@ -146,12 +150,16 @@ public class MovePageController {
      */
     @FXML
     public void initializeId() {
+
         if (playerID == 0) {
-            playerColor.setText("You are the Orange Player. What would you like to do?");
+            playerColor.setText("You are the Orange Player. You Chose MOVE");
+
         } else {
-            playerColor.setText("You are the Blue Player. What would you like to do?");
+            playerColor.setText("You are the Blue Player. You Chose MOVE");
         }
+        System.out.println("set id" + playerColor);
     }
+
 
 }
 
