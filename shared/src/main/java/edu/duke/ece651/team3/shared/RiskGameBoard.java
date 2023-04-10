@@ -8,7 +8,6 @@ import java.util.*;
  */
 public class RiskGameBoard implements Board, Serializable {
     private final ArrayList<Player> allPlayers;
-    private HashMap<String, String> hashName;
 
     /**
      * Constructs a RiskGameBoard

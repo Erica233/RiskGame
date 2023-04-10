@@ -12,7 +12,7 @@
    <children>
     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="400.0" prefWidth="565.2" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <Group fx:id="DarkBay" layoutX="451.0" layoutY="321.0">
+            <Group fx:id="DarkBay" layoutX="451.0" layoutY="321.0" onMouseClicked="#showTerrInfo">
                <children>
                   <ImageView fitHeight="130.0" fitWidth="75.0">
                      <image>
@@ -26,7 +26,7 @@
                   </Text>
                </children>
             </Group>
-            <Group fx:id="TheSouth" layoutX="86.0" layoutY="314.0">
+            <Group fx:id="TheSouth" layoutX="86.0" layoutY="314.0" onMouseClicked="#showTerrInfo">
                <children>
                   <ImageView fitHeight="104.0" fitWidth="131.0" layoutX="56.0" layoutY="33.0">
                      <image>
@@ -40,7 +40,7 @@
                   </Text>
                </children>
             </Group>
-            <Group fx:id="TheIronIslands" layoutX="238.0" layoutY="313.0">
+            <Group fx:id="TheIronIslands" layoutX="238.0" layoutY="313.0" onMouseClicked="#showTerrInfo">
                <children>
                   <ImageView fitHeight="74.0" fitWidth="151.0">
                      <image>
@@ -54,7 +54,7 @@
                   </Text>
                </children>
             </Group>
-            <Group fx:id="GoldenFields" layoutY="-13.0">
+            <Group fx:id="GoldenFields" layoutY="-13.0" onMouseClicked="#showTerrInfo">
                <children>
                   <ImageView fitHeight="87.0" fitWidth="128.0" layoutX="243.0" layoutY="258.0">
                      <image>
@@ -68,7 +68,7 @@
                   </Text>
                </children>
             </Group>
-            <Group fx:id="Pyke" layoutX="56.0" layoutY="310.0">
+            <Group fx:id="Pyke" layoutX="56.0" layoutY="310.0" onMouseClicked="#showTerrInfo">
                <children>
                   <ImageView fitHeight="132.0" fitWidth="99.0" layoutX="1.0">
                      <image>
@@ -82,7 +82,7 @@
                   </Text>
                </children>
             </Group>
-            <Group fx:id="TheEyrie" layoutY="-13.0">
+            <Group fx:id="TheEyrie" layoutY="-13.0" onMouseClicked="#showTerrInfo">
                <children>
                   <ImageView fitHeight="174.0" fitWidth="111.0" layoutX="24.0" layoutY="160.0">
                      <image>
@@ -96,7 +96,7 @@
                   </Text>
                </children>
             </Group>
-            <Group fx:id="MistyHollow" layoutY="-13.0">
+            <Group fx:id="MistyHollow" layoutY="-13.0" onMouseClicked="#showTerrInfo">
                <children>
                   <ImageView fitHeight="75.0" fitWidth="110.0" layoutX="364.0" layoutY="316.0">
                      <image>
@@ -125,7 +125,7 @@
                   </Text>
                </children>
             </Group>
-            <Group fx:id="SouthHeaven" layoutY="-13.0">
+            <Group fx:id="SouthHeaven" layoutY="-13.0" onMouseClicked="#showTerrInfo">
                <children>
                   <ImageView fitHeight="75.0" fitWidth="122.0" layoutX="247.0" layoutY="190.0">
                      <image>
@@ -139,7 +139,7 @@
                   </Text>
                </children>
             </Group>
-            <Group fx:id="Drone" layoutX="120.0" layoutY="253.0">
+            <Group fx:id="Drone" layoutX="120.0" layoutY="253.0" onMouseClicked="#showTerrInfo">
                <children>
                   <ImageView fitHeight="108.0" fitWidth="132.0">
                      <image>
@@ -153,7 +153,7 @@
                   </Text>
                </children>
             </Group>
-            <Group fx:id="Stormlands" layoutY="-13.0">
+            <Group fx:id="Stormlands" layoutY="-13.0" onMouseClicked="#showTerrInfo">
                <children>
                   <ImageView fitHeight="134.0" fitWidth="122.0" layoutX="357.0" layoutY="185.0">
                      <image>
@@ -167,7 +167,7 @@
                   </Text>
                </children>
             </Group>
-            <Group fx:id="RiverRun" layoutY="-13.0">
+            <Group fx:id="RiverRun" layoutY="-13.0" onMouseClicked="#showTerrInfo">
                <children>
                   <ImageView fitHeight="103.0" fitWidth="94.0" layoutX="425.0" layoutY="236.0">
                      <image>
@@ -181,11 +181,11 @@
                   </Text>
                </children>
             </Group>
-            <AnchorPane fx:id="wholeInfoBox" layoutX="43.0" layoutY="55.0" prefHeight="385.0" prefWidth="461.0" style="-fx-background-color: rgba(211, 211, 211, 0.5);" visible="false">
+            <AnchorPane fx:id="wholeInfoBox" layoutX="43.0" layoutY="55.0" prefHeight="385.0" prefWidth="461.0" style="-fx-background-color: rgba(211, 211, 211, 0.8);" visible="false">
                <children>
-                  <Text fx:id="terrName" layoutX="67.0" layoutY="29.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="80.94871818970705" />
+                  <Text fx:id="terrName" layoutX="67.0" layoutY="-73.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="326.94871818970705" AnchorPane.topAnchor="30.0" />
                   <Button fx:id="hideInfoButton" layoutX="204.0" layoutY="330.0" mnemonicParsing="false" onAction="#hideTerrInfo" style="-fx-background-color: rgba(255, 255, 255, 0.8);" text="OK" />
-                  <Text fx:id="terrInfo" layoutX="55.0" layoutY="84.0" strokeType="OUTSIDE" strokeWidth="0.0" text="" wrappingWidth="116.1435829509453" />
+                  <Text fx:id="terrInfo" layoutX="55.0" layoutY="58.0" strokeType="OUTSIDE" strokeWidth="0.0" text="" textAlignment="CENTER" wrappingWidth="360.1435829509453" AnchorPane.topAnchor="60.0" />
                </children>
             </AnchorPane>
          </children>

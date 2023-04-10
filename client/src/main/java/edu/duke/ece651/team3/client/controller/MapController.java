@@ -46,6 +46,7 @@ public class MapController {
 
     Game gameEntity;
     HashMap<String, String> hashName;
+    HashMap<String, String> hashLetter;
 
 
     @FXML
@@ -68,6 +69,9 @@ public class MapController {
                     char c = hashName.get(name).charAt(hashName.get(name).length()-2);
                     RiskGameBoard b = gameEntity.getRiskGameBoard();
                     Territory t = b.getAllPlayers().get(gameEntity.getPlayerId()).findOwnedTerritoryByName(String.valueOf(c));
+                    if(t==null){
+                        t = b.getAllPlayers().get(1-gameEntity.getPlayerId()).findOwnedTerritoryByName(String.valueOf(c));
+                    }
                     String terrInfoText = getTerrInfo(t);
                     terrName.setText(hashName.get(name));
                     terrInfo.setText(terrInfoText);
@@ -85,22 +89,29 @@ public class MapController {
 
     String getTerrInfo(Territory t){
 
-        String output = "Number of Units: " + t.getNumUnits() + "\n";
+        String output = "Number of Units: " + t.getNumUnits() + "\n\n";
         ArrayList<Unit> units = t.getUnits();
         for(int i = 0; i < units.size(); i++){
-            output += String.valueOf(i)+". " + units.get(i).getUnitName() + units.get(i).getNumUnits() +"\n";
+            output += "Lv"+String.valueOf(i)+".  " + units.get(i).getUnitName() +"  "+ units.get(i).getNumUnits() +"\n";
         }
-        output += "\n" + "Distances: ";
-//        for () {
-//
-//        }
+        output += "\n" + "Distances: \n";
 
+        for (Territory terr : t.getNeighborsDist().keySet()) {
+            String res = null;
+            for(String s : hashLetter.keySet()){
+                if(s.equals(terr.getTerritoryName())){
+                    res = hashLetter.get(s);
+                }
+            }
+            output += "To " + res +":  "+ t.getNeighborsDist().get(terr) + "\n";
+        }
         return output;
     }
 
     public MapController(Game _gameEntity) {
         this.gameEntity = _gameEntity;
         fxidHash();
+        letterHash();
     }
 
 
@@ -122,6 +133,22 @@ public class MapController {
         this.hashName.put("TheIronIslands","The Iron Islands(e)");
         this.hashName.put("TheNorth","The North(j)");
         this.hashName.put("TheSouth","The South(d)");
+    }
+
+    public void letterHash(){
+        this.hashLetter = new HashMap<>();
+        this.hashLetter.put("k", "Dark Bay(k)");
+        this.hashLetter.put("c", "Drone(c)");
+        this.hashLetter.put("l","Golden Fields(l)");
+        this.hashLetter.put("f","Misty Hollow(f)");
+        this.hashLetter.put("b","Pyke(b)");
+        this.hashLetter.put("i","Riverrun(i)");
+        this.hashLetter.put("h","Sun Heaven(h)");
+        this.hashLetter.put("g","Stormlands(g)");
+        this.hashLetter.put("a","The Eyrie(a)");
+        this.hashLetter.put("e","The Iron Islands(e)");
+        this.hashLetter.put("j","The North(j)");
+        this.hashLetter.put("d","The South(d)");
     }
 
 
