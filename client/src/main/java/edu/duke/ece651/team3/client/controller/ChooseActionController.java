@@ -23,8 +23,6 @@ public class ChooseActionController {
     @FXML
     private RadioButton move;
     @FXML
-    private ToggleGroup Action;
-    @FXML
     private RadioButton upgrade;
     @FXML
     private RadioButton attack;
