@@ -61,6 +61,11 @@ public class MapController {
     @FXML
     private AnchorPane wholeInfoBox;
 
+
+    /**
+     * click territory then show the information about this territory
+     * @param event
+     */
     @FXML
     void showTerrInfo(MouseEvent event){
         Object source = event.getSource();
@@ -84,12 +89,22 @@ public class MapController {
         }
     }
 
+
+    /**
+     * click the ok button then the whole box of territory information disappear
+     * @param event click OK button
+     */
     @FXML
     void hideTerrInfo(ActionEvent event) {
         wholeInfoBox.setVisible(false);
     }
 
 
+    /**
+     * get all territory information that need to be printed out
+     * @param t territory object
+     * @return territory information except territory names
+     */
     String getTerrInfo(Territory t){
 
         String output = "Number of Units: " + t.getNumUnits() + "\n\n";
@@ -114,6 +129,7 @@ public class MapController {
     public void setColor(Game gameEntity){
 
     }
+
 
     public MapController(Game _gameEntity) {
         this.gameEntity = _gameEntity;
@@ -143,6 +159,10 @@ public class MapController {
         this.hashName.put("TheSouth","The South(d)");
     }
 
+
+    /**
+     * create the letterHash hashmap, key is the letter, value is the whole name
+     */
     public void letterHash(){
         this.hashLetter = new HashMap<>();
         this.hashLetter.put("k", "Dark Bay(k)");
