@@ -45,6 +45,9 @@ public class StartController implements Initializable {
         if (playerID != 0 && playerID != 1) {
             throw new Exception("Failed to receive valid playerId!");
         }
+        gameEntity.storeNewBoard();
+        System.out.println("A new turn: updated new board as below!");
+        System.out.println(gameEntity.getRiskGameBoard().displayBoard());
         ShowViews.showGameView(stage, "/ui/whole.fxml", gameEntity);
 
     }
