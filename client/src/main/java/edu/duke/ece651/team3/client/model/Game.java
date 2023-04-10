@@ -95,6 +95,10 @@ public class Game {
         //System.out.println("printed action list");
     }
 
+    public void sendAllActions() throws IOException {
+        clientCommunicator.sendActionListsToServer(actionsList);
+    }
+
     /**
      * This method handles all actions to check whether it has the correct format
      * It checks whether the action is valid and store it into the action list
@@ -171,6 +175,7 @@ public class Game {
         }else {
             throw new IllegalArgumentException("Your action type is invalid!\n");
         }
+        System.out.println("valid action: " + action);
     }
 
     /**
