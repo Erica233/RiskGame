@@ -9,6 +9,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
@@ -43,6 +44,8 @@ public class MapController {
     private Group TheSouth;
     @FXML
     private Button hideInfoButton;
+    @FXML
+    private ImageView theNorthView;
 
     Game gameEntity;
     HashMap<String, String> hashName;
@@ -108,10 +111,15 @@ public class MapController {
         return output;
     }
 
+    public void setColor(Game gameEntity){
+
+    }
+
     public MapController(Game _gameEntity) {
         this.gameEntity = _gameEntity;
         fxidHash();
         letterHash();
+        setColor(gameEntity);
     }
 
 
