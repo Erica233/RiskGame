@@ -66,8 +66,8 @@ public class MovePageController {
         gameEntity.checkValidAction(moveAction);
         gameEntity.storeActionToList(moveAction);
         gameEntity.executeAction(moveAction);
-        System.out.println("in onCheckValidMove");
-        System.out.println(gameEntity.getRiskGameBoard().displayBoard());
+        //System.out.println("in onCheckValidMove");
+        //System.out.println(gameEntity.getRiskGameBoard().displayBoard());
 
         ShowViews.showGameView(stage, "/ui/whole.fxml", gameEntity);
 
