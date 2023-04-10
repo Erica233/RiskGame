@@ -15,7 +15,7 @@
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </padding>
          <children>
-            <Button fx:id="nextButton" layoutX="80.0" layoutY="398.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="111.0" text="Next">
+            <Button fx:id="nextButton" layoutX="90.0" layoutY="430.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="111.0" text="Next">
                <font>
                   <Font size="20.0" />
                </font>
@@ -28,17 +28,17 @@
                   <ToggleGroup fx:id="Action" />
                </toggleGroup>
             </RadioButton>
-            <RadioButton fx:id="attack" layoutX="60.0" layoutY="210.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="183.0" text="Attack" toggleGroup="$Action">
+            <RadioButton fx:id="attack" layoutX="60.0" layoutY="220.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="183.0" text="Attack" toggleGroup="$Action">
                <font>
                   <Font size="17.0" />
                </font>
             </RadioButton>
-            <RadioButton fx:id="upgrade" layoutX="60.0" layoutY="260.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="183.0" text="Upgrade" toggleGroup="$Action">
+            <RadioButton fx:id="upgrade" layoutX="60.0" layoutY="280.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="183.0" text="Upgrade" toggleGroup="$Action">
                <font>
                   <Font size="17.0" />
                </font>
             </RadioButton>
-            <RadioButton fx:id="done" layoutX="60.0" layoutY="310.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="183.0" text="Done" toggleGroup="$Action">
+            <RadioButton fx:id="done" layoutX="60.0" layoutY="340.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="183.0" text="Done" toggleGroup="$Action">
                <font>
                   <Font size="17.0" />
                </font>
