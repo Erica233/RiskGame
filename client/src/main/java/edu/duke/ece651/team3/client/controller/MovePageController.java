@@ -114,6 +114,7 @@ public class MovePageController {
 
         ArrayList<Territory> selfTerr = currPlayer.getOwnedTerritories();
         for (Territory Terr : selfTerr) {
+//            System.out.println("territory:" + );
             choice_source.getItems().add(Terr.getTerritoryName());
         }
     }
@@ -123,7 +124,7 @@ public class MovePageController {
 
         ArrayList<Territory> selfTerr = currPlayer.getOwnedTerritories();
         for (Territory Terr : selfTerr) {
-            choice_source.getItems().add(Terr.getTerritoryName());
+            choice_Dest.getItems().add(Terr.getTerritoryName());
         }
     }
 
@@ -134,6 +135,7 @@ public class MovePageController {
      */
     @FXML
     public void initialize() {
+        initializeId();
         wrapUpChoices();
         wrapUpUnitChoices();
         initializeUnitChoice();
