@@ -63,7 +63,7 @@ public class MovePageController {
         units.get(4).setNumUnits(LV4_choice.getValue());
         units.get(5).setNumUnits(LV5_choice.getValue());
         units.get(6).setNumUnits(LV6_choice.getValue());
-        MoveAction moveAction = new MoveAction(choice_source.getValue(), choice_source.getValue(), units);
+        MoveAction moveAction = new MoveAction(choice_source.getValue(), choice_Dest.getValue(), units);
 
         gameEntity.checkValidAction(moveAction);
         gameEntity.storeActionToList(moveAction);
