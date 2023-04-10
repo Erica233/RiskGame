@@ -23,8 +23,6 @@ public class ChooseActionController {
     @FXML
     private RadioButton move;
     @FXML
-    private ToggleGroup Action;
-    @FXML
     private RadioButton upgrade;
     @FXML
     private RadioButton attack;
@@ -52,30 +50,13 @@ public class ChooseActionController {
             ShowViews.showGameView(stage, "/ui/movePage.fxml", gameEntity);
         }
         else if(upgrade.isSelected()){
-            Parent nextPageParent = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/ui/upgradePage.fxml")));
-            Scene nextPageScene = new Scene(nextPageParent);
-
-            Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
-            window.setScene(nextPageScene);
-            window.show();
-
+            ShowViews.showGameView(stage, "/ui/upgradePage.fxml", gameEntity);
         }
         else if(attack.isSelected()){
-            Parent nextPageParent = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/ui/attackPage.fxml")));
-            Scene nextPageScene = new Scene(nextPageParent);
-
-            Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
-            window.setScene(nextPageScene);
-            window.show();
-
+            ShowViews.showGameView(stage, "/ui/attackPage.fxml", gameEntity);
         }
         else if(done.isSelected()){
-            Parent nextPageParent = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/ui/slider.fxml")));
-            Scene nextPageScene = new Scene(nextPageParent);
-
-            Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
-            window.setScene(nextPageScene);
-            window.show();
+            ShowViews.showGameView(stage, "/ui/donePage.fxml", gameEntity);
         }
     }
 
