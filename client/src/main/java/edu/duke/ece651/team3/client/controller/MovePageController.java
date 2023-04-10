@@ -100,12 +100,17 @@ public class MovePageController {
         System.out.println("curr Territory's name is: " + currTerr.getTerritoryName());
         ArrayList<Unit> currUnits = currTerr.getUnits();
         for (Unit unit : currUnits) {
-//            System.out.println("curr Unit is: " + unit.getUnitName() + "currBox is: " + eachLevelUnitNum.get(unit));
-            for (int i = 0; i < unit.getNumUnits(); i++) {
-                items.add(i + 1);
+            System.out.println("curr Unit is: " + unit.getUnitName() + "currBox is: " + eachLevelUnitNum.get(unit));
+            System.out.println("curr unit's number is: " + unit.getNumUnits());
+            if(unit.getNumUnits() == 0){
+                items.add(0);
+            }
+            for (int i = 0; i < unit.getNumUnits() + 1; i++) {
+                items.add(i);
 
             }
             eachLevelUnitNum.get(unit).getItems().addAll(new ArrayList<>(items));
+            items.clear();
             System.out.println("currBox is: " + eachLevelUnitNum.get(unit) + "curr items:" + eachLevelUnitNum.get(unit).getItems());
         }
 
@@ -141,6 +146,7 @@ public class MovePageController {
             Territory currTerr = currPlayer.findOwnedTerritoryByName(currTerrName);
             wrapUpUnitChoices(currTerr);
             initializeUnitChoice(currTerr);
+            eachLevelUnitNum.clear();
         });
     }
 
