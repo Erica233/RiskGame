@@ -20,7 +20,7 @@
             <Font size="36.0" />
          </font>
       </Button>
-      <Label fx:id="gameResult" alignment="CENTER" contentDisplay="CENTER" layoutX="158.0" layoutY="170.0" prefHeight="130.0" prefWidth="652.0" text="Orange Player Wins the Game You are the Winner!" textAlignment="CENTER" textFill="#141472" wrapText="true">
+      <Label fx:id="gameResultText" alignment="CENTER" contentDisplay="CENTER" layoutX="158.0" layoutY="170.0" prefHeight="130.0" prefWidth="652.0" text="Orange Player Wins the Game You are the Winner!" textAlignment="CENTER" textFill="#141472" wrapText="true">
          <font>
             <Font size="50.0" />
          </font>
