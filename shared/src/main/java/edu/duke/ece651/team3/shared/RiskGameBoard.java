@@ -18,6 +18,10 @@ public class RiskGameBoard implements Board, Serializable {
         //initMap();
     }
 
+
+
+
+
     /**
      * Initialize the units, given the Infantry number
      *
@@ -406,6 +410,7 @@ public class RiskGameBoard implements Board, Serializable {
     }
 
 
+
     /**
      * combine all attacks into one new attack if they have the same destination
      *
@@ -419,7 +424,7 @@ public class RiskGameBoard implements Board, Serializable {
             destinations.add(act.getDstName());
         }
         for(String s : destinations){
-            Action newaction = new AttackAction(null, s, initializeArrUnits());
+            Action newaction = new AttackAction(null, s, initBasicUnits(0));
             newattackers.add(newaction);
         }
         for(Action act : myattacks){

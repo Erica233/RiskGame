@@ -51,16 +51,14 @@ public class ChooseActionController {
         if(move.isSelected()){
             ShowViews.showGameView(stage, "/ui/movePage.fxml", gameEntity);
         }
-        else if(attack.isSelected()){
-            ShowViews.showGameView(stage, "/ui/attackPage.fxml", gameEntity);
-
-        }
         else if(upgrade.isSelected()){
             ShowViews.showGameView(stage, "/ui/upgradePage.fxml", gameEntity);
         }
-
+        else if(attack.isSelected()){
+            ShowViews.showGameView(stage, "/ui/attackPage.fxml", gameEntity);
+        }
         else if(done.isSelected()){
-            ShowViews.showGameView(stage, "/ui/upgradePage.fxml", gameEntity);
+            ShowViews.showGameView(stage, "/ui/donePage.fxml", gameEntity);
         }
     }
 
