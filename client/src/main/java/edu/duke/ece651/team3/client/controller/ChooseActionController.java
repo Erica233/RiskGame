@@ -15,7 +15,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.Objects;
 
-public class CheckBoxController {
+public class ChooseActionController {
     @FXML
     private Button next;
     @FXML
@@ -34,7 +34,7 @@ public class CheckBoxController {
     private String color;
     private int playerId;
 
-    public CheckBoxController(int id) {
+    public ChooseActionController(int id) {
         this.playerId = id;
     }
 
@@ -76,7 +76,7 @@ public class CheckBoxController {
         }
     }
 
-//    @FXML
+    //    @FXML
     public void initialize() {
         if (playerId == 0) {
             playerColor.setText("You are the Orange Player. What would you like to do?");
@@ -85,3 +85,4 @@ public class CheckBoxController {
         }
     }
 }
+

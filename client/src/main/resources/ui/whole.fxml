@@ -9,7 +9,7 @@
       <SplitPane dividerPositions="0.6" prefHeight="400.0" prefWidth="647.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <items>
             <fx:include fx:id="map" source="map.fxml" />
-            <fx:include fx:id="box" source="checkBox.fxml" />
+            <fx:include fx:id="box" source="chooseAction.fxml" />
         </items>
       </SplitPane>
    </children>
