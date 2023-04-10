@@ -1,10 +1,7 @@
 package edu.duke.ece651.team3.client.controller;
 import edu.duke.ece651.team3.client.ShowViews;
 import edu.duke.ece651.team3.client.model.Game;
-import edu.duke.ece651.team3.shared.Player;
-import edu.duke.ece651.team3.shared.RiskGameBoard;
-import edu.duke.ece651.team3.shared.Territory;
-import edu.duke.ece651.team3.shared.Unit;
+import edu.duke.ece651.team3.shared.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -58,7 +55,18 @@ public class MovePageController {
 
     @FXML
     public void onCheckValidMove(ActionEvent ae) throws Exception {
-        System.out.println("");
+        ArrayList<Unit> units = RiskGameBoard.initBasicUnits(0);
+        units.get(0).setNumUnits(LV0_choice.getValue());
+        units.get(1).setNumUnits(LV1_choice.getValue());
+        units.get(2).setNumUnits(LV2_choice.getValue());
+        units.get(3).setNumUnits(LV3_choice.getValue());
+        units.get(4).setNumUnits(LV4_choice.getValue());
+        units.get(5).setNumUnits(LV5_choice.getValue());
+        units.get(6).setNumUnits(LV6_choice.getValue());
+        MoveAction moveAction = new MoveAction(choice_source.getValue(), choice_source.getValue(), units);
+        gameEntity.checkValidAction(moveAction);
+        gameEntity.storeActionToList(moveAction);
+        gameEntity.executeAction(moveAction);
         ShowViews.showGameView(stage, "/ui/whole.fxml", gameEntity);
 
     }
@@ -142,7 +150,7 @@ public class MovePageController {
         initializeSourceChoice();
         initializeDestChoice();
 
-        System.out.println("choice_source: " + choice_source.getValue());
+        //System.out.println("choice_source: " + choice_source.getValue());
 
     }
 
