@@ -1,19 +1,14 @@
 package edu.duke.ece651.team3.client.controller;
 import edu.duke.ece651.team3.client.model.Game;
 import edu.duke.ece651.team3.shared.Player;
-import edu.duke.ece651.team3.shared.RiskGameBoard;
 import edu.duke.ece651.team3.shared.Territory;
 import edu.duke.ece651.team3.shared.Unit;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
-import org.checkerframework.checker.units.qual.A;
 
-import java.net.URL;
 import java.util.*;
 
 public class MovePageController {
@@ -62,13 +57,6 @@ public class MovePageController {
      * This method wraps all the choice boxes into allChoiceBoxes
      */
     public void wrapUpChoices() {
-//        LV0_choice = new ChoiceBox<Integer>();
-//        LV1_choice = new ChoiceBox<Integer>();
-//        LV2_choice = new ChoiceBox<Integer>();
-//        LV3_choice = new ChoiceBox<Integer>();
-//        LV4_choice = new ChoiceBox<Integer>();
-//        LV5_choice = new ChoiceBox<Integer>();
-//        LV6_choice = new ChoiceBox<Integer>();
         allChoiceBoxes = new ArrayList<>();
         allChoiceBoxes.add(LV0_choice);
         allChoiceBoxes.add(LV1_choice);
@@ -81,14 +69,10 @@ public class MovePageController {
 
     public void wrapUpUnitChoices(Territory currTerr) {
         this.eachLevelUnitNum = new HashMap<>();
-        RiskGameBoard r = gameEntity.getRiskGameBoard();
-
-        Player currPlayer = r.getAllPlayers().get(playerID);
 
         ArrayList<Unit> currUnits = currTerr.getUnits();
         for (int i = 0; i < currUnits.size(); i++) {
             eachLevelUnitNum.put(currUnits.get(i), allChoiceBoxes.get(i));//Unit, CheckBox(LV?)
-//            System.out.println("curr unit is: " + currUnits.get(i).getUnitName() + "currentBox: " + allChoiceBoxes.get(i));
         }
     }
 
@@ -120,21 +104,23 @@ public class MovePageController {
 
         ArrayList<Territory> selfTerr = currPlayer.getOwnedTerritories();
         for (Territory Terr : selfTerr) {
-//            System.out.println("territory:" + );
             choice_source.getItems().add(Terr.getTerritoryName());
         }
     }
 
-    private void initializeDestChoice() {
-        Player currPlayer = gameEntity.getRiskGameBoard().getAllPlayers().get(1 - playerID);
+    private void initializeDestChoice(Territory currTerr) {
+        Player currPlayer = gameEntity.getRiskGameBoard().getAllPlayers().get(playerID);
 
         ArrayList<Territory> selfTerr = currPlayer.getOwnedTerritories();
         for (Territory Terr : selfTerr) {
+            if(Terr.equals(currTerr)){
+                continue;
+            }
             choice_Dest.getItems().add(Terr.getTerritoryName());
         }
     }
 
-    public void setTerrUnit(){
+    public void onSelectSrcCheckBox(){
         choice_source.setOnAction(e -> {
             // Retrieve the selected value from the choice box
             String currTerrName = choice_source.getValue();
@@ -142,9 +128,11 @@ public class MovePageController {
             // Do something with the selected value
             System.out.println("Selected option: " + currTerrName);
 
+            //Getting the current territory
             Player currPlayer = gameEntity.getRiskGameBoard().getAllPlayers().get(playerID);
             Territory currTerr = currPlayer.findOwnedTerritoryByName(currTerrName);
             wrapUpUnitChoices(currTerr);
+            initializeDestChoice(currTerr);
             initializeUnitChoice(currTerr);
             eachLevelUnitNum.clear();
         });
@@ -157,36 +145,11 @@ public class MovePageController {
      */
     @FXML
     public void initialize() {
-        System.out.println("initialize all entities");
-        initializeId();
-        initializeSourceChoice();
-        initializeDestChoice();
-
         wrapUpChoices();
-        setTerrUnit();
+        initializeId();
 
-//        LV0_choice.getItems().addAll(1, 2, 3, 4, 5);
-
-
-
-//        for(Unit u : eachLevelUnitNum.keySet()){
-//            System.out.println("Current unit is: " + u + "choicebox is: " + eachLevelUnitNum.get(u));
-//        }
-
-//        //Test
-//        this.eachLevelUnitNum = new HashMap<>();
-//        RiskGameBoard r = gameEntity.getRiskGameBoard();
-//
-//        Player currPlayer = r.getAllPlayers().get(playerID);
-//        ArrayList<Territory> allTerrs = currPlayer.getOwnedTerritories();
-//
-//        for (Territory Terr : allTerrs) {
-//            ArrayList<Unit> currUnits = Terr.getUnits();
-//            for (int i = 0; i < currUnits.size(); i++) {
-//                System.out.println("Level " + i + "is: " + allChoiceBoxes.get(i));
-//                System.out.println("Current number is: " + currUnits.get(i).getNumUnits());
-//            }
-//        }
+        initializeSourceChoice();
+        onSelectSrcCheckBox();
     }
 
 
