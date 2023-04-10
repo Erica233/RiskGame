@@ -1,9 +1,9 @@
 package edu.duke.ece651.team3.client.controller;
 
+import edu.duke.ece651.team3.client.ShowViews;
 import edu.duke.ece651.team3.client.model.Game;
-import edu.duke.ece651.team3.shared.Player;
-import edu.duke.ece651.team3.shared.Territory;
-import edu.duke.ece651.team3.shared.Unit;
+import edu.duke.ece651.team3.shared.*;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
@@ -55,6 +55,26 @@ public class AttackPageController {
         this.gameEntity = _gameEntity;
         this.stage = _stage;
         this.playerID = id;
+    }
+
+    @FXML
+    public void onCheckValidAttack(ActionEvent ae) throws Exception {
+        ArrayList<Unit> units = RiskGameBoard.initBasicUnits(0);
+        for (int level = 0; level < units.size(); level++) {
+            if (allChoiceBoxes.get(level).getValue() != null) {
+                units.get(level).setNumUnits(allChoiceBoxes.get(level).getValue());
+            }
+        }
+        AttackAction attackAction = new AttackAction(choice_source.getValue(), choice_Dest.getValue(), units);
+
+        gameEntity.checkValidAction(attackAction);
+        gameEntity.storeActionToList(attackAction);
+        gameEntity.executeAction(attackAction);
+        //System.out.println("in onCheckValidMove");
+        //System.out.println(gameEntity.getRiskGameBoard().displayBoard());
+
+        ShowViews.showGameView(stage, "/ui/whole.fxml", gameEntity);
+
     }
 
     /**

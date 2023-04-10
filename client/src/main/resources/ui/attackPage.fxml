@@ -22,7 +22,7 @@
                      </padding>
                      <children>
                         <Group />
-                        <Button fx:id="nextButton" layoutX="90.0" layoutY="430.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="111.0" text="Next">
+                        <Button fx:id="nextButton" layoutX="90.0" layoutY="430.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="111.0" text="Next" onAction="#onCheckValidAttack">
                            <font>
                               <Font size="20.0" />
                            </font>

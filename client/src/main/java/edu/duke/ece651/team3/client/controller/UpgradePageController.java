@@ -1,9 +1,9 @@
 package edu.duke.ece651.team3.client.controller;
 
+import edu.duke.ece651.team3.client.ShowViews;
 import edu.duke.ece651.team3.client.model.Game;
-import edu.duke.ece651.team3.shared.Player;
-import edu.duke.ece651.team3.shared.Territory;
-import edu.duke.ece651.team3.shared.Unit;
+import edu.duke.ece651.team3.shared.*;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
@@ -40,21 +40,35 @@ public class UpgradePageController {
     private Button nextButton;
 
     private int playerID;
-
     private HashMap<Unit, ChoiceBox<Integer>> eachLevelUnitNum; //The Unit and its choices
-
     private ArrayList<ChoiceBox<Integer>> allChoiceBoxes; //All choice boxes
-
     private Game gameEntity;
     private Stage stage;
-
-
-
 
     public UpgradePageController(int id, Stage _stage, Game _gameEntity) {
         this.gameEntity = _gameEntity;
         this.stage = _stage;
         this.playerID = id;
+    }
+
+    @FXML
+    public void onCheckValidUpgrade(ActionEvent ae) throws Exception {
+        ArrayList<Unit> units = RiskGameBoard.initBasicUnits(0);
+        for (int level = 0; level < units.size(); level++) {
+            if (allChoiceBoxes.get(level).getValue() != null) {
+                units.get(level).setNumUnits(allChoiceBoxes.get(level).getValue());
+            }
+        }
+        UpgradeAction upgradeAction = new UpgradeAction(choice_source.getValue(), choice_source.getValue(), units);
+
+        gameEntity.checkValidAction(upgradeAction);
+        gameEntity.storeActionToList(upgradeAction);
+        gameEntity.executeAction(upgradeAction);
+        //System.out.println("in onCheckValidMove");
+        //System.out.println(gameEntity.getRiskGameBoard().displayBoard());
+
+        ShowViews.showGameView(stage, "/ui/whole.fxml", gameEntity);
+
     }
 
     /**
