@@ -23,7 +23,7 @@
             </Button>
             <Group fx:id="choicePrompt">
                <children>
-                  <Label fx:id="playerColor" alignment="CENTER" contentDisplay="CENTER" layoutX="30.0" layoutY="23.0" prefHeight="106.0" prefWidth="222.0" text="You are the Orange Player. You Chose MOVE." textAlignment="CENTER" wrapText="true">
+                  <Label fx:id="playerColor" alignment="CENTER" contentDisplay="CENTER" layoutX="30.0" layoutY="23.0" prefHeight="106.0" prefWidth="222.0" text="You are the Orange Player You Chose ATTACK" textAlignment="CENTER" wrapText="true">
                      <font>
                         <Font size="20.0" />
                      </font>
@@ -41,7 +41,7 @@
                </children>
             </Group>
             <Group fx:id="sourceChoice1" layoutY="39.0" />
-            <Label layoutX="33.0" layoutY="223.0" text="Number Of Units You Want to Move">
+            <Label layoutX="33.0" layoutY="223.0" text="Number Of Units You Want to Attack">
                <font>
                   <Font size="15.0" />
                </font>
