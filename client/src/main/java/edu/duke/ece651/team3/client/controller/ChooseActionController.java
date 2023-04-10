@@ -41,15 +41,16 @@ public class ChooseActionController {
     @FXML
     void goToActionPage(MouseEvent event) throws IOException {
         if(move.isSelected()){
-            Parent nextPageParent = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/ui/slider.fxml")));
-            Scene nextPageScene = new Scene(nextPageParent);
 
-            Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
-            window.setScene(nextPageScene);
-            window.show();
+//            Parent nextPageParent = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/ui/movePage.fxml")));
+//            Scene nextPageScene = new Scene(nextPageParent);
+//
+//            Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
+//            window.setScene(nextPageScene);
+//            window.show();
         }
         else if(upgrade.isSelected()){
-            Parent nextPageParent = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/ui/slider.fxml")));
+            Parent nextPageParent = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/ui/upgradePage.fxml")));
             Scene nextPageScene = new Scene(nextPageParent);
 
             Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
@@ -58,7 +59,7 @@ public class ChooseActionController {
 
         }
         else if(attack.isSelected()){
-            Parent nextPageParent = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/ui/slider.fxml")));
+            Parent nextPageParent = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/ui/attackPage.fxml")));
             Scene nextPageScene = new Scene(nextPageParent);
 
             Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
