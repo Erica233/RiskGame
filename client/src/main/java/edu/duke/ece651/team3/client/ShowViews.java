@@ -3,6 +3,7 @@ package edu.duke.ece651.team3.client;
 //import edu.duke.ece651.team3.client.controller.*;
 import edu.duke.ece651.team3.client.controller.ChooseActionController;
 import edu.duke.ece651.team3.client.controller.MapController;
+import edu.duke.ece651.team3.client.controller.MovePageController;
 import edu.duke.ece651.team3.client.controller.SliderController;
 import edu.duke.ece651.team3.client.model.Game;
 import javafx.fxml.FXMLLoader;
@@ -22,6 +23,8 @@ public class ShowViews {
         controllers.put(ChooseActionController.class, new ChooseActionController(game.getPlayerId(), stage, game));
         controllers.put(MapController.class, new MapController(game));
         controllers.put(SliderController.class, new SliderController());
+        controllers.put(MovePageController.class, new MovePageController(game.getPlayerId(), stage, game));
+
         loader.setControllerFactory((c) -> {
             return controllers.get(c);
         });

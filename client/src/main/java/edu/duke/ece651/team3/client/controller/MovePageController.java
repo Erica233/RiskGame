@@ -1,15 +1,18 @@
 package edu.duke.ece651.team3.client.controller;
+import edu.duke.ece651.team3.client.ShowViews;
 import edu.duke.ece651.team3.client.model.Game;
 import edu.duke.ece651.team3.shared.Player;
 import edu.duke.ece651.team3.shared.RiskGameBoard;
 import edu.duke.ece651.team3.shared.Territory;
 import edu.duke.ece651.team3.shared.Unit;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
+import javafx.stage.Stage;
 import org.checkerframework.checker.units.qual.A;
 
 import java.net.URL;
@@ -42,21 +45,21 @@ public class MovePageController {
     private Button nextButton;
 
     private int playerID;
-
     private HashMap<Unit, ChoiceBox<Integer>> eachLevelUnitNum; //The Unit and its choices
-
     private ArrayList<ChoiceBox<Integer>> allChoiceBoxes; //All choice boxes
-
     private Game gameEntity;
+    Stage stage;
 
-
-
-
-    public MovePageController(Game _gameEntity, int id) {
+    public MovePageController(int id, Stage _stage, Game _gameEntity) {
         this.gameEntity = _gameEntity;
-        playerID = id;
+        this.playerID = id;
+        this.stage = _stage;
     }
-    public MovePageController(){
+
+    @FXML
+    public void onCheckValidMove(ActionEvent ae) throws Exception {
+        System.out.println("");
+        ShowViews.showGameView(stage, "/ui/whole.fxml", gameEntity);
 
     }
 
@@ -136,6 +139,8 @@ public class MovePageController {
         initializeUnitChoice();
         initializeSourceChoice();
         initializeDestChoice();
+
+        System.out.println("choice_source: " + choice_source.getValue());
 
     }
 
