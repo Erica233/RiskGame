@@ -1,5 +1,7 @@
 package edu.duke.ece651.team3.client.controller;
 
+import edu.duke.ece651.team3.client.ShowViews;
+import edu.duke.ece651.team3.client.model.Game;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -34,20 +36,20 @@ public class ChooseActionController {
     private String color;
     private int playerId;
 
-    public ChooseActionController(int id) {
+    private Stage stage;
+
+    private Game gameEntity;
+
+    public ChooseActionController(int id, Stage _stage, Game _gameEntity) {
         this.playerId = id;
+        this.stage = _stage;
+        this.gameEntity = _gameEntity;
     }
 
     @FXML
     void goToActionPage(MouseEvent event) throws IOException {
         if(move.isSelected()){
-
-//            Parent nextPageParent = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/ui/movePage.fxml")));
-//            Scene nextPageScene = new Scene(nextPageParent);
-//
-//            Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
-//            window.setScene(nextPageScene);
-//            window.show();
+            ShowViews.showGameView(stage, "/ui/movePage.fxml", gameEntity);
         }
         else if(upgrade.isSelected()){
             Parent nextPageParent = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/ui/upgradePage.fxml")));

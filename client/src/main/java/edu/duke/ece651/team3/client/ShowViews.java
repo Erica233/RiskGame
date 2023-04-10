@@ -19,7 +19,7 @@ public class ShowViews {
         FXMLLoader loader = new FXMLLoader(xmlResource);
 
         HashMap<Class<?>,Object> controllers = new HashMap<>();
-        controllers.put(ChooseActionController.class, new ChooseActionController(game.getPlayerId()));
+        controllers.put(ChooseActionController.class, new ChooseActionController(game.getPlayerId(), stage, game));
         controllers.put(MapController.class, new MapController(game));
         controllers.put(SliderController.class, new SliderController());
         loader.setControllerFactory((c) -> {

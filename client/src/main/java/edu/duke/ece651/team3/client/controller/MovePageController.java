@@ -107,10 +107,21 @@ public class MovePageController {
         }
     }
     private void initializeSourceChoice() {
+        Player currPlayer = gameEntity.getRiskGameBoard().getAllPlayers().get(playerID);
 
+        ArrayList<Territory> selfTerr = currPlayer.getOwnedTerritories();
+        for (Territory Terr : selfTerr) {
+            choice_source.getItems().add(Terr.getTerritoryName());
+        }
     }
 
     private void initializeDestChoice() {
+        Player currPlayer = gameEntity.getRiskGameBoard().getAllPlayers().get(1 - playerID);
+
+        ArrayList<Territory> selfTerr = currPlayer.getOwnedTerritories();
+        for (Territory Terr : selfTerr) {
+            choice_source.getItems().add(Terr.getTerritoryName());
+        }
     }
 
 
