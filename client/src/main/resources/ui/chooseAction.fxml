@@ -20,25 +20,14 @@
                   <Font size="20.0" />
                </font>
             </Button>
-            <RadioButton fx:id="move" layoutX="60.0" layoutY="160.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="160.0" text="Move">
-               <font>
-                  <Font size="19.0" />
-               </font>
-               <toggleGroup>
-                  <ToggleGroup fx:id="Action" />
-               </toggleGroup>
-            </RadioButton>
-            <RadioButton fx:id="attack" layoutX="60.0" layoutY="210.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="183.0" text="Attack" toggleGroup="$Action">
+            <fx:include fx:id="move" source="moveChoice.fxml" />
+            <RadioButton fx:id="attack" layoutX="60.0" layoutY="210.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="183.0" text="Attack">
                <font>
                   <Font size="19.0" />
                </font>
             </RadioButton>
-            <RadioButton fx:id="upgrade" layoutX="60.0" layoutY="260.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="183.0" text="Upgrade" toggleGroup="$Action">
-               <font>
-                  <Font size="19.0" />
-               </font>
-            </RadioButton>
-            <RadioButton fx:id="done" layoutX="60.0" layoutY="310.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="183.0" text="Done" toggleGroup="$Action">
+            <fx:include fx:id="upgrade" source="upgradeChoice.fxml" />
+            <RadioButton fx:id="done" layoutX="60.0" layoutY="310.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="183.0" text="Done">
                <font>
                   <Font size="19.0" />
                </font>
