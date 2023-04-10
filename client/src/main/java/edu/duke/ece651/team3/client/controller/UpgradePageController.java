@@ -85,11 +85,11 @@ public class UpgradePageController {
      */
     private void initializeUnitChoice(Territory currTerr) {
         Set<Integer> items = new HashSet<>();
-        System.out.println("curr Territory's name is: " + currTerr.getTerritoryName());
+//        System.out.println("curr Territory's name is: " + currTerr.getTerritoryName());
         ArrayList<Unit> currUnits = currTerr.getUnits();
         for (Unit unit : currUnits) {
-            System.out.println("curr Unit is: " + unit.getUnitName() + "currBox is: " + eachLevelUnitNum.get(unit));
-            System.out.println("curr unit's number is: " + unit.getNumUnits());
+//            System.out.println("curr Unit is: " + unit.getUnitName() + "currBox is: " + eachLevelUnitNum.get(unit));
+//            System.out.println("curr unit's number is: " + unit.getNumUnits());
             if(unit.getNumUnits() == 0){
                 items.add(0);
             }
@@ -100,7 +100,7 @@ public class UpgradePageController {
             eachLevelUnitNum.get(unit).getItems().clear();
             eachLevelUnitNum.get(unit).getItems().addAll(new ArrayList<>(items));
             items.clear();
-            System.out.println("currBox is: " + eachLevelUnitNum.get(unit) + "curr items:" + eachLevelUnitNum.get(unit).getItems());
+//            System.out.println("currBox is: " + eachLevelUnitNum.get(unit) + "curr items:" + eachLevelUnitNum.get(unit).getItems());
         }
 
     }
@@ -153,10 +153,10 @@ public class UpgradePageController {
     public void initializeId() {
 
         if (playerID == 0) {
-            playerColor.setText("You are the Orange Player. You Chose MOVE");
+            playerColor.setText("You are the Orange Player. You Chose UPGRADE");
 
         } else {
-            playerColor.setText("You are the Blue Player. You Chose MOVE");
+            playerColor.setText("You are the Blue Player. You Chose UPGRADE");
         }
         System.out.println("set id" + playerColor);
     }
