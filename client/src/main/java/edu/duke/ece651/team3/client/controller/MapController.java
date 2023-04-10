@@ -169,40 +169,40 @@ public class MapController {
         return output;
     }
 
-    @FXML
-    public void setColor(ImageView iv, Color sourceColor, Color finalColor){
-        Image image = iv.getImage();
-        int W = (int) image.getWidth();
-        int H = (int) image.getHeight();
-        WritableImage outputImage = new WritableImage(W, H);
-        PixelReader reader      = image.getPixelReader();
-        PixelWriter writer      = outputImage.getPixelWriter();
-        int ob=(int) sourceColor.getBlue()*255;
-        int or=(int) sourceColor.getRed()*255;
-        int og=(int) sourceColor.getGreen()*255;
-        int nb=(int) finalColor.getBlue()*255;
-        int nr=(int) finalColor.getRed()*255;
-        int ng=(int) finalColor.getGreen()*255;
-        for (int y = 0; y < H; y++) {
-            for (int x = 0; x < W; x++) {
-                int argb = reader.getArgb(x, y);
-                int a = (argb >> 24) & 0xFF;
-                int r = (argb >> 16) & 0xFF;
-                int g = (argb >>  8) & 0xFF;
-                int b =  argb        & 0xFF;
-                if (g==og && r==or && b==ob) {
-                    r=nr;
-                    g=ng;
-                    b=nb;
-                }
-                argb = (a << 24) | (r << 16) | (g << 8) | b;
-                writer.setArgb(x, y, argb);
-            }
-        }
-        ImageView newImageView = new ImageView(outputImage);
-        theNorthView = newImageView;
-
-    }
+//    @FXML
+//    public void setColor(ImageView iv, Color sourceColor, Color finalColor){
+//        Image image = iv.getImage();
+//        int W = (int) image.getWidth();
+//        int H = (int) image.getHeight();
+//        WritableImage outputImage = new WritableImage(W, H);
+//        PixelReader reader      = image.getPixelReader();
+//        PixelWriter writer      = outputImage.getPixelWriter();
+//        int ob=(int) sourceColor.getBlue()*255;
+//        int or=(int) sourceColor.getRed()*255;
+//        int og=(int) sourceColor.getGreen()*255;
+//        int nb=(int) finalColor.getBlue()*255;
+//        int nr=(int) finalColor.getRed()*255;
+//        int ng=(int) finalColor.getGreen()*255;
+//        for (int y = 0; y < H; y++) {
+//            for (int x = 0; x < W; x++) {
+//                int argb = reader.getArgb(x, y);
+//                int a = (argb >> 24) & 0xFF;
+//                int r = (argb >> 16) & 0xFF;
+//                int g = (argb >>  8) & 0xFF;
+//                int b =  argb        & 0xFF;
+//                if (g==og && r==or && b==ob) {
+//                    r=nr;
+//                    g=ng;
+//                    b=nb;
+//                }
+//                argb = (a << 24) | (r << 16) | (g << 8) | b;
+//                writer.setArgb(x, y, argb);
+//            }
+//        }
+//        ImageView newImageView = new ImageView(outputImage);
+//        theNorthView = newImageView;
+//
+//    }
 
 
 
@@ -210,9 +210,9 @@ public class MapController {
         this.gameEntity = _gameEntity;
         fxidHash();
         letterHash();
-        collectGroups();
-        Color orange = Color.web("#f4b183");
-        Color blue = Color.web("#9dc3e6");
+ //       collectGroups();
+//        Color orange = Color.web("#f4b183");
+//        Color blue = Color.web("#9dc3e6");
         //setMap(orange, blue);
     }
 
@@ -258,11 +258,8 @@ public class MapController {
     }
 
     @FXML
-    public void changenorthcolor(ActionEvent actionEvent) {
-        Image darkbay = new Image("@../../pic/stormlands.png");
+    public void changecolor(ActionEvent actionEvent) {
+        Image darkbay = new Image("@../../pic/stormlandsO.png");
         theNorthView.setImage(darkbay);
-        Color orange = Color.web("#f4b183");
-        Color blue = Color.web("#9dc3e6");
-        setColor(theNorthView, blue, orange);
     }
 }
