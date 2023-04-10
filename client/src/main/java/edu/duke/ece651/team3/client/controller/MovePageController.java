@@ -56,13 +56,11 @@ public class MovePageController {
     @FXML
     public void onCheckValidMove(ActionEvent ae) throws Exception {
         ArrayList<Unit> units = RiskGameBoard.initBasicUnits(0);
-        units.get(0).setNumUnits(LV0_choice.getValue());
-        units.get(1).setNumUnits(LV1_choice.getValue());
-        units.get(2).setNumUnits(LV2_choice.getValue());
-        units.get(3).setNumUnits(LV3_choice.getValue());
-        units.get(4).setNumUnits(LV4_choice.getValue());
-        units.get(5).setNumUnits(LV5_choice.getValue());
-        units.get(6).setNumUnits(LV6_choice.getValue());
+        for (int level = 0; level < units.size(); level++) {
+            if (allChoiceBoxes.get(level).getValue() != null) {
+                units.get(level).setNumUnits(allChoiceBoxes.get(level).getValue());
+            }
+        }
         MoveAction moveAction = new MoveAction(choice_source.getValue(), choice_Dest.getValue(), units);
 
         gameEntity.checkValidAction(moveAction);
