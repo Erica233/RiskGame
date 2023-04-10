@@ -175,6 +175,7 @@ public class Game {
         }else {
             throw new IllegalArgumentException("Your action type is invalid!\n");
         }
+        System.out.println("valid action: " + action);
     }
 
     /**

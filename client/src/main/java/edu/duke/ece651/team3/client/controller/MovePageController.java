@@ -64,9 +64,13 @@ public class MovePageController {
         units.get(5).setNumUnits(LV5_choice.getValue());
         units.get(6).setNumUnits(LV6_choice.getValue());
         MoveAction moveAction = new MoveAction(choice_source.getValue(), choice_source.getValue(), units);
+
         gameEntity.checkValidAction(moveAction);
         gameEntity.storeActionToList(moveAction);
         gameEntity.executeAction(moveAction);
+        System.out.println("in onCheckValidMove");
+        System.out.println(gameEntity.getRiskGameBoard().displayBoard());
+
         ShowViews.showGameView(stage, "/ui/whole.fxml", gameEntity);
 
     }
@@ -147,7 +151,7 @@ public class MovePageController {
             String currTerrName = choice_source.getValue();
 
             // Do something with the selected value
-            System.out.println("Selected option: " + currTerrName);
+            //System.out.println("Selected option: " + currTerrName);
 
             //Getting the current territory
             Player currPlayer = gameEntity.getRiskGameBoard().getAllPlayers().get(playerID);
@@ -180,9 +184,9 @@ public class MovePageController {
     @FXML
     public void initializeId() {
         if (playerID == 0) {
-            playerColor.setText("You are the Orange Player. What would you like to do?");
+            playerColor.setText("You are the Orange Player. You Chose MOVE");
         } else {
-            playerColor.setText("You are the Blue Player. What would you like to do?");
+            playerColor.setText("You are the Blue Player. You Chose MOVE");
         }
     }
 
