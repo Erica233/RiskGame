@@ -39,6 +39,10 @@ public class Game {
         this.playerId = clientCommunicator.recvPlayerId();
     }
 
+    public void storeNewBoard() throws IOException, ClassNotFoundException {
+        this.riskGameBoard = clientCommunicator.recvBoard();
+    }
+
     /**
      * It runs the whole risc game interacting with user
      *
