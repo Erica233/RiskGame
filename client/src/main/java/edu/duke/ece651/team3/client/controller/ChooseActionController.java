@@ -70,7 +70,12 @@ public class ChooseActionController {
 
         }
         else if(done.isSelected()){
-            Parent nextPageParent = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/ui/slider.fxml")));
+            //show the single round information
+            //click next
+            //if win/lose end game
+            //else whole.fxml
+
+            Parent nextPageParent = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/ui/round.fxml")));
             Scene nextPageScene = new Scene(nextPageParent);
 
             Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();

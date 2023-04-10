@@ -76,6 +76,9 @@ public class Game {
         clientCommunicator.closePipes();
     }
 
+
+
+
     /**
      * This method plays one turn for the client.
      * It receives a board from the server, and checks all actions
