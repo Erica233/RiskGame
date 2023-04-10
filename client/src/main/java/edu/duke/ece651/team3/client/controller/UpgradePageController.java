@@ -1,4 +1,5 @@
 package edu.duke.ece651.team3.client.controller;
+
 import edu.duke.ece651.team3.client.model.Game;
 import edu.duke.ece651.team3.shared.Player;
 import edu.duke.ece651.team3.shared.Territory;
@@ -9,9 +10,12 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
-public class MovePageController {
+public class UpgradePageController {
     @FXML
     private ChoiceBox<Integer> LV0_choice;
     @FXML
@@ -47,7 +51,7 @@ public class MovePageController {
 
 
 
-    public MovePageController(int id, Stage _stage, Game _gameEntity) {
+    public UpgradePageController(int id, Stage _stage, Game _gameEntity) {
         this.gameEntity = _gameEntity;
         this.stage = _stage;
         this.playerID = id;
@@ -110,19 +114,6 @@ public class MovePageController {
         }
     }
 
-    private void initializeDestChoice(Territory currTerr) {
-        Player currPlayer = gameEntity.getRiskGameBoard().getAllPlayers().get(playerID);
-        choice_Dest.getItems().clear();
-        ArrayList<Territory> selfTerr = currPlayer.getOwnedTerritories();
-        for (Territory Terr : selfTerr) {
-            if(Terr.equals(currTerr)){
-                continue;
-            }
-            choice_Dest.getItems().add(Terr.getTerritoryName());
-
-        }
-    }
-
     public void onSelectSrcCheckBox(){
         choice_source.setOnAction(e -> {
             // Retrieve the selected value from the choice box
@@ -135,7 +126,6 @@ public class MovePageController {
             Player currPlayer = gameEntity.getRiskGameBoard().getAllPlayers().get(playerID);
             Territory currTerr = currPlayer.findOwnedTerritoryByName(currTerrName);
             wrapUpUnitChoices(currTerr);
-            initializeDestChoice(currTerr);
             initializeUnitChoice(currTerr);
         });
     }
@@ -173,4 +163,3 @@ public class MovePageController {
 
 
 }
-

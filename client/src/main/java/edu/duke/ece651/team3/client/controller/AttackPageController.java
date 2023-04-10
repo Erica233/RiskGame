@@ -97,6 +97,7 @@ public class AttackPageController {
                 items.add(i);
 
             }
+            eachLevelUnitNum.get(unit).getItems().clear();
             eachLevelUnitNum.get(unit).getItems().addAll(new ArrayList<>(items));
             items.clear();
             System.out.println("currBox is: " + eachLevelUnitNum.get(unit) + "curr items:" + eachLevelUnitNum.get(unit).getItems());
@@ -107,21 +108,26 @@ public class AttackPageController {
         Player currPlayer = gameEntity.getRiskGameBoard().getAllPlayers().get(playerID);
 
         ArrayList<Territory> selfTerr = currPlayer.getOwnedTerritories();
+        choice_source.getItems().clear();
         for (Territory Terr : selfTerr) {
             choice_source.getItems().add(Terr.getTerritoryName());
         }
     }
 
-    private void initializeDestChoice() {
+    private void initializeDestChoice(Territory currTerr) {
         Player currPlayer = gameEntity.getRiskGameBoard().getAllPlayers().get(1 - playerID);
-
+        choice_Dest.getItems().clear();
         ArrayList<Territory> selfTerr = currPlayer.getOwnedTerritories();
         for (Territory Terr : selfTerr) {
+            if(Terr.equals(currTerr)){
+                continue;
+            }
             choice_Dest.getItems().add(Terr.getTerritoryName());
+
         }
     }
 
-    public void setTerrUnit(){
+    public void onSelectSrcCheckBox(){
         choice_source.setOnAction(e -> {
             // Retrieve the selected value from the choice box
             String currTerrName = choice_source.getValue();
@@ -129,11 +135,12 @@ public class AttackPageController {
             // Do something with the selected value
             System.out.println("Selected option: " + currTerrName);
 
+            //Getting the current territory
             Player currPlayer = gameEntity.getRiskGameBoard().getAllPlayers().get(playerID);
             Territory currTerr = currPlayer.findOwnedTerritoryByName(currTerrName);
             wrapUpUnitChoices(currTerr);
+            initializeDestChoice(currTerr);
             initializeUnitChoice(currTerr);
-            eachLevelUnitNum.clear();
         });
     }
 
@@ -144,13 +151,11 @@ public class AttackPageController {
      */
     @FXML
     public void initialize() {
-        System.out.println("initialize all entities");
-        initializeId();
-        initializeSourceChoice();
-        initializeDestChoice();
-
         wrapUpChoices();
-        setTerrUnit();
+        initializeId();
+
+        initializeSourceChoice();
+        onSelectSrcCheckBox();
     }
 
 
