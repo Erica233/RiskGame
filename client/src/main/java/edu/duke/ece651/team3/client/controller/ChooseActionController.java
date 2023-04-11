@@ -70,7 +70,7 @@ public class ChooseActionController {
         } else {
             playerColor.setText("You are the Blue Player. What would you like to do?");
         }
-        gameEntity.storeNewBoard();
+        //gameEntity.storeNewBoard();
         System.out.println("A new turn: updated new board as below!");
         System.out.println(gameEntity.getRiskGameBoard().displayBoard());
     }

@@ -238,7 +238,7 @@ public class Server {
      */
     public void runGame() throws Exception {
         int result = -1;
-        sendBoardToAllClients();
+        //sendBoardToAllClients();
         do {
 //            try {
                 result = runOneTurn();

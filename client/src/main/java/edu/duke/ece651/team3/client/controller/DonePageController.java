@@ -34,6 +34,7 @@ public class DonePageController {
         if (gameResult == 0 || gameResult == 1) {
             ShowViews.showGameView(stage, "/ui/resultPage.fxml", gameEntity);
         } else {
+            gameEntity.storeNewBoard();
             ShowViews.showGameView(stage, "/ui/whole.fxml", gameEntity);
         }
 
