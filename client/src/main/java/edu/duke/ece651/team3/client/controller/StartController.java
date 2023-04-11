@@ -6,6 +6,7 @@ import edu.duke.ece651.team3.client.model.ClientCommunicator;
 import edu.duke.ece651.team3.client.model.Game;
 import edu.duke.ece651.team3.shared.RiskGameBoard;
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -21,6 +22,8 @@ public class StartController implements Initializable {
     private Button startButton;
     @FXML
     private Button quitButton;
+    @FXML
+    private Label waitInfo;
 
     Game gameEntity;
     Stage stage;
@@ -52,6 +55,24 @@ public class StartController implements Initializable {
     }
 
     public void initialize(URL location, ResourceBundle resources) {
-
+//        startButton.setOnAction((event -> {
+//            waitInfo.setVisible(true);
+//
+//            try {
+//                gameEntity.storePlayerId();
+//                int playerID = gameEntity.getPlayerId();
+//                System.out.println("playerId=" + playerID);
+//                if (playerID != 0 && playerID != 1) {
+//                    throw new Exception("Failed to receive valid playerId!");
+//                }
+//                gameEntity.storeNewBoard();
+//                System.out.println("A new turn: updated new board as below!");
+//                System.out.println(gameEntity.getRiskGameBoard().displayBoard());
+//                ShowViews.showGameView(stage, "/ui/whole.fxml", gameEntity);
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//
+//        }));
     }
 }

@@ -108,7 +108,7 @@ public class Game {
 
     public void printActionsLists() {
         PrintHelper.printActionsLists(actionsList, playerId);
-        System.out.println("printed action list above");
+        //System.out.println("printed action list above");
     }
 
     public void sendAllActions() throws IOException {

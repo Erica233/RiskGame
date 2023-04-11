@@ -25,5 +25,10 @@
             <Font size="36.0" />
          </font>
       </Button>
+      <Label fx:id="waitInfo" alignment="CENTER" contentDisplay="CENTER" layoutX="284.0" layoutY="323.0" prefHeight="37.0" prefWidth="372.0" text="Connecting to game: waiting for the other player!" textAlignment="CENTER" visible="false">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>
