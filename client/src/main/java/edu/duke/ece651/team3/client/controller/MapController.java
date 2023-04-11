@@ -74,11 +74,12 @@ public class MapController {
                     char c = hashName.get(name).charAt(hashName.get(name).length()-2);
                     RiskGameBoard b = gameEntity.getRiskGameBoard();
                     Territory t = b.getAllPlayers().get(gameEntity.getPlayerId()).findOwnedTerritoryByName(String.valueOf(c));
+                    String playerColor = gameEntity.getPlayerId()==0 ? "Orange" : "Blue";
                     if(t==null){
                         t = b.getAllPlayers().get(1-gameEntity.getPlayerId()).findOwnedTerritoryByName(String.valueOf(c));
+                        playerColor = gameEntity.getPlayerId()==1 ? "Orange" : "Blue";
                     }
                     String terrInfoText = getTerrInfo(t);
-                    String playerColor = gameEntity.getPlayerId()==0 ? "Orange" : "Blue";
                     terrName.setText(hashName.get(name)+"   owned by "+playerColor+ " player");
                     terrInfo.setText(terrInfoText);
                     wholeInfoBox.setVisible(true);
@@ -86,6 +87,7 @@ public class MapController {
             }
         }
     }
+
 
 
     /**
