@@ -238,15 +238,16 @@ public class Server {
      */
     public void runGame() throws Exception {
         int result = -1;
+        sendBoardToAllClients();
         do {
 //            try {
                 result = runOneTurn();
                 if (result == 2) {
                     System.out.println("game continues");
                 }
-                //sendEndGameInfo(result);
                 sendBoardToAllClients();
                 sendTurnResults(turnResults);
+                sendEndGameInfo(result);
                 if (result == 0 || result == 1) {
                     System.out.println("Player " + result + " is the winner!");
                     System.out.println("Game Ends!");

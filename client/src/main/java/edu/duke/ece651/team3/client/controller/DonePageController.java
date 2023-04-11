@@ -29,7 +29,7 @@ public class DonePageController {
     }
 
     @FXML
-    public void onTurnResults(ActionEvent ae) throws Exception {
+    public void onGameResults(ActionEvent ae) throws Exception {
         int gameResult = gameEntity.recvGameResult();
         if (gameResult == 0 || gameResult == 1) {
             ShowViews.showGameView(stage, "/ui/resultPage.fxml", gameEntity);

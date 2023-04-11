@@ -12,20 +12,16 @@ import java.io.IOException;
 
 public class ResultPageController {
     private Stage stage;
-
     private Game gameEntity;
     private  int playerID;
     private  int gameResult;
+
     @FXML
     private Label gameResultText;
-
     @FXML
     private Button startButton;
-
     @FXML
     private Button quitButton;
-
-
 
     ResultPageController(int _gameResult, Stage _stage, Game _gameEntity){
         this.stage = _stage;
@@ -34,13 +30,7 @@ public class ResultPageController {
     }
 
     @FXML
-    void onReturnStartPage(ActionEvent event) throws IOException {
-        ShowViews.showGameView(stage, "/ui/whole.fxml", gameEntity);
-    }
-
-
-    @FXML
-    void onQuitButton(ActionEvent event) {
+    void onReturnStartPage(ActionEvent event) {
         Stage currStage = (Stage) quitButton.getScene().getWindow();
         currStage.close();
     }
