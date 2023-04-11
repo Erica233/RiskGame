@@ -102,14 +102,15 @@ public class Action implements Serializable {
 
     @Override
     public String toString() {
-        String s = null;
+        String s = "";
         for(Unit c : unitsToChange){
-            s += "(" + c.toString() + " : " + c.getUnitName() + c.getNumUnits() +  ") ";
+            s += "(lv." + c.getLevel() + " : " + c.getNumUnits() +  ") ";
         }
-        return "Action{" +
-                "actionType='" + actionType + '\'' +
+        return "Action {" +
+                "Type=" + actionType +
                 ", src=" + srcName +
                 ", dst=" + dstName +
+                ", units=" + s +
                 '}';
     }
 

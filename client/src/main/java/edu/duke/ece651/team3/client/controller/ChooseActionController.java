@@ -23,6 +23,8 @@ public class ChooseActionController {
     @FXML
     private RadioButton move;
     @FXML
+    private ToggleGroup Action;
+    @FXML
     private RadioButton upgrade;
     @FXML
     private RadioButton attack;
@@ -33,9 +35,7 @@ public class ChooseActionController {
 
     private String color;
     private int playerId;
-
     private Stage stage;
-
     private Game gameEntity;
 
     public ChooseActionController(int id, Stage _stage, Game _gameEntity) {
@@ -45,7 +45,7 @@ public class ChooseActionController {
     }
 
     @FXML
-    void goToActionPage(MouseEvent event) throws IOException {
+    void goToActionPage(MouseEvent event) throws IOException, ClassNotFoundException {
         if(move.isSelected()){
             ShowViews.showGameView(stage, "/ui/movePage.fxml", gameEntity);
         }
@@ -56,6 +56,9 @@ public class ChooseActionController {
             ShowViews.showGameView(stage, "/ui/attackPage.fxml", gameEntity);
         }
         else if(done.isSelected()){
+            gameEntity.sendAllActions();
+            gameEntity.printActionsLists();
+            gameEntity.storeNewBoard();
             ShowViews.showGameView(stage, "/ui/donePage.fxml", gameEntity);
         }
     }

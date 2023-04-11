@@ -1,20 +1,21 @@
 package edu.duke.ece651.team3.client.controller;
+
 import edu.duke.ece651.team3.client.ShowViews;
 import edu.duke.ece651.team3.client.model.Game;
 import edu.duke.ece651.team3.shared.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
-import org.checkerframework.checker.units.qual.A;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
-public class MovePageController {
+public class UpgradePageController {
     @FXML
     private ChoiceBox<Integer> LV0_choice;
     @FXML
@@ -39,33 +40,30 @@ public class MovePageController {
     private Button nextButton;
 
     private int playerID;
-
     private HashMap<Unit, ChoiceBox<Integer>> eachLevelUnitNum; //The Unit and its choices
-
     private ArrayList<ChoiceBox<Integer>> allChoiceBoxes; //All choice boxes
-
     private Game gameEntity;
-    Stage stage;
+    private Stage stage;
 
-    public MovePageController(int id, Stage _stage, Game _gameEntity) {
+    public UpgradePageController(int id, Stage _stage, Game _gameEntity) {
         this.gameEntity = _gameEntity;
-        this.playerID = id;
         this.stage = _stage;
+        this.playerID = id;
     }
 
     @FXML
-    public void onCheckValidMove(ActionEvent ae) throws Exception {
+    public void onCheckValidUpgrade(ActionEvent ae) throws Exception {
         ArrayList<Unit> units = RiskGameBoard.initBasicUnits(0);
         for (int level = 0; level < units.size(); level++) {
             if (allChoiceBoxes.get(level).getValue() != null) {
                 units.get(level).setNumUnits(allChoiceBoxes.get(level).getValue());
             }
         }
-        MoveAction moveAction = new MoveAction(choice_source.getValue(), choice_Dest.getValue(), units);
+        UpgradeAction upgradeAction = new UpgradeAction(choice_source.getValue(), choice_source.getValue(), units);
 
-        gameEntity.checkValidAction(moveAction);
-        gameEntity.storeActionToList(moveAction);
-        gameEntity.executeAction(moveAction);
+        gameEntity.checkValidAction(upgradeAction);
+        gameEntity.storeActionToList(upgradeAction);
+        gameEntity.executeAction(upgradeAction);
         //System.out.println("in onCheckValidMove");
         //System.out.println(gameEntity.getRiskGameBoard().displayBoard());
 
@@ -130,32 +128,18 @@ public class MovePageController {
         }
     }
 
-    private void initializeDestChoice(Territory currTerr) {
-        Player currPlayer = gameEntity.getRiskGameBoard().getAllPlayers().get(playerID);
-        choice_Dest.getItems().clear();
-        ArrayList<Territory> selfTerr = currPlayer.getOwnedTerritories();
-        for (Territory Terr : selfTerr) {
-            if(Terr.equals(currTerr)){
-                continue;
-            }
-            choice_Dest.getItems().add(Terr.getTerritoryName());
-
-        }
-    }
-
     public void onSelectSrcCheckBox(){
         choice_source.setOnAction(e -> {
             // Retrieve the selected value from the choice box
             String currTerrName = choice_source.getValue();
 
             // Do something with the selected value
-            //System.out.println("Selected option: " + currTerrName);
+            System.out.println("Selected option: " + currTerrName);
 
             //Getting the current territory
             Player currPlayer = gameEntity.getRiskGameBoard().getAllPlayers().get(playerID);
             Territory currTerr = currPlayer.findOwnedTerritoryByName(currTerrName);
             wrapUpUnitChoices(currTerr);
-            initializeDestChoice(currTerr);
             initializeUnitChoice(currTerr);
         });
     }
@@ -181,12 +165,15 @@ public class MovePageController {
      */
     @FXML
     public void initializeId() {
+
         if (playerID == 0) {
-            playerColor.setText("You are the Orange Player. You Chose MOVE");
+            playerColor.setText("You are the Orange Player. You Chose UPGRADE");
+
         } else {
-            playerColor.setText("You are the Blue Player. You Chose MOVE");
+            playerColor.setText("You are the Blue Player. You Chose UPGRADE");
         }
+        System.out.println("set id" + playerColor);
     }
 
-}
 
+}

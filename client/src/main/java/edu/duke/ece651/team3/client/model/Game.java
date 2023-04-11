@@ -23,6 +23,14 @@ public class Game {
 
     }
 
+    public String getTerritoryInfo(String terr){
+        return "abc";
+    }
+
+    public String getTerritoryName(String terr){
+        return "The North(j)";
+    }
+
     public static void main(String[] args) {
         try {
             Game gameEntity = new Game();
@@ -68,8 +76,16 @@ public class Game {
         clientCommunicator.closePipes();
     }
 
+    public int recvGameResult() throws IOException {
+        int gameResult = clientCommunicator.recvGameResult();
+        System.out.println("gameResult of last turn is " + gameResult);
+        return gameResult;
+    }
 
-
+    public HashMap<String, Integer> recvTurnResults() throws IOException, ClassNotFoundException {
+        HashMap<String, Integer> turnResults = clientCommunicator.recvTurnResults();
+        return turnResults;
+    }
 
     /**
      * This method plays one turn for the client.
@@ -88,6 +104,16 @@ public class Game {
         System.out.println("send action list to server");
         PrintHelper.printActionsLists(actionsList, playerId);
         //System.out.println("printed action list");
+    }
+
+    public void printActionsLists() {
+        PrintHelper.printActionsLists(actionsList, playerId);
+        System.out.println("printed action list above");
+    }
+
+    public void sendAllActions() throws IOException {
+        clientCommunicator.sendActionListsToServer(actionsList);
+        System.out.println("send action list to server");
     }
 
     /**
@@ -166,6 +192,7 @@ public class Game {
         }else {
             throw new IllegalArgumentException("Your action type is invalid!\n");
         }
+        System.out.println("valid action: " + action);
     }
 
     /**
