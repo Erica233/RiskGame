@@ -54,19 +54,19 @@ public class ResultPageController {
     public void getResult() {
         if (gameResult == 0) {
             if(playerID == 0) {
-                gameResultText.setText("Orange Player Wins the Game You are the Winner!");
+                gameResultText.setText("You are Orange Player You Are the Winner!");
             }
             else {
-                gameResultText.setText("Orange Player Wins the Game You are the Loser!");
+                gameResultText.setText("You are Blue Player You Are the Loser!");
             }
 
         }
         else if (gameResult == 1){
             if(playerID == 0) {
-                gameResultText.setText("Blue Player Wins the Game You are the Loser!");
+                gameResultText.setText("You are Orange Player You Are the Loser!");
             }
             else {
-                gameResultText.setText("Blue Player Wins the Game You are the Winner!");
+                gameResultText.setText("You are Blue Player You Are the Winner!");
             }
         }
     }

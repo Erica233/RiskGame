@@ -183,6 +183,7 @@ public class MovePageController {
     public void initializeId() {
         if (playerID == 0) {
             playerColor.setText("You are the Orange Player. You Chose MOVE");
+//            textField.setStyle("-fx-background-color: #ffcccb;");
         } else {
             playerColor.setText("You are the Blue Player. You Chose MOVE");
         }
