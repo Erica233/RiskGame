@@ -34,13 +34,8 @@ public class ActionTest {
     assertEquals(newDstName, act.getDstName());
     assertEquals(unitsToChange, act.getUnitsToChange());
 
-    String ss = "null(1 : 2) ";
 
-    String s = "Action{" + "actionType='" + act.getActionType() + '\'' +
-            ", src=" + act.getSrcName() +
-            ", dst=" + act.getDstName() +
-//            ", actionUnits=" + ss +
-            '}';
+    String s = "Action {Type=A, src=Oz, dst=Elantris, units=(lv.0 : 1) (lv.1 : 0) (lv.2 : 0) (lv.3 : 0) }";
     System.out.println(act.toString());
     assertEquals(s, act.toString());
 

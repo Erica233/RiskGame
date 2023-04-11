@@ -4,13 +4,11 @@ import edu.duke.ece651.team3.client.model.Game;
 import edu.duke.ece651.team3.shared.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import org.checkerframework.checker.units.qual.A;
 
 import java.util.*;
 
@@ -37,6 +35,8 @@ public class MovePageController {
     private Label playerColor;
     @FXML
     private Button nextButton;
+    @FXML
+    private AnchorPane contextBox;
 
     private int playerID;
 
@@ -183,7 +183,6 @@ public class MovePageController {
     public void initializeId() {
         if (playerID == 0) {
             playerColor.setText("You are the Orange Player. You Chose MOVE");
-//            textField.setStyle("-fx-background-color: #ffcccb;");
         } else {
             playerColor.setText("You are the Blue Player. You Chose MOVE");
         }
