@@ -181,11 +181,11 @@
                   </Text>
                </children>
             </Group>
-            <AnchorPane fx:id="wholeInfoBox" layoutX="43.0" layoutY="55.0" prefHeight="385.0" prefWidth="461.0" style="-fx-background-color: rgba(211, 211, 211, 0.8);" visible="false">
+            <AnchorPane fx:id="wholeInfoBox" layoutX="41.0" layoutY="55.0" prefHeight="385.0" prefWidth="474.0" style="-fx-background-color: rgba(211, 211, 211, 0.8);" visible="false" AnchorPane.leftAnchor="41.0" AnchorPane.rightAnchor="41.0">
                <children>
-                  <Text fx:id="terrName" layoutX="67.0" layoutY="-73.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="326.94871818970705" AnchorPane.topAnchor="30.0" />
-                  <Button fx:id="hideInfoButton" layoutX="204.0" layoutY="330.0" mnemonicParsing="false" onAction="#hideTerrInfo" style="-fx-background-color: rgba(255, 255, 255, 0.8);" text="OK" />
-                  <Text fx:id="terrInfo" layoutX="55.0" layoutY="58.0" strokeType="OUTSIDE" strokeWidth="0.0" text="" textAlignment="CENTER" wrappingWidth="360.1435829509453" AnchorPane.topAnchor="60.0" />
+                  <Text fx:id="terrName" layoutX="67.0" layoutY="58.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="250.1435829509453" AnchorPane.leftAnchor="170.0" AnchorPane.rightAnchor="52.0" AnchorPane.topAnchor="25.0" />
+                  <Button fx:id="hideInfoButton" layoutX="397.0" layoutY="330.0" mnemonicParsing="false" onAction="#hideTerrInfo" prefHeight="26.0" prefWidth="43.0" style="-fx-background-color: rgb(169,169,169. 0.8);" text="OK" AnchorPane.leftAnchor="340.0" AnchorPane.rightAnchor="89.0" />
+                  <Text fx:id="terrInfo" layoutX="170.0" layoutY="58.0" strokeType="OUTSIDE" strokeWidth="0.0" text="" wrappingWidth="250.1435829509453" AnchorPane.leftAnchor="170.0" AnchorPane.rightAnchor="52.0" AnchorPane.topAnchor="50.0" />
                </children>
             </AnchorPane>
          </children>

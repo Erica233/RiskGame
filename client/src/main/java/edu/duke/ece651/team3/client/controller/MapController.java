@@ -103,12 +103,12 @@ public class MapController {
      * @return territory information except territory names
      */
     public String getTerrInfo(Territory t){
-        String output = "Number of Units: " + t.getNumUnits() + "\n\n";
+        String output = "Number of Units: " + t.getNumUnits() + "\n";
         ArrayList<Unit> units = t.getUnits();
         for(int i = 0; i < units.size(); i++){
             output += "Lv"+String.valueOf(i)+".  " + units.get(i).getUnitName() +"  "+ units.get(i).getNumUnits() +"\n";
         }
-        output += "\n" + "Distances: \n";
+        output += "\n" + "Neighbors: \n";
 
         for (Territory terr : t.getNeighborsDist().keySet()) {
             String res = null;
@@ -119,6 +119,8 @@ public class MapController {
             }
             output += "To " + res +":  "+ t.getNeighborsDist().get(terr) + "\n";
         }
+        output += "\nFood:   " + t.getFood() +"\n";
+        output += "Technology:   " + t.getTech();
         return output;
     }
 
@@ -223,8 +225,6 @@ public class MapController {
         this.hashName.put("TheNorth","The North(j)");
         this.hashName.put("TheSouth","The South(d)");
     }
-
-
 
     /**
      * create the letterHash hashmap, key is the letter, value is the whole name
