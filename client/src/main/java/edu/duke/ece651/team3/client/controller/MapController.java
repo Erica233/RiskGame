@@ -34,7 +34,7 @@ public class MapController {
     @FXML
     private Group RiverRun;
     @FXML
-    private Group SouthHeaven;
+    private Group SunHeaven;
     @FXML
     private Group Stormlands;
     @FXML
@@ -48,48 +48,23 @@ public class MapController {
     @FXML
     private Button hideInfoButton;
     @FXML
-    private ImageView theNorthView;
-
-
-    public void collectGroups(){
-        this.groups = new HashSet<>();
-        groups.add(DarkBay);
-        groups.add(Drone);
-        groups.add(GoldenFields);
-        groups.add(MistyHollow);
-        groups.add(Pyke);
-        groups.add(SouthHeaven);
-        groups.add(Stormlands);
-        groups.add(TheEyrie);
-        groups.add(TheIronIslands);
-        groups.add(TheNorth);
-        groups.add(TheSouth);
-    }
-
-    Game gameEntity;
-    HashMap<String, String> hashName;
-    HashMap<String, String> hashLetter;
-    HashSet<Group> groups;
-
-    @FXML
-    private Button testButton;
-
-    @FXML
     private Text terrInfo;
-
     @FXML
     private Text terrName;
-
     @FXML
     private AnchorPane wholeInfoBox;
 
+    private Game gameEntity;
+    private HashMap<String, String> hashName;
+    private HashMap<String, String> hashLetter;
+    private HashSet<Group> groups;
 
     /**
      * click territory then show the information about this territory
      * @param event
      */
     @FXML
-    void showTerrInfo(MouseEvent event){
+    public void showTerrInfo(MouseEvent event){
         Object source = event.getSource();
         if (source instanceof Group) {
             Group clickedGroup = (Group) source;
@@ -111,34 +86,13 @@ public class MapController {
         }
     }
 
-//    @FXML
-//    void setMap(Color orange, Color blue){
-//        int playerid = gameEntity.getPlayerId();
-//        ImageView iv = null;
-//        for(Group group : groups) {
-//            for (Node node : group.getChildren()) {
-//                if (node instanceof ImageView) {
-//                    iv = (ImageView) node;
-//                    break;
-//                }
-//                ArrayList<Territory> territoryArrayList = gameEntity.getRiskGameBoard().getAllPlayers().get(playerid).getOwnedTerritories();
-//                for(Territory t : territoryArrayList){
-//
-//                }
-//                setColor(iv, orange, blue);
-//            }
-//
-//        }
-//
-//    }
-
 
     /**
      * click the ok button then the whole box of territory information disappear
      * @param event click OK button
      */
     @FXML
-    void hideTerrInfo(ActionEvent event) {
+    public void hideTerrInfo(ActionEvent event) {
         wholeInfoBox.setVisible(false);
     }
 
@@ -148,8 +102,7 @@ public class MapController {
      * @param t territory object
      * @return territory information except territory names
      */
-    String getTerrInfo(Territory t){
-
+    public String getTerrInfo(Territory t){
         String output = "Number of Units: " + t.getNumUnits() + "\n\n";
         ArrayList<Unit> units = t.getUnits();
         for(int i = 0; i < units.size(); i++){
@@ -169,53 +122,87 @@ public class MapController {
         return output;
     }
 
-//    @FXML
-//    public void setColor(ImageView iv, Color sourceColor, Color finalColor){
-//        Image image = iv.getImage();
-//        int W = (int) image.getWidth();
-//        int H = (int) image.getHeight();
-//        WritableImage outputImage = new WritableImage(W, H);
-//        PixelReader reader      = image.getPixelReader();
-//        PixelWriter writer      = outputImage.getPixelWriter();
-//        int ob=(int) sourceColor.getBlue()*255;
-//        int or=(int) sourceColor.getRed()*255;
-//        int og=(int) sourceColor.getGreen()*255;
-//        int nb=(int) finalColor.getBlue()*255;
-//        int nr=(int) finalColor.getRed()*255;
-//        int ng=(int) finalColor.getGreen()*255;
-//        for (int y = 0; y < H; y++) {
-//            for (int x = 0; x < W; x++) {
-//                int argb = reader.getArgb(x, y);
-//                int a = (argb >> 24) & 0xFF;
-//                int r = (argb >> 16) & 0xFF;
-//                int g = (argb >>  8) & 0xFF;
-//                int b =  argb        & 0xFF;
-//                if (g==og && r==or && b==ob) {
-//                    r=nr;
-//                    g=ng;
-//                    b=nb;
-//                }
-//                argb = (a << 24) | (r << 16) | (g << 8) | b;
-//                writer.setArgb(x, y, argb);
-//            }
-//        }
-//        ImageView newImageView = new ImageView(outputImage);
-//        theNorthView = newImageView;
-//
-//    }
-
-
-
-    public MapController(Game _gameEntity) {
-        this.gameEntity = _gameEntity;
-        fxidHash();
-        letterHash();
- //       collectGroups();
-//        Color orange = Color.web("#f4b183");
-//        Color blue = Color.web("#9dc3e6");
-        //setMap(orange, blue);
+    /**
+     * find the territory name according to group information
+     * @param group
+     * @return territory name, for example a, b, c...
+     */
+    public String findterrName(Group group){
+        for(String s : hashName.keySet()){
+            if(s.equals(group.getId())){
+                for(String l : hashLetter.keySet()){
+                    if(hashLetter.get(l).equals(hashName.get(s))){
+                        return l;
+                    }
+                }
+            }
+        }
+        return null;
     }
 
+    /**
+     * set color for the map's different territories
+     */
+    public void setMap() {
+        int playerid = gameEntity.getPlayerId();
+        ArrayList<Territory> territoryArrayList = gameEntity.getRiskGameBoard().getAllPlayers().get(playerid).getOwnedTerritories();
+        ImageView iv = null;
+        for (Group group : groups) {
+            System.out.println(group.getId());
+            for (Node node : group.getChildren()) {
+                if (node instanceof ImageView) {
+                    for (Territory t : territoryArrayList) {
+                        String terrName = t.getTerritoryName();
+                        if (terrName.equals(findterrName(group))) {
+                            iv = (ImageView) node;
+                            setImage(iv,playerid, true, group);
+                        }
+                        else if(terrName == null){
+                            iv = (ImageView) node;
+                            setImage(iv,playerid, false, group);
+                        }
+                    }
+                    break;
+                }
+            }
+        }
+    }
+
+    /**
+     * set color for territory according to input
+     * @param iv territory's imageView
+     * @param playerid
+     * @param findResult whether the territory is owned by player
+     * @param group territory shown on GUI
+     */
+    public void setImage(ImageView iv, int playerid, boolean findResult, Group group){
+        if((playerid == 0 && findResult)||(playerid == 1 && !findResult)){
+            iv.setImage(new Image("@../../pic/"+group.getId()+"O.png"));
+        }
+        else if ((playerid == 1 && findResult)||(playerid == 0 && !findResult)){
+            iv.setImage(new Image("@../../pic/"+group.getId()+"B.png"));
+        }
+    }
+
+
+    /**
+     * collect all the group into a hashset
+     */
+    public void collectGroups(){
+        this.groups = new HashSet<>();
+        groups.add(DarkBay);
+        groups.add(Drone);
+        groups.add(GoldenFields);
+        groups.add(MistyHollow);
+        groups.add(Pyke);
+        groups.add(SunHeaven);
+        groups.add(Stormlands);
+        groups.add(TheEyrie);
+        groups.add(TheIronIslands);
+        groups.add(TheNorth);
+        groups.add(TheSouth);
+        groups.add(RiverRun);
+    }
 
 
     /**
@@ -229,13 +216,14 @@ public class MapController {
         this.hashName.put("MistyHollow","Misty Hollow(f)");
         this.hashName.put("Pyke","Pyke(b)");
         this.hashName.put("RiverRun","Riverrun(i)");
-        this.hashName.put("SouthHeaven","Sun Heaven(h)");
+        this.hashName.put("SunHeaven","Sun Heaven(h)");
         this.hashName.put("Stormlands","Stormlands(g)");
         this.hashName.put("TheEyrie","The Eyrie(a)");
         this.hashName.put("TheIronIslands","The Iron Islands(e)");
         this.hashName.put("TheNorth","The North(j)");
         this.hashName.put("TheSouth","The South(d)");
     }
+
 
 
     /**
@@ -257,9 +245,16 @@ public class MapController {
         this.hashLetter.put("d","The South(d)");
     }
 
+
+    public MapController(Game _gameEntity) {
+        this.gameEntity = _gameEntity;
+        fxidHash();
+        letterHash();
+    }
+
     @FXML
-    public void changecolor(ActionEvent actionEvent) {
-        Image darkbay = new Image("@../../pic/stormlandsO.png");
-        theNorthView.setImage(darkbay);
+    public void initialize() {
+        collectGroups();
+        setMap();
     }
 }
