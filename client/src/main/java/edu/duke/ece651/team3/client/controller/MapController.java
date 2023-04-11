@@ -78,7 +78,8 @@ public class MapController {
                         t = b.getAllPlayers().get(1-gameEntity.getPlayerId()).findOwnedTerritoryByName(String.valueOf(c));
                     }
                     String terrInfoText = getTerrInfo(t);
-                    terrName.setText(hashName.get(name));
+                    String playerColor = gameEntity.getPlayerId()==0 ? "Orange" : "Blue";
+                    terrName.setText(hashName.get(name)+"   owned by "+playerColor+ " player");
                     terrInfo.setText(terrInfoText);
                     wholeInfoBox.setVisible(true);
                 }
