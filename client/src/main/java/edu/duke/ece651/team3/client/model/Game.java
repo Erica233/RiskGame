@@ -23,14 +23,6 @@ public class Game {
 
     }
 
-    public String getTerritoryInfo(String terr){
-        return "abc";
-    }
-
-    public String getTerritoryName(String terr){
-        return "The North(j)";
-    }
-
     public static void main(String[] args) {
         try {
             Game gameEntity = new Game();
@@ -75,6 +67,9 @@ public class Game {
         } while (true);
         clientCommunicator.closePipes();
     }
+
+
+
 
     /**
      * This method plays one turn for the client.
