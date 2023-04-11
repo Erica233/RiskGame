@@ -149,9 +149,12 @@ public class MapController {
     public void setMap() {
         int playerid = gameEntity.getPlayerId();
         ArrayList<Territory> territoryArrayList = gameEntity.getRiskGameBoard().getAllPlayers().get(playerid).getOwnedTerritories();
+        for(Territory t : territoryArrayList){
+            System.out.println(t.getTerritoryName() +"  ");
+        }
         ImageView iv = null;
         for (Group group : groups) {
-            System.out.println(group.getId());
+            boolean findresult = false;
             for (Node node : group.getChildren()) {
                 if (node instanceof ImageView) {
                     for (Territory t : territoryArrayList) {
@@ -159,13 +162,13 @@ public class MapController {
                         if (terrName.equals(findterrName(group))) {
                             iv = (ImageView) node;
                             setImage(iv,playerid, true, group);
-                        }
-                        else if(terrName == null){
-                            iv = (ImageView) node;
-                            setImage(iv,playerid, false, group);
+                            findresult = true;
                         }
                     }
-                    break;
+                    if(!findresult){
+                        iv = (ImageView) node;
+                        setImage(iv,playerid, false, group);
+                    }
                 }
             }
         }
