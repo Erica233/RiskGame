@@ -68,6 +68,17 @@ public class Game {
         clientCommunicator.closePipes();
     }
 
+    public int recvGameResult() throws IOException {
+        int gameResult = clientCommunicator.recvGameResult();
+        System.out.println("gameResult of last turn is " + gameResult);
+        return gameResult;
+    }
+
+    public HashMap<String, Integer> recvTurnResults() throws IOException, ClassNotFoundException {
+        HashMap<String, Integer> turnResults = clientCommunicator.recvTurnResults();
+        return turnResults;
+    }
+
     /**
      * This method plays one turn for the client.
      * It receives a board from the server, and checks all actions
@@ -87,8 +98,14 @@ public class Game {
         //System.out.println("printed action list");
     }
 
+    public void printActionsLists() {
+        PrintHelper.printActionsLists(actionsList, playerId);
+        System.out.println("printed action list above");
+    }
+
     public void sendAllActions() throws IOException {
         clientCommunicator.sendActionListsToServer(actionsList);
+        System.out.println("send action list to server");
     }
 
     /**

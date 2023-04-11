@@ -2,10 +2,12 @@ package edu.duke.ece651.team3.client.model;
 
 import edu.duke.ece651.team3.shared.Action;
 import edu.duke.ece651.team3.shared.RiskGameBoard;
+import edu.duke.ece651.team3.shared.Territory;
 
 import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class ClientCommunicator {
     private final Socket socket;
@@ -56,6 +58,11 @@ public class ClientCommunicator {
         int playerId = objectFromServer.readInt();
         System.out.println("received playerId = " + playerId + " successfully!");
         return playerId;
+    }
+
+    public HashMap<String, Integer> recvTurnResults() throws IOException, ClassNotFoundException {
+        HashMap<String, Integer> turnResults = (HashMap<String, Integer>) objectFromServer.readObject();
+        return turnResults;
     }
 
     /**

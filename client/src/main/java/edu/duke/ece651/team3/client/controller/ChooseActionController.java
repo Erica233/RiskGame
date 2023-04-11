@@ -35,9 +35,7 @@ public class ChooseActionController {
 
     private String color;
     private int playerId;
-
     private Stage stage;
-
     private Game gameEntity;
 
     public ChooseActionController(int id, Stage _stage, Game _gameEntity) {
@@ -47,7 +45,7 @@ public class ChooseActionController {
     }
 
     @FXML
-    void goToActionPage(MouseEvent event) throws IOException {
+    void goToActionPage(MouseEvent event) throws IOException, ClassNotFoundException {
         if(move.isSelected()){
             ShowViews.showGameView(stage, "/ui/movePage.fxml", gameEntity);
         }
@@ -58,17 +56,23 @@ public class ChooseActionController {
             ShowViews.showGameView(stage, "/ui/attackPage.fxml", gameEntity);
         }
         else if(done.isSelected()){
+            gameEntity.sendAllActions();
+            gameEntity.printActionsLists();
+            gameEntity.storeNewBoard();
             ShowViews.showGameView(stage, "/ui/donePage.fxml", gameEntity);
         }
     }
 
     //    @FXML
-    public void initialize() {
+    public void initialize() throws IOException, ClassNotFoundException {
         if (playerId == 0) {
             playerColor.setText("You are the Orange Player. What would you like to do?");
         } else {
             playerColor.setText("You are the Blue Player. What would you like to do?");
         }
+        //gameEntity.storeNewBoard();
+        System.out.println("A new turn: updated new board as below!");
+        System.out.println(gameEntity.getRiskGameBoard().displayBoard());
     }
 }
 

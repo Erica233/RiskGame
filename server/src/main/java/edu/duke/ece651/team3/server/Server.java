@@ -21,6 +21,7 @@ public class Server {
 //    private HashMap<Integer, ArrayList<Action>> movesMap; //player ID and all move actions this player has
 //    private HashMap<Integer, ArrayList<Action>> attacksMap; //player ID and all attack actions this player has
     private HashMap<Integer, ArrayList<Action>> actionsMap; //player ID and all attack actions this player has
+    HashMap<String, Integer> turnResults = new HashMap<>();
 
     /**
      * Constructs Server with port number
@@ -237,12 +238,15 @@ public class Server {
      */
     public void runGame() throws Exception {
         int result = -1;
+        //sendBoardToAllClients();
         do {
 //            try {
                 result = runOneTurn();
                 if (result == 2) {
                     System.out.println("game continues");
                 }
+                sendBoardToAllClients();
+                sendTurnResults(turnResults);
                 sendEndGameInfo(result);
                 if (result == 0 || result == 1) {
                     System.out.println("Player " + result + " is the winner!");
@@ -266,15 +270,24 @@ public class Server {
         sendBoardToAllClients();
         recvActionsFromAllClients();
         printActionsMap();
-        //executeAllMoves:
         executeMoves();
         riscBoard.executeAttacks(actionsMap);
         riscBoard.executeUpgrades(actionsMap);
-        riscBoard.updateCombatResult();
+        turnResults = riscBoard.updateCombatResult();
+
+        //sendTurnResults(turnResults);
         if(riscBoard.checkWin() == 2){
             riscBoard.addAfterEachTurn();
         }
         return riscBoard.checkWin();
+    }
+
+    public void sendTurnResults(HashMap<String, Integer> turnResults) throws IOException {
+        objectsToClients.get(0).writeObject(turnResults);
+        objectsToClients.get(1).writeObject(turnResults);
+        objectsToClients.get(0).reset();
+        objectsToClients.get(1).reset();
+        System.out.println("send turn results to all clients!\n");
     }
 
     /**

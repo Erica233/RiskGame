@@ -40,16 +40,10 @@ public class AttackPageController {
     private Button nextButton;
 
     private int playerID;
-
     private HashMap<Unit, ChoiceBox<Integer>> eachLevelUnitNum; //The Unit and its choices
-
     private ArrayList<ChoiceBox<Integer>> allChoiceBoxes; //All choice boxes
-
     private Game gameEntity;
     private Stage stage;
-
-
-
 
     public AttackPageController(int id, Stage _stage, Game _gameEntity) {
         this.gameEntity = _gameEntity;

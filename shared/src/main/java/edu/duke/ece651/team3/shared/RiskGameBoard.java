@@ -43,24 +43,28 @@ public class RiskGameBoard implements Board, Serializable {
      * Update combat results for each territory and transfer ownership if the territory is occupied by enemny
      *
      */
-    public void updateCombatResult() {
+    public HashMap<String, Integer> updateCombatResult() {
         HashMap<Territory, Integer> allTerrs = new HashMap<>();
         for (int id = 0; id < 2; id++) {
             for (Territory territory: allPlayers.get(id).getOwnedTerritories()) {
                 allTerrs.put(territory, id);
             }
         }
+        HashMap<String, Integer> turnResults = new HashMap<>();
         for (Territory territory: allTerrs.keySet()) {
             if (territory.getWinnerId() == -1) {
                 continue;
             }
             if (territory.getWinnerId() != allTerrs.get(territory)) {
+                turnResults.put(territory.getTerritoryName(), territory.getWinnerId());
+                System.out.println("territory.getWinnerId() in updateCombatResult: " + territory.getWinnerId());
                 //transfer ownership
                 allPlayers.get(1 - allTerrs.get(territory)).tryOwnTerritory(territory);
                 allPlayers.get(allTerrs.get(territory)).loseTerritory(territory);
             }
             territory.updateCombatResult(allPlayers.get(allTerrs.get(territory)).getPlayerId());
         }
+        return turnResults;
     }
 
     public void connectNeighbors(Territory t1, Territory t2, int dist) throws Exception {

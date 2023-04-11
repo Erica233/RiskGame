@@ -30,7 +30,6 @@ public class StartController implements Initializable {
         this.stage = _stage;
     }
 
-
     @FXML
     public void onQuitButton(ActionEvent ae) {
         Stage currStage = (Stage) quitButton.getScene().getWindow();

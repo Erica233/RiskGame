@@ -16,7 +16,7 @@
                <children>
                   <ImageView fitHeight="130.0" fitWidth="75.0">
                      <image>
-                        <Image url="@../pic/darkbay.png" />
+                        <Image url="@../pic/DarkBayB.png" />
                      </image>
                   </ImageView>
                   <Text layoutX="14.0" layoutY="56.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Dark Bay(k)" wrappingWidth="47.656341552734375">
@@ -30,7 +30,7 @@
                <children>
                   <ImageView fitHeight="104.0" fitWidth="131.0" layoutX="56.0" layoutY="33.0">
                      <image>
-                        <Image url="@../pic/thesouth.png" />
+                        <Image url="@../pic/thesouthB.png" />
                      </image>
                   </ImageView>
                   <Text layoutX="97.0" layoutY="90.0" strokeType="OUTSIDE" strokeWidth="0.0" text="The South(d)">
@@ -44,7 +44,7 @@
                <children>
                   <ImageView fitHeight="74.0" fitWidth="151.0">
                      <image>
-                        <Image url="@../pic/ironisland.png" />
+                        <Image url="@../pic/TheIronIslandsB.png" />
                      </image>
                   </ImageView>
                   <Text layoutX="36.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" text="The Iron Islands(e)">
@@ -58,7 +58,7 @@
                <children>
                   <ImageView fitHeight="87.0" fitWidth="128.0" layoutX="243.0" layoutY="258.0">
                      <image>
-                        <Image url="@../pic/goldenfield.png" />
+                        <Image url="@../pic/GoldenFieldsO.png" />
                      </image>
                   </ImageView>
                   <Text layoutX="275.0" layoutY="301.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Golden Fields(l)">
@@ -72,7 +72,7 @@
                <children>
                   <ImageView fitHeight="132.0" fitWidth="99.0" layoutX="1.0">
                      <image>
-                        <Image url="@../pic/pyke.png" />
+                        <Image url="@../pic/PykeB.png" />
                      </image>
                   </ImageView>
                   <Text layoutX="35.0" layoutY="66.298828125" strokeType="OUTSIDE" strokeWidth="0.0" text="Pyke(b)">
@@ -86,7 +86,7 @@
                <children>
                   <ImageView fitHeight="174.0" fitWidth="111.0" layoutX="24.0" layoutY="160.0">
                      <image>
-                        <Image url="@../pic/eyrie.png" />
+                        <Image url="@../pic/TheEyrieO.png" />
                      </image>
                   </ImageView>
                   <Text layoutX="58.0" layoutY="292.0" strokeType="OUTSIDE" strokeWidth="0.0" text="The Eyrie(a)">
@@ -100,7 +100,7 @@
                <children>
                   <ImageView fitHeight="75.0" fitWidth="110.0" layoutX="364.0" layoutY="316.0">
                      <image>
-                        <Image url="@../pic/mistyhollow.png" />
+                        <Image url="@../pic/MistyHollowB.png" />
                      </image>
                   </ImageView>
                   <Text layoutX="388.0" layoutY="355.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Misty Hollow(f)">
@@ -115,7 +115,7 @@
                <children>
                   <ImageView fitHeight="116.0" fitWidth="190.0" layoutX="69.0" layoutY="164.0">
                      <image>
-                        <Image url="@../pic/thenorth.png" />
+                        <Image url="@../pic/thenorthO.png" />
                      </image>
                   </ImageView>
                   <Text layoutX="133.0" layoutY="227.0" strokeType="OUTSIDE" strokeWidth="0.0" text="The North(j)">
@@ -125,14 +125,14 @@
                   </Text>
                </children>
             </Group>
-            <Group fx:id="SouthHeaven" layoutY="-13.0" onMouseClicked="#showTerrInfo">
+            <Group fx:id="SunHeaven" layoutY="-13.0" onMouseClicked="#showTerrInfo">
                <children>
                   <ImageView fitHeight="75.0" fitWidth="122.0" layoutX="247.0" layoutY="190.0">
                      <image>
-                        <Image url="@../pic/sunheaven.png" />
+                        <Image url="@../pic/SunHeavenO.png" />
                      </image>
                   </ImageView>
-                  <Text layoutX="276.0" layoutY="231.0" strokeType="OUTSIDE" strokeWidth="0.0" text="South Heaven(h)">
+                  <Text layoutX="276.0" layoutY="231.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sun Heaven(h)">
                      <font>
                         <Font size="9.0" />
                      </font>
@@ -143,7 +143,7 @@
                <children>
                   <ImageView fitHeight="108.0" fitWidth="132.0">
                      <image>
-                        <Image url="@../pic/drone.png" />
+                        <Image url="@../pic/DroneB.png" />
                      </image>
                   </ImageView>
                   <Text layoutX="49.0" layoutY="57.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Drone(c)">
@@ -157,7 +157,7 @@
                <children>
                   <ImageView fitHeight="134.0" fitWidth="122.0" layoutX="357.0" layoutY="185.0">
                      <image>
-                        <Image url="@../pic/stormlands.png" />
+                        <Image url="@../pic/StormlandsO.png" />
                      </image>
                   </ImageView>
                   <Text layoutX="372.0" layoutY="255.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Stormlands(g)">
@@ -171,7 +171,7 @@
                <children>
                   <ImageView fitHeight="103.0" fitWidth="94.0" layoutX="425.0" layoutY="236.0">
                      <image>
-                        <Image url="@../pic/riverrun.png" />
+                        <Image url="@../pic/RiverRunO.png" />
                      </image>
                   </ImageView>
                   <Text layoutX="451.0" layoutY="291.0" strokeType="OUTSIDE" strokeWidth="0.0" text="River Run(i)">
@@ -181,11 +181,11 @@
                   </Text>
                </children>
             </Group>
-            <AnchorPane fx:id="wholeInfoBox" layoutX="43.0" layoutY="55.0" prefHeight="385.0" prefWidth="461.0" style="-fx-background-color: rgba(211, 211, 211, 0.8);" visible="false">
+            <AnchorPane fx:id="wholeInfoBox" layoutX="41.0" layoutY="55.0" prefHeight="385.0" prefWidth="474.0" style="-fx-background-color: rgba(211, 211, 211, 0.8);" visible="false" AnchorPane.leftAnchor="41.0" AnchorPane.rightAnchor="41.0">
                <children>
-                  <Text fx:id="terrName" layoutX="67.0" layoutY="-73.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="326.94871818970705" AnchorPane.topAnchor="30.0" />
-                  <Button fx:id="hideInfoButton" layoutX="204.0" layoutY="330.0" mnemonicParsing="false" onAction="#hideTerrInfo" style="-fx-background-color: rgba(255, 255, 255, 0.8);" text="OK" />
-                  <Text fx:id="terrInfo" layoutX="55.0" layoutY="58.0" strokeType="OUTSIDE" strokeWidth="0.0" text="" textAlignment="CENTER" wrappingWidth="360.1435829509453" AnchorPane.topAnchor="60.0" />
+                  <Text fx:id="terrName" layoutX="67.0" layoutY="58.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="250.1435829509453" AnchorPane.leftAnchor="170.0" AnchorPane.rightAnchor="52.0" AnchorPane.topAnchor="25.0" />
+                  <Button fx:id="hideInfoButton" layoutX="397.0" layoutY="330.0" mnemonicParsing="false" onAction="#hideTerrInfo" prefHeight="26.0" prefWidth="43.0" style="-fx-background-color: rgb(169,169,169, 0.8);" text="OK" AnchorPane.leftAnchor="340.0" AnchorPane.rightAnchor="89.0" />
+                  <Text fx:id="terrInfo" layoutX="170.0" layoutY="58.0" strokeType="OUTSIDE" strokeWidth="0.0" text="" wrappingWidth="250.1435829509453" AnchorPane.leftAnchor="170.0" AnchorPane.rightAnchor="52.0" AnchorPane.topAnchor="50.0" />
                </children>
             </AnchorPane>
          </children>
