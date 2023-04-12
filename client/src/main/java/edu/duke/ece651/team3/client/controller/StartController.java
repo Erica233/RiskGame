@@ -4,8 +4,10 @@ import edu.duke.ece651.team3.client.App;
 import edu.duke.ece651.team3.client.ShowViews;
 import edu.duke.ece651.team3.client.model.ClientCommunicator;
 import edu.duke.ece651.team3.client.model.Game;
+import edu.duke.ece651.team3.shared.Player;
 import edu.duke.ece651.team3.shared.RiskGameBoard;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -43,7 +45,6 @@ public class StartController implements Initializable {
 
     @FXML
     public void onStartButton(ActionEvent ae) throws Exception {
-        //waitInfo.setVisible(true);
 //        waitInfo.setText("Connecting......");
         gameEntity = new Game();
         //waitInfo.setVisible(true);
