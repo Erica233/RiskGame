@@ -6,10 +6,13 @@ import edu.duke.ece651.team3.client.model.ClientCommunicator;
 import edu.duke.ece651.team3.client.model.Game;
 import edu.duke.ece651.team3.shared.RiskGameBoard;
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.event.ActionEvent;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -21,6 +24,8 @@ public class StartController implements Initializable {
     private Button startButton;
     @FXML
     private Button quitButton;
+    @FXML
+    private Label waitInfo;
 
     Game gameEntity;
     Stage stage;
@@ -38,6 +43,9 @@ public class StartController implements Initializable {
 
     @FXML
     public void onStartButton(ActionEvent ae) throws Exception {
+        //waitInfo.setVisible(true);
+        gameEntity = new Game();
+        //waitInfo.setVisible(true);
         gameEntity.storePlayerId();
         int playerID = gameEntity.getPlayerId();
         System.out.println("playerId=" + playerID);
@@ -52,6 +60,24 @@ public class StartController implements Initializable {
     }
 
     public void initialize(URL location, ResourceBundle resources) {
-
+//        startButton.setOnAction((event -> {
+//            waitInfo.setVisible(true);
+//
+//            try {
+//                gameEntity.storePlayerId();
+//                int playerID = gameEntity.getPlayerId();
+//                System.out.println("playerId=" + playerID);
+//                if (playerID != 0 && playerID != 1) {
+//                    throw new Exception("Failed to receive valid playerId!");
+//                }
+//                gameEntity.storeNewBoard();
+//                System.out.println("A new turn: updated new board as below!");
+//                System.out.println(gameEntity.getRiskGameBoard().displayBoard());
+//                ShowViews.showGameView(stage, "/ui/whole.fxml", gameEntity);
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//
+//        }));
     }
 }

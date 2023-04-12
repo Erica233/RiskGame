@@ -38,9 +38,9 @@ public class App extends Application {
     this.stage = primaryStage;
     Thread.setDefaultUncaughtExceptionHandler(new ErrorReporter());
 
-    Game gameEntity = new Game();
+    //Game gameEntity = new Game();
 
-    startView(this.stage, "/ui/start.fxml", gameEntity);
+    startView(this.stage, "/ui/start.fxml", null);
 
   }
 
