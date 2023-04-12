@@ -5,6 +5,7 @@ import edu.duke.ece651.team3.client.model.Game;
 import edu.duke.ece651.team3.shared.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
@@ -22,6 +23,14 @@ public class DonePageController {
     private Game gameEntity;
     private Stage stage;
 
+    @FXML
+    private Label gameResultText;
+
+    @FXML
+    private Button quitButton;
+
+    int gameResult = -1;
+
     public DonePageController(int id, Stage _stage, Game _gameEntity) {
         this.gameEntity = _gameEntity;
         this.stage = _stage;
@@ -30,7 +39,7 @@ public class DonePageController {
 
     @FXML
     public void onGameResults(ActionEvent ae) throws Exception {
-        int gameResult = gameEntity.recvGameResult();
+        gameResult = gameEntity.recvGameResult();
         if (gameResult == 0 || gameResult == 1) {
             ShowViews.showGameView(stage, "/ui/resultPage.fxml", gameEntity);
         } else {
@@ -66,5 +75,4 @@ public class DonePageController {
             turnResults.setText(occupyResults + loseResults);
         }
     }
-
 }

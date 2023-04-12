@@ -47,70 +47,70 @@ public class Server {
         }
     }
 
-    /**
-     * This method gets the path that has the minimal food resource cost
-     * @param src the source territory
-     * @param dst the destination territory
-     * @return the minimal cost of the path
-     */
-    public int getMinPath(Territory src, Territory dst){
-        Player currPlayer = getPlayer(src.getTerritoryName());
-        ArrayList<Territory> allSelfTerritories = currPlayer.getOwnedTerritories();
-
-        HashMap<Territory, Boolean> visited = new HashMap<>();
-        HashMap<Territory, Integer> distances = new HashMap<>();
-
-        //Initialize distances to max and visited
-        for(int i = 0; i < allSelfTerritories.size(); i++){
-            Territory currT = allSelfTerritories.get(i);
-
-            //If the current territory is the neighbor of the src its distance should be the direct distance
-            if(isNeighbor(src, currT)){
-                distances.put(currT, src.getNeighborsDist().get(currT));
-            }
-            else {
-                distances.put(allSelfTerritories.get(i), Integer.MAX_VALUE);
-            }
-            visited.put(allSelfTerritories.get(i), false);
-        }
-
-        //Put the source territory's distance to 0
-        distances.put(src, 0);
-
-        Territory minTerr = src;
-
-        for(int i = 0; i < allSelfTerritories.size() - 1; i++){
-            int isUpdate = 0;
-
-            //Get the Territory that has the min cost to the current territory
-            for(Territory currTerr : allSelfTerritories){
-                if(currTerr.equals(minTerr)){
-                    visited.replace(minTerr, true);
-                }
-
-                if(i != 0 && isUpdate == 0 && !visited.get(currTerr) && isNeighbor(minTerr, currTerr)){
-                    minTerr = currTerr;
-                    isUpdate = 1;
-                }
-                if(!visited.get(currTerr) && isNeighbor(minTerr, currTerr) &&
-                        (distances.get(minTerr) != 0 && distances.get(currTerr) < distances.get(minTerr)
-                                || distances.get(minTerr) == 0)){
-                    minTerr = currTerr;
-                }
-            }
-            visited.replace(minTerr, true); //Have used the minTerr as the middle node
-
-            //Updating the distance for each neighbors of Territory
-            for(Territory newTerr : allSelfTerritories){
-                if(!visited.get(newTerr) && isNeighbor(minTerr, newTerr)
-                        && distances.get(minTerr) + minTerr.getNeighborsDist().get(newTerr) < distances.get(newTerr)){
-                    distances.replace(newTerr, distances.get(minTerr) + minTerr.getNeighborsDist().get(newTerr));
-                }
-            }
-
-        }
-        return distances.get(dst);
-    }
+//    /**
+//     * This method gets the path that has the minimal food resource cost
+//     * @param src the source territory
+//     * @param dst the destination territory
+//     * @return the minimal cost of the path
+//     */
+//    public int getMinPath(Territory src, Territory dst){
+//        Player currPlayer = getPlayer(src.getTerritoryName());
+//        ArrayList<Territory> allSelfTerritories = currPlayer.getOwnedTerritories();
+//
+//        HashMap<Territory, Boolean> visited = new HashMap<>();
+//        HashMap<Territory, Integer> distances = new HashMap<>();
+//
+//        //Initialize distances to max and visited
+//        for(int i = 0; i < allSelfTerritories.size(); i++){
+//            Territory currT = allSelfTerritories.get(i);
+//
+//            //If the current territory is the neighbor of the src its distance should be the direct distance
+//            if(isNeighbor(src, currT)){
+//                distances.put(currT, src.getNeighborsDist().get(currT));
+//            }
+//            else {
+//                distances.put(allSelfTerritories.get(i), Integer.MAX_VALUE);
+//            }
+//            visited.put(allSelfTerritories.get(i), false);
+//        }
+//
+//        //Put the source territory's distance to 0
+//        distances.put(src, 0);
+//
+//        Territory minTerr = src;
+//
+//        for(int i = 0; i < allSelfTerritories.size() - 1; i++){
+//            int isUpdate = 0;
+//
+//            //Get the Territory that has the min cost to the current territory
+//            for(Territory currTerr : allSelfTerritories){
+//                if(currTerr.equals(minTerr)){
+//                    visited.replace(minTerr, true);
+//                }
+//
+//                if(i != 0 && isUpdate == 0 && !visited.get(currTerr) && isNeighbor(minTerr, currTerr)){
+//                    minTerr = currTerr;
+//                    isUpdate = 1;
+//                }
+//                if(!visited.get(currTerr) && isNeighbor(minTerr, currTerr) &&
+//                        (distances.get(minTerr) != 0 && distances.get(currTerr) < distances.get(minTerr)
+//                                || distances.get(minTerr) == 0)){
+//                    minTerr = currTerr;
+//                }
+//            }
+//            visited.replace(minTerr, true); //Have used the minTerr as the middle node
+//
+//            //Updating the distance for each neighbors of Territory
+//            for(Territory newTerr : allSelfTerritories){
+//                if(!visited.get(newTerr) && isNeighbor(minTerr, newTerr)
+//                        && distances.get(minTerr) + minTerr.getNeighborsDist().get(newTerr) < distances.get(newTerr)){
+//                    distances.replace(newTerr, distances.get(minTerr) + minTerr.getNeighborsDist().get(newTerr));
+//                }
+//            }
+//
+//        }
+//        return distances.get(dst);
+//    }
 
 
     /**
@@ -183,7 +183,7 @@ public class Server {
         for(int i = 0; i < myMove.getUnitsToChange().size(); i++) {
             int unitNum = myMove.getUnitsToChange().get(i).getNumUnits(); //The num to move
             //Reduce the cost on the current territory
-            int minPathCost = getMinPath(srcTerr, dstTerr);
+            int minPathCost = currPlayer.getMinPath(srcTerr, dstTerr);
             int moveCost = myMove.getUnitsToChange().get(i).getMoveCost();
             int cost = minPathCost * unitNum * moveCost; //TODO:check the formula
             System.out.println("The cost for " + myMove.getUnitsToChange().get(i).getUnitName() + " is: " + cost);
@@ -375,6 +375,7 @@ public class Server {
         assignPlayerIdToClients();
         //sendBoardToAllClients();
     }
+
 
     /**
      * The test map

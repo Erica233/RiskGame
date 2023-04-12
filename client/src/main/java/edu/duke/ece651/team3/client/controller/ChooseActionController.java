@@ -32,6 +32,8 @@ public class ChooseActionController {
     private RadioButton done;
     @FXML
     private Label playerColor;
+    @FXML
+    private Label waitInfo;
 
     private String color;
     private int playerId;
@@ -56,6 +58,7 @@ public class ChooseActionController {
             ShowViews.showGameView(stage, "/ui/attackPage.fxml", gameEntity);
         }
         else if(done.isSelected()){
+            waitInfo.setVisible(true);
             gameEntity.sendAllActions();
             gameEntity.printActionsLists();
             gameEntity.storeNewBoard();
