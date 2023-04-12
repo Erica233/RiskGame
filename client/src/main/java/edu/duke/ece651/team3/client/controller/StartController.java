@@ -37,9 +37,10 @@ public class StartController implements Initializable {
     }
 
     @FXML
-    public void onQuitButton(ActionEvent ae) {
+    public void onQuitButton(ActionEvent ae) throws IOException {
         Stage currStage = (Stage) quitButton.getScene().getWindow();
         currStage.close();
+        //gameEntity.closePipes();
     }
 
     @FXML

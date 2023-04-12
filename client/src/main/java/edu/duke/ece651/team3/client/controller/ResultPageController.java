@@ -29,9 +29,10 @@ public class ResultPageController {
     }
 
     @FXML
-    void onQuitButton(ActionEvent event) {
+    void onQuitButton(ActionEvent event) throws IOException {
         Stage currStage = (Stage) quitButton.getScene().getWindow();
         currStage.close();
+        gameEntity.closePipes();
     }
 
     @FXML

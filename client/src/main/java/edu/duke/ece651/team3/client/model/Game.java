@@ -221,6 +221,10 @@ public class Game {
 
     }
 
+    public void closePipes() throws IOException {
+        clientCommunicator.closePipes();
+    }
+
     public int getPlayerId() {
         return playerId;
     }
