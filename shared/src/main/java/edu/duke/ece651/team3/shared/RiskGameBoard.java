@@ -358,7 +358,15 @@ public class RiskGameBoard implements Board, Serializable {
                 //attackConsumeFood(myattack, player);
                 player.executeAttack(myattack);
             }
+            System.out.println("player " + i+ " before intergrate attacks: ");
+            for(int j = 0; j < newAttacks.size(); j++){
+                System.out.println(newAttacks.get(j).toString());
+            }
             newAttacks = intergAttack(newAttacks);
+            System.out.println("after intergrate attacks: ");
+            for(int j = 0; j < newAttacks.size(); j++){
+                System.out.println(newAttacks.get(j).toString());
+            }
             attacksMap.put(player.getPlayerId(), newAttacks);
         }
         for(int i : attacksMap.keySet()){
