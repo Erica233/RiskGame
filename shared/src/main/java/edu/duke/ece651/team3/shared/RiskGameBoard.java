@@ -19,9 +19,6 @@ public class RiskGameBoard implements Board, Serializable {
     }
 
 
-
-
-
     /**
      * Initialize the units, given the Infantry number
      *
@@ -232,7 +229,7 @@ public class RiskGameBoard implements Board, Serializable {
     public int getStrongest(ArrayList<Unit> units){
         for(int i = 0; i < units.size(); i++){
             if(units.get(units.size()-i-1).getNumUnits() != 0){
-                return i;
+                return units.size()-i-1;
             }
         }
         return -1;
