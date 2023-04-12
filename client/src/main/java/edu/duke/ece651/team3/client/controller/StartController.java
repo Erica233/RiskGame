@@ -47,7 +47,7 @@ public class StartController implements Initializable {
     }
 
     @FXML
-    public void onStartButton(ActionEvent ae) throws Exception {
+    public void onStartButton(ActionEvent ae){
         waitInfo.setVisible(true);
         Thread th = new Thread(new Task() {
             @Override
