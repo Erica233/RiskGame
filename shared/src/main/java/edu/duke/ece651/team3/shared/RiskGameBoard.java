@@ -358,7 +358,7 @@ public class RiskGameBoard implements Board, Serializable {
                 //attackConsumeFood(myattack, player);
                 player.executeAttack(myattack);
             }
-            intergAttack(newAttacks);
+            newAttacks = intergAttack(newAttacks);
             attacksMap.put(player.getPlayerId(), newAttacks);
         }
         for(int i : attacksMap.keySet()){
@@ -404,7 +404,7 @@ public class RiskGameBoard implements Board, Serializable {
      * @param myattacks
      * @return
      */
-    public void intergAttack(ArrayList<Action> myattacks){
+    public ArrayList<Action> intergAttack(ArrayList<Action> myattacks){
         ArrayList<Action> newattackers = new ArrayList<>();
         HashSet<String> destinations = new HashSet<>();
         for(Action act : myattacks){
@@ -430,7 +430,7 @@ public class RiskGameBoard implements Board, Serializable {
                 }
             }
         }
-        myattacks = newattackers;
+        return newattackers;
     }
 
 
