@@ -270,12 +270,6 @@ public class Server {
         sendBoardToAllClients();
         recvActionsFromAllClients();
         printActionsMap();
-//        for(int j = 0; j < 2; j++){
-//            for(int i =0; i < actionsMap.get(0).size(); i++){
-//
-//            }
-//        }
-
         riscBoard.executeUpgrades(actionsMap);
         executeMoves();
         riscBoard.executeAttacks(actionsMap);
