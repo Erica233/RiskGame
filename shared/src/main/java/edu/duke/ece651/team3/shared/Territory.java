@@ -243,10 +243,10 @@ public class Territory implements Serializable, Comparable<Territory> {
             for (Territory neigh: neighborsDist.keySet()) {
                 ++ i;
                 if(i != neighborsDist.size()){
-                    output.append(neigh.getTerritoryName() +  "（" + neighborsDist.get(neigh)  + "), ");
+                    output.append(neigh.getTerritoryName() +  "(" + neighborsDist.get(neigh)  + "), ");
                 }
                 else{
-                    output.append(neigh.getTerritoryName() +  "（" + neighborsDist.get(neigh)  + ")");
+                    output.append(neigh.getTerritoryName() +  "(" + neighborsDist.get(neigh)  + ")");
                 }
             }
             output.append(") ").append("food=" + getFood() + ", tech=" + getTech() + "\n");
