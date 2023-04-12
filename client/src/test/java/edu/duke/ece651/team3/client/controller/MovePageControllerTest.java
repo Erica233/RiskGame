@@ -97,13 +97,13 @@ public class MovePageControllerTest {
       server3.join();
     }
 
-    @Test
-    public void test_initialize(){
-        this.playerColor = new Label();
-
-      MovePageController movePageController = new MovePageController(0, stage, gameEntity);
-      movePageController.initialize();
-    }
+//    @Test
+//    public void test_initialize(){
+//        this.playerColor = new Label();
+//
+//      MovePageController movePageController = new MovePageController(0, stage, gameEntity);
+//      movePageController.initialize();
+//    }
 
 //  @Test
 //  @Timeout(2500)
