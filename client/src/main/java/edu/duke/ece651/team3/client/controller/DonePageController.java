@@ -44,6 +44,7 @@ public class DonePageController {
             ShowViews.showGameView(stage, "/ui/resultPage.fxml", gameEntity);
         } else {
             gameEntity.storeNewBoard();
+            gameEntity.clearActionList();
             ShowViews.showGameView(stage, "/ui/whole.fxml", gameEntity);
         }
 

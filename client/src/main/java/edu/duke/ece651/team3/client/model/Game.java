@@ -135,6 +135,10 @@ public class Game {
         } while (true);
     }
 
+    public void clearActionList() {
+        actionsList.clear();
+    }
+
     /**
      * This method mocks the action executed on the riskGameBoard and checks whether it is valid
      * @param action the action need to be executed
