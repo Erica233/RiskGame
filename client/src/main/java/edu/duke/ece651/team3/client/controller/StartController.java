@@ -44,6 +44,7 @@ public class StartController implements Initializable {
     @FXML
     public void onStartButton(ActionEvent ae) throws Exception {
         //waitInfo.setVisible(true);
+//        waitInfo.setText("Connecting......");
         gameEntity = new Game();
         //waitInfo.setVisible(true);
         gameEntity.storePlayerId();
@@ -53,6 +54,7 @@ public class StartController implements Initializable {
             throw new Exception("Failed to receive valid playerId!");
         }
         gameEntity.storeNewBoard();
+        waitInfo.setText("Connecting......");
         System.out.println("A new turn: updated new board as below!");
         System.out.println(gameEntity.getRiskGameBoard().displayBoard());
         ShowViews.showGameView(stage, "/ui/whole.fxml", gameEntity);
@@ -60,6 +62,7 @@ public class StartController implements Initializable {
     }
 
     public void initialize(URL location, ResourceBundle resources) {
+
 //        startButton.setOnAction((event -> {
 //            waitInfo.setVisible(true);
 //

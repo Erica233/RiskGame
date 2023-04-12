@@ -7,6 +7,7 @@ import java.util.*;
  * A Risk Game Board
  */
 public class RiskGameBoard implements Board, Serializable {
+
     private final ArrayList<Player> allPlayers;
 
     /**
@@ -257,13 +258,16 @@ public class RiskGameBoard implements Board, Serializable {
      * @param defUnits defend units
      */
     public void evenRoundGame(ArrayList<Unit> attUnits, ArrayList<Unit> defUnits){
-        Random random = new Random();
+//        Random random = new Random();
         Unit attUnit = attUnits.get(getStrongest(attUnits));
         Unit defUnit = defUnits.get(getWeakest(defUnits));
         int attBonus = attUnit.getNumUnits();
         int defBonus = defUnit.getNumUnits();
-        int rand_att = random.nextInt(20) + 1;
-        int rand_def = random.nextInt(20) + 1;
+//        int rand_att = random.nextInt(20) + 1;
+//        int rand_def = random.nextInt(20) + 1;
+        //TODO: CHANGE BACK to random number, here the attacker always wins
+        int rand_att = 3;
+        int rand_def = 2;
         if(rand_att+attBonus > rand_def+defBonus){
             attUnit.setNumUnits(attUnit.getNumUnits()-1);
             //System.out.println(" - attacker large");
@@ -280,13 +284,16 @@ public class RiskGameBoard implements Board, Serializable {
      * @param defUnits defend units
      */
     public void oddRoundGame(ArrayList<Unit> attUnits, ArrayList<Unit> defUnits){
-        Random random = new Random();
+//        Random random = new Random();
         Unit attUnit = attUnits.get(getStrongest(attUnits));
         Unit defUnit = defUnits.get(getWeakest(defUnits));
         int attBonus = attUnit.getNumUnits();
         int defBonus = defUnit.getNumUnits();
-        int rand_att = random.nextInt(20) + 1;
-        int rand_def = random.nextInt(20) + 1;
+//        int rand_att = random.nextInt(20) + 1;
+//        int rand_def = random.nextInt(20) + 1;
+        //TODO: CHANGE BACK to random number, here the attacker always wins
+        int rand_att = 3;
+        int rand_def = 2;
         if(rand_att+attBonus > rand_def+defBonus){
             attUnit.setNumUnits(attUnit.getNumUnits()-1);
             //System.out.println(" - attacker large");
