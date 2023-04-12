@@ -29,7 +29,7 @@ public class ResultPageController {
     }
 
     @FXML
-    void onReturnStartPage(ActionEvent event) {
+    void onQuitButton(ActionEvent event) {
         Stage currStage = (Stage) quitButton.getScene().getWindow();
         currStage.close();
     }
