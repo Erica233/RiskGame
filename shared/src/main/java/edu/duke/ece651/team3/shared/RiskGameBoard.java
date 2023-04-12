@@ -266,8 +266,8 @@ public class RiskGameBoard implements Board, Serializable {
 //        int rand_att = random.nextInt(20) + 1;
 //        int rand_def = random.nextInt(20) + 1;
         //TODO: CHANGE BACK to random number, here the attacker always wins
-        int rand_att = 3;
-        int rand_def = 2;
+        int rand_att = 2;
+        int rand_def = 3;
         if(rand_att+attBonus > rand_def+defBonus){
             attUnit.setNumUnits(attUnit.getNumUnits()-1);
             //System.out.println(" - attacker large");
@@ -292,8 +292,8 @@ public class RiskGameBoard implements Board, Serializable {
 //        int rand_att = random.nextInt(20) + 1;
 //        int rand_def = random.nextInt(20) + 1;
         //TODO: CHANGE BACK to random number, here the attacker always wins
-        int rand_att = 3;
-        int rand_def = 2;
+        int rand_att = 2;
+        int rand_def = 3;
         if(rand_att+attBonus > rand_def+defBonus){
             attUnit.setNumUnits(attUnit.getNumUnits()-1);
             //System.out.println(" - attacker large");
