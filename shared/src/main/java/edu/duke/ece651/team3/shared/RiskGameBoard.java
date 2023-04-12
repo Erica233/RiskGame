@@ -262,17 +262,20 @@ public class RiskGameBoard implements Board, Serializable {
         Unit defUnit = defUnits.get(getWeakest(defUnits));
         int attBonus = attUnit.getBonus();
         int defBonus = defUnit.getBonus();
-//        int rand_att = random.nextInt(20) + 1;
-//        int rand_def = random.nextInt(20) + 1;
-        int rand_att = 3;
-        int rand_def = 2;
+        int rand_att = random.nextInt(20) + 1;
+        int rand_def = random.nextInt(20) + 1;
+//        int rand_att = 3;
+//        int rand_def = 2;
+        System.out.print("attacker: "+rand_att+" defender: "+rand_def);
         if(rand_att+attBonus > rand_def+defBonus){
             defUnit.setNumUnits(defUnit.getNumUnits()-1);
-            //System.out.println(" - attacker large");
+            System.out.println(" - attacker win, attacker unit is " + attUnit.getUnitName()+"its bonus is " +attUnit.getBonus()+
+                    "defender unit is " + defUnit.getUnitName()+ "its bonus is " +defUnit.getBonus());
         }
         else{
             attUnit.setNumUnits(attUnit.getNumUnits()-1);
-            //System.out.println(" - defender large");
+            System.out.println(" - defender win, defender unit is " + defUnit.getUnitName()+"its bonus is " +defUnit.getBonus()+
+                    "attacker unit is " + attUnit.getUnitName()+ "its bonus is " +attUnit.getBonus());
         }
     }
 
@@ -287,17 +290,21 @@ public class RiskGameBoard implements Board, Serializable {
         Unit defUnit = defUnits.get(getStrongest(defUnits));
         int attBonus = attUnit.getBonus();
         int defBonus = defUnit.getBonus();
-//        int rand_att = random.nextInt(20) + 1;
-//        int rand_def = random.nextInt(20) + 1;
-        int rand_att = 3;
-        int rand_def = 2;
+        int rand_att = random.nextInt(20) + 1;
+        int rand_def = random.nextInt(20) + 1;
+//        int rand_att = 3;
+//        int rand_def = 2;
+        System.out.print("attacker: "+rand_att+" defender: "+rand_def);
         if(rand_att+attBonus > rand_def+defBonus){
             defUnit.setNumUnits(defUnit.getNumUnits()-1);
-            //System.out.println(" - attacker large");
+            System.out.println(" - attacker win, attacker unit is " + attUnit.getUnitName()+"its bonus is " +attUnit.getBonus()+
+                    "defender unit is " + defUnit.getUnitName()+ "its bonus is " +defUnit.getBonus());
         }
         else{
             attUnit.setNumUnits(attUnit.getNumUnits()-1);
-            //System.out.println(" - defender large");
+            System.out.println(" - defender win, defender unit is " + defUnit.getUnitName()+"its bonus is " +defUnit.getBonus()+
+                    "attacker unit is " + attUnit.getUnitName()+ "its bonus is " +attUnit.getBonus());
+
         }
     }
 
@@ -319,12 +326,13 @@ public class RiskGameBoard implements Board, Serializable {
         int roundNum = 0;
         while(attNum != 0 && defNum !=0){
             if(roundNum%2 == 0){
+                System.out.println("the round number is " + roundNum);
                 evenRoundGame(attUnits, defUnits);
             }
             else{
+                System.out.println("the round number is " + roundNum);
                 oddRoundGame(attUnits, defUnits);
             }
-            //System.out.print("attacker: "+rand_att+" defender: "+rand_def);
             defNum = getUpdatedUnits(defUnits);
             attNum = getUpdatedUnits(attUnits);
             roundNum++;
@@ -332,12 +340,12 @@ public class RiskGameBoard implements Board, Serializable {
         if(attNum==0){
             defenderTerritory.setWinnerId(defender.getPlayerId());
             defenderTerritory.setUnits(defUnits);
-            //System.out.println("winner is defender");
+            System.out.println("after all rounds of an action, winner is defender, the player id is " + defender.getPlayerId());
         }
         else{
             defenderTerritory.setWinnerId(attacker.getPlayerId());
             defenderTerritory.setAttackerUnits(attUnits);
-            //System.out.println("winner is attacker");
+            System.out.println("after all rounds of an action, winner is attacker, the player id is " + attacker.getPlayerId());
         }
     }
 
