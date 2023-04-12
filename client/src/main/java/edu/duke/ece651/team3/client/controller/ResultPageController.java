@@ -14,7 +14,6 @@ public class ResultPageController {
     private Stage stage;
     private Game gameEntity;
     private  int playerID;
-    private  int gameResult;
 
     @FXML
     private Label gameResultText;
@@ -23,10 +22,10 @@ public class ResultPageController {
     @FXML
     private Button quitButton;
 
-    ResultPageController(int _gameResult, Stage _stage, Game _gameEntity){
+    public ResultPageController(int _id, Stage _stage, Game _gameEntity){
         this.stage = _stage;
         this.gameEntity = _gameEntity;
-        this.gameResult = _gameResult;
+        playerID = _id;
     }
 
     @FXML
@@ -42,9 +41,11 @@ public class ResultPageController {
 
     @FXML
     public void getResult() {
+        int gameResult = gameEntity.getGameResult();
+        System.out.println("The current playerId is: " + playerID + " The game result is: " + gameResult);
         if (gameResult == 0) {
             if(playerID == 0) {
-                gameResultText.setText("You are Orange Player You Are the Winner!");
+                gameResultText.setText("You are Orange Player  You Are the Winner!");
             }
             else {
                 gameResultText.setText("You are Blue Player You Are the Loser!");

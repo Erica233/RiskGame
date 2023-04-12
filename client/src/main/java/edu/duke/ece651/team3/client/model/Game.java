@@ -15,6 +15,9 @@ public class Game {
     private int playerId = -1;
     private ArrayList<Action> actionsList; //player ID and all attack actions this player has
 
+
+    private int gameResult = -1;
+
     public Game() throws IOException {
         this.clientCommunicator = new ClientCommunicator("localhost", 12345);
         System.out.println("Create ClientCommunicator-" + clientCommunicator + " successfully!");
@@ -50,7 +53,7 @@ public class Game {
      * @throws ClassNotFoundException
      */
     public void playGame() throws IOException, ClassNotFoundException {
-        int gameResult = -1;
+//        int gameResult = -1;
         do {
             //try {
             playOneTurn();
@@ -69,7 +72,7 @@ public class Game {
     }
 
     public int recvGameResult() throws IOException {
-        int gameResult = clientCommunicator.recvGameResult();
+        gameResult = clientCommunicator.recvGameResult();
         System.out.println("gameResult of last turn is " + gameResult);
         return gameResult;
     }
@@ -233,4 +236,9 @@ public class Game {
     public ClientCommunicator getClientCommunicator() {
         return clientCommunicator;
     }
+
+    public int getGameResult() {
+        return gameResult;
+    }
+
 }
