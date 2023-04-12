@@ -108,27 +108,11 @@ public class AttackRuleChecker extends RuleChecker{
      * @return if valid return true, invalid return false
      */
     public boolean checkResources(Action myAttack, RiskGameBoard r, Player currPlayer){
-        for(int i = 0; i < myAttack.getUnitsToChange().size(); i++){
-            String src = myAttack.getSrcName();
-            String dst = myAttack.getDstName();
-            Territory terr = currPlayer.findOwnedTerritoryByName(src);
-            int foodRsc = terr.getFood();
-            HashMap<Territory, Integer> neighbors = terr.getNeighborsDist();
-            int distance = 0;
-            for(Territory t : neighbors.keySet()){
-                if(t.getTerritoryName().equals(dst)){
-                    distance = neighbors.get(t);
-                }
-            }
-
-            ArrayList<Unit> unitsToChange = myAttack.getUnitsToChange();
-            for(int j = 0; j < unitsToChange.size(); j++){
-                foodRsc -= (j+1) * unitsToChange.get(j).getNumUnits() * distance;
-                if(foodRsc < 0){
-                    return false;
-                }
-            }
+        int cost = currPlayer.decreaseFood(myAttack, currPlayer);
+        if(cost < 0){
+            return false;
         }
+        System.out.println("The total number of food cost is: " + cost);
         return true;
     }
 }

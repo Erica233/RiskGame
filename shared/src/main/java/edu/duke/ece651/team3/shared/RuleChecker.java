@@ -20,19 +20,19 @@ public abstract class RuleChecker {
      */
     public boolean checkValidAction(Action myAction, RiskGameBoard r, Player currPlayer) throws Exception {
         if (!checkSrcDst(myAction, currPlayer)) {
-            System.out.printf("src dst invalid");
+            System.out.println("src dst invalid");
             return false;
         }
         if (!checkNumUnits(myAction, currPlayer)) {
-            System.out.printf("checkNumUnits invalid");
+            System.out.println("checkNumUnits invalid");
             return false;
         }
         if (!checkPath(myAction, r, currPlayer)) {
-            System.out.printf("checkPath invalid");
+            System.out.println("checkPath invalid");
             return false;
         }
         if(!checkResources(myAction, r, currPlayer)){
-            System.out.printf("checkResources invalid");
+            System.out.println("checkResources invalid");
             return false;
         }
         return true;

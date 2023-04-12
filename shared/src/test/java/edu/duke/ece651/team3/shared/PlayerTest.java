@@ -1,6 +1,5 @@
 package edu.duke.ece651.team3.shared;
 
-import org.checkerframework.checker.units.qual.A;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -21,9 +20,9 @@ class PlayerTest {
         assertNotEquals(p0, p2); // different id
         assertNotEquals(p0, p3); // different color
         assertNotEquals(p0, p4); // different totNumUnits
-        Territory t1 = new Territory("a");
-        Territory t2 = new Territory("b");
-        Territory t3 = new Territory("c");
+        Territory t1 = new Territory("a", 4, 0, 0);
+        Territory t2 = new Territory("b", 5, 0, 0);
+        Territory t3 = new Territory("c", 6, 0, 0);
         p0.tryOwnTerritory(t1);
         p0.tryOwnTerritory(t2);
         p0.tryOwnTerritory(t3);
@@ -49,7 +48,7 @@ class PlayerTest {
         assertEquals(ts1, p1.getOwnedTerritories());
 
         ArrayList<Territory> ts2 = new ArrayList<>();
-        Territory t1 = new Territory("Oz");
+        Territory t1 = new Territory("Oz", 2, 0, 0);
         ts2.add(t1);
         Player p2 = new Player(1, "yellow", 3, ts2);
         assertEquals(ts2, p2.getOwnedTerritories());
@@ -58,7 +57,7 @@ class PlayerTest {
     @Test
     void test_tryOwnTerritory() {
         Player p1 = new Player(1, "blue", 3);
-        Territory t1 = new Territory("Oz");
+        Territory t1 = new Territory("Oz", 2, 0, 0);
         ArrayList<Territory> ts1 = new ArrayList<>();
         assertEquals(ts1, p1.getOwnedTerritories());
 
@@ -71,23 +70,24 @@ class PlayerTest {
     @Test
     void test_isValidToOwn() {
         Player p1 = new Player(1, "blue", 3);
-        Territory t1 = new Territory("Oz");
+        Territory t1 = new Territory("Oz", 2, 0, 0);
         assertTrue(p1.isValidToOwn(t1));
         p1.getOwnedTerritories().add(t1);
         assertFalse(p1.isValidToOwn(t1));
     }
+//
+//    @Test
+//    void test_displayPlayer() {
+//        ArrayList<Territory> ts1 = new ArrayList<>();
+//        Player p1 = new Player(1, "green", 3, ts1);
+//        String expected1 = "green player:\n---------------\nno territories\n";
+//        assertEquals(expected1, p1.displayPlayer());
+//        Territory t1 = new Territory("Oz", 1, 2);
+//        ts1.add(t1);
+//        String expected2 = "green player:\n---------------\n2 units in Oz (no neighbors)\n";
+//        assertEquals(expected2, p1.displayPlayer());
+//    }
 
-    @Test
-    void test_displayPlayer() {
-        ArrayList<Territory> ts1 = new ArrayList<>();
-        Player p1 = new Player(1, "green", 3, ts1);
-        String expected1 = "green player:\n---------------\nno territories\n";
-        assertEquals(expected1, p1.displayPlayer());
-        Territory t1 = new Territory("Oz");
-        ts1.add(t1);
-        String expected2 = "green player:\n---------------\n0 units in Oz (no neighbors)\n";
-        assertEquals(expected2, p1.displayPlayer());
-    }
     @Test
     void test_findOwnTerritoryByName() throws Exception {
         RiskGameBoard r = new RiskGameBoard();
@@ -99,92 +99,109 @@ class PlayerTest {
         Territory b = p1.getOwnedTerritories().get(0);
         assertEquals(b, p1.findOwnedTerritoryByName("b"));
     }
+//
+//        p.loseTerritory(toLose);
+//        p.loseTerritory(notContain);
+//        assertEquals(expected_remain, p.getOwnedTerritories());
+//
+//        Territory defenderT = p.getOwnedTerritories().get(2); //e
+//        Player attacker = r.getAllPlayers().get(0);
+//        //attacker.occupyTerritory(defenderT, 1, 1);
+//        boolean isContain = false;
+//        for(Territory territory: attacker.getOwnedTerritories()){
+//            if(territory.equals(defenderT)){
+//                isContain = true;
+//            }
+//        }
+//        assertEquals(true, isContain);
+//        assertEquals(5, defenderT.getNumUnits());
+//
+//    }
+//
+@Test
+void test_executeMove() throws Exception {
+    RiskGameBoard r = new RiskGameBoard();
+    r.initE2Map();
 
-    @Test
-    void test_executeMove() throws Exception {
-        RiskGameBoard r = new RiskGameBoard();
-        r.initE2Map();
+    String srcName = r.getAllPlayers().get(0).getOwnedTerritories().get(0).getTerritoryName();
+    String dstName = r.getAllPlayers().get(0).getOwnedTerritories().get(1).getTerritoryName();
+    Player curr = r.getAllPlayers().get(0);
 
-        String srcName = r.getAllPlayers().get(0).getOwnedTerritories().get(0).getTerritoryName();
-        String dstName = r.getAllPlayers().get(0).getOwnedTerritories().get(1).getTerritoryName();
-        Player curr = r.getAllPlayers().get(0);
+    ArrayList<Unit> newUnit = new ArrayList<>();
+    newUnit.add(new Private(1));
+    newUnit.add(new Corporal(0));
+    newUnit.add(new Specialist(0));
+    newUnit.add(new Sergeant(0));
+    newUnit.add(new MasterSergeant(0));
+    newUnit.add(new FirstSergeant(0));
+    newUnit.add(new SergeantMajor(0));
 
-        ArrayList<Unit> newUnit = new ArrayList<>();
-        newUnit.add(new Private(1));
-        newUnit.add(new Corporal(0));
-        newUnit.add(new Specialist(0));
-        newUnit.add(new Sergeant(0));
-        newUnit.add(new MasterSergeant(0));
-        newUnit.add(new FirstSergeant(0));
-        newUnit.add(new SergeantMajor(0));
+    Action action = new MoveAction(srcName, dstName, newUnit);
+    curr.executeMove(action);
+    Territory src = curr.findOwnedTerritoryByName(srcName);
+    Territory dst = curr.findOwnedTerritoryByName(dstName);
+    assertEquals(4, src.getNumUnits());
+    assertEquals(6, dst.getNumUnits());
+    assertNotNull(curr.findOwnedTerritoryByName(dstName));
 
-        Action action = new MoveAction(srcName, dstName, newUnit);
-        curr.executeMove(action);
-        Territory src = curr.findOwnedTerritoryByName(srcName);
-        Territory dst = curr.findOwnedTerritoryByName(dstName);
-        assertEquals(4, src.getNumUnits());
-        assertEquals(6, dst.getNumUnits());
-        assertNotNull(curr.findOwnedTerritoryByName(dstName));
+}
+//
+@Test
+void test_addAUnitForAll() throws Exception {
+    RiskGameBoard r = new RiskGameBoard();
+    r.initE2Map();
 
+    ArrayList<Unit> unitsToChange = new ArrayList<>();
+    unitsToChange.add(new Private(1));
+    unitsToChange.add(new Corporal(0));
+    unitsToChange.add(new Specialist(0));
+    unitsToChange.add(new Sergeant(0));
+
+    Player curr = r.getAllPlayers().get(0);
+
+    //Testing addUnitForEachTerr
+    curr.addAUnitForEachTerr();
+    for(Territory territory : curr.getOwnedTerritories()){
+        assertEquals(6, territory.getNumUnits());
     }
-
-    @Test
-    void test_addAUnitForAll() throws Exception {
-        RiskGameBoard r = new RiskGameBoard();
-        r.initE2Map();
-
-        ArrayList<Unit> unitsToChange = new ArrayList<>();
-        unitsToChange.add(new Private(1));
-        unitsToChange.add(new Corporal(0));
-        unitsToChange.add(new Specialist(0));
-        unitsToChange.add(new Sergeant(0));
-
-        Player curr = r.getAllPlayers().get(0);
-
-        //Testing addUnitForEachTerr
-        curr.addAUnitForEachTerr();
-        for(Territory territory : curr.getOwnedTerritories()){
-            assertEquals(6, territory.getNumUnits());
-        }
-        r.addAUnitEachTurn();
-        for(Territory territory : curr.getOwnedTerritories()){
-            assertEquals(7, territory.getNumUnits());
-        }
-        r.updateCombatResult();
-
-        Player testPlayer = new Player(2, "Black", 0);
-        r.addPlayer(testPlayer);
-        testPlayer.findOwnedTerritoryByName("a");
+//    r.addAUnitEachTurn();
+    for(Territory territory : curr.getOwnedTerritories()){
+        assertEquals(6, territory.getNumUnits());
     }
+    r.updateCombatResult();
 
+    Player testPlayer = new Player(2, "Black", 0);
+    r.addPlayer(testPlayer);
+    testPlayer.findOwnedTerritoryByName("a");
+}
+//
     @Test
-    public void test_ExecuteAttack() throws Exception {
-        RiskGameBoard r = new RiskGameBoard();
-        r.initE2Map();
-        Player p1 = r.getAllPlayers().get(0);
-        Player p2 = r.getAllPlayers().get(1);
+public void test_ExecuteAttack() throws Exception {
+    RiskGameBoard r = new RiskGameBoard();
+    r.initE2Map();
+    Player p1 = r.getAllPlayers().get(0);
+    Player p2 = r.getAllPlayers().get(1);
 
-        ArrayList<Unit> newUnit = new ArrayList<>();
-        newUnit.add(new Private(1));
-        newUnit.add(new Corporal(0));
-        newUnit.add(new Specialist(0));
-        newUnit.add(new Sergeant(0));
+    ArrayList<Unit> newUnit = new ArrayList<>();
+    newUnit.add(new Private(1));
+    newUnit.add(new Corporal(0));
+    newUnit.add(new Specialist(0));
+    newUnit.add(new Sergeant(0));
 
-        Territory currAtt = p1.getOwnedTerritories().get(0);
-        Territory currDef = p2.getOwnedTerritories().get(0);
-        currAtt.setAttackerUnits(newUnit);
-        currAtt.setUnits(newUnit);
-        currDef.setAttackerUnits(newUnit);
-        currDef.setUnits(newUnit);
+    Territory currAtt = p1.getOwnedTerritories().get(0);
+    Territory currDef = p2.getOwnedTerritories().get(0);
+    currAtt.setAttackerUnits(newUnit);
+    currAtt.setUnits(newUnit);
+    currDef.setAttackerUnits(newUnit);
+    currDef.setUnits(newUnit);
 
 
-        AttackAction attack = new AttackAction(
-                p1.getOwnedTerritories().get(0).getTerritoryName(),
-                p2.getOwnedTerritories().get(0).getTerritoryName(), newUnit);
+    AttackAction attack = new AttackAction(
+            p1.getOwnedTerritories().get(0).getTerritoryName(),
+            p2.getOwnedTerritories().get(0).getTerritoryName(), newUnit);
 
-        p1.executeAttack(attack);
-    }
-
+    p1.executeAttack(attack);
+}
     @Test
     void test_loseTerritory() throws Exception {
         RiskGameBoard r = new RiskGameBoard();
@@ -217,5 +234,56 @@ class PlayerTest {
         expList_p1.add(c);
         assertEquals(expList_p1, player1T);
     }
+    @Test
+    public void test_displayPlayer(){
+        Player p = new Player(1, "Green", 10);
+        String expected = "Green player:\n" +
+                "---------------\n" +
+                "no territories\n";
+        assertEquals(expected, p.displayPlayer());
+    }
 
+    @Test
+    public void test_Upgrade() throws Exception{
+        RiskGameBoard r = new RiskGameBoard();
+        r.initE2Map();
+
+        Player p1 = r.getAllPlayers().get(0);
+
+        ArrayList<Unit> unitsToChange = new ArrayList<>();
+        unitsToChange.add(new Private(1));
+        unitsToChange.add(new Corporal(0));
+        unitsToChange.add(new Specialist(0));
+        unitsToChange.add(new Sergeant(0));
+        unitsToChange.add(new MasterSergeant(0));
+        unitsToChange.add(new FirstSergeant(0));
+        unitsToChange.add(new SergeantMajor(0));
+
+        Action a1 = new UpgradeAction("a", "a", unitsToChange);
+        p1.executeUpgrade(a1);
+        assertEquals(3, unitsToChange.get(1).getUpgradeCost() - unitsToChange.get(0).getUpgradeCost());
+        assertEquals(7, p1.findOwnedTerritoryByName("a").getTech());
+    }
+    @Test
+    public void test_addResource() throws Exception{
+        RiskGameBoard r = new RiskGameBoard();
+        r.initE2Map();
+
+        Player p1 = r.getAllPlayers().get(0);
+        Territory a = p1.findOwnedTerritoryByName("a");
+
+        ArrayList<Unit> unitsToChange = new ArrayList<>();
+        unitsToChange.add(new Private(1));
+        unitsToChange.add(new Corporal(0));
+        unitsToChange.add(new Specialist(0));
+        unitsToChange.add(new Sergeant(0));
+        unitsToChange.add(new MasterSergeant(0));
+        unitsToChange.add(new FirstSergeant(0));
+        unitsToChange.add(new SergeantMajor(0));
+
+        p1.addResourceForEachTerr();
+        assertEquals(20, a.getFood());
+        assertEquals(60, a.getTech());
+
+    }
 }

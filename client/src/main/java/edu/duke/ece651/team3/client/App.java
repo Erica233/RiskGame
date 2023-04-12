@@ -3,18 +3,49 @@
  */
 package edu.duke.ece651.team3.client;
 
-import edu.duke.ece651.team3.shared.MyName;
+import edu.duke.ece651.team3.client.controller.StartController;
+import edu.duke.ece651.team3.client.model.Game;
+import edu.duke.ece651.team3.shared.*;
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.layout.*;
+import javafx.stage.Stage;
 
+import java.io.IOException;
+import java.net.URL;
+import java.util.HashMap;
 
-public class App {
-  public String getMessage() {
-    return "Hello from the client for "+ MyName.getName();
+public class App extends Application {
+  private Stage stage;
+
+  public void startView(Stage currStage, String xmlPath, Game gameEntity) throws IOException {
+    URL xmlResource = getClass().getResource(xmlPath);
+    FXMLLoader loader = new FXMLLoader(xmlResource);
+    loader.setControllerFactory((c) -> {
+      return new StartController(currStage, gameEntity);
+    });
+    Scene scene = new Scene(loader.load(), 924, 600);
+
+    currStage.setTitle("RISC Game");
+    currStage.setScene(scene);
+    currStage.show();
   }
+
+  @Override
+  public void start(Stage primaryStage) throws IOException {
+    this.stage = primaryStage;
+    Thread.setDefaultUncaughtExceptionHandler(new ErrorReporter());
+
+    //Game gameEntity = new Game();
+
+    startView(this.stage, "/ui/start.fxml", null);
+
+  }
+
   public static void main(String[] args) {
-    App a = new App();
-    System.out.println(a.getMessage());
-//    for (int i = 0; i < args.length; i++) {
-//      System.out.println("args["+i+"]="+ args[i]);
-//    }
+    launch();
   }
+
 }

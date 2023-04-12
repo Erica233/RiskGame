@@ -7,7 +7,6 @@ import java.util.*;
  * A Risk Game Board
  */
 public class RiskGameBoard implements Board, Serializable {
-    private final ArrayList<Territory> allTerritories; //only for test
     private final ArrayList<Player> allPlayers;
 
     /**
@@ -15,33 +14,54 @@ public class RiskGameBoard implements Board, Serializable {
      *
      */
     public RiskGameBoard() throws Exception {
-        this.allTerritories = new ArrayList<>();
         this.allPlayers = new ArrayList<>();
         //initMap();
+    }
+
+
+    /**
+     * Initialize the units, given the Infantry number
+     *
+     * @param num the number of Infantry units
+     */
+    public static ArrayList<Unit> initBasicUnits(int num) {
+        ArrayList<Unit> units = new ArrayList<>();
+        units.add(new Private(num));
+        units.add(new Corporal(0));
+        units.add(new Specialist(0));
+        units.add(new Sergeant(0));
+        units.add(new MasterSergeant(0));
+        units.add(new FirstSergeant(0));
+        units.add(new SergeantMajor(0));
+        return units;
     }
 
     /**
      * Update combat results for each territory and transfer ownership if the territory is occupied by enemny
      *
      */
-    public void updateCombatResult() {
+    public HashMap<String, Integer> updateCombatResult() {
         HashMap<Territory, Integer> allTerrs = new HashMap<>();
         for (int id = 0; id < 2; id++) {
             for (Territory territory: allPlayers.get(id).getOwnedTerritories()) {
                 allTerrs.put(territory, id);
             }
         }
+        HashMap<String, Integer> turnResults = new HashMap<>();
         for (Territory territory: allTerrs.keySet()) {
             if (territory.getWinnerId() == -1) {
                 continue;
             }
             if (territory.getWinnerId() != allTerrs.get(territory)) {
+                turnResults.put(territory.getTerritoryName(), territory.getWinnerId());
+                System.out.println("territory.getWinnerId() in updateCombatResult: " + territory.getWinnerId());
                 //transfer ownership
                 allPlayers.get(1 - allTerrs.get(territory)).tryOwnTerritory(territory);
                 allPlayers.get(allTerrs.get(territory)).loseTerritory(territory);
             }
             territory.updateCombatResult(allPlayers.get(allTerrs.get(territory)).getPlayerId());
         }
+        return turnResults;
     }
 
     public void connectNeighbors(Territory t1, Territory t2, int dist) throws Exception {
@@ -55,18 +75,18 @@ public class RiskGameBoard implements Board, Serializable {
      * @throws Exception
      */
     public String initE2Map() throws Exception {
-        Territory a = new Territory("a", 5, 0, 0);
-        Territory b = new Territory("b", 5, 0, 0);
-        Territory c = new Territory("c", 5, 0, 0);
-        Territory d = new Territory("d", 5, 0, 0);
-        Territory e = new Territory("e", 5, 0, 0);
-        Territory f = new Territory("f", 5, 0, 0);
-        Territory g = new Territory("g", 5, 0, 0);
-        Territory h = new Territory("h", 5, 0, 0);
-        Territory i = new Territory("i", 5, 0, 0);
-        Territory j = new Territory("j", 5, 0, 0);
-        Territory k = new Territory("k", 5, 0, 0);
-        Territory l = new Territory("l", 5, 0, 0);
+        Territory a = new Territory("a", 5, 10, 10);
+        Territory b = new Territory("b", 5, 10, 10);
+        Territory c = new Territory("c", 5, 10, 10);
+        Territory d = new Territory("d", 5, 10, 10);
+        Territory e = new Territory("e", 5, 10, 10);
+        Territory f = new Territory("f", 5, 10, 10);
+        Territory g = new Territory("g", 5, 10, 10);
+        Territory h = new Territory("h", 5, 10, 10);
+        Territory i = new Territory("i", 5, 10, 10);
+        Territory j = new Territory("j", 5, 10, 10);
+        Territory k = new Territory("k", 5, 10, 10);
+        Territory l = new Territory("l", 5, 10, 10);
         connectNeighbors(a, b, 1);
         connectNeighbors(a, c, 2);
         connectNeighbors(a, j, 3);
@@ -110,7 +130,9 @@ public class RiskGameBoard implements Board, Serializable {
      * This method initialize the small map that is used for testing
      * @throws Exception
      */
-    public void initSmallMap() throws Exception{
+    //TODO: move to test class
+    public String initSmallMap() throws Exception{
+        String output = "";
         Territory a = new Territory("a", 1, 5, 5);
         Territory b = new Territory("b", 1, 5, 5);
         Territory c = new Territory("c", 1, 5, 5);
@@ -132,6 +154,9 @@ public class RiskGameBoard implements Board, Serializable {
         Player player2 = new Player(1, "blue", 5, territories2);
         addPlayer(player1);
         addPlayer(player2);
+        output = output + player1.displayPlayer() + "\n" + player2.displayPlayer() + "\n";
+        System.out.println("initialize map successfully!");
+        return output;
 
     }
     /**
@@ -169,6 +194,21 @@ public class RiskGameBoard implements Board, Serializable {
     }
 
     /**
+     * This method checks Upgrade action
+     * @param myUpgrade
+     * @param currPlayer
+     * @return true if it is valid, false if it is not
+     * @throws Exception
+     */
+    public boolean checkUpgrade(Action myUpgrade, Player currPlayer) throws Exception{
+        UpgradeRuleChecker upgradeRuleChecker = new UpgradeRuleChecker(myUpgrade,  this);
+        if (!upgradeRuleChecker.checkValidAction(myUpgrade, this, currPlayer)) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
      * get the number of unit number from units
      * @param units arraylist of Unit
      * @return sum of the number of unit number from units
@@ -189,7 +229,7 @@ public class RiskGameBoard implements Board, Serializable {
     public int getStrongest(ArrayList<Unit> units){
         for(int i = 0; i < units.size(); i++){
             if(units.get(units.size()-i-1).getNumUnits() != 0){
-                return i;
+                return units.size()-i-1;
             }
         }
         return -1;
@@ -201,12 +241,14 @@ public class RiskGameBoard implements Board, Serializable {
      * @return the weakest unit's index
      */
     public int getWeakest(ArrayList<Unit> units){
+        int ans = -1;
         for(int i = 0; i < units.size(); i++){
             if(units.get(i).getNumUnits() != 0){
-                return i;
+                ans = i;
+                break;
             }
         }
-        return -1;
+        return ans;
     }
 
     /**
@@ -218,16 +260,18 @@ public class RiskGameBoard implements Board, Serializable {
         Random random = new Random();
         Unit attUnit = attUnits.get(getStrongest(attUnits));
         Unit defUnit = defUnits.get(getWeakest(defUnits));
-        int attBonus = attUnit.getNumUnits();
-        int defBonus = defUnit.getNumUnits();
-        int rand_att = random.nextInt(20) + 1;
-        int rand_def = random.nextInt(20) + 1;
+        int attBonus = attUnit.getBonus();
+        int defBonus = defUnit.getBonus();
+//        int rand_att = random.nextInt(20) + 1;
+//        int rand_def = random.nextInt(20) + 1;
+        int rand_att = 3;
+        int rand_def = 2;
         if(rand_att+attBonus > rand_def+defBonus){
-            attUnit.setNumUnits(attUnit.getNumUnits()-1);
+            defUnit.setNumUnits(defUnit.getNumUnits()-1);
             //System.out.println(" - attacker large");
         }
         else{
-            defUnit.setNumUnits(defUnit.getNumUnits()-1);
+            attUnit.setNumUnits(attUnit.getNumUnits()-1);
             //System.out.println(" - defender large");
         }
     }
@@ -239,18 +283,20 @@ public class RiskGameBoard implements Board, Serializable {
      */
     public void oddRoundGame(ArrayList<Unit> attUnits, ArrayList<Unit> defUnits){
         Random random = new Random();
-        Unit attUnit = attUnits.get(getStrongest(attUnits));
-        Unit defUnit = defUnits.get(getWeakest(defUnits));
-        int attBonus = attUnit.getNumUnits();
-        int defBonus = defUnit.getNumUnits();
-        int rand_att = random.nextInt(20) + 1;
-        int rand_def = random.nextInt(20) + 1;
+        Unit attUnit = attUnits.get(getWeakest(attUnits));
+        Unit defUnit = defUnits.get(getStrongest(defUnits));
+        int attBonus = attUnit.getBonus();
+        int defBonus = defUnit.getBonus();
+//        int rand_att = random.nextInt(20) + 1;
+//        int rand_def = random.nextInt(20) + 1;
+        int rand_att = 3;
+        int rand_def = 2;
         if(rand_att+attBonus > rand_def+defBonus){
-            attUnit.setNumUnits(attUnit.getNumUnits()-1);
+            defUnit.setNumUnits(defUnit.getNumUnits()-1);
             //System.out.println(" - attacker large");
         }
         else{
-            defUnit.setNumUnits(defUnit.getNumUnits()-1);
+            attUnit.setNumUnits(attUnit.getNumUnits()-1);
             //System.out.println(" - defender large");
         }
     }
@@ -295,24 +341,6 @@ public class RiskGameBoard implements Board, Serializable {
         }
     }
 
-
-    public void attackConsumeFood(Action myattack, Player player){
-        String src = myattack.getSrcName();
-        String dst = myattack.getDstName();
-        Territory terr = player.findOwnedTerritoryByName(src);
-        HashMap<Territory, Integer> neighbors = terr.getNeighborsDist();
-        int distance = 0;
-        for(Territory t : neighbors.keySet()){
-            if(t.getTerritoryName().equals(dst)){
-                distance = neighbors.get(t);
-            }
-        }
-        ArrayList<Unit> unitsToChange = myattack.getUnitsToChange();
-        for(int j = 0; j < unitsToChange.size(); j++){
-            player.findOwnedTerritoryByName(myattack.getSrcName()).reduceFood((j+1) * unitsToChange.get(j).getNumUnits() * distance);
-        }
-    }
-
     /**
      * This method executes all attacks for all players
      * @throws Exception
@@ -327,10 +355,10 @@ public class RiskGameBoard implements Board, Serializable {
             for(Action myattack : actionsMap.get(i)) {
                 if(!myattack.isAttackType() || !this.checkAttack(myattack, player)){continue;}
                 newAttacks.add(myattack);
-                attackConsumeFood(myattack, player);
+                //attackConsumeFood(myattack, player);
                 player.executeAttack(myattack);
             }
-            intergAttack(newAttacks);
+            newAttacks = intergAttack(newAttacks);
             attacksMap.put(player.getPlayerId(), newAttacks);
         }
         for(int i : attacksMap.keySet()){
@@ -342,6 +370,20 @@ public class RiskGameBoard implements Board, Serializable {
         }
     }
 
+    public void executeUpgrades(HashMap<Integer, ArrayList<Action>> actionsMap) throws Exception {
+        for(int i : actionsMap.keySet()){ //Go through each player
+            Player player = this.getAllPlayers().get(i);
+            System.out.println("Player " + player.getPlayerId() + "'s execute upgrade");
+            for(Action myUpgrade : actionsMap.get(i)) {
+                if(!myUpgrade.isUpgradeType() || !this.checkUpgrade(myUpgrade, player)){
+                    continue;
+                }
+                executeUpgrade(myUpgrade, i);
+            }
+        }
+    }
+
+    //TODO
     public ArrayList<Unit> initializeArrUnits(){
         ArrayList<Unit> arrUnits = new ArrayList<>();
         arrUnits.add(new Private(0));
@@ -355,20 +397,21 @@ public class RiskGameBoard implements Board, Serializable {
     }
 
 
+
     /**
      * combine all attacks into one new attack if they have the same destination
      *
      * @param myattacks my attack actions
      * @return
      */
-    public void intergAttack(ArrayList<Action> myattacks){
+    public ArrayList<Action> intergAttack(ArrayList<Action> myattacks){
         ArrayList<Action> newattackers = new ArrayList<>();
         HashSet<String> destinations = new HashSet<>();
         for(Action act : myattacks){
             destinations.add(act.getDstName());
         }
         for(String s : destinations){
-            Action newaction = new AttackAction(null, s, initializeArrUnits());
+            Action newaction = new AttackAction(null, s, initBasicUnits(0));
             newattackers.add(newaction);
         }
         for(Action act : myattacks){
@@ -387,7 +430,7 @@ public class RiskGameBoard implements Board, Serializable {
                 }
             }
         }
-        myattacks = newattackers;
+        return newattackers;
     }
 
 
@@ -395,9 +438,10 @@ public class RiskGameBoard implements Board, Serializable {
      * Increase the number of the basic unit (whose force level is one) by one in each player's owned territory
      *
      */
-    public void addAUnitEachTurn() {
+    public void addAfterEachTurn() {
         for (Player player: allPlayers) {
             player.addAUnitForEachTerr();
+            player.addResourceForEachTerr();
         }
     }
 
@@ -422,6 +466,16 @@ public class RiskGameBoard implements Board, Serializable {
     }
 
     /**
+     * execute an upgrade
+     *
+     * @param upgrade the upgrade to execute
+     * @param playerId the id of the player who need to execute the action
+     */
+    public void executeUpgrade(Action upgrade, int playerId) {
+        allPlayers.get(playerId).executeUpgrade(upgrade);
+    }
+
+    /**
      * This method overrides the equals function to check whether two riskGameBoards are equal
      * @param other
      * @return true if both are equal, false if they are not
@@ -433,19 +487,6 @@ public class RiskGameBoard implements Board, Serializable {
             return allPlayers.equals(riscBoard.allPlayers);
         }
         return false;
-    }
-
-    /**
-     * This method tries to add a territory to the whole territory list
-     * @param territoryToAdd the Territory to add to the Board
-     * @return true if it successfully added, false otherwise
-     */
-    public boolean tryAddTerritory(Territory territoryToAdd) {
-        if (!territoryToAdd.isValidToAdd(allTerritories, territoryToAdd)) {
-            return false;
-        }
-        allTerritories.add(territoryToAdd);
-        return true;
     }
 
     /**
@@ -477,14 +518,6 @@ public class RiskGameBoard implements Board, Serializable {
      */
     public ArrayList<Player> getAllPlayers() {
         return allPlayers;
-    }
-
-    /**
-     * This method gets all territories
-     * @return the ArrayList<Territory>
-     */
-    public ArrayList<Territory> getAllTerritories() {
-        return allTerritories;
     }
 
 }

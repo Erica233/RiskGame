@@ -87,13 +87,16 @@ public class AttackRuleCheckerTest {
         r.initE2Map();
         Player currPlayer = r.getAllPlayers().get(0);
         ArrayList<Unit> actionUnits= r.initializeArrUnits();
-        actionUnits.get(0).setNumUnits(3);
+        actionUnits.get(0).setNumUnits(5);
         Action a = new AttackAction("j", "c", actionUnits);
         AttackRuleChecker attackRuleChecker = new AttackRuleChecker(a, r);
-        assertFalse(attackRuleChecker.checkResources(a, r, currPlayer));
+        assertTrue(attackRuleChecker.checkResources(a, r, currPlayer));
+
+        //cost < 0
+        Action a1 = new AttackAction("l", "e", actionUnits);
+        AttackRuleChecker attackRuleChecker1 = new AttackRuleChecker(a, r);
+        assertFalse(attackRuleChecker1.checkResources(a1, r, currPlayer));
 
     }
-
-            //public boolean checkResources(Action myAttack, Player currPlayer)
 
 }

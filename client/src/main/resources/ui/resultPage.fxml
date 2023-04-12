@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.paint.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="600.0" prefWidth="924.0" style="-fx-background-color: #e6e6ff;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.duke.ece651.team3.client.controller.ResultPageController">
+   <children>
+      <Button fx:id="quitButton" alignment="CENTER" contentDisplay="CENTER" layoutX="370.0" layoutY="381.0" mnemonicParsing="false" onAction="#onQuitButton" prefHeight="80.0" prefWidth="200.0" style="-fx-background-color: #3333ff;" text="OK" textAlignment="CENTER" textFill="#f8f8f8">
+         <font>
+            <Font size="36.0" />
+         </font>
+      </Button>
+      <Label fx:id="gameResultText" alignment="CENTER" contentDisplay="CENTER" layoutX="216.0" layoutY="155.0" prefHeight="128.0" prefWidth="507.0" text="You are Orange Player You Are the Winner!" textAlignment="CENTER" textFill="#141472" wrapText="true">
+         <font>
+            <Font size="50.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>
