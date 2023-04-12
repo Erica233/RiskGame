@@ -75,34 +75,4 @@ public class DonePageController {
             turnResults.setText(occupyResults + loseResults);
         }
     }
-
-//    @FXML
-//    void onQuitGame(ActionEvent event) {
-//        Stage currStage = (Stage) quitButton.getScene().getWindow();
-//        currStage.close();
-//    }
-//
-//
-//    @FXML
-//    public void onGameResult() {
-//        System.out.println("The current playerId is: " + playerId + " The game result is: " + gameResult);
-//        if (gameResult == 0) {
-//            if(playerId == 0) {
-//                gameResultText.setText("You are Orange Player You Are the Winner!");
-//            }
-//            else {
-//                gameResultText.setText("You are Blue Player You Are the Loser!");
-//            }
-//
-//        }
-//        else if (gameResult == 1){
-//            if(playerId == 0) {
-//                gameResultText.setText("You are Orange Player You Are the Loser!");
-//            }
-//            else {
-//                gameResultText.setText("You are Blue Player You Are the Winner!");
-//            }
-//        }
-//    }
-
 }
