@@ -2,6 +2,8 @@ package edu.duke.ece651.team3.client.controller;
 
 import edu.duke.ece651.team3.client.ShowViews;
 import edu.duke.ece651.team3.client.model.Game;
+import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -59,10 +61,33 @@ public class ChooseActionController {
         }
         else if(done.isSelected()){
             waitInfo.setVisible(true);
-            gameEntity.sendAllActions();
-            gameEntity.printActionsLists();
-            gameEntity.storeNewBoard();
-            ShowViews.showGameView(stage, "/ui/donePage.fxml", gameEntity);
+            Thread th = new Thread(new Task() {
+                @Override
+                protected Object call() throws Exception {
+                    try {
+                        gameEntity.sendAllActions();
+                        gameEntity.printActionsLists();
+                        gameEntity.storeNewBoard();
+                        Platform.runLater(new Runnable() {
+                            @Override
+                            public void run() {
+                                try {
+                                    ShowViews.showGameView(stage, "/ui/donePage.fxml", gameEntity);
+                                } catch (IOException e) {
+                                    throw new RuntimeException(e);
+                                }
+                            }
+                        });
+
+                    } catch (ClassNotFoundException | IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                    return null;
+                }
+
+            });
+            th.setDaemon(true);
+            th.start();
         }
     }
 
