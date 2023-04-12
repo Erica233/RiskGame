@@ -54,7 +54,7 @@ public class StartController implements Initializable {
             throw new Exception("Failed to receive valid playerId!");
         }
         gameEntity.storeNewBoard();
-        waitInfo.setText("Connecting......");
+        //waitInfo.setText("Connecting......");
         System.out.println("A new turn: updated new board as below!");
         System.out.println(gameEntity.getRiskGameBoard().displayBoard());
         ShowViews.showGameView(stage, "/ui/whole.fxml", gameEntity);
@@ -63,24 +63,5 @@ public class StartController implements Initializable {
 
     public void initialize(URL location, ResourceBundle resources) {
 
-//        startButton.setOnAction((event -> {
-//            waitInfo.setVisible(true);
-//
-//            try {
-//                gameEntity.storePlayerId();
-//                int playerID = gameEntity.getPlayerId();
-//                System.out.println("playerId=" + playerID);
-//                if (playerID != 0 && playerID != 1) {
-//                    throw new Exception("Failed to receive valid playerId!");
-//                }
-//                gameEntity.storeNewBoard();
-//                System.out.println("A new turn: updated new board as below!");
-//                System.out.println(gameEntity.getRiskGameBoard().displayBoard());
-//                ShowViews.showGameView(stage, "/ui/whole.fxml", gameEntity);
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//
-//        }));
     }
 }
