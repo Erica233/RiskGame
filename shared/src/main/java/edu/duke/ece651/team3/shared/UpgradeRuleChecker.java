@@ -14,7 +14,6 @@ public class UpgradeRuleChecker extends RuleChecker{
     private String srcName;
     private String dstName;
 
-
     /**
      * Check whether the current player and enemy have the territory from attack's information
      * @param _action attack information
@@ -28,7 +27,6 @@ public class UpgradeRuleChecker extends RuleChecker{
         this.dstName = this.action.getDstName();
         this.riskGameBoard = _riskGameBoard;
     }
-
 
     /**
      * Check whether the current player's src and dst territory are its owned territory
@@ -67,13 +65,17 @@ public class UpgradeRuleChecker extends RuleChecker{
      */
     public boolean checkNumUnits(Action myUpgrade, Player currPlayer){
         Territory t = findTerritory(myUpgrade, currPlayer);
-        for(int i = 0; i < t.getUnits().size(); i++){
+        for(int i = 0; i < t.getUnits().size() - 1; i++){
             int numUnitsChange = myUpgrade.getUnitsToChange().get(i).getNumUnits();
             if(numUnitsChange > t.getUnits().get(i).getNumUnits() || numUnitsChange < 0){
                 System.out.println("Invalid numberUnits: " + numUnitsChange + " current territory's unit: "
                         + t.getUnits().get(i).getNumUnits());
                 return false;
             }
+        }
+        int lv6Num = myUpgrade.getUnitsToChange().get(t.getUnits().size() - 1).getNumUnits();
+        if (lv6Num != 0) {
+            return false;
         }
         return true;
     }
@@ -90,27 +92,14 @@ public class UpgradeRuleChecker extends RuleChecker{
      */
     public boolean checkPath(Action myUpgrade, RiskGameBoard r, Player currPlayer) {
         Territory t = findTerritory(myUpgrade, currPlayer);
-        int cntChangeUnits = 0;
         for(int i = 0; i < t.getUnits().size(); i++){
             Unit currUnit = myUpgrade.getUnitsToChange().get(i);
-            int numUnitsChange = myUpgrade.getUnitsToChange().get(i).getNumUnits();
-
             //If the upgrade unit has already been the highest level
             if(currUnit.getUnitName().equals("SergeantMajor") && currUnit.getNumUnits() != 0){
                 System.out.println("Invalid numberUnits! current Unit is already the highest level");
                 return false;
             }
-
-            //If the unit is to be upgraded, increase the count
-//            if(numUnitsChange != 0){
-//                cntChangeUnits ++;
-//            }
         }
-//        if(cntChangeUnits != 1){
-//            System.out.println("Invalid Upgrades! You should " +
-//                    "only upgrade 1 unit each turn but you did " + cntChangeUnits);
-//            return false;
-//        }
         return true;
     }
 
