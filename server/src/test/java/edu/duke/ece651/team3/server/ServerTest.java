@@ -213,11 +213,11 @@ public class ServerTest {
             actions1.add(m2);
 
             if(turnInd == 0){
-//                AttackAction a1 = new AttackAction("a", "b", unitsToChange);
-//                actions1.add(a1);
                 turnInd ++;
             }
-            if(turnInd == 1){
+            if(turnInd != 0){
+                AttackAction a1 = new AttackAction("a", "b", unitsToChange);
+                actions1.add(a1);
                 AttackAction a2 = new AttackAction("c", "d", unitsToChange);
                 actions1.add(a2);
             }
