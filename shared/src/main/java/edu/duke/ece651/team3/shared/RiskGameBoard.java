@@ -260,16 +260,18 @@ public class RiskGameBoard implements Board, Serializable {
         Random random = new Random();
         Unit attUnit = attUnits.get(getStrongest(attUnits));
         Unit defUnit = defUnits.get(getWeakest(defUnits));
-        int attBonus = attUnit.getNumUnits();
-        int defBonus = defUnit.getNumUnits();
-        int rand_att = random.nextInt(20) + 1;
-        int rand_def = random.nextInt(20) + 1;
+        int attBonus = attUnit.getBonus();
+        int defBonus = defUnit.getBonus();
+//        int rand_att = random.nextInt(20) + 1;
+//        int rand_def = random.nextInt(20) + 1;
+        int rand_att = 3;
+        int rand_def = 2;
         if(rand_att+attBonus > rand_def+defBonus){
-            attUnit.setNumUnits(attUnit.getNumUnits()-1);
+            defUnit.setNumUnits(defUnit.getNumUnits()-1);
             //System.out.println(" - attacker large");
         }
         else{
-            defUnit.setNumUnits(defUnit.getNumUnits()-1);
+            attUnit.setNumUnits(attUnit.getNumUnits()-1);
             //System.out.println(" - defender large");
         }
     }
@@ -281,18 +283,20 @@ public class RiskGameBoard implements Board, Serializable {
      */
     public void oddRoundGame(ArrayList<Unit> attUnits, ArrayList<Unit> defUnits){
         Random random = new Random();
-        Unit attUnit = attUnits.get(getStrongest(attUnits));
-        Unit defUnit = defUnits.get(getWeakest(defUnits));
-        int attBonus = attUnit.getNumUnits();
-        int defBonus = defUnit.getNumUnits();
-        int rand_att = random.nextInt(20) + 1;
-        int rand_def = random.nextInt(20) + 1;
+        Unit attUnit = attUnits.get(getWeakest(attUnits));
+        Unit defUnit = defUnits.get(getStrongest(defUnits));
+        int attBonus = attUnit.getBonus();
+        int defBonus = defUnit.getBonus();
+//        int rand_att = random.nextInt(20) + 1;
+//        int rand_def = random.nextInt(20) + 1;
+        int rand_att = 3;
+        int rand_def = 2;
         if(rand_att+attBonus > rand_def+defBonus){
-            attUnit.setNumUnits(attUnit.getNumUnits()-1);
+            defUnit.setNumUnits(defUnit.getNumUnits()-1);
             //System.out.println(" - attacker large");
         }
         else{
-            defUnit.setNumUnits(defUnit.getNumUnits()-1);
+            attUnit.setNumUnits(attUnit.getNumUnits()-1);
             //System.out.println(" - defender large");
         }
     }
