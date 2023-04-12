@@ -1,8 +1,6 @@
 package edu.duke.ece651.team3.client.model;
 
-import edu.duke.ece651.team3.shared.Action;
-import edu.duke.ece651.team3.shared.RiskGameBoard;
-import edu.duke.ece651.team3.shared.Territory;
+import edu.duke.ece651.team3.shared.*;
 
 import java.io.*;
 import java.net.Socket;
