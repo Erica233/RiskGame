@@ -270,9 +270,9 @@ public class Server {
         sendBoardToAllClients();
         recvActionsFromAllClients();
         printActionsMap();
+        riscBoard.executeUpgrades(actionsMap);
         executeMoves();
         riscBoard.executeAttacks(actionsMap);
-        riscBoard.executeUpgrades(actionsMap);
         turnResults = riscBoard.updateCombatResult();
 
         //sendTurnResults(turnResults);
