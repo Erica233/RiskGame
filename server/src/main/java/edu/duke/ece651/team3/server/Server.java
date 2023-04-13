@@ -48,23 +48,6 @@ public class Server {
     }
 
     /**
-     * This method checks whether the territory is the neighbor of the current territory
-     * @param curr the current territory
-     * @param checkNeighbor the territory to be checked
-     * @return ture if it is the neighbor of curr, false otherwise
-     */
-    public boolean isNeighbor(Territory curr, Territory checkNeighbor){
-        HashMap<Territory, Integer> neighbors = curr.getNeighborsDist();
-        for(Territory territory : neighbors.keySet()){
-            if(checkNeighbor.equals(territory)){
-                return true;
-            }
-        }
-        return false;
-    }
-
-
-    /**
      * This method executes all moves for all players
      * @throws Exception
      */
@@ -112,9 +95,9 @@ public class Server {
 
         srcTerr.decreaseUnit(units);
         dstTerr.increaseUnit(units);
-        System.out.println("The size of myMove units is: " +  myMove.getUnitsToChange().size());
+        System.out.println("The size of myMove units is: " + myMove.getUnitsToChange().size());
         //Move all the units in their corresponding levels
-        for(int i = 0; i < myMove.getUnitsToChange().size(); i++) {
+        for (int i = 0; i < myMove.getUnitsToChange().size(); i++) {
             int unitNum = myMove.getUnitsToChange().get(i).getNumUnits(); //The num to move
             //Reduce the cost on the current territory
             int minPathCost = currPlayer.getMinPath(srcTerr, dstTerr);
@@ -123,27 +106,6 @@ public class Server {
             System.out.println("The cost for " + myMove.getUnitsToChange().get(i).getUnitName() + " is: " + cost);
             srcTerr.reduceFood(cost);
         }
-    }
-
-
-    /**
-     * This method gets the player that owns the given territory.
-     * @param territoryName the territory's name
-     * @return the current player
-     */
-    public Player getPlayer(String territoryName){
-        Player currPlayer = null;
-        ArrayList<Player> allPlayers = riscBoard.getAllPlayers();
-
-        for(Player p : allPlayers){
-            for(Territory t: p.getOwnedTerritories()){
-                if(t.getTerritoryName().equals(territoryName)){ //If the territory name under current player equals to the source name
-                    currPlayer = p;
-                    break;
-                }
-            }
-        }
-        return currPlayer;
     }
 
     public static void main(String[] args) {
