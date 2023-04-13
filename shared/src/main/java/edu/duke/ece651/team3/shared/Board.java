@@ -22,7 +22,6 @@ public interface Board {
 
     /**
      * Displays the information on the Risk Game Board
-     *
      * @return a String about the information on the Risk Game Board
      */
     String displayBoard();

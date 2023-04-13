@@ -235,7 +235,7 @@ public class TerritoryTest {
     @Test
     public void test_resources() throws Exception{
         RiskGameBoard r = new RiskGameBoard();
-        ArrayList<Unit> actionUnits= r.initializeArrUnits();
+        ArrayList<Unit> actionUnits= r.initBasicUnits(0);
         actionUnits.get(0).setNumUnits(100);
         Territory a = new Territory("a", 5, 10, 10);
         Territory b = new Territory("b", 5, 10, 10);

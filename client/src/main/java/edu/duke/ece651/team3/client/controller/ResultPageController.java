@@ -1,13 +1,10 @@
 package edu.duke.ece651.team3.client.controller;
-
-import edu.duke.ece651.team3.client.ShowViews;
 import edu.duke.ece651.team3.client.model.Game;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 
 public class ResultPageController {
@@ -28,6 +25,11 @@ public class ResultPageController {
         playerID = _id;
     }
 
+    /**
+     * quit the game then close the window and close the pipe
+     * @param event
+     * @throws IOException
+     */
     @FXML
     void onQuitButton(ActionEvent event) throws IOException {
         Stage currStage = (Stage) quitButton.getScene().getWindow();
@@ -35,11 +37,18 @@ public class ResultPageController {
         gameEntity.closePipes();
     }
 
+    /**
+     * initialize the ResultPageController
+     * get the result of the game
+     */
     @FXML
     public void initialize() {
         getResult();
     }
 
+    /**
+     * set the text about the result of the game, show to the player
+     */
     @FXML
     public void getResult() {
         int gameResult = gameEntity.getGameResult();

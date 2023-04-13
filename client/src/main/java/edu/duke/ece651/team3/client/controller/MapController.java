@@ -1,7 +1,6 @@
 package edu.duke.ece651.team3.client.controller;
 
 import edu.duke.ece651.team3.client.model.Game;
-import edu.duke.ece651.team3.shared.Player;
 import edu.duke.ece651.team3.shared.RiskGameBoard;
 import edu.duke.ece651.team3.shared.Territory;
 import edu.duke.ece651.team3.shared.Unit;
@@ -13,7 +12,6 @@ import javafx.scene.control.Button;
 import javafx.scene.image.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
 import java.util.ArrayList;
@@ -179,7 +177,7 @@ public class MapController {
     /**
      * set color for territory according to input
      * @param iv territory's imageView
-     * @param playerid
+     * @param playerid player id
      * @param findResult whether the territory is owned by player
      * @param group territory shown on GUI
      */
@@ -252,12 +250,20 @@ public class MapController {
     }
 
 
+    /**
+     * constructor of MapController, store the hashmap that contains all
+     * the territory letter name and Group fx:id and territory whole name
+     * @param _gameEntity Game
+     */
     public MapController(Game _gameEntity) {
         this.gameEntity = _gameEntity;
         fxidHash();
         letterHash();
     }
 
+    /**
+     * initialize the MapController, collect all the groups we should iterate and show the map's color
+     */
     @FXML
     public void initialize() {
         collectGroups();

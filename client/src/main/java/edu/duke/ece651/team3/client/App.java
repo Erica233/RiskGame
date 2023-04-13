@@ -20,6 +20,13 @@ import java.util.HashMap;
 public class App extends Application {
   private Stage stage;
 
+  /**
+   * show the start view and set the look
+   * @param currStage
+   * @param xmlPath
+   * @param gameEntity
+   * @throws IOException
+   */
   public void startView(Stage currStage, String xmlPath, Game gameEntity) throws IOException {
     URL xmlResource = getClass().getResource(xmlPath);
     FXMLLoader loader = new FXMLLoader(xmlResource);
@@ -27,19 +34,21 @@ public class App extends Application {
       return new StartController(currStage, gameEntity);
     });
     Scene scene = new Scene(loader.load(), 924, 600);
-
     currStage.setTitle("RISC Game");
     currStage.setScene(scene);
     currStage.show();
   }
 
+  /**
+   * start to show the first view
+   * @param primaryStage
+   * @throws IOException
+   */
   @Override
   public void start(Stage primaryStage) throws IOException {
     this.stage = primaryStage;
     Thread.setDefaultUncaughtExceptionHandler(new ErrorReporter());
-
     //Game gameEntity = new Game();
-
     startView(this.stage, "/ui/start.fxml", null);
 
   }

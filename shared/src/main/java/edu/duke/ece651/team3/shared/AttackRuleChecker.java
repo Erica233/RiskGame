@@ -13,7 +13,7 @@ public class AttackRuleChecker extends RuleChecker{
     String dstName;
 
     /**
-     * This constructor takes 4 elements
+     * This constructor takes 2 elements
      * @param _action the Action class containing all the information of an action
      * @param _riskGameBoard the board passed in
      */
@@ -55,7 +55,6 @@ public class AttackRuleChecker extends RuleChecker{
      * @param myAttack attack information
      * @return if valid return true, invalid return false
      */
-    //TODO: if t == null needed? if already finish the checkSrcDst, it is needed
     public boolean checkPath(Action myAttack, RiskGameBoard r, Player currPlayer){
         Territory t = findTerritory(myAttack, currPlayer);
         return t.checkExistNeighbor(myAttack.getDstName());

@@ -10,15 +10,13 @@ import java.util.Locale;
  */
 public class Action implements Serializable {
     private String actionType;
-    private String srcName; //The FROM territory
-    private String dstName; //The TO territory
-
-    //Class of instance of units, number to change
+    private String srcName;
+    private String dstName;
     private ArrayList<Unit> unitsToChange;
 
     /**
      * This constructor takes 4 elements
-     * @param _actionType the string indicates the action type, i.e : M, A, D
+     * @param _actionType the string indicates the action type, i.e : M, A, U, D
      * @param _srcName the string indicates the src territory name
      * @param _dstName the string indicates the dst territory name
      */
@@ -56,12 +54,10 @@ public class Action implements Serializable {
 
 
     /**
-     * This method checks whether the action type is valid(Move, Attack, Done)
+     * This method checks whether the action type is valid(Move, Attack)
      * @return true if the action type is valid, false if it is not
      */
-
     public boolean isValidType(){
-//        return isAttackType() || isMoveType() || isDone();
         return isAttackType() || isMoveType();
     }
 
@@ -81,7 +77,6 @@ public class Action implements Serializable {
         return unitsToChange;
     }
 
-    //Since the actions are read from the user, it supports set methods
     public void setActionType(String actionType) {
         this.actionType = actionType;
     }
@@ -97,8 +92,6 @@ public class Action implements Serializable {
     public void setActionUnits(ArrayList<Unit> _unitsToChange) {
         this.unitsToChange = _unitsToChange;
     }
-
-
 
     @Override
     public String toString() {

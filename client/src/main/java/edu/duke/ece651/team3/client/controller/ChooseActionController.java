@@ -5,19 +5,13 @@ import edu.duke.ece651.team3.client.model.Game;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
-
 import java.io.IOException;
-import java.util.Objects;
 
 public class ChooseActionController {
     @FXML
@@ -48,6 +42,13 @@ public class ChooseActionController {
         this.gameEntity = _gameEntity;
     }
 
+
+    /**
+     * show the game view according to the selected choice
+     * @param event
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
     @FXML
     void goToActionPage(MouseEvent event) throws IOException, ClassNotFoundException {
         if(move.isSelected()){
@@ -92,6 +93,13 @@ public class ChooseActionController {
     }
 
     //    @FXML
+
+    /**
+     * initialize the ChooseActionController
+     * show the text of label playerColor
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
     public void initialize() throws IOException, ClassNotFoundException {
         if (playerId == 0) {
             playerColor.setText("You are the Orange Player. What would you like to do?");

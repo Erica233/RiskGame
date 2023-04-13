@@ -19,7 +19,6 @@ public class ShowViews {
         HashMap<Class<?>,Object> controllers = new HashMap<>();
         controllers.put(ChooseActionController.class, new ChooseActionController(game.getPlayerId(), stage, game));
         controllers.put(MapController.class, new MapController(game));
-        controllers.put(SliderController.class, new SliderController());
         controllers.put(MovePageController.class, new MovePageController(game.getPlayerId(), stage, game));
         controllers.put(AttackPageController.class, new AttackPageController(game.getPlayerId(), stage, game));
         controllers.put(UpgradePageController.class, new UpgradePageController(game.getPlayerId(), stage, game));

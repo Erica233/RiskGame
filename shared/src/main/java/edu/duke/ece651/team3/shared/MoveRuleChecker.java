@@ -1,6 +1,5 @@
 package edu.duke.ece651.team3.shared;
 
-import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -18,8 +17,7 @@ public class MoveRuleChecker extends RuleChecker{
     /**
      * Check whether the current player and enemy have the territory from attack's information
      * @param _action attack information
-     * @param _riskGameBoard current player
-     * @return if valid return true, invalid return false
+     * @param _riskGameBoard current board
      */
     public MoveRuleChecker(Action _action, Board _riskGameBoard){
         super(_action);
@@ -133,8 +131,8 @@ public class MoveRuleChecker extends RuleChecker{
 
     /**
      * This method takes the territory's name and the current player
-     * @param territoryName
-     * @param currPlayer
+     * @param territoryName territory name
+     * @param currPlayer current player
      * @return the territory which name is territoryName
      */
     public Territory findTerritoryByName(String territoryName, Player currPlayer){
@@ -151,7 +149,7 @@ public class MoveRuleChecker extends RuleChecker{
     /**
      * This method checks whether the current territory is self territory
      * @param territory
-     * @param p
+     * @param p player
      * @return true if it is self territory, false if it is not
      */
     public boolean checkIsSelfTerritory(Territory territory, Player p){
@@ -166,7 +164,7 @@ public class MoveRuleChecker extends RuleChecker{
     /**
      * This method initialized the visited HashMap
      * @param player
-     * @param visited
+     * @param visited true if visited, false if it is not visited
      */
     public void initVisited(Player player, HashMap<Territory, Boolean> visited){
         for(int i = 0; i < player.getOwnedTerritories().size(); i++){
@@ -185,7 +183,6 @@ public class MoveRuleChecker extends RuleChecker{
     public boolean checkResources(Action myAction, RiskGameBoard riskGameBoard, Player currPlayer){
         Territory src = currPlayer.findOwnedTerritoryByName(myAction.getSrcName());
         Territory dst = currPlayer.findOwnedTerritoryByName(myAction.getDstName());
-
         int totalResourceCost = 0;
         ArrayList<Unit> units = myAction.getUnitsToChange();
         for(Unit unit : units){

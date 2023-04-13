@@ -43,7 +43,7 @@ public class Player implements Serializable {
     }
 
     /**
-     * Increase the number of the basic unit (whose force level is one) by one in each owned territory
+     * Increase the number of the basic unit (whose force level is 0) by one in each owned territory
      */
     public void addAUnitForEachTerr() {
         for (Territory territory: ownedTerritories) {
@@ -51,6 +51,9 @@ public class Player implements Serializable {
         }
     }
 
+    /**
+     * Add the food and technology source for every territory
+     */
     public void addResourceForEachTerr() {
         for (Territory territory: ownedTerritories) {
             territory.increaseResource();
@@ -72,6 +75,7 @@ public class Player implements Serializable {
         }
         return false;
     }
+
     /**
      * This method gets the path that has the minimal food resource cost
      * @param src the source territory
@@ -157,14 +161,13 @@ public class Player implements Serializable {
             int cost = minPathCost * unitNum * moveCost; //TODO:check the formula
             src.reduceFood(cost);
         }
-
     }
 
     /**
      * calculate the total cost of attack
      * @param myAttack
      * @param currPlayer
-     * @return
+     * @return total cost of the attack
      */
     public int decreaseFood(Action myAttack, Player currPlayer){
         String src = myAttack.getSrcName();
@@ -190,7 +193,6 @@ public class Player implements Serializable {
 
     /**
      * execute the given attack action (only decrease the units in the source territory)
-     *
      * @param attack the attack action
      */
     public void executeAttack(Action attack) {
@@ -201,7 +203,6 @@ public class Player implements Serializable {
 
     /**
      * execute the given attack action (only decrease the units in the source territory)
-     *
      * @param myUpgrade the attack action
      */
     public void executeUpgrade(Action myUpgrade) {
@@ -223,7 +224,6 @@ public class Player implements Serializable {
 
     /**
      * get the territory given its territory name, if not find, returns null
-     *
      * @param territoryName the name of the territory want to find
      * @return the territory
      */

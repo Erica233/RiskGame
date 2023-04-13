@@ -14,7 +14,7 @@ public class AttackRuleCheckerTest {
         RiskGameBoard r = new RiskGameBoard();
         r.initE2Map();
         Player p = r.getAllPlayers().get(0);
-        ArrayList<Unit> actionUnits = r.initializeArrUnits();
+        ArrayList<Unit> actionUnits = r.initBasicUnits(0);
         Action myAction = new AttackAction("a", "b", actionUnits);
         Action myAction1 = new AttackAction("a", "j", actionUnits);
         Action myAction2 = new AttackAction("a", "i", actionUnits);
@@ -37,7 +37,7 @@ public class AttackRuleCheckerTest {
         RiskGameBoard r = new RiskGameBoard();
         r.initE2Map();
         Player p = r.getAllPlayers().get(0);
-        ArrayList<Unit> actionUnits = r.initializeArrUnits();
+        ArrayList<Unit> actionUnits = r.initBasicUnits(0);
         Action myAction = new AttackAction("a", "b", actionUnits);
         AttackRuleChecker attackRuleChecker = new AttackRuleChecker(myAction, r);
         assertTrue(attackRuleChecker.checkPath(myAction, r, p));
@@ -49,19 +49,19 @@ public class AttackRuleCheckerTest {
         r.initE2Map();
         Player p = r.getAllPlayers().get(0);
 
-        ArrayList<Unit> actionUnits = r.initializeArrUnits();
+        ArrayList<Unit> actionUnits = r.initBasicUnits(0);
         actionUnits.get(0).setNumUnits(10);
         Action myAction = new AttackAction("a", "b", actionUnits);
         AttackRuleChecker attackRuleChecker = new AttackRuleChecker(myAction, r);
         assertFalse(attackRuleChecker.checkNumUnits(myAction, p));
 
-        ArrayList<Unit> actionUnits1= r.initializeArrUnits();
+        ArrayList<Unit> actionUnits1= r.initBasicUnits(0);
         actionUnits1.get(0).setNumUnits(-1);
         Action myAction1 = new AttackAction("a", "b", actionUnits1);
         attackRuleChecker = new AttackRuleChecker(myAction1, r);
         assertFalse(attackRuleChecker.checkNumUnits(myAction1, p));
 
-        ArrayList<Unit> actionUnits2= r.initializeArrUnits();
+        ArrayList<Unit> actionUnits2= r.initBasicUnits(0);
         actionUnits2.get(0).setNumUnits(3);
         Action myAction2 = new AttackAction("a", "b", actionUnits2);
         attackRuleChecker = new AttackRuleChecker(myAction2, r);
@@ -74,7 +74,7 @@ public class AttackRuleCheckerTest {
         RiskGameBoard r = new RiskGameBoard();
         r.initE2Map();
         Player currPlayer = r.getAllPlayers().get(0);
-        ArrayList<Unit> actionUnits= r.initializeArrUnits();
+        ArrayList<Unit> actionUnits= r.initBasicUnits(0);
         Action a = new AttackAction("m", "b", actionUnits);
         AttackRuleChecker arc = new AttackRuleChecker(a, r);
         arc.findTerritory(a, currPlayer);
@@ -86,7 +86,7 @@ public class AttackRuleCheckerTest {
         RiskGameBoard r = new RiskGameBoard();
         r.initE2Map();
         Player currPlayer = r.getAllPlayers().get(0);
-        ArrayList<Unit> actionUnits= r.initializeArrUnits();
+        ArrayList<Unit> actionUnits= r.initBasicUnits(0);
         actionUnits.get(0).setNumUnits(5);
         Action a = new AttackAction("j", "c", actionUnits);
         AttackRuleChecker attackRuleChecker = new AttackRuleChecker(a, r);

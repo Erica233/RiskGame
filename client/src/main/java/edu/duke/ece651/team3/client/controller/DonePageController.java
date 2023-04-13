@@ -2,15 +2,12 @@ package edu.duke.ece651.team3.client.controller;
 
 import edu.duke.ece651.team3.client.ShowViews;
 import edu.duke.ece651.team3.client.model.Game;
-import edu.duke.ece651.team3.shared.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
-
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class DonePageController {
@@ -31,12 +28,23 @@ public class DonePageController {
 
     int gameResult = -1;
 
+    /**
+     * constructor of DonePageController
+     * @param id player id
+     * @param _stage stage
+     * @param _gameEntity gameEntity
+     */
     public DonePageController(int id, Stage _stage, Game _gameEntity) {
         this.gameEntity = _gameEntity;
         this.stage = _stage;
         this.playerId = id;
     }
 
+    /**
+     * show game result, if not end show the whole map and choice, if end show the result page
+     * @param ae Action event
+     * @throws Exception
+     */
     @FXML
     public void onGameResults(ActionEvent ae) throws Exception {
         gameResult = gameEntity.recvGameResult();
@@ -50,6 +58,11 @@ public class DonePageController {
 
     }
 
+    /**
+     * initialize the DonePageController, show the last turn's game result
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
     public void initialize() throws IOException, ClassNotFoundException {
         if (playerId == 0) {
             playerColor.setText("You are the Orange Player. Your last turn results are:");

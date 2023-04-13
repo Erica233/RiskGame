@@ -36,7 +36,6 @@ public class Client {
         this.objectFromServer = new ObjectInputStream(socket.getInputStream());
         this.objectToServer = new ObjectOutputStream(socket.getOutputStream());
         this.inputReader = new BufferedReader(new InputStreamReader(System.in));
-
         this.actionsList = new ArrayList<>();
     }
 
@@ -49,13 +48,11 @@ public class Client {
             //client join Game
             client.recvPlayerId();
             client.playGame();
-
             client.closePipes();
         } catch (Exception e) {
 //            System.err.println("in main: " + e.getMessage());
 //            System.exit(-1);
         }
-
     }
 
     /**
@@ -103,7 +100,7 @@ public class Client {
 
     /**
      * receives end game signal,
-     * 0 means player 0 is thw winner, 1 means player 1 is the winner,
+     * 0 means player 0 is the winner, 1 means player 1 is the winner,
      * 2 means the game is still running
      *
      * @return game result signal

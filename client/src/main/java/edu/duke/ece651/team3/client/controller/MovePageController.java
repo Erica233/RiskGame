@@ -47,12 +47,23 @@ public class MovePageController {
     private Game gameEntity;
     Stage stage;
 
+    /**
+     * constructor of MovePageController
+     * @param id player id
+     * @param _stage stage
+     * @param _gameEntity gameEntity
+     */
     public MovePageController(int id, Stage _stage, Game _gameEntity) {
         this.gameEntity = _gameEntity;
         this.playerID = id;
         this.stage = _stage;
     }
 
+    /**
+     *
+     * @param ae ActionEvent
+     * @throws Exception
+     */
     @FXML
     public void onCheckValidMove(ActionEvent ae) throws Exception {
         ArrayList<Unit> units = RiskGameBoard.initBasicUnits(0);
@@ -87,6 +98,10 @@ public class MovePageController {
         allChoiceBoxes.add(LV6_choice);
     }
 
+    /**
+     * This method wraps all the Unit choices into allChoiceBoxes
+     * @param currTerr current territory
+     */
     public void wrapUpUnitChoices(Territory currTerr) {
         this.eachLevelUnitNum = new HashMap<>();
 
@@ -120,9 +135,12 @@ public class MovePageController {
         }
 
     }
+
+    /**
+     * This method initialize all source choices
+     */
     private void initializeSourceChoice() {
         Player currPlayer = gameEntity.getRiskGameBoard().getAllPlayers().get(playerID);
-
         ArrayList<Territory> selfTerr = currPlayer.getOwnedTerritories();
         choice_source.getItems().clear();
         for (Territory Terr : selfTerr) {
@@ -130,6 +148,10 @@ public class MovePageController {
         }
     }
 
+    /**
+     * This method initialize all destination choices
+     * @param currTerr current territory
+     */
     private void initializeDestChoice(Territory currTerr) {
         Player currPlayer = gameEntity.getRiskGameBoard().getAllPlayers().get(playerID);
         choice_Dest.getItems().clear();
@@ -143,6 +165,9 @@ public class MovePageController {
         }
     }
 
+    /**
+     * initialize the destination choices and unit choices according to src territory chosen
+     */
     public void onSelectSrcCheckBox(){
         choice_source.setOnAction(e -> {
             // Retrieve the selected value from the choice box

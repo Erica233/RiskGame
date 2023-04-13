@@ -45,12 +45,23 @@ public class AttackPageController {
     private Game gameEntity;
     private Stage stage;
 
+    /**
+     * constructor
+     * @param id player id
+     * @param _stage
+     * @param _gameEntity
+     */
     public AttackPageController(int id, Stage _stage, Game _gameEntity) {
         this.gameEntity = _gameEntity;
         this.stage = _stage;
         this.playerID = id;
     }
 
+    /**
+     * check the validation of attack
+     * @param ae ActionEvent
+     * @throws Exception
+     */
     @FXML
     public void onCheckValidAttack(ActionEvent ae) throws Exception {
         ArrayList<Unit> units = RiskGameBoard.initBasicUnits(0);
@@ -66,7 +77,6 @@ public class AttackPageController {
         gameEntity.executeAction(attackAction);
         //System.out.println("in onCheckValidMove");
         //System.out.println(gameEntity.getRiskGameBoard().displayBoard());
-
         ShowViews.showGameView(stage, "/ui/whole.fxml", gameEntity);
 
     }
@@ -85,9 +95,12 @@ public class AttackPageController {
         allChoiceBoxes.add(LV6_choice);
     }
 
+    /**
+     * This method wraps all the unit choices into eachLevelUnitNum
+     * @param currTerr current territory
+     */
     public void wrapUpUnitChoices(Territory currTerr) {
         this.eachLevelUnitNum = new HashMap<>();
-
         ArrayList<Unit> currUnits = currTerr.getUnits();
         for (int i = 0; i < currUnits.size(); i++) {
             eachLevelUnitNum.put(currUnits.get(i), allChoiceBoxes.get(i));//Unit, CheckBox(LV?)
@@ -118,9 +131,12 @@ public class AttackPageController {
         }
 
     }
+
+    /**
+     * This method initialize all source choices
+     */
     private void initializeSourceChoice() {
         Player currPlayer = gameEntity.getRiskGameBoard().getAllPlayers().get(playerID);
-
         ArrayList<Territory> selfTerr = currPlayer.getOwnedTerritories();
         choice_source.getItems().clear();
         for (Territory Terr : selfTerr) {
@@ -128,6 +144,10 @@ public class AttackPageController {
         }
     }
 
+    /**
+     * This method initialize all destination choices
+     * @param currTerr
+     */
     private void initializeDestChoice(Territory currTerr) {
         Player currPlayer = gameEntity.getRiskGameBoard().getAllPlayers().get(1 - playerID);
         choice_Dest.getItems().clear();
@@ -141,6 +161,9 @@ public class AttackPageController {
         }
     }
 
+    /**
+     * initialize the destination choices and unit choices according to src territory chosen
+     */
     public void onSelectSrcCheckBox(){
         choice_source.setOnAction(e -> {
             // Retrieve the selected value from the choice box
@@ -167,7 +190,6 @@ public class AttackPageController {
     public void initialize() {
         wrapUpChoices();
         initializeId();
-
         initializeSourceChoice();
         onSelectSrcCheckBox();
     }

@@ -3,6 +3,11 @@ package edu.duke.ece651.team3.client;
 import javafx.scene.control.Alert;
 
 public class ErrorReporter implements Thread.UncaughtExceptionHandler {
+    /**
+     * show player the error information
+     * @param thread
+     * @param error
+     */
     @Override
     public void uncaughtException(Thread thread, Throwable error) {
         error.printStackTrace();

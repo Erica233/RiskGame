@@ -9,10 +9,6 @@ import java.util.*;
 public class RiskGameBoard implements Board, Serializable {
     private final ArrayList<Player> allPlayers;
 
-    /**
-     * Constructs a RiskGameBoard
-     *
-     */
     public RiskGameBoard() throws Exception {
         this.allPlayers = new ArrayList<>();
         //initMap();
@@ -20,9 +16,8 @@ public class RiskGameBoard implements Board, Serializable {
 
 
     /**
-     * Initialize the units, given the Infantry number
-     *
-     * @param num the number of Infantry units
+     * Initialize the units, given the Private number
+     * @param num the number of Private units
      */
     public static ArrayList<Unit> initBasicUnits(int num) {
         ArrayList<Unit> units = new ArrayList<>();
@@ -37,8 +32,9 @@ public class RiskGameBoard implements Board, Serializable {
     }
 
     /**
-     * Update combat results for each territory and transfer ownership if the territory is occupied by enemny
-     *
+     * Update combat results for each territory and transfer
+     * ownership if the territory is occupied by enemy
+     * @return hashmap of territory name and player id
      */
     public HashMap<String, Integer> updateCombatResult() {
         HashMap<Territory, Integer> allTerrs = new HashMap<>();
@@ -64,6 +60,13 @@ public class RiskGameBoard implements Board, Serializable {
         return turnResults;
     }
 
+    /**
+     * connect and store the Neighbor information into the t1 and t2 if they are neighbors
+     * @param t1 territory to connect
+     * @param t2 territory to connect
+     * @param dist distance
+     * @throws Exception
+     */
     public void connectNeighbors(Territory t1, Territory t2, int dist) throws Exception {
         t1.addANeighbor(t2, dist);
         t2.addANeighbor(t1, dist);
@@ -310,11 +313,10 @@ public class RiskGameBoard implements Board, Serializable {
 
 
     /**
-     * This method rolls two 20-sided dice until one player runs out of units.
-     * The one who run out of units loses.
-     * This method loses or occupies the territory
+     * This method rolls two 20-sided dice and add bonus of unit when combat until one player runs out of units.
+     * The one who run out of units loses, involving loses or occupies the territory
      * @param myattack the action
-     *
+     * @param attacker the attacker
      */
     public void executeAttack(Action myattack, Player attacker){
         Player defender = allPlayers.get(1-attacker.getPlayerId());
@@ -349,8 +351,10 @@ public class RiskGameBoard implements Board, Serializable {
         }
     }
 
+
     /**
      * This method executes all attacks for all players
+     * @param actionsMap includes all the information about Action
      * @throws Exception
      */
     //TODO: one player executes once
@@ -378,6 +382,11 @@ public class RiskGameBoard implements Board, Serializable {
         }
     }
 
+    /**
+     * This method executes all upgrades for all players
+     * @param actionsMap includes all the information about Action
+     * @throws Exception
+     */
     public void executeUpgrades(HashMap<Integer, ArrayList<Action>> actionsMap) throws Exception {
         for(int i : actionsMap.keySet()){ //Go through each player
             Player player = this.getAllPlayers().get(i);
@@ -391,26 +400,10 @@ public class RiskGameBoard implements Board, Serializable {
         }
     }
 
-    //TODO
-    public ArrayList<Unit> initializeArrUnits(){
-        ArrayList<Unit> arrUnits = new ArrayList<>();
-        arrUnits.add(new Private(0));
-        arrUnits.add(new Corporal(0));
-        arrUnits.add(new Specialist(0));
-        arrUnits.add(new Sergeant(0));
-        arrUnits.add(new MasterSergeant(0));
-        arrUnits.add(new FirstSergeant(0));
-        arrUnits.add(new SergeantMajor(0));
-        return arrUnits;
-    }
-
-
-
     /**
      * combine all attacks into one new attack if they have the same destination
-     *
      * @param myattacks my attack actions
-     * @return
+     * @return new combined attack actions
      */
     public ArrayList<Action> intergAttack(ArrayList<Action> myattacks){
         ArrayList<Action> newattackers = new ArrayList<>();
@@ -443,7 +436,8 @@ public class RiskGameBoard implements Board, Serializable {
 
 
     /**
-     * Increase the number of the basic unit (whose force level is one) by one in each player's owned territory
+     * Increase the number of the basic unit (whose force level is 0)
+     * by one in each player's owned territory
      *
      */
     public void addAfterEachTurn() {
@@ -455,7 +449,6 @@ public class RiskGameBoard implements Board, Serializable {
 
     /**
      * execute a move
-     *
      * @param move the move to execute
      * @param playerId the id of the player who need to execute the action
      */

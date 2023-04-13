@@ -51,6 +51,12 @@ public class UpgradePageController {
         this.playerID = id;
     }
 
+    /**
+     * get user's upgrade action and
+     * check whether the user's upgrade is valid or not
+     * @param ae
+     * @throws Exception
+     */
     @FXML
     public void onCheckValidUpgrade(ActionEvent ae) throws Exception {
         ArrayList<Unit> units = RiskGameBoard.initBasicUnits(0);
@@ -60,13 +66,11 @@ public class UpgradePageController {
             }
         }
         UpgradeAction upgradeAction = new UpgradeAction(choice_source.getValue(), choice_source.getValue(), units);
-
         gameEntity.checkValidAction(upgradeAction);
         gameEntity.storeActionToList(upgradeAction);
         gameEntity.executeAction(upgradeAction);
         //System.out.println("in onCheckValidMove");
         //System.out.println(gameEntity.getRiskGameBoard().displayBoard());
-
         ShowViews.showGameView(stage, "/ui/whole.fxml", gameEntity);
 
     }
@@ -85,9 +89,12 @@ public class UpgradePageController {
         allChoiceBoxes.add(LV6_choice);
     }
 
+    /**
+     * collect all the units's information that need to upgrade
+     * @param currTerr
+     */
     public void wrapUpUnitChoices(Territory currTerr) {
         this.eachLevelUnitNum = new HashMap<>();
-
         ArrayList<Unit> currUnits = currTerr.getUnits();
         for (int i = 0; i < currUnits.size(); i++) {
             eachLevelUnitNum.put(currUnits.get(i), allChoiceBoxes.get(i));//Unit, CheckBox(LV?)
@@ -118,9 +125,12 @@ public class UpgradePageController {
         }
 
     }
+
+    /**
+     * add the owned territory into choice_source
+     */
     private void initializeSourceChoice() {
         Player currPlayer = gameEntity.getRiskGameBoard().getAllPlayers().get(playerID);
-
         ArrayList<Territory> selfTerr = currPlayer.getOwnedTerritories();
         choice_source.getItems().clear();
         for (Territory Terr : selfTerr) {
@@ -128,6 +138,9 @@ public class UpgradePageController {
         }
     }
 
+    /**
+     * initialize the destination choices and unit choices according to src territory chosen
+     */
     public void onSelectSrcCheckBox(){
         choice_source.setOnAction(e -> {
             // Retrieve the selected value from the choice box

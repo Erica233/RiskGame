@@ -188,7 +188,7 @@ void test_updateCombatResult2() throws Exception {
         b.initE2Map();
         //Player p1 = b.getAllPlayers().get(0);
         Player p2 = b.getAllPlayers().get(1);
-        ArrayList<Unit> units = b.initializeArrUnits();
+        ArrayList<Unit> units = b.initBasicUnits(0);
         units.get(0).setNumUnits(2);
         Action action1 = new Action("A", "b", "a", units);
         b.executeAttack(action1, p2);
@@ -203,7 +203,7 @@ void test_updateCombatResult2() throws Exception {
         Player p2 = b.getAllPlayers().get(1);
         p1.findOwnedTerritoryByName("a").setFood(100);
         p2.findOwnedTerritoryByName("b").setFood(100);
-        ArrayList<Unit> units = b.initializeArrUnits();
+        ArrayList<Unit> units = b.initBasicUnits(0);
         units.get(0).setNumUnits(2);
         Action action = new Action("A", "a", "b", units);
         Action action1 = new Action("A", "b", "a", units);

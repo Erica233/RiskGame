@@ -210,8 +210,6 @@ public class Game {
         if (actionType.toUpperCase(Locale.ROOT).equals("D")) {
             return null;
         }
-
-
         String srcPrompt = "Please enter the name of your source territory:";
         String srcName = inputHandler.readStringFromUser(srcPrompt);
         String dstName = srcName;

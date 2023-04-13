@@ -1,22 +1,12 @@
 package edu.duke.ece651.team3.client.controller;
-
-import edu.duke.ece651.team3.client.App;
 import edu.duke.ece651.team3.client.ShowViews;
-import edu.duke.ece651.team3.client.model.ClientCommunicator;
 import edu.duke.ece651.team3.client.model.Game;
-import edu.duke.ece651.team3.shared.Player;
-import edu.duke.ece651.team3.shared.RiskGameBoard;
-import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.event.ActionEvent;
-import javafx.scene.layout.GridPane;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -39,13 +29,21 @@ public class StartController implements Initializable {
         this.stage = _stage;
     }
 
+    /**
+     * if the player click the quit button, close the window
+     * @param ae
+     * @throws IOException
+     */
     @FXML
     public void onQuitButton(ActionEvent ae) throws IOException {
         Stage currStage = (Stage) quitButton.getScene().getWindow();
         currStage.close();
-        //gameEntity.closePipes();
     }
 
+    /**
+     * if user click the start button, connect to the server and start the game
+     * @param ae
+     */
     @FXML
     public void onStartButton(ActionEvent ae){
         waitInfo.setVisible(true);

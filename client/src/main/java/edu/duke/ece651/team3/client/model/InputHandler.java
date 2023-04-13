@@ -62,33 +62,4 @@ public class InputHandler {
         }
         return unitsChange;
     }
-
-//    /**
-//     * This method reads one action from the user input
-//     * It check if input is the right format (e.g. string, numeric)
-//     * @return Action it reads from user
-//     * @throws IOException
-//     */
-//    public Action readOneAction(RiskGameBoard riskGameBoard, int playerId) throws IOException {
-//        String choicePrompt = "You are the " + riskGameBoard.getAllPlayers().get(playerId).getColor() + " player, what would you like to do?\n" +
-//                " (M)ove\n" +
-//                " (A)ttack\n" +
-//                " (U)pgrade\n" +
-//                " (D)one";
-//        String actionType = readStringFromUser(choicePrompt);
-//        if (actionType.toUpperCase(Locale.ROOT).equals("D")) {
-//            return null;
-//        }
-//
-//        String srcPrompt = "Please enter the name of your source territory:";
-//        String srcName = readStringFromUser(srcPrompt);
-//        String dstName = srcName;
-//        if(!actionType.toUpperCase(Locale.ROOT).equals("U")){
-//            String dstPrompt = "Please enter the name of your destination territory:";
-//            dstName = readStringFromUser(dstPrompt);
-//        }
-//        ArrayList<Unit> unitsToMove = readNumUnitsMap();
-//
-//        return new Action(actionType, srcName, dstName, unitsToMove);
-//    }
 }

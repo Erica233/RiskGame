@@ -17,9 +17,9 @@ public class Territory implements Serializable, Comparable<Territory> {
     private ArrayList<Unit> attackerUnits = new ArrayList<>();
 
     /**
-     * Initialize the units, given the Infantry number
+     * Initialize the units, given the Private number
      *
-     * @param num the number of Infantry units
+     * @param num the number of Private units
      */
     public void initBasicUnits(int num) {
         units.add(new Private(num));
@@ -44,10 +44,10 @@ public class Territory implements Serializable, Comparable<Territory> {
     }
 
     /**
-     * This constructor constructs a territory with name, and num of basic units (Infantry)
+     * This constructor constructs a territory with name, and num of basic units (Private)
      *
      * @param _name the name of the Territory
-     * @param num the number of Infantry units
+     * @param num the number of Private units
      */
     public Territory(String _name, int num, int _food, int _tech) {
         this.territoryName = _name;
@@ -60,11 +60,13 @@ public class Territory implements Serializable, Comparable<Territory> {
     }
 
     /**
-     * Constructs a Territory with specified name, num of basic units (Infantry), and neighbor territories
+     * Constructs a Territory with specified name, num of basic units (Private), and neighbor territories
      *
      * @param _name the name of the Territory
      * @param _neighborsDist neighbors and their relative distance
-     * @param num the number of basic units (Infantry)
+     * @param num the number of basic units (Private)
+     * @param _food food number
+     * @param _tech tech number
      */
     public Territory(String _name, HashMap<Territory, Integer> _neighborsDist, int num, int _food, int _tech) {
         this.territoryName = _name;
@@ -85,7 +87,10 @@ public class Territory implements Serializable, Comparable<Territory> {
     public boolean equals(Object other) {
         if (other.getClass().equals(getClass())) {
             Territory territory = (Territory) other;
-            return numUnits == territory.getNumUnits() && territoryName.equals(territory.getTerritoryName()) && hasSameNeighborsDist(territory) && hasSameUnits(territory) && food == territory.getFood() && tech == territory.getTech();
+            return numUnits == territory.getNumUnits() &&
+                    territoryName.equals(territory.getTerritoryName()) &&
+                    hasSameNeighborsDist(territory) && hasSameUnits(territory) &&
+                    food == territory.getFood() && tech == territory.getTech();
         }
         return false;
     }
@@ -146,6 +151,10 @@ public class Territory implements Serializable, Comparable<Territory> {
         return true;
     }
 
+    /**
+     * sort by the territory name of the all territories
+     * @return sorted hashmap of the territory information
+     */
     public HashMap<String, Integer> sortNeighDistByTerriName() {
         ArrayList<Map.Entry<Territory, Integer>> list = new ArrayList<>(neighborsDist.entrySet());
         Collections.sort(list, new Comparator<Map.Entry<Territory, Integer> >() {
@@ -212,7 +221,7 @@ public class Territory implements Serializable, Comparable<Territory> {
     /**
      * to check whether is object's neighbor
      * @param territoryToCheck territory To Check whether is its neighbor
-     * @return true if it is neighbrr false if it is not neighbor
+     * @return true if it is neighbor false if it is not neighbor
      */
     public boolean checkExistNeighbor(String territoryToCheck){
         for (Territory neighbor : neighborsDist.keySet()) {
@@ -291,11 +300,17 @@ public class Territory implements Serializable, Comparable<Territory> {
         updateNumUnits();
     }
 
+    /**
+     * add one private unit in the units
+     */
     public void increaseOneBasicUnit() {
         units.get(0).setNumUnits(units.get(0).getNumUnits() + 1);
         updateNumUnits();
     }
 
+    /**
+     * add food resources by 10 and technology resources by 50
+     */
     public void increaseResource() {
         setFood(getFood() + 10);
         setTech(getTech() + 50);
