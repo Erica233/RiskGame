@@ -82,6 +82,11 @@ public class Game {
         return turnResults;
     }
 
+    public HashMap<Integer, String> recvEventResults()throws IOException, ClassNotFoundException {
+        HashMap<Integer, String> eventResults = clientCommunicator.recvEventResults();
+        return eventResults;
+    }
+
     /**
      * This method plays one turn for the client.
      * It receives a board from the server, and checks all actions
