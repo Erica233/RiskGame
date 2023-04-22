@@ -158,6 +158,9 @@ public class Game {
         if (action.isUpgradeType()) {
             riskGameBoard.executeUpgrade(action, playerId);
         }
+        if (action.isEventType()) {
+//            riskGameBoard.executeEvent(action, actionsList);
+        }
         System.out.println("board after execution check: \n" + riskGameBoard.displayBoard());
     }
 
@@ -193,6 +196,11 @@ public class Game {
                 //problem = "Invalid Attack!\n";
                 throw new IllegalArgumentException("Your upgrade is invalid!\n");
             }
+        }else if (action.isEventType()) {
+                EventRuleChecker eventRuleChecker = new EventRuleChecker(action, riskGameBoard);
+            if (!eventRuleChecker.checkValidAction(action, (RiskGameBoard) riskGameBoard, riskGameBoard.getAllPlayers().get(playerId))) {
+                throw new IllegalArgumentException("Your event is invalid!\n");
+            }
         }else {
             throw new IllegalArgumentException("Your action type is invalid!\n");
         }
@@ -210,6 +218,7 @@ public class Game {
                 " (M)ove\n" +
                 " (A)ttack\n" +
                 " (U)pgrade\n" +
+                " (E)vent\n" +
                 " (D)one";
         String actionType = inputHandler.readStringFromUser(choicePrompt);
         if (actionType.toUpperCase(Locale.ROOT).equals("D")) {
@@ -218,7 +227,7 @@ public class Game {
         String srcPrompt = "Please enter the name of your source territory:";
         String srcName = inputHandler.readStringFromUser(srcPrompt);
         String dstName = srcName;
-        if(!actionType.toUpperCase(Locale.ROOT).equals("U")){
+        if(!actionType.toUpperCase(Locale.ROOT).equals("U") && !actionType.toUpperCase(Locale.ROOT).equals("E")){
             String dstPrompt = "Please enter the name of your destination territory:";
             dstName = inputHandler.readStringFromUser(dstPrompt);
         }

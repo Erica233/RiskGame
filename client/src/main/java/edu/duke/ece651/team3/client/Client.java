@@ -50,8 +50,6 @@ public class Client {
             client.playGame();
             client.closePipes();
         } catch (Exception e) {
-//            System.err.println("in main: " + e.getMessage());
-//            System.exit(-1);
         }
     }
 
@@ -72,10 +70,6 @@ public class Client {
                     System.out.println("Game ends!");
                     return;
                 }
-            //}
-//            catch (Exception e) {
-//                System.err.println("playGame: " + e.getMessage());
-//            }
         } while (true);
     }
 
@@ -108,7 +102,6 @@ public class Client {
      */
     public int recvGameResult() throws IOException {
         int gameResult = objectFromServer.readInt();
-        //System.out.println("Game result is :" + gameResult);
         return gameResult;
     }
 
@@ -162,8 +155,6 @@ public class Client {
             } catch (IllegalArgumentException e) {
                 System.out.println("Your action does not have correct format: " + e.getMessage());
             } catch (Exception e) {
-//                System.out.println("handleAllActions");
-//                e.printStackTrace();
             }
         } while (true);
     }
@@ -343,7 +334,6 @@ public class Client {
     public RiskGameBoard recvBoard() throws IOException, ClassNotFoundException {
 
         RiskGameBoard b = (RiskGameBoard) objectFromServer.readObject();
-//        System.out.println("received board from server"+b.displayBoard());
         return b;
     }
 
