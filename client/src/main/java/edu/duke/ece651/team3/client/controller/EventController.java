@@ -44,16 +44,10 @@ public class EventController {
     @FXML
     public void onCheckValidEvent(ActionEvent ae) throws Exception {
         ArrayList<Unit> units = RiskGameBoard.initBasicUnits(0);
-//        for (int level = 0; level < units.size(); level++) {
-//            if (allChoiceBoxes.get(level).getValue() != null) {
-//                units.get(level).setNumUnits(allChoiceBoxes.get(level).getValue());
-//            }
-//        }
-        //TODO: Change to the event action
-        UpgradeAction upgradeAction = new UpgradeAction(choice_source.getValue(), choice_source.getValue(), units);
-        gameEntity.checkValidAction(upgradeAction);
-        gameEntity.storeActionToList(upgradeAction);
-        gameEntity.executeAction(upgradeAction);
+        EventAction eventAction = new EventAction(choice_source.getValue(), choice_source.getValue(), units);
+        gameEntity.checkValidAction(eventAction);
+        gameEntity.storeActionToList(eventAction);
+        gameEntity.executeAction(eventAction);
         ShowViews.showGameView(stage, "/ui/whole.fxml", gameEntity);
 
     }
