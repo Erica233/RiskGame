@@ -153,6 +153,9 @@ public class Game {
         if (action.isUpgradeType()) {
             riskGameBoard.executeUpgrade(action, playerId);
         }
+        if (action.isEventType()) {
+//            riskGameBoard.executeEvent(action, actionsList);
+        }
         System.out.println("board after execution check: \n" + riskGameBoard.displayBoard());
     }
 
@@ -187,6 +190,11 @@ public class Game {
             if (!upgradeRuleChecker.checkValidAction(action, (RiskGameBoard) riskGameBoard, riskGameBoard.getAllPlayers().get(playerId))) {
                 //problem = "Invalid Attack!\n";
                 throw new IllegalArgumentException("Your upgrade is invalid!\n");
+            }
+        }else if (action.isEventType()) {
+                EventRuleChecker eventRuleChecker = new EventRuleChecker(action, riskGameBoard);
+            if (!eventRuleChecker.checkValidAction(action, (RiskGameBoard) riskGameBoard, riskGameBoard.getAllPlayers().get(playerId))) {
+                throw new IllegalArgumentException("Your event is invalid!\n");
             }
         }else {
             throw new IllegalArgumentException("Your action type is invalid!\n");
