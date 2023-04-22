@@ -6,7 +6,6 @@ import com.mongodb.client.MongoDatabase;
 import edu.duke.ece651.team3.shared.*;
 
 import java.io.*;
-import java.sql.SQLOutput;
 import java.util.*;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -28,6 +27,7 @@ public class Server {
 //    private HashMap<Integer, ArrayList<Action>> attacksMap; //player ID and all attack actions this player has
     private HashMap<Integer, ArrayList<Action>> actionsMap; //player ID and all attack actions this player has
     HashMap<String, Integer> turnResults = new HashMap<>();
+
 
     /**
      * Constructs Server with port number
@@ -115,27 +115,18 @@ public class Server {
     }
 
     public static void main(String[] args) {
-        String connectionString = "mongodb+srv://risc:risc@risc.xsjq3hw.mongodb.net/?retryWrites=true&w=majority";
-        ServerApi serverApi = ServerApi.builder()
-                .version(ServerApiVersion.V1)
-                .build();
-        MongoClientSettings settings = MongoClientSettings.builder()
-                .applyConnectionString(new ConnectionString(connectionString))
-                .serverApi(serverApi)
-                .build();
         // Create a new client and connect to the server
-        try (MongoClient mongoClient = MongoClients.create(settings)) {
-            try {
-                // Send a ping to confirm a successful connection
-                MongoDatabase database = mongoClient.getDatabase("admin");
-                database.runCommand(new Document("ping", 1));
-                System.out.println("Pinged your deployment. You successfully connected to MongoDB!");
-            } catch (MongoException e) {
-                e.printStackTrace();
-            }
+        MongoClient mongoClient = ConnectDb.getMongoClient();
+        try {
+            // Send a ping to confirm a successful connection
+            MongoDatabase database = mongoClient.getDatabase("risc");
+            database.runCommand(new Document("ping", 1));
+            System.out.println("Pinged your deployment. You successfully connected to MongoDB!");
+        } catch (MongoException e) {
+            e.printStackTrace();
         }
 
-
+        //run game
         int portNum = 12345;
         try {
             Server server = new Server(portNum);
@@ -144,8 +135,6 @@ public class Server {
             System.out.println("Both clients connect to the Server successfully!\n");
             server.initGame();
             server.runGame();
-
-
             server.closePipes();
         } catch (IOException e) {
             System.err.println(e.getMessage());
