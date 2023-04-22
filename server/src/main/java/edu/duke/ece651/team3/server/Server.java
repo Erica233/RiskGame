@@ -1,11 +1,18 @@
 package edu.duke.ece651.team3.server;
 
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoClients;
+import com.mongodb.client.MongoDatabase;
 import edu.duke.ece651.team3.shared.*;
 
 import java.io.*;
 import java.util.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+
+import com.mongodb.*;
+import org.bson.Document;
+
 
 /**
  * A server to run the risc game
@@ -20,6 +27,7 @@ public class Server {
 //    private HashMap<Integer, ArrayList<Action>> attacksMap; //player ID and all attack actions this player has
     private HashMap<Integer, ArrayList<Action>> actionsMap; //player ID and all attack actions this player has
     HashMap<String, Integer> turnResults = new HashMap<>();
+
 
     /**
      * Constructs Server with port number
@@ -107,6 +115,18 @@ public class Server {
     }
 
     public static void main(String[] args) {
+        // Create a new client and connect to the server
+        MongoClient mongoClient = ConnectDb.getMongoClient();
+        try {
+            // Send a ping to confirm a successful connection
+            MongoDatabase database = mongoClient.getDatabase("risc");
+            database.runCommand(new Document("ping", 1));
+            System.out.println("Pinged your deployment. You successfully connected to MongoDB!");
+        } catch (MongoException e) {
+            e.printStackTrace();
+        }
+
+        //run game
         int portNum = 12345;
         try {
             Server server = new Server(portNum);
@@ -115,8 +135,6 @@ public class Server {
             System.out.println("Both clients connect to the Server successfully!\n");
             server.initGame();
             server.runGame();
-
-
             server.closePipes();
         } catch (IOException e) {
             System.err.println(e.getMessage());
