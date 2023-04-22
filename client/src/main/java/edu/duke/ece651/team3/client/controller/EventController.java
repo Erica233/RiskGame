@@ -49,6 +49,7 @@ public class EventController {
 //                units.get(level).setNumUnits(allChoiceBoxes.get(level).getValue());
 //            }
 //        }
+        //TODO: Change to the event action
         UpgradeAction upgradeAction = new UpgradeAction(choice_source.getValue(), choice_source.getValue(), units);
         gameEntity.checkValidAction(upgradeAction);
         gameEntity.storeActionToList(upgradeAction);
