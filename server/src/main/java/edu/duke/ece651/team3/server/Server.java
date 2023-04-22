@@ -1,5 +1,8 @@
 package edu.duke.ece651.team3.server;
 
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoClients;
+import com.mongodb.client.MongoDatabase;
 import edu.duke.ece651.team3.shared.*;
 
 import java.io.*;
@@ -7,6 +10,9 @@ import java.sql.SQLOutput;
 import java.util.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+
+import com.mongodb.*;
+import org.bson.Document;
 
 
 /**
@@ -109,6 +115,27 @@ public class Server {
     }
 
     public static void main(String[] args) {
+        String connectionString = "mongodb+srv://risc:risc@risc.xsjq3hw.mongodb.net/?retryWrites=true&w=majority";
+        ServerApi serverApi = ServerApi.builder()
+                .version(ServerApiVersion.V1)
+                .build();
+        MongoClientSettings settings = MongoClientSettings.builder()
+                .applyConnectionString(new ConnectionString(connectionString))
+                .serverApi(serverApi)
+                .build();
+        // Create a new client and connect to the server
+        try (MongoClient mongoClient = MongoClients.create(settings)) {
+            try {
+                // Send a ping to confirm a successful connection
+                MongoDatabase database = mongoClient.getDatabase("admin");
+                database.runCommand(new Document("ping", 1));
+                System.out.println("Pinged your deployment. You successfully connected to MongoDB!");
+            } catch (MongoException e) {
+                e.printStackTrace();
+            }
+        }
+
+
         int portNum = 12345;
         try {
             Server server = new Server(portNum);
