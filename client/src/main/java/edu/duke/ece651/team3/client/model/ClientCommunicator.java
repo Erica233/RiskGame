@@ -63,6 +63,10 @@ public class ClientCommunicator {
         return turnResults;
     }
 
+    public HashMap<Integer, String> recvEventResults() throws IOException, ClassNotFoundException {
+        HashMap<Integer, String> eventResults = (HashMap<Integer, String>) objectFromServer.readObject();
+        return eventResults;
+    }
     /**
      * This method receives the board from the Server
      * @return the risc board received from the server

@@ -7,10 +7,12 @@ import edu.duke.ece651.team3.shared.MyName;
 
 
 public class App {
-  public String getMessage() {
-    return "Hello from the server for "+ MyName.getName();
-  }
+//  //public String getMessage() {
+//    return "Hello from the server for "+ MyName.getName();
+//  }
   public static void main(String[] args) {
+    int num = 1;
+    System.out.println(num/2);
 //    App a = new App();
 //    System.out.println(a.getMessage());
   }

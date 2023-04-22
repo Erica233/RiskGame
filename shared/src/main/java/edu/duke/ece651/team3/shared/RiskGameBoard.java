@@ -197,29 +197,6 @@ public class RiskGameBoard implements Board, Serializable {
     }
 
     /**
-     *
-     */
-    public String executeEvent(HashMap<Integer, ArrayList<Action>> actionsMap){
-        String res = null;
-        for(int i = 0; i < actionsMap.keySet().size(); i++){
-            Action myEvent = null;
-            for(int j = 0; j < actionsMap.get(i).size(); j++){
-                if(actionsMap.get(i).get(j).isEventType()){
-                    myEvent = actionsMap.get(i).get(j);
-                    break;
-                }
-            }
-            int num = 1 + new Random().nextInt(44);
-            if(num >= 1 && num <= 5){
-
-                //return
-            }
-            return null;
-        }
-        return null;
-    }
-
-    /**
      * This method checks Upgrade action
      * @param myUpgrade
      * @param currPlayer
