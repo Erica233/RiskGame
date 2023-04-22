@@ -16,7 +16,7 @@ public class Action implements Serializable {
 
     /**
      * This constructor takes 4 elements
-     * @param _actionType the string indicates the action type, i.e : M, A, U, D
+     * @param _actionType the string indicates the action type, i.e : M, A, U, E, D
      * @param _srcName the string indicates the src territory name
      * @param _dstName the string indicates the dst territory name
      */
@@ -45,11 +45,19 @@ public class Action implements Serializable {
     }
 
     /**
-     * This method checks whether the action type is the move type
+     * This method checks whether the action type is the upgrade type
      * @return true if it is Move type, false if it not
      */
     public boolean isUpgradeType(){
         return actionType.toUpperCase(Locale.ROOT).equals("U");
+    }
+
+    /**
+     * This method checks whether the action type is the random event type
+     * @return true if it is Move type, false if it not
+     */
+    public boolean isEventType(){
+        return actionType.toUpperCase(Locale.ROOT).equals("E");
     }
 
 
