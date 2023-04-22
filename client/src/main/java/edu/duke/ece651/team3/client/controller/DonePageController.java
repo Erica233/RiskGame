@@ -22,6 +22,8 @@ public class DonePageController {
 
     @FXML
     private Label gameResultText;
+    @FXML
+    private Label eventResult;
 
     @FXML
     private Button quitButton;
@@ -71,6 +73,8 @@ public class DonePageController {
         }
         HashMap<String, Integer> turnResultsMap = gameEntity.recvTurnResults();
         HashMap<Integer, String> eventResultsMap = gameEntity.recvEventResults();
+        eventResult.setText(eventResultsMap.get(playerId));
+
         String occupyResults = "\nYou occupy: \n";
         String loseResults = "\nYou lose: \n";
         if (turnResultsMap.size() == 0) {

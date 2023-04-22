@@ -22,7 +22,7 @@
                      </padding>
                      <children>
                         <Group />
-                        <Button fx:id="nextButton" layoutX="90.0" layoutY="430.0" mnemonicParsing="false" onAction="#onCheckValidEvent" prefHeight="40.0" prefWidth="111.0" text="Next">
+                        <Button fx:id="nextButton" layoutX="90.0" layoutY="406.0" mnemonicParsing="false" onAction="#onCheckValidEvent" prefHeight="40.0" prefWidth="111.0" text="Next">
                            <font>
                               <Font size="20.0" />
                            </font>
@@ -56,6 +56,7 @@
                               <Font size="15.0" />
                            </font></Label>
                         <Label layoutX="25.0" layoutY="290.0" prefHeight="17.0" prefWidth="233.0" text="Which Territory you want to do EVENT on?" wrapText="true" />
+                        <Label fx:id="waitInfo" layoutX="126.0" layoutY="465.0" text="Label" visible="false" />
                      </children>
                   </AnchorPane>
                </children>
