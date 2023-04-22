@@ -173,12 +173,12 @@ public class Server {
         return economics;
     }
 
-    String getInfor(int num, Action myEvent){
+    String getInfor(int num, Action myEvent, int playerId){
         ArrayList<String> economics = getAllEventName();
         String res = null;
         if(num >= 0 && num <= 9){
             num = num/2;//0-4
-            Territory t = riscBoard.getAllPlayers().get(num).findOwnedTerritoryByName(myEvent.getSrcName());
+            Territory t = riscBoard.getAllPlayers().get(playerId).findOwnedTerritoryByName(myEvent.getSrcName());
             if(t.getFood()-4-num >= 0){
                 t.setFood(t.getFood()-4-num);
             }
@@ -196,29 +196,29 @@ public class Server {
         }
         else if(num >= 10 && num <= 19){
             num = num/2;//5-9
-            Territory t = riscBoard.getAllPlayers().get(num).findOwnedTerritoryByName(myEvent.getSrcName());
+            Territory t = riscBoard.getAllPlayers().get(playerId).findOwnedTerritoryByName(myEvent.getSrcName());
             t.setFood(t.getFood()-5+num);
             t.setTech(t.getTech()-5+num);
             return "Last random event is " + economics.get(num)+ ". You get " + (num-3) +" food resources and "+
                     (num-3) +" technology resources.";
         }
         else if(num >= 20 && num <= 25){
-            Territory t = riscBoard.getAllPlayers().get(num).findOwnedTerritoryByName(myEvent.getSrcName());
+            Territory t = riscBoard.getAllPlayers().get(playerId).findOwnedTerritoryByName(myEvent.getSrcName());
             t.getUnits().get(num-20).setNumUnits(t.getUnits().get(num-20).getNumUnits()+1);
             return "Last random event is get new unit. You get 1 level " + (num-20) +"unit";
         }
         else if(num >= 26 && num <= 31) {
-            Territory t = riscBoard.getAllPlayers().get(num).findOwnedTerritoryByName(myEvent.getSrcName());
+            Territory t = riscBoard.getAllPlayers().get(playerId).findOwnedTerritoryByName(myEvent.getSrcName());
             t.getUnits().get(num-26).setNumUnits(t.getUnits().get(num-26).getNumUnits()-1);
             return "Last random event is get new unit. You lose 1 level " + (num-26) +"unit";
         }
         else if(num >= 32 && num <= 37) {
-            Territory t = riscBoard.getAllPlayers().get(num).findOwnedTerritoryByName(myEvent.getSrcName());
+            Territory t = riscBoard.getAllPlayers().get(playerId).findOwnedTerritoryByName(myEvent.getSrcName());
             t.getUnits().get(num-32).setNumUnits(t.getUnits().get(num-32).getNumUnits()+2);
             return "Last random event is get new unit. You get 2 level " + (num-32) +"unit";
         }
         else if(num >= 38 && num <= 43) {
-            Territory t = riscBoard.getAllPlayers().get(num).findOwnedTerritoryByName(myEvent.getSrcName());
+            Territory t = riscBoard.getAllPlayers().get(playerId).findOwnedTerritoryByName(myEvent.getSrcName());
             t.getUnits().get(num-38).setNumUnits(t.getUnits().get(num-38).getNumUnits()-2);
             return "Last random event is get new unit. You lose 2 level " + (num-38) +"unit";
         }
@@ -237,7 +237,7 @@ public class Server {
                 if(actionsMap.get(i).get(j).isEventType()){
                     Action myEvent = actionsMap.get(i).get(j);
                     int num = new Random().nextInt(44);//0-43
-                    res.put(i, getInfor(num, myEvent));
+                    res.put(i, getInfor(num, myEvent, i));
                     break;
                 }
             }
