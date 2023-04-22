@@ -164,6 +164,14 @@ public class Player implements Serializable {
     }
 
     /**
+     * execute the event by decreasing its territory's technology and food resources by 2
+     */
+    public void executeEvent(Action event){
+        Territory currTerr = findOwnedTerritoryByName(event.getSrcName());
+        currTerr.decreaseResource();
+    }
+
+    /**
      * calculate the total cost of attack
      * @param myAttack
      * @param currPlayer

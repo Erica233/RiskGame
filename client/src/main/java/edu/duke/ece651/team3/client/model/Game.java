@@ -159,7 +159,7 @@ public class Game {
             riskGameBoard.executeUpgrade(action, playerId);
         }
         if (action.isEventType()) {
-//            riskGameBoard.executeEvent(action, actionsList);
+            riskGameBoard.executeEvent(action, playerId);
         }
         System.out.println("board after execution check: \n" + riskGameBoard.displayBoard());
     }
