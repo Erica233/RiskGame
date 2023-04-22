@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.text.*?>
-<?import javafx.geometry.*?>
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Group?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="600.0" prefWidth="924.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.duke.ece651.team3.client.controller.DonePageController">
+<AnchorPane prefHeight="600.0" prefWidth="924.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.duke.ece651.team3.client.controller.DonePageController">
     <children>
         <SplitPane dividerPositions="0.6" prefHeight="400.0" prefWidth="647.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <items>
@@ -48,12 +48,12 @@
                                 </Group>
                                 <Group fx:id="sourceChoice1" layoutY="39.0" />
                                 <Group fx:id="LV0" layoutY="-20.0" />
-                                <Label fx:id="turnResults" layoutX="50.0" layoutY="160.0" text="Text">
+                                <Label fx:id="turnResults" layoutX="50.0" layoutY="160.0" prefHeight="89.0" prefWidth="193.0" text="Text" wrapText="true">
                                     <font>
                                         <Font size="12.0" />
                                     </font>
                                 </Label>
-                        <Label fx:id="eventResult" layoutX="59.0" layoutY="295.0" text="1" wrapText="true">
+                        <Label fx:id="eventResult" layoutX="55.0" layoutY="295.0" prefHeight="89.0" prefWidth="193.0" text="Text" wrapText="true">
                            <font>
                               <Font size="12.0" />
                            </font>
