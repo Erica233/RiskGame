@@ -205,6 +205,7 @@ public class Game {
                 " (M)ove\n" +
                 " (A)ttack\n" +
                 " (U)pgrade\n" +
+                " (E)vent\n" +
                 " (D)one";
         String actionType = inputHandler.readStringFromUser(choicePrompt);
         if (actionType.toUpperCase(Locale.ROOT).equals("D")) {
@@ -213,7 +214,7 @@ public class Game {
         String srcPrompt = "Please enter the name of your source territory:";
         String srcName = inputHandler.readStringFromUser(srcPrompt);
         String dstName = srcName;
-        if(!actionType.toUpperCase(Locale.ROOT).equals("U")){
+        if(!actionType.toUpperCase(Locale.ROOT).equals("U") && !actionType.toUpperCase(Locale.ROOT).equals("E")){
             String dstPrompt = "Please enter the name of your destination territory:";
             dstName = inputHandler.readStringFromUser(dstPrompt);
         }

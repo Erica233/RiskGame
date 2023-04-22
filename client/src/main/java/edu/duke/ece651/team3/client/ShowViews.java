@@ -24,6 +24,7 @@ public class ShowViews {
         controllers.put(UpgradePageController.class, new UpgradePageController(game.getPlayerId(), stage, game));
         controllers.put(DonePageController.class, new DonePageController(game.getPlayerId(), stage, game));
         controllers.put(ResultPageController.class, new ResultPageController(game.getPlayerId(), stage, game));
+        controllers.put(EventController.class, new EventController(game.getPlayerId(), stage, game));
         //TODO: add new controller
         loader.setControllerFactory((c) -> {
             return controllers.get(c);
