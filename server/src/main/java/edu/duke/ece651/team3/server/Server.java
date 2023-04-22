@@ -160,16 +160,16 @@ public class Server {
 
     ArrayList<String> getAllEventName(){
         ArrayList<String> economics = new ArrayList<>();
-        economics.set(0, "Economic Recession");
-        economics.set(1, "Oil Crisis");
-        economics.set(2, "Dot Com Bubble");
-        economics.set(3, "Financial Crisis");
-        economics.set(4, "Economic Depression");
-        economics.set(5, "Economic Growth");
-        economics.set(6, "The Roaring Period");
-        economics.set(7, "Economic Expansion");
-        economics.set(8, "Technology Boom");
-        economics.set(9, "Industry Revolution");
+        economics.add(0, "Economic Recession");
+        economics.add(1, "Oil Crisis");
+        economics.add(2, "Dot Com Bubble");
+        economics.add(3, "Financial Crisis");
+        economics.add(4, "Economic Depression");
+        economics.add(5, "Economic Growth");
+        economics.add(6, "The Roaring Period");
+        economics.add(7, "Economic Expansion");
+        economics.add(8, "Technology Boom");
+        economics.add(9, "Industry Revolution");
         return economics;
     }
 
