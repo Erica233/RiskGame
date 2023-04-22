@@ -3,11 +3,9 @@ package edu.duke.ece651.team3.server;
 import edu.duke.ece651.team3.shared.*;
 
 import java.io.*;
-import java.sql.SQLOutput;
 import java.util.*;
 import java.net.ServerSocket;
 import java.net.Socket;
-
 
 /**
  * A server to run the risc game
