@@ -3,8 +3,6 @@ package edu.duke.ece651.team3.server;
 import com.mongodb.*;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
-import com.mongodb.client.MongoDatabase;
-import org.bson.Document;
 
 public class ConnectDb {
     private static MongoClient mongoClient;
