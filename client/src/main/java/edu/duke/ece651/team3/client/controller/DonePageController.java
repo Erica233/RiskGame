@@ -72,7 +72,9 @@ public class DonePageController {
             playerColor.setText("You are the Blue Player. Your last turn results are:");
         }
         HashMap<String, Integer> turnResultsMap = gameEntity.recvTurnResults();
+        System.out.println("Has received turnResultMap?");
         HashMap<Integer, String> eventResultsMap = gameEntity.recvEventResults();
+        System.out.println("Has received eventResultMap?");
         eventResult.setText(eventResultsMap.get(playerId));
 
         String occupyResults = "\nYou occupy: \n";
