@@ -50,7 +50,7 @@ public class EventController {
         gameEntity.checkValidAction(eventAction);
         gameEntity.storeActionToList(eventAction);
         gameEntity.executeAction(eventAction);
-        ShowViews.showGameView(stage, "/ui/donePage.fxml", gameEntity);
+        ShowViews.showGameView(stage, "/ui/whole.fxml", gameEntity);
 
     }
 
