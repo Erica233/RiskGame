@@ -19,6 +19,7 @@ import org.bson.codecs.Codec;
 import org.bson.codecs.configuration.CodecRegistries;
 import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.codecs.pojo.PojoCodecProvider;
+import org.bson.types.Binary;
 import org.slf4j.LoggerFactory;
 
 
@@ -156,11 +157,16 @@ public class Server {
 
         // retrieve the inserted object from the collection
         Document doc_retr = collection.find().first();
+        System.out.println("curr doc is: " + doc_retr);
 
         // Read the data from the document
-        byte[] bytes_retr = (byte[]) doc_retr.get("data");
+//        System.out.println(doc_retr.get("data") + " It is instance of byte[]? " + doc_retr.get("data") instanceof byte[]);
+//        byte[] bytes_retr = (byte[]) doc_retr.get("data");
 
-        // 将 ObjectStream 数据反序列化为 Java 对象
+        Binary temp = (Binary) doc_retr.get("data");
+        byte[] bytes_retr = temp.getData();
+
+        // deseralization
         ByteArrayInputStream bis = new ByteArrayInputStream(bytes_retr);
         ObjectInputStream in = new ObjectInputStream(bis);
         RiskGameBoard riskGameBoard_retr = (RiskGameBoard) in.readObject();
