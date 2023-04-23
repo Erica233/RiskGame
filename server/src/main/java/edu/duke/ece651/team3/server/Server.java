@@ -36,7 +36,7 @@ public class Server {
     private HashMap<Integer, ArrayList<Action>> actionsMap; //player ID and all attack actions this player has
     HashMap<String, Integer> turnResults = new HashMap<>();
 
-    static MongoCollection<RiskGameBoard> collection; //The collection that stores all stages of RiskGameBoard
+    static MongoCollection<Document> collection; //The collection that stores all stages of RiskGameBoard
 
     static MongoDatabase database;
 
@@ -125,22 +125,54 @@ public class Server {
         }
     }
 
-    public static void main(String[] args) {
-            // Create a new client and connect to the server
-            MongoClient mongoClient = ConnectDb.getMongoClient();
-            ((LoggerContext) LoggerFactory.getILoggerFactory()).getLogger("org.mongodb.driver").setLevel(Level.ERROR);
-            // Send a ping to confirm a successful connection
-            database = mongoClient.getDatabase("test_luxin");
+    public static void main(String[] args) throws Exception {
+        // Create a new client and connect to the server
+        MongoClient mongoClient = ConnectDb.getMongoClient();
+        ((LoggerContext) LoggerFactory.getILoggerFactory()).getLogger("org.mongodb.driver").setLevel(Level.ERROR);
+        // Send a ping to confirm a successful connection
+        database = mongoClient.getDatabase("test_luxin");
 
 //            RiskGameBoard riskGameBoard = new RiskGameBoard();
-            CodecRegistry pojoCodecRegistry = CodecRegistries.fromProviders(PojoCodecProvider.builder().automatic(true).build());
+        CodecRegistry pojoCodecRegistry = CodecRegistries.fromProviders(PojoCodecProvider.builder().automatic(true).build());
 
-            // get a handle to the MongoDB collection
-            collection = database.getCollection("allRiskGameBoards", RiskGameBoard.class)
-                    .withCodecRegistry(pojoCodecRegistry);
+        // get a handle to the MongoDB collection
+        collection = database.getCollection("test_luxin");
+
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        ObjectOutputStream out = new ObjectOutputStream(bos);
+
+        RiskGameBoard riskGameBoard = new RiskGameBoard();
+        riskGameBoard.initE2Map();
+        out.writeObject(riskGameBoard);
+        out.flush();
+
+        // transfer serialized string to BSON
+        byte[] bytes = bos.toByteArray();
+        Document doc = new Document("data", bytes);
+
+        // store the document into MongoDB 中
+        collection.insertOne(doc);
 
 
-            System.out.println("Pinged your deployment. You successfully connected to MongoDB!");
+        // retrieve the inserted object from the collection
+        Document doc_retr = collection.find().first();
+
+        // Read the data from the document
+        byte[] bytes_retr = (byte[]) doc.get("data");
+
+        // 将 ObjectStream 数据反序列化为 Java 对象
+        ByteArrayInputStream bis = new ByteArrayInputStream(bytes_retr);
+        ObjectInputStream in = new ObjectInputStream(bis);
+        RiskGameBoard riskGameBoard_retr = (RiskGameBoard) in.readObject();
+        System.out.println("The player0's first territory should be a: "
+                + riskGameBoard_retr.getAllPlayers().get(0).getOwnedTerritories().get(0).getUnits().get(0).getUnitName());
+
+        // close all streams
+        bos.close();
+        out.close();
+        in.close();
+        bis.close();
+
 
         //run game
         int portNum = 12345;
@@ -280,21 +312,25 @@ public class Server {
     public void sendBoardToAllClients() throws IOException {
         // insert the RiskGameBoard object into the collection
         // register a codec for the RiskGameBoard class
-        CodecRegistry pojoCodecRegistry = CodecRegistries.fromProviders(PojoCodecProvider.builder().automatic(true).build());
-        MongoCollection<RiskGameBoard> collection = database.getCollection("test_luxin", RiskGameBoard.class)
-                .withCodecRegistry(pojoCodecRegistry);
+//        CodecRegistry pojoCodecRegistry = CodecRegistries.fromProviders(PojoCodecProvider.builder().automatic(true).build());
+//        MongoCollection<Document> collection = database.getCollection("test_luxin", RiskGameBoard.class)
+//                .withCodecRegistry(pojoCodecRegistry);
 
-        collection.insertOne(riscBoard);
 
-        // retrieve the inserted object from the collection
-        RiskGameBoard retrievedBoard = collection.find().first();
-
-        // check if the retrieved object is not null
-        if (retrievedBoard != null) {
-            System.out.println("Retrieved board: " + retrievedBoard);
-        } else {
-            System.out.println("Board not found.");
-        }
+//        Document boardDoc = new Document("currBoard", riscBoard);
+//
+//        collection.insertOne(boardDoc);
+////        collection.insertOne(riscBoard);
+//
+//        // retrieve the inserted object from the collection
+//        Document retrievedBoard = collection.find().first();
+//
+//        // check if the retrieved object is not null
+//        if (retrievedBoard != null) {
+//            System.out.println("Retrieved board: " + retrievedBoard);
+//        } else {
+//            System.out.println("Board not found.");
+//        }
         objectsToClients.get(0).writeObject(riscBoard);
         objectsToClients.get(1).writeObject(riscBoard);
         objectsToClients.get(0).reset();
