@@ -116,15 +116,15 @@ public class Server {
 
     public static void main(String[] args) {
         // Create a new client and connect to the server
-        MongoClient mongoClient = ConnectDb.getMongoClient();
-        try {
-            // Send a ping to confirm a successful connection
-            MongoDatabase database = mongoClient.getDatabase("risc");
-            database.runCommand(new Document("ping", 1));
-            System.out.println("Pinged your deployment. You successfully connected to MongoDB!");
-        } catch (MongoException e) {
-            e.printStackTrace();
-        }
+//        MongoClient mongoClient = ConnectDb.getMongoClient();
+//        try {
+//            // Send a ping to confirm a successful connection
+//            MongoDatabase database = mongoClient.getDatabase("risc");
+//            database.runCommand(new Document("ping", 1));
+//            System.out.println("Pinged your deployment. You successfully connected to MongoDB!");
+//        } catch (MongoException e) {
+//            e.printStackTrace();
+//        }
 
         //run game
         int portNum = 12345;

@@ -66,7 +66,7 @@ public class StartController implements Initializable {
                         @Override
                         public void run() {
                             try {
-                                ShowViews.showGameView(stage, "/ui/whole.fxml", gameEntity);
+                                ShowViews.showGameView(stage, "/ui/loginPage.fxml", gameEntity);
                             } catch (IOException e) {
                                 throw new RuntimeException(e);
                             }
