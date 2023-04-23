@@ -3,19 +3,17 @@
  */
 package edu.duke.ece651.team3.client;
 
+import com.mongodb.client.MongoClient;
 import edu.duke.ece651.team3.client.controller.StartController;
 import edu.duke.ece651.team3.client.model.Game;
 import edu.duke.ece651.team3.shared.*;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.HashMap;
 
 public class App extends Application {
   private Stage stage;
@@ -54,6 +52,9 @@ public class App extends Application {
   }
 
   public static void main(String[] args) {
+    MongoClient mongoClient = ConnectDb.getMongoClient();
+    ConnectDb.connectToDb("riscDb");
+
     launch();
   }
 
