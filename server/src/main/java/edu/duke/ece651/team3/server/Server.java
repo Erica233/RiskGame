@@ -207,28 +207,36 @@ public class Server {
             t.setFood(t.getFood()-2);
             t.setTech(t.getTech()-2);
             t.getUnits().get(num-20).setNumUnits(t.getUnits().get(num-20).getNumUnits()+1);
-            return "Last random event is get new unit.\nYou get 1 level " + (num-20) +"unit";
+            return "Last random event is getting new unit.\nYou get 1 level " + (num-20) +"unit";
         }
         else if(num >= 26 && num <= 31) {
             Territory t = riscBoard.getAllPlayers().get(playerId).findOwnedTerritoryByName(myEvent.getSrcName());
             t.setFood(t.getFood()-2);
             t.setTech(t.getTech()-2);
-            t.getUnits().get(num-26).setNumUnits(t.getUnits().get(num-26).getNumUnits()-1);
-            return "Last random event is lose new unit.\nYou lose 1 level " + (num-26) +"unit";
+            if(t.getUnits().get(num-26).getNumUnits()<1){
+                t.getUnits().get(num-26).setNumUnits(0);
+            }
+            else{t.getUnits().get(num-26).setNumUnits(t.getUnits().get(num-26).getNumUnits()-1);}
+            return "Last random event is losing new unit.\nYou lose 1 level " + (num-26) +"unit";
         }
         else if(num >= 32 && num <= 37) {
             Territory t = riscBoard.getAllPlayers().get(playerId).findOwnedTerritoryByName(myEvent.getSrcName());
             t.setFood(t.getFood()-2);
             t.setTech(t.getTech()-2);
             t.getUnits().get(num-32).setNumUnits(t.getUnits().get(num-32).getNumUnits()+2);
-            return "Last random event is get new unit.\nYou get 2 level " + (num-32) +"unit";
+            return "Last random event is getting new unit.\nYou get 2 level " + (num-32) +"unit";
         }
         else if(num >= 38 && num <= 43) {
             Territory t = riscBoard.getAllPlayers().get(playerId).findOwnedTerritoryByName(myEvent.getSrcName());
             t.setFood(t.getFood()-2);
             t.setTech(t.getTech()-2);
-            t.getUnits().get(num-38).setNumUnits(t.getUnits().get(num-38).getNumUnits()-2);
-            return "Last random event is lose new unit.\nYou lose 2 level " + (num-38) +"unit";
+            if(t.getUnits().get(num-38).getNumUnits()<2){
+                t.getUnits().get(num-38).setNumUnits(0);
+            }
+            else {
+                t.getUnits().get(num - 38).setNumUnits(t.getUnits().get(num - 38).getNumUnits() - 2);
+            }
+            return "Last random event is losing new unit.\nYou lose 2 level " + (num-38) +"unit";
         }
         return res;
     }
@@ -263,12 +271,11 @@ public class Server {
         sendBoardToAllClients();
         recvActionsFromAllClients();
         printActionsMap();
-        eventResults = executeEvent(actionsMap);
         riscBoard.executeUpgrades(actionsMap);
         executeMoves();
         riscBoard.executeAttacks(actionsMap);
         turnResults = riscBoard.updateCombatResult();
-
+        eventResults = executeEvent(actionsMap);
         //sendTurnResults(turnResults);
         if(riscBoard.checkWin() == 2){
             riscBoard.addAfterEachTurn();
