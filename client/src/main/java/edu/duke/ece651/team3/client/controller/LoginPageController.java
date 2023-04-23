@@ -23,6 +23,10 @@ public class LoginPageController {
     private Label errorLogin;
     @FXML
     private TextField username;
+
+    @FXML
+    private Button createAccountButton;
+
     int playerId;
     Stage stage;
     Game gameEntity;
@@ -37,6 +41,12 @@ public class LoginPageController {
     void userLogin(MouseEvent event) throws IOException {
         checkLogin();
     }
+
+    @FXML
+    void onCreateAccountButton(MouseEvent event) throws IOException {
+        ShowViews.showGameView(stage, "/ui/createAccountPage.fxml", gameEntity);
+    }
+
 
     @FXML
     void checkLogin() throws IOException {

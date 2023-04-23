@@ -280,21 +280,21 @@ public class Server {
     public void sendBoardToAllClients() throws IOException {
         // insert the RiskGameBoard object into the collection
         // register a codec for the RiskGameBoard class
-        CodecRegistry pojoCodecRegistry = CodecRegistries.fromProviders(PojoCodecProvider.builder().automatic(true).build());
-        MongoCollection<RiskGameBoard> collection = database.getCollection("test_luxin", RiskGameBoard.class)
-                .withCodecRegistry(pojoCodecRegistry);
-
-        collection.insertOne(riscBoard);
-
-        // retrieve the inserted object from the collection
-        RiskGameBoard retrievedBoard = collection.find().first();
-
-        // check if the retrieved object is not null
-        if (retrievedBoard != null) {
-            System.out.println("Retrieved board: " + retrievedBoard);
-        } else {
-            System.out.println("Board not found.");
-        }
+//        CodecRegistry pojoCodecRegistry = CodecRegistries.fromProviders(PojoCodecProvider.builder().automatic(true).build());
+//        MongoCollection<RiskGameBoard> collection = database.getCollection("test_luxin", RiskGameBoard.class)
+//                .withCodecRegistry(pojoCodecRegistry);
+//
+//        collection.insertOne(riscBoard);
+//
+//        // retrieve the inserted object from the collection
+//        RiskGameBoard retrievedBoard = collection.find().first();
+//
+//        // check if the retrieved object is not null
+//        if (retrievedBoard != null) {
+//            System.out.println("Retrieved board: " + retrievedBoard);
+//        } else {
+//            System.out.println("Board not found.");
+//        }
         objectsToClients.get(0).writeObject(riscBoard);
         objectsToClients.get(1).writeObject(riscBoard);
         objectsToClients.get(0).reset();
