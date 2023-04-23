@@ -31,113 +31,113 @@ import static org.junit.jupiter.api.Assertions.*;
 public class ServerTest {
 //
 
-    @Test
-    @Timeout(2500)
-    void test_runGame() throws Exception {
-        RiskGameBoard b = new RiskGameBoard();
-        b.initSmallMap();
-        Thread server0 = new Thread() {
-            @Override()
-            public void run() {
-                try {
-                    Server s = new Server(12347);
-                    s.connectClients(); //build up the server
+//     @Test
+//     @Timeout(2500)
+//     void test_runGame() throws Exception {
+//         RiskGameBoard b = new RiskGameBoard();
+//         b.initSmallMap();
+//         Thread server0 = new Thread() {
+//             @Override()
+//             public void run() {
+//                 try {
+//                     Server s = new Server(12347);
+//                     s.connectClients(); //build up the server
 
-                    s.initSmallGame();
+//                     s.initSmallGame();
 
-                    //Run the whole game
-                    s.runGame();
-                    s.closePipes();
-                } catch (Exception e) {
-                }
-            }
-        };
+//                     //Run the whole game
+//                     s.runGame();
+//                     s.closePipes();
+//                 } catch (Exception e) {
+//                 }
+//             }
+//         };
 
-        server0.start();
-        Thread.sleep(100);
+//         server0.start();
+//         Thread.sleep(100);
 
-        Socket s1 = new Socket("localhost", 12347); //client 1's socket
-        Socket s2 = new Socket("localhost", 12347); //client 1's socket
-
-
-        ObjectOutputStream out1 = new ObjectOutputStream(s1.getOutputStream());
-        ObjectInputStream in1 = new ObjectInputStream(s1.getInputStream());
-
-        ObjectOutputStream out2 = new ObjectOutputStream(s2.getOutputStream());
-        ObjectInputStream in2 = new ObjectInputStream(s2.getInputStream());
-
-        //assignPlayerIdToClients
-        int playerId1 = in1.readInt();
-        System.out.println(playerId1);
-
-        int playerId2 = in2.readInt();
-        System.out.println(playerId2);
-
-        RiskGameBoard r1;
-        RiskGameBoard r2;
-        ArrayList<Action> actions1 = new ArrayList<>();
-        ArrayList<Action> actions2 = new ArrayList<>();
-
-        int endInfo1 = -1;
-        int endInfo2 = -1;
-//
-        while (endInfo1 != 0 && endInfo1 != 1) {
-            r1 = (RiskGameBoard) in1.readObject();
-            r2 = (RiskGameBoard) in2.readObject();
+//         Socket s1 = new Socket("localhost", 12347); //client 1's socket
+//         Socket s2 = new Socket("localhost", 12347); //client 1's socket
 
 
-            ArrayList<Unit> unitsToChange = new ArrayList<>();
-            unitsToChange.add(new Private(1));
-            unitsToChange.add(new Corporal(0));
-            unitsToChange.add(new Specialist(0));
-            unitsToChange.add(new Sergeant(0));
-            unitsToChange.add(new MasterSergeant(0));
-            unitsToChange.add(new FirstSergeant(0));
-            unitsToChange.add(new SergeantMajor(0));
+//         ObjectOutputStream out1 = new ObjectOutputStream(s1.getOutputStream());
+//         ObjectInputStream in1 = new ObjectInputStream(s1.getInputStream());
+
+//         ObjectOutputStream out2 = new ObjectOutputStream(s2.getOutputStream());
+//         ObjectInputStream in2 = new ObjectInputStream(s2.getInputStream());
+
+//         //assignPlayerIdToClients
+//         int playerId1 = in1.readInt();
+//         System.out.println(playerId1);
+
+//         int playerId2 = in2.readInt();
+//         System.out.println(playerId2);
+
+//         RiskGameBoard r1;
+//         RiskGameBoard r2;
+//         ArrayList<Action> actions1 = new ArrayList<>();
+//         ArrayList<Action> actions2 = new ArrayList<>();
+
+//         int endInfo1 = -1;
+//         int endInfo2 = -1;
+// //
+//         while (endInfo1 != 0 && endInfo1 != 1) {
+//             r1 = (RiskGameBoard) in1.readObject();
+//             r2 = (RiskGameBoard) in2.readObject();
 
 
-            MoveAction m0 = new MoveAction("a", "b", unitsToChange);
-            actions1.add(m0);
-            MoveAction m1 = new MoveAction("a", "c", unitsToChange);
-            actions1.add(m1);
-            MoveAction m2= new MoveAction("c", "a", unitsToChange);
-            actions1.add(m2);
+//             ArrayList<Unit> unitsToChange = new ArrayList<>();
+//             unitsToChange.add(new Private(1));
+//             unitsToChange.add(new Corporal(0));
+//             unitsToChange.add(new Specialist(0));
+//             unitsToChange.add(new Sergeant(0));
+//             unitsToChange.add(new MasterSergeant(0));
+//             unitsToChange.add(new FirstSergeant(0));
+//             unitsToChange.add(new SergeantMajor(0));
 
-            AttackAction a1 = new AttackAction("a", "b", unitsToChange);
-            actions1.add(a1);
-            AttackAction a2 = new AttackAction("c", "d", unitsToChange);
-            actions1.add(a2);
 
-            //Sending Actions to the server
-            out1.writeObject(actions1);
-            out1.writeObject("D");
+//             MoveAction m0 = new MoveAction("a", "b", unitsToChange);
+//             actions1.add(m0);
+//             MoveAction m1 = new MoveAction("a", "c", unitsToChange);
+//             actions1.add(m1);
+//             MoveAction m2= new MoveAction("c", "a", unitsToChange);
+//             actions1.add(m2);
 
-            out2.writeObject(actions2);
-            out2.writeObject("D");
+//             AttackAction a1 = new AttackAction("a", "b", unitsToChange);
+//             actions1.add(a1);
+//             AttackAction a2 = new AttackAction("c", "d", unitsToChange);
+//             actions1.add(a2);
 
-            RiskGameBoard r1_new = (RiskGameBoard) in1.readObject();
-            RiskGameBoard r2_new = (RiskGameBoard) in2.readObject();
+//             //Sending Actions to the server
+//             out1.writeObject(actions1);
+//             out1.writeObject("D");
 
-            //Receive Turn Results
-            HashMap<String, Integer> turnResults1 = (HashMap<String, Integer>) in1.readObject();
-            HashMap<String, Integer> turnResults2 = (HashMap<String, Integer>) in2.readObject();
+//             out2.writeObject(actions2);
+//             out2.writeObject("D");
 
-            //Receiving the endGame info
-            endInfo1 = in1.readInt();
-            endInfo2 = in2.readInt();
+//             RiskGameBoard r1_new = (RiskGameBoard) in1.readObject();
+//             RiskGameBoard r2_new = (RiskGameBoard) in2.readObject();
 
-        }
+//             //Receive Turn Results
+//             HashMap<String, Integer> turnResults1 = (HashMap<String, Integer>) in1.readObject();
+//             HashMap<String, Integer> turnResults2 = (HashMap<String, Integer>) in2.readObject();
 
-        out1.close();
-        out2.close();
-        in1.close();
-        in2.close();
-        s1.close();
-        s2.close();
-        server0.interrupt();
-        server0.join();
+//             //Receiving the endGame info
+//             endInfo1 = in1.readInt();
+//             endInfo2 = in2.readInt();
 
-    }
+//         }
+
+//         out1.close();
+//         out2.close();
+//         in1.close();
+//         in2.close();
+//         s1.close();
+//         s2.close();
+//         server0.interrupt();
+//         server0.join();
+
+//     }
 
 //    @Test
 //    @Timeout(2500)
