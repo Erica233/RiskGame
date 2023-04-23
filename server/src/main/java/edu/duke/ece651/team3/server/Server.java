@@ -1,5 +1,7 @@
 package edu.duke.ece651.team3.server;
 
+import ch.qos.logback.classic.Level;
+import ch.qos.logback.classic.LoggerContext;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoDatabase;
@@ -12,6 +14,7 @@ import java.net.Socket;
 
 import com.mongodb.*;
 import org.bson.Document;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -117,6 +120,7 @@ public class Server {
     public static void main(String[] args) {
         // Create a new client and connect to the server
         MongoClient mongoClient = ConnectDb.getMongoClient();
+        ((LoggerContext) LoggerFactory.getILoggerFactory()).getLogger("org.mongodb.driver").setLevel(Level.ERROR);
         try {
             // Send a ping to confirm a successful connection
             MongoDatabase database = mongoClient.getDatabase("risc");

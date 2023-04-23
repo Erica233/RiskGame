@@ -10,7 +10,7 @@ public class ConnectDb {
 
     public static synchronized MongoClient getMongoClient() {
         if (mongoClient == null) {
-            String connectionString = "mongodb+srv://risc:risc@risc.xsjq3hw.mongodb.net/?retryWrites=true&w=majority";
+            String connectionString = "mongodb+srv://mongo:1234@cluster0.gpoxcke.mongodb.net/?retryWrites=true&w=majority";
             ServerApi serverApi = ServerApi.builder()
                 .version(ServerApiVersion.V1)
                 .build();
