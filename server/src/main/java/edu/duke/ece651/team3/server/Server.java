@@ -158,7 +158,7 @@ public class Server {
         Document doc_retr = collection.find().first();
 
         // Read the data from the document
-        byte[] bytes_retr = (byte[]) doc.get("data");
+        byte[] bytes_retr = (byte[]) doc_retr.get("data");
 
         // 将 ObjectStream 数据反序列化为 Java 对象
         ByteArrayInputStream bis = new ByteArrayInputStream(bytes_retr);
