@@ -149,7 +149,7 @@ public class Server {
 
             // check if the retrieved object is not null
             if (retrievedBoard != null) {
-                System.out.println("Retrieved board belongs to: " + retrievedBoard.getAllPlayers().get(0).getPlayerId());
+                System.out.println("Retrieved board: " + retrievedBoard);
             } else {
                 System.out.println("Board not found.");
             }
