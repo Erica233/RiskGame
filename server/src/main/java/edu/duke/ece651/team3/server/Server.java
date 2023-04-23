@@ -357,7 +357,7 @@ public class Server {
 //    public static DBObject convertToDBObject(RiskGameBoard riskGameBoard){
 //        return new BasicDBObject("XP" ,testObj.getXp()).append("Timer", testObj.getTimer()).append("memberID",
 //                testObj.getMemberID());
-//        return new BasicDBObject("AllPlayers", riskGameBoard.getAllPlayers() .getXp()).append("Timer", testObj.getTimer()).append("memberID",
+//        return new BasicDBObject("AllPlayers", riskGameBoard.getAllPlayers()) .getXp()).append("Timer", testObj.getTimer()).append("memberID",
 //                testObj.getMemberID());
 //    }
 
