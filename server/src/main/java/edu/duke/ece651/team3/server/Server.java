@@ -169,9 +169,6 @@ public class Server {
                     System.out.println("Game Ends!");
                     return;
                 }
-//            } catch (Exception e) {
-//                System.err.println(e.getMessage());
-//            }
         } while (true);
 
     }
