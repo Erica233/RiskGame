@@ -271,12 +271,11 @@ public class Server {
         sendBoardToAllClients();
         recvActionsFromAllClients();
         printActionsMap();
-        eventResults = executeEvent(actionsMap);
         riscBoard.executeUpgrades(actionsMap);
         executeMoves();
         riscBoard.executeAttacks(actionsMap);
         turnResults = riscBoard.updateCombatResult();
-
+        eventResults = executeEvent(actionsMap);
         //sendTurnResults(turnResults);
         if(riscBoard.checkWin() == 2){
             riscBoard.addAfterEachTurn();
