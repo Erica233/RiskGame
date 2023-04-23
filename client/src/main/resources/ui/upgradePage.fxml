@@ -8,13 +8,13 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="600.0" prefWidth="924.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.duke.ece651.team3.client.controller.UpgradePageController">
+<AnchorPane prefHeight="600.0" prefWidth="924.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.duke.ece651.team3.client.controller.UpgradePageController">
    <children>
       <SplitPane dividerPositions="0.6" prefHeight="400.0" prefWidth="647.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <items>
             <fx:include fx:id="map" source="map.fxml" />
 
-            <AnchorPane prefHeight="600.0" prefWidth="924.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" >
+            <AnchorPane prefHeight="600.0" prefWidth="924.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
                <children>
                   <AnchorPane layoutX="23.0" layoutY="46.0" prefHeight="507.0" prefWidth="290.0" style="-fx-background-color: #FACD91;">
                      <padding>
@@ -22,7 +22,7 @@
                      </padding>
                      <children>
                         <Group />
-                        <Button fx:id="nextButton" layoutX="90.0" layoutY="430.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="111.0" text="Next" onAction="#onCheckValidUpgrade">
+                        <Button fx:id="nextButton" layoutX="163.0" layoutY="436.0" mnemonicParsing="false" onAction="#onCheckValidUpgrade" prefHeight="40.0" prefWidth="95.0" text="Next">
                            <font>
                               <Font size="20.0" />
                            </font>
@@ -101,6 +101,11 @@
                               <Label fx:id="LV6_name" layoutX="36.0" layoutY="281.0" text="LV6" />
                            </children>
                         </Group>
+                        <Button fx:id="backButton" layoutX="54.0" layoutY="436.0" mnemonicParsing="false" onMouseClicked="#onBackButton" prefHeight="40.0" prefWidth="95.0" text="Back">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </Button>
                      </children>
                   </AnchorPane>
                </children>
