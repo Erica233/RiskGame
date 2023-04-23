@@ -8,27 +8,21 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-
 <AnchorPane prefHeight="600.0" prefWidth="924.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.duke.ece651.team3.client.controller.LoginPageController">
    <children>
       <SplitPane dividerPositions="0.6" prefHeight="600.0" prefWidth="924.0">
         <items>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                <children>
-                  <ImageView fitHeight="600.0" fitWidth="549.0">
+                  <ImageView fitHeight="598.0" fitWidth="557.0" layoutX="-2.0" layoutY="-1.0">
                      <image>
-                        <Image url="@../pic/RISC.png" />
+                        <Image url="@../pic/login.jpeg" />
                      </image>
                   </ImageView>
                </children>
             </AnchorPane>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                <children>
-                  <ImageView fitHeight="82.0" fitWidth="112.0" layoutX="142.0" layoutY="65.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../../../../../ece651-sp23-lz211-battleship/client/src/main/resources/pic/lock.png" />
-                     </image>
-                  </ImageView>
                   <Label layoutX="47.0" layoutY="231.0" text="Username">
                      <font>
                         <Font size="19.0" />
@@ -47,6 +41,11 @@
                      </font>
                   </Button>
                   <Label fx:id="errorLogin" layoutX="102.0" layoutY="163.0" prefHeight="24.0" prefWidth="244.0" textAlignment="CENTER" textFill="#ff0808" wrapText="true" />
+                  <ImageView fitHeight="91.0" fitWidth="105.0" layoutX="130.0" layoutY="72.0">
+                     <image>
+                        <Image url="@../pic/lock.png" />
+                     </image>
+                  </ImageView>
                </children>
             </AnchorPane>
         </items>

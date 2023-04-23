@@ -4,6 +4,7 @@ import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.LoggerContext;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
+import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import edu.duke.ece651.team3.shared.*;
 
@@ -14,6 +15,10 @@ import java.net.Socket;
 
 import com.mongodb.*;
 import org.bson.Document;
+import org.bson.codecs.Codec;
+import org.bson.codecs.configuration.CodecRegistries;
+import org.bson.codecs.configuration.CodecRegistry;
+import org.bson.codecs.pojo.PojoCodecProvider;
 import org.slf4j.LoggerFactory;
 
 
@@ -118,16 +123,41 @@ public class Server {
     }
 
     public static void main(String[] args) {
-        // Create a new client and connect to the server
-        MongoClient mongoClient = ConnectDb.getMongoClient();
-        ((LoggerContext) LoggerFactory.getILoggerFactory()).getLogger("org.mongodb.driver").setLevel(Level.ERROR);
         try {
+            // Create a new client and connect to the server
+            MongoClient mongoClient = ConnectDb.getMongoClient();
+            ((LoggerContext) LoggerFactory.getILoggerFactory()).getLogger("org.mongodb.driver").setLevel(Level.ERROR);
             // Send a ping to confirm a successful connection
-            MongoDatabase database = mongoClient.getDatabase("risc");
-            database.runCommand(new Document("ping", 1));
+            MongoDatabase database = mongoClient.getDatabase("test_luxin");
+
+            RiskGameBoard riskGameBoard = new RiskGameBoard();
+            CodecRegistry pojoCodecRegistry = CodecRegistries.fromProviders(PojoCodecProvider.builder().automatic(true).build());
+
+            // get a handle to the MongoDB collection
+            MongoCollection<RiskGameBoard> collection = database.getCollection("test_luxin", RiskGameBoard.class)
+                    .withCodecRegistry(pojoCodecRegistry);
+
+            // insert the RiskGameBoard object into the collection
+            collection.insertOne(riskGameBoard);
+
+//            database.runCommand(new Document("ping", 1));
+
             System.out.println("Pinged your deployment. You successfully connected to MongoDB!");
+
+            // retrieve the inserted object from the collection
+            RiskGameBoard retrievedBoard = collection.find().first();
+
+            // check if the retrieved object is not null
+            if (retrievedBoard != null) {
+                System.out.println("Retrieved board belongs to: " + retrievedBoard.getAllPlayers().get(0).getPlayerId());
+            } else {
+                System.out.println("Board not found.");
+            }
+
         } catch (MongoException e) {
             e.printStackTrace();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
 
         //run game
