@@ -1,4 +1,4 @@
-package edu.duke.ece651.team3.server;
+package edu.duke.ece651.team3.shared;
 
 import com.mongodb.*;
 import com.mongodb.client.MongoClient;

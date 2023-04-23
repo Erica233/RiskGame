@@ -16,7 +16,6 @@ import java.io.IOException;
 public class LoginPageController {
     @FXML
     private PasswordField password;
-
     @FXML
     private Button loginButton;
     @FXML

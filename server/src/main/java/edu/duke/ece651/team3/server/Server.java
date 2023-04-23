@@ -3,7 +3,6 @@ package edu.duke.ece651.team3.server;
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.LoggerContext;
 import com.mongodb.client.MongoClient;
-import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoDatabase;
 import edu.duke.ece651.team3.shared.*;
 
