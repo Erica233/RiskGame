@@ -51,12 +51,6 @@
                         <Font size="26.0" />
                      </font>
                   </Button>
-                  <Label layoutX="54.0" layoutY="345.0" text="Re-enter password">
-                     <font>
-                        <Font size="15.0" />
-                     </font>
-                  </Label>
-                  <PasswordField fx:id="re_password" layoutX="214.0" layoutY="341.0" prefHeight="27.0" prefWidth="126.0" promptText="re-entered password" />
                </children>
             </AnchorPane>
         </items>

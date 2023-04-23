@@ -25,8 +25,8 @@ public class CreateAccountPageController {
     @FXML
     private Label errorLogin;
 
-    @FXML
-    private PasswordField re_password;
+//    @FXML
+//    private PasswordField re_password;
 
     @FXML
     private TextField username;
@@ -50,12 +50,13 @@ public class CreateAccountPageController {
      * @throws IOException
      */
     public void checkValid() throws IOException {
-        if(password.getText().equals(re_password.getText())){
-            ShowViews.showGameView(stage, "/ui/whole.fxml", gameEntity);
-        }
-        else{
-            errorLogin.setText("Two passwords are not matching!");
-        }
+        ShowViews.showGameView(stage, "/ui/loginPage.fxml", gameEntity);
+//        if(password.getText().equals(re_password.getText())){
+//            ShowViews.showGameView(stage, "/ui/whole.fxml", gameEntity);
+//        }
+//        else{
+//            errorLogin.setText("Two passwords are not matching!");
+//        }
     }
 
     @FXML
