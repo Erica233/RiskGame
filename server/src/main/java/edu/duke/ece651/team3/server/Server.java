@@ -1,6 +1,7 @@
 package edu.duke.ece651.team3.server;
 
 import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoDatabase;
 import edu.duke.ece651.team3.shared.*;
 
 import java.io.*;
@@ -111,7 +112,7 @@ public class Server {
 
     public static void main(String[] args) {
         MongoClient mongoClient = ConnectDb.getMongoClient();
-        ConnectDb.connectToDb("riscDb");
+        MongoDatabase database = ConnectDb.connectToDb("riscDB");
 
         //run game
         int portNum = 12345;

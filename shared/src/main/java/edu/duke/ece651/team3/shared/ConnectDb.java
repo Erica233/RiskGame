@@ -27,14 +27,15 @@ public class ConnectDb {
         return mongoClient;
     }
 
-    public static void connectToDb(String dbName) {
+    public static MongoDatabase connectToDb(String dbName) {
+        MongoDatabase database = null;
         try {
             System.out.print("dbnames: ");
             for (String name: mongoClient.listDatabaseNames()) {
                 System.out.print(name + ", ");
             }
 
-            MongoDatabase database = mongoClient.getDatabase(dbName);
+            database = mongoClient.getDatabase(dbName);
             System.out.print("\nIn riscDB: collection names: ");
             for (String cname: database.listCollectionNames()) {
                 System.out.print(cname + " ");
@@ -43,6 +44,7 @@ public class ConnectDb {
         } catch (MongoException e) {
             e.printStackTrace();
         }
+        return database;
     }
 
 }
