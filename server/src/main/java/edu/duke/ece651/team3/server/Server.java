@@ -36,6 +36,9 @@ public class Server {
     private HashMap<Integer, ArrayList<Action>> actionsMap; //player ID and all attack actions this player has
     HashMap<String, Integer> turnResults = new HashMap<>();
 
+    static MongoCollection<RiskGameBoard> collection; //The collection that stores all stages of RiskGameBoard
+
+    static MongoDatabase database;
 
     /**
      * Constructs Server with port number
@@ -123,42 +126,21 @@ public class Server {
     }
 
     public static void main(String[] args) {
-        try {
             // Create a new client and connect to the server
             MongoClient mongoClient = ConnectDb.getMongoClient();
             ((LoggerContext) LoggerFactory.getILoggerFactory()).getLogger("org.mongodb.driver").setLevel(Level.ERROR);
             // Send a ping to confirm a successful connection
-            MongoDatabase database = mongoClient.getDatabase("test_luxin");
+            database = mongoClient.getDatabase("test_luxin");
 
-            RiskGameBoard riskGameBoard = new RiskGameBoard();
+//            RiskGameBoard riskGameBoard = new RiskGameBoard();
             CodecRegistry pojoCodecRegistry = CodecRegistries.fromProviders(PojoCodecProvider.builder().automatic(true).build());
 
             // get a handle to the MongoDB collection
-            MongoCollection<RiskGameBoard> collection = database.getCollection("test_luxin", RiskGameBoard.class)
+            collection = database.getCollection("allRiskGameBoards", RiskGameBoard.class)
                     .withCodecRegistry(pojoCodecRegistry);
 
-            // insert the RiskGameBoard object into the collection
-            collection.insertOne(riskGameBoard);
-
-//            database.runCommand(new Document("ping", 1));
 
             System.out.println("Pinged your deployment. You successfully connected to MongoDB!");
-
-            // retrieve the inserted object from the collection
-            RiskGameBoard retrievedBoard = collection.find().first();
-
-            // check if the retrieved object is not null
-            if (retrievedBoard != null) {
-                System.out.println("Retrieved board: " + retrievedBoard);
-            } else {
-                System.out.println("Board not found.");
-            }
-
-        } catch (MongoException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
 
         //run game
         int portNum = 12345;
@@ -296,6 +278,23 @@ public class Server {
      * @throws IOException
      */
     public void sendBoardToAllClients() throws IOException {
+        // insert the RiskGameBoard object into the collection
+        // register a codec for the RiskGameBoard class
+        CodecRegistry pojoCodecRegistry = CodecRegistries.fromProviders(PojoCodecProvider.builder().automatic(true).build());
+        MongoCollection<RiskGameBoard> collection = database.getCollection("test_luxin", RiskGameBoard.class)
+                .withCodecRegistry(pojoCodecRegistry);
+
+        collection.insertOne(riscBoard);
+
+        // retrieve the inserted object from the collection
+        RiskGameBoard retrievedBoard = collection.find().first();
+
+        // check if the retrieved object is not null
+        if (retrievedBoard != null) {
+            System.out.println("Retrieved board: " + retrievedBoard);
+        } else {
+            System.out.println("Board not found.");
+        }
         objectsToClients.get(0).writeObject(riscBoard);
         objectsToClients.get(1).writeObject(riscBoard);
         objectsToClients.get(0).reset();
@@ -349,6 +348,18 @@ public class Server {
         objectsFromClients.add(new ObjectInputStream(clientSockets.get(1).getInputStream()));
         System.out.println("Client 1 connects to Server successfully!");
     }
+
+    /**
+     //     * This method takes a testObject and convert it to a DBObject
+     //     * @param testObj
+     //     * @return
+     //     */
+//    public static DBObject convertToDBObject(RiskGameBoard riskGameBoard){
+//        return new BasicDBObject("XP" ,testObj.getXp()).append("Timer", testObj.getTimer()).append("memberID",
+//                testObj.getMemberID());
+//        return new BasicDBObject("AllPlayers", riskGameBoard.getAllPlayers() .getXp()).append("Timer", testObj.getTimer()).append("memberID",
+//                testObj.getMemberID());
+//    }
 
     /**
      * This method closes all pipes
