@@ -1,7 +1,9 @@
 package edu.duke.ece651.team3.client.controller;
 
 import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Filters;
 import edu.duke.ece651.team3.client.ShowViews;
 import edu.duke.ece651.team3.client.model.Game;
 import edu.duke.ece651.team3.shared.ConnectDb;
@@ -14,8 +16,11 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import org.bson.Document;
+import org.bson.conversions.Bson;
 
 import java.io.IOException;
+
+import static com.mongodb.client.model.Filters.eq;
 
 public class LoginPageController {
     @FXML
@@ -42,38 +47,24 @@ public class LoginPageController {
     }
     @FXML
     void userLogin(MouseEvent event) throws IOException {
-        checkLogin();
+        MongoClient mongoClient = ConnectDb.getMongoClient();
+        MongoDatabase database = ConnectDb.connectToDb("riscDB");
+        MongoCollection<Document> accountsCo = database.getCollection("accountsCo");
+
+        Bson filter = Filters.and(eq("username", username.getText()), eq("password", password.getText()));
+        Document account = accountsCo.find(filter).first();
+        if (account == null) {
+            errorLogin.setText("Login failed: \nusername and password are not matched!");
+        } else {
+            //start game
+
+            ShowViews.showGameView(stage, "/ui/whole.fxml", gameEntity);
+        }
+
     }
 
     @FXML
     void onCreateAccountButton(MouseEvent event) throws IOException {
         ShowViews.showGameView(stage, "/ui/createAccountPage.fxml", gameEntity);
-    }
-
-
-    @FXML
-    void checkLogin() throws IOException {
-        MongoClient mongoClient = ConnectDb.getMongoClient();
-        MongoDatabase database = ConnectDb.connectToDb("riscDB");
-        Document newAccount = new Document();
-        newAccount.put("username", username.getText());
-        newAccount.put("password", password.getText());
-        database.getCollection("accountsCo").insertOne(newAccount);
-
-//        if(playerId == 0 && username.getText().equals("orange") && password.getText().equals("1234")){
-//            errorLogin.setText("Success!");
-//            ShowViews.showGameView(stage, "/ui/whole.fxml", gameEntity);
-//        }
-//        else if(playerId == 1 && username.getText().equals("blue") && password.getText().equals("4321")){
-//            errorLogin.setText("Success!");
-//            ShowViews.showGameView(stage, "/ui/whole.fxml", gameEntity);
-//        }
-//        else if(username.getText().isEmpty() && password.getText().isEmpty()){
-//            errorLogin.setText("Please Enter Both Username and the Password!");
-//        }
-//        else{
-//            errorLogin.setText("Wrong Username or Password!");
-//        }
-
     }
 }
