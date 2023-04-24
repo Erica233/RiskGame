@@ -3,6 +3,7 @@ package edu.duke.ece651.team3.server;
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.LoggerContext;
 import com.mongodb.client.*;
+import com.mongodb.client.model.Filters;
 import edu.duke.ece651.team3.shared.*;
 
 import java.io.*;
@@ -147,7 +148,7 @@ public class Server {
         database = mongoClient.getDatabase("testBoard");
 
         // get a handle to the MongoDB collection
-        collection = database.getCollection("testBoard");
+        collection = database.getCollection("test");
     }
 
 
@@ -283,50 +284,68 @@ public class Server {
         }
     }
 
+    public void storeToMongoDB() throws Exception {
+//        Bson filter = Filters.eq("users",  riscBoard.getAllPlayers().get(0).getColor()
+//                + riscBoard.getAllPlayers().get(1).getColor());
+//        Document currDoc = collection.find(filter).first();
+//        if (currDoc != null) {
+//            errorLogin.setText("Cannot create new account: \nusername occupied!");
+//        } else {
+
+        Bson filter = Filters.eq("users",  riscBoard.getAllPlayers().get(0).getColor()
+                + riscBoard.getAllPlayers().get(1).getColor());
+        FindIterable<Document> doc_retr = collection.find(filter);
+
+        //If the doc_retr does not contain the current element
+        if(!doc_retr.iterator().hasNext()){
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            ObjectOutputStream out = new ObjectOutputStream(bos);
+
+            out.writeObject(riscBoard);
+            out.flush();
+
+            // transfer serialized string to BSON
+            byte[] bytes = bos.toByteArray();
+            Document doc = new Document();
+            doc.put("board_test", bytes);
+            doc.put("users", riscBoard.getAllPlayers().get(0).getColor()
+                    + riscBoard.getAllPlayers().get(1).getColor());
+            System.out.println(riscBoard.getAllPlayers().get(0).getColor()
+                    + riscBoard.getAllPlayers().get(1).getColor());
+
+            // store the document into MongoDB
+            collection.insertOne(doc);
+
+            bos.close();
+            out.close();
+        }
+        else{
+            for (Document d : doc_retr) {
+                Binary temp = (Binary) d.get("board_test");
+                System.out.println("curr doc is: " + d);
+                byte[] bytes_retr = temp.getData();
+
+                // deseralization
+                ByteArrayInputStream bis = new ByteArrayInputStream(bytes_retr);
+                ObjectInputStream in = new ObjectInputStream(bis);
+                RiskGameBoard riskGameBoard_retr = (RiskGameBoard) in.readObject();
+                System.out.println("The player0's first territory should be a: "
+                        + riskGameBoard_retr.getAllPlayers().get(0).getOwnedTerritories().get(0).getUnits().get(1).getUnitName());
+
+                in.close();
+                bis.close();
+                break; //Only one called this name
+            }
+        }
+
+    }
+
     /**
      * This method sends the board to all clients on the board
      * @throws IOException
      */
     public void sendBoardToAllClients() throws Exception {
-
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        ObjectOutputStream out = new ObjectOutputStream(bos);
-
-        RiskGameBoard riskGameBoard = new RiskGameBoard();
-        out.writeObject(riskGameBoard);
-        out.flush();
-
-        // transfer serialized string to BSON
-        byte[] bytes = bos.toByteArray();
-        Document doc = new Document("Turn " + turn + " RiskGameBoard", bytes);
-
-        // store the document into MongoDB
-        collection.insertOne(doc);
-
-        // retrieve the inserted object from the collection
-        Bson filter = exists("Turn " + turn + " RiskGameBoard");
-        FindIterable<Document> doc_retr = collection.find(filter);
-//        System.out.println("curr doc is: " + doc_retr.first());
-
-        for (Document d : doc_retr) {
-            Binary temp = (Binary) d.get("Turn " + turn + " RiskGameBoard");
-            System.out.println("curr doc is: " + d);
-            byte[] bytes_retr = temp.getData();
-
-            // deseralization
-            ByteArrayInputStream bis = new ByteArrayInputStream(bytes_retr);
-            ObjectInputStream in = new ObjectInputStream(bis);
-            RiskGameBoard riskGameBoard_retr = (RiskGameBoard) in.readObject();
-            System.out.println("The player0's first territory should be a: "
-                    + riskGameBoard_retr.getAllPlayers().get(0).getOwnedTerritories().get(0).getUnits().get(1).getUnitName());
-            // close all streams
-            bos.close();
-            out.close();
-            in.close();
-            bis.close();
-            break; //Only one called this name
-        }
-
+        storeToMongoDB();
         objectsToClients.get(0).writeObject(riscBoard);
         objectsToClients.get(1).writeObject(riscBoard);
         objectsToClients.get(0).reset();
