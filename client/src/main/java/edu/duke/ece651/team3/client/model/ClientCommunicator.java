@@ -14,6 +14,9 @@ public class ClientCommunicator {
     private ObjectOutputStream objectToServer;
     private static final int TIMEOUT = 5000;
 
+    String hostname;
+    int portNum;
+
     /**
      * Constructs the Client with the hostname and the port number
      * @param _hostname the host name
@@ -21,11 +24,13 @@ public class ClientCommunicator {
      * @throws IOException
      */
     public ClientCommunicator(String _hostname, int _portNum) throws IOException {
-        buildUpConnections(_hostname, _portNum);
+        this.hostname = _hostname;
+        this.portNum = _portNum;
+        buildUpConnections();
     }
 
-    public void buildUpConnections(String _hostname, int _portNum) throws IOException {
-        this.socket = new Socket(_hostname, _portNum);
+    public void buildUpConnections() throws IOException {
+        this.socket = new Socket(hostname, portNum);
         this.objectFromServer = new ObjectInputStream(socket.getInputStream());
         this.objectToServer = new ObjectOutputStream(socket.getOutputStream());
     }
@@ -48,7 +53,11 @@ public class ClientCommunicator {
      * This method reconnects the server if the server is disconnected.
      */
     public void handleServerDisconnect(){
-
+        if (!isServerConnected()) {
+            System.err.println("Server disconnected");
+            // Handle server disconnected error
+            return;
+        }
     }
 
 

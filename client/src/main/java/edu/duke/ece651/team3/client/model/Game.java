@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
 
+import static edu.duke.ece651.team3.client.model.ClientCommunicator.isServerConnected;
+
 public class Game {
     private ClientCommunicator clientCommunicator;
     private InputHandler inputHandler;
@@ -39,6 +41,11 @@ public class Game {
     }
 
     public void storePlayerId() throws IOException {
+//        if (!isServerConnected()) {
+//            System.err.println("Server disconnected");
+//            // Handle server disconnected error
+//            clientCommunicator.buildUpConnections();
+//        }
         this.playerId = clientCommunicator.recvPlayerId();
     }
 
