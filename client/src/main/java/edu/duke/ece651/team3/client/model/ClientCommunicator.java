@@ -39,10 +39,12 @@ public class ClientCommunicator {
      * This method checks whether the server is still connected.
      * @return true if the server is still connected
      */
-    public static boolean isServerConnected() {
+    public boolean isServerConnected() {
 
         try {
-            socket.sendUrgentData(0xFF);
+            Socket testSocket = new Socket(hostname, portNum);
+//            socket.sendUrgentData(0xFF);
+//            sendTryConnect();
             return true;
         } catch (IOException e) {
             return false;
@@ -73,6 +75,14 @@ public class ClientCommunicator {
         int gameResult = objectFromServer.readInt();
         //System.out.println("Game result is :" + gameResult);
         return gameResult;
+    }
+
+    /**
+     * This method tries to send the player id to the server.
+     * It is used for testing whether the server is still connected
+     */
+    public void sendTryConnect() throws IOException {
+        this.objectToServer.writeObject(-1);
     }
 
     /**

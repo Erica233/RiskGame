@@ -8,8 +8,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
 
-import static edu.duke.ece651.team3.client.model.ClientCommunicator.isServerConnected;
-
 public class Game {
     private ClientCommunicator clientCommunicator;
     private InputHandler inputHandler;
@@ -39,15 +37,17 @@ public class Game {
         }
 
     }
-
-    public boolean storePlayerId() throws IOException {
-        if (!isServerConnected()) {
+    public boolean isServerConnect() throws IOException {
+        if (!clientCommunicator.isServerConnected()) {
             System.err.println("Server disconnected!");
-            clientCommunicator.buildUpConnections();
+//            clientCommunicator.buildUpConnections();
             return false;
         }
-        this.playerId = clientCommunicator.recvPlayerId();
         return true;
+    }
+
+    public void storePlayerId() throws IOException {
+        this.playerId = clientCommunicator.recvPlayerId();
     }
 
     public void storeNewBoard() throws IOException, ClassNotFoundException {
