@@ -4,6 +4,9 @@ import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.LoggerContext;
 import com.mongodb.client.*;
 import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.UpdateOptions;
+import com.mongodb.client.model.Updates;
+import com.mongodb.client.result.UpdateResult;
 import edu.duke.ece651.team3.shared.*;
 
 import java.io.*;
@@ -11,12 +14,7 @@ import java.util.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import com.mongodb.*;
 import org.bson.Document;
-import org.bson.codecs.Codec;
-import org.bson.codecs.configuration.CodecRegistries;
-import org.bson.codecs.configuration.CodecRegistry;
-import org.bson.codecs.pojo.PojoCodecProvider;
 import org.bson.conversions.Bson;
 import org.bson.types.Binary;
 import org.slf4j.LoggerFactory;
@@ -181,8 +179,8 @@ public class Server {
     public void runGame() throws Exception {
         int result = -1;
         do {
-            ++ turn; //increase the turn when entering the runGame
             result = runOneTurn();
+            ++ turn; //increase the turn when entering the runGame
             if (result == 2) {
                 System.out.println("game continues");
             }
@@ -205,6 +203,9 @@ public class Server {
      * @throws ClassNotFoundException
      */
     public int runOneTurn() throws Exception {
+        if(turn == 0){
+            useExtractBoardOrNewBoard();
+        }
         sendBoardToAllClients();
         recvActionsFromAllClients();
         printActionsMap();
@@ -212,6 +213,7 @@ public class Server {
         executeMoves();
         riscBoard.executeAttacks(actionsMap);
         turnResults = riscBoard.updateCombatResult();
+        storeToMongoDB();
 
         //sendTurnResults(turnResults);
         if(riscBoard.checkWin() == 2){
@@ -299,15 +301,28 @@ public class Server {
 
         // transfer serialized string to BSON
         byte[] bytes = bos.toByteArray();
-        Document doc = new Document();
-        doc.put("board_test", bytes);
-        doc.put("users", riscBoard.getAllPlayers().get(0).getColor()
-                + riscBoard.getAllPlayers().get(1).getColor());
-        System.out.println(riscBoard.getAllPlayers().get(0).getColor()
-                + riscBoard.getAllPlayers().get(1).getColor());
+//        Document doc = new Document();
+//        doc.put("board_test", bytes);
+//        doc.put("users", riscBoard.getAllPlayers().get(0).getColor()
+//                + riscBoard.getAllPlayers().get(1).getColor());
+//        System.out.println(riscBoard.getAllPlayers().get(0).getColor()
+//                + riscBoard.getAllPlayers().get(1).getColor());
+//
+//        // store the document into MongoDB
+//        collection.insertOne(doc);
 
-        // store the document into MongoDB
-        collection.insertOne(doc);
+        //Try update
+//        Bson query  =  Filters.eq("users",  riscBoard.getAllPlayers().get(0).getColor()
+//                + riscBoard.getAllPlayers().get(1).getColor());
+//        Bson updates  = Updates.set("board_test", bytes);
+//        collection.updateOne(query, updates);
+
+        Bson filter = Filters.eq("users",  riscBoard.getAllPlayers().get(0).getColor()
+                + riscBoard.getAllPlayers().get(1).getColor());
+        Bson update = Updates.set("board_test", bytes);
+        UpdateOptions options = new UpdateOptions().upsert(true);
+        System.out.println(collection.updateOne(filter, update, options));
+
 
         bos.close();
         out.close();
@@ -329,13 +344,15 @@ public class Server {
             // deseralization
             ByteArrayInputStream bis = new ByteArrayInputStream(bytes_retr);
             ObjectInputStream in = new ObjectInputStream(bis);
-            riscBoard_retr = (RiskGameBoard) in.readObject();
+            riscBoard = (RiskGameBoard) in.readObject();
             System.out.println("The player0's first territory should be a: "
-                    + riscBoard_retr.getAllPlayers().get(0).getOwnedTerritories().get(0).getUnits().get(1).getUnitName());
+                    + riscBoard.getAllPlayers().get(0).getOwnedTerritories().get(0).getUnits().get(1).getUnitName());
 
-
+            //Test current board by territories
+            System.out.println("Orange has  " + riscBoard.getAllPlayers().get(0).getOwnedTerritories().size() +
+                    ", and blue has " + riscBoard.getAllPlayers().get(1).getOwnedTerritories().size());
             //Delete the current board in the database
-            collection.deleteOne(d);
+//            collection.deleteOne(d);
             in.close();
             bis.close();
             return; //Only one called this name
@@ -343,7 +360,7 @@ public class Server {
 
     }
 
-    public void storeToMongoDB_all() throws Exception {
+    public void useExtractBoardOrNewBoard() throws Exception {
         Bson filter = Filters.eq("users",  riscBoard.getAllPlayers().get(0).getColor()
                 + riscBoard.getAllPlayers().get(1).getColor());
         FindIterable<Document> doc_retr = collection.find(filter);
@@ -362,7 +379,6 @@ public class Server {
      * @throws IOException
      */
     public void sendBoardToAllClients() throws Exception {
-        storeToMongoDB_all();
         objectsToClients.get(0).writeObject(riscBoard);
         objectsToClients.get(1).writeObject(riscBoard);
         objectsToClients.get(0).reset();
@@ -415,23 +431,6 @@ public class Server {
         objectsToClients.add(new ObjectOutputStream(clientSockets.get(1).getOutputStream()));
         objectsFromClients.add(new ObjectInputStream(clientSockets.get(1).getInputStream()));
         System.out.println("Client 1 connects to Server successfully!");
-    }
-
-    /**
-     //     * This method takes a testObject and convert it to a DBObject
-     //     * @param testObj
-     //     * @return
-     //     */
-//    public static DBObject convertToDBObject(RiskGameBoard riskGameBoard){
-//        return new BasicDBObject("XP" ,testObj.getXp()).append("Timer", testObj.getTimer()).append("memberID",
-//                testObj.getMemberID());
-//        return new BasicDBObject("AllPlayers", riskGameBoard.getAllPlayers()) .getXp()).append("Timer", testObj.getTimer()).append("memberID",
-//                testObj.getMemberID());
-//    }
-
-
-    public int getTurn() {
-        return turn;
     }
 
     /**
