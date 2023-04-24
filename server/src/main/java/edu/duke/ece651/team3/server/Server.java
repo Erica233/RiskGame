@@ -2,10 +2,7 @@ package edu.duke.ece651.team3.server;
 
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.LoggerContext;
-import com.mongodb.client.MongoClient;
-import com.mongodb.client.MongoClients;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.*;
 import edu.duke.ece651.team3.shared.*;
 
 import java.io.*;
@@ -19,8 +16,12 @@ import org.bson.codecs.Codec;
 import org.bson.codecs.configuration.CodecRegistries;
 import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.codecs.pojo.PojoCodecProvider;
+import org.bson.conversions.Bson;
 import org.bson.types.Binary;
 import org.slf4j.LoggerFactory;
+
+import static com.mongodb.client.model.Filters.eq;
+import static com.mongodb.client.model.Filters.exists;
 
 
 /**
@@ -41,6 +42,9 @@ public class Server {
 
     static MongoDatabase database;
 
+
+    int turn; // This is the counter for recording which turn it is now
+
     /**
      * Constructs Server with port number
      * @param _portNum
@@ -53,6 +57,7 @@ public class Server {
         this.objectsFromClients = new ArrayList<>();
         this.riscBoard = new RiskGameBoard();
         setUpActionsLists();
+        turn = 0;
     }
 
     /**
@@ -126,15 +131,61 @@ public class Server {
         }
     }
 
-    public static void main(String[] args) throws Exception {
+    public static void createMongoConnect(){
         // Create a new client and connect to the server
         MongoClient mongoClient = ConnectDb.getMongoClient();
         ((LoggerContext) LoggerFactory.getILoggerFactory()).getLogger("org.mongodb.driver").setLevel(Level.ERROR);
         // Send a ping to confirm a successful connection
-        database = mongoClient.getDatabase("test_luxin");
+        database = mongoClient.getDatabase("testBoard");
 
         // get a handle to the MongoDB collection
-        collection = database.getCollection("test_luxin");
+        collection = database.getCollection("testBoard");
+    }
+
+
+    public static void main(String[] args) throws Exception {
+        createMongoConnect();
+
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        ObjectOutputStream out = new ObjectOutputStream(bos);
+
+        RiskGameBoard riskGameBoard = new RiskGameBoard();
+        riskGameBoard.initE2Map();
+        out.writeObject(riskGameBoard);
+        out.flush();
+
+        // transfer serialized string to BSON
+        byte[] bytes = bos.toByteArray();
+        Document doc = new Document("good1", bytes);
+
+        // store the document into MongoDB
+        collection.insertOne(doc);
+
+
+        // retrieve the inserted object from the collection
+        Bson filter = exists("good1");
+        FindIterable<Document> doc_retr = collection.find(filter);
+        System.out.println("curr doc is: " + doc_retr.first());
+
+        for (Document d : doc_retr) {
+            Binary temp = (Binary) d.get("good1");
+            System.out.println("curr doc is: " + d);
+            byte[] bytes_retr = temp.getData();
+
+            // deseralization
+            ByteArrayInputStream bis = new ByteArrayInputStream(bytes_retr);
+            ObjectInputStream in = new ObjectInputStream(bis);
+            RiskGameBoard riskGameBoard_retr = (RiskGameBoard) in.readObject();
+            System.out.println("The player0's first territory should be a: "
+                    + riskGameBoard_retr.getAllPlayers().get(0).getOwnedTerritories().get(0).getUnits().get(1).getUnitName());
+            // close all streams
+            bos.close();
+            out.close();
+            in.close();
+            bis.close();
+            break; //Only one called this name
+        }
+
 
         //run game
         int portNum = 12345;
@@ -160,21 +211,20 @@ public class Server {
      */
     public void runGame() throws Exception {
         int result = -1;
-        //sendBoardToAllClients();
         do {
-//            try {
-                result = runOneTurn();
-                if (result == 2) {
-                    System.out.println("game continues");
-                }
-                sendBoardToAllClients();
-                sendTurnResults(turnResults);
-                sendEndGameInfo(result);
-                if (result == 0 || result == 1) {
-                    System.out.println("Player " + result + " is the winner!");
-                    System.out.println("Game Ends!");
-                    return;
-                }
+            ++ turn; //increase the turn when entering the runGame
+            result = runOneTurn();
+            if (result == 2) {
+                System.out.println("game continues");
+            }
+            sendBoardToAllClients();
+            sendTurnResults(turnResults);
+            sendEndGameInfo(result);
+            if (result == 0 || result == 1) {
+                System.out.println("Player " + result + " is the winner!");
+                System.out.println("Game Ends!");
+                return;
+            }
         } while (true);
 
     }
@@ -294,42 +344,18 @@ public class Server {
 //            System.out.println("Board not found.");
 //        }
 
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        ObjectOutputStream out = new ObjectOutputStream(bos);
 
-        RiskGameBoard riskGameBoard = new RiskGameBoard();
-        riskGameBoard.initE2Map();
-        out.writeObject(riskGameBoard);
-        out.flush();
-
-        // transfer serialized string to BSON
-        byte[] bytes = bos.toByteArray();
-        Document doc = new Document("data", bytes);
-
-        // store the document into MongoDB 中
-        collection.insertOne(doc);
+//        Binary temp = (Binary) doc_retr.get("Turn " + turn + " RiskGameBoard");
+//        byte[] bytes_retr = temp.getData();
+//
+//        // deseralization
+//        ByteArrayInputStream bis = new ByteArrayInputStream(bytes_retr);
+//        ObjectInputStream in = new ObjectInputStream(bis);
+//        RiskGameBoard riskGameBoard_retr = (RiskGameBoard) in.readObject();
+//        System.out.println("The player0's first territory should be a: "
+//                + riskGameBoard_retr.getAllPlayers().get(0).getOwnedTerritories().get(0).getUnits().get(1).getUnitName());
 
 
-        // retrieve the inserted object from the collection
-        Document doc_retr = collection.find().first();
-//        System.out.println("curr doc is: " + doc_retr);
-
-
-        Binary temp = (Binary) doc_retr.get("data");
-        byte[] bytes_retr = temp.getData();
-
-        // deseralization
-        ByteArrayInputStream bis = new ByteArrayInputStream(bytes_retr);
-        ObjectInputStream in = new ObjectInputStream(bis);
-        RiskGameBoard riskGameBoard_retr = (RiskGameBoard) in.readObject();
-        System.out.println("The player0's first territory should be a: "
-                + riskGameBoard_retr.getAllPlayers().get(0).getOwnedTerritories().get(0).getUnits().get(1).getUnitName());
-
-        // close all streams
-        bos.close();
-        out.close();
-        in.close();
-        bis.close();
 
         objectsToClients.get(0).writeObject(riscBoard);
         objectsToClients.get(1).writeObject(riscBoard);
@@ -396,6 +422,11 @@ public class Server {
 //        return new BasicDBObject("AllPlayers", riskGameBoard.getAllPlayers()) .getXp()).append("Timer", testObj.getTimer()).append("memberID",
 //                testObj.getMemberID());
 //    }
+
+
+    public int getTurn() {
+        return turn;
+    }
 
     /**
      * This method closes all pipes
