@@ -153,48 +153,6 @@ public class Server {
 
     public static void main(String[] args) throws Exception {
         createMongoConnect();
-
-//        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-//        ObjectOutputStream out = new ObjectOutputStream(bos);
-//
-//        RiskGameBoard riskGameBoard = new RiskGameBoard();
-//        riskGameBoard.initE2Map();
-//        out.writeObject(riskGameBoard);
-//        out.flush();
-//
-//        // transfer serialized string to BSON
-//        byte[] bytes = bos.toByteArray();
-//        Document doc = new Document("good1", bytes);
-//
-//        // store the document into MongoDB
-//        collection.insertOne(doc);
-//
-//
-//        // retrieve the inserted object from the collection
-//        Bson filter = exists("good1");
-//        FindIterable<Document> doc_retr = collection.find(filter);
-//        System.out.println("curr doc is: " + doc_retr.first());
-//
-//        for (Document d : doc_retr) {
-//            Binary temp = (Binary) d.get("good1");
-//            System.out.println("curr doc is: " + d);
-//            byte[] bytes_retr = temp.getData();
-//
-//            // deseralization
-//            ByteArrayInputStream bis = new ByteArrayInputStream(bytes_retr);
-//            ObjectInputStream in = new ObjectInputStream(bis);
-//            RiskGameBoard riskGameBoard_retr = (RiskGameBoard) in.readObject();
-//            System.out.println("The player0's first territory should be a: "
-//                    + riskGameBoard_retr.getAllPlayers().get(0).getOwnedTerritories().get(0).getUnits().get(1).getUnitName());
-//            // close all streams
-//            bos.close();
-//            out.close();
-//            in.close();
-//            bis.close();
-//            break; //Only one called this name
-//        }
-
-
         //run game
         int portNum = 12345;
         try {
@@ -349,7 +307,7 @@ public class Server {
         // retrieve the inserted object from the collection
         Bson filter = exists("Turn " + turn + " RiskGameBoard");
         FindIterable<Document> doc_retr = collection.find(filter);
-        System.out.println("curr doc is: " + doc_retr.first());
+//        System.out.println("curr doc is: " + doc_retr.first());
 
         for (Document d : doc_retr) {
             Binary temp = (Binary) d.get("Turn " + turn + " RiskGameBoard");

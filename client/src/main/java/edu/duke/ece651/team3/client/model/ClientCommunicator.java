@@ -4,13 +4,15 @@ import edu.duke.ece651.team3.shared.*;
 
 import java.io.*;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class ClientCommunicator {
-    private final Socket socket;
-    private final ObjectInputStream objectFromServer;
-    private final ObjectOutputStream objectToServer;
+    private static Socket socket;
+    private ObjectInputStream objectFromServer;
+    private ObjectOutputStream objectToServer;
+    private static final int TIMEOUT = 5000;
 
     /**
      * Constructs the Client with the hostname and the port number
@@ -19,10 +21,36 @@ public class ClientCommunicator {
      * @throws IOException
      */
     public ClientCommunicator(String _hostname, int _portNum) throws IOException {
+        buildUpConnections(_hostname, _portNum);
+    }
+
+    public void buildUpConnections(String _hostname, int _portNum) throws IOException {
         this.socket = new Socket(_hostname, _portNum);
         this.objectFromServer = new ObjectInputStream(socket.getInputStream());
         this.objectToServer = new ObjectOutputStream(socket.getOutputStream());
     }
+
+    /**
+     * This method checks whether the server is still connected.
+     * @return true if the server is still connected
+     */
+    public static boolean isServerConnected() {
+
+        try {
+            socket.sendUrgentData(0xFF);
+            return true;
+        } catch (IOException e) {
+            return false;
+        }
+    }
+
+    /**
+     * This method reconnects the server if the server is disconnected.
+     */
+    public void handleServerDisconnect(){
+
+    }
+
 
     /**
      * receives end game signal,
