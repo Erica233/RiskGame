@@ -293,7 +293,6 @@ public class Server {
         ObjectOutputStream out = new ObjectOutputStream(bos);
 
         RiskGameBoard riskGameBoard = new RiskGameBoard();
-        riskGameBoard.initE2Map();
         out.writeObject(riskGameBoard);
         out.flush();
 

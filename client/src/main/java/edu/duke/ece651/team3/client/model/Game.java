@@ -40,13 +40,14 @@ public class Game {
 
     }
 
-    public void storePlayerId() throws IOException {
-//        if (!isServerConnected()) {
-//            System.err.println("Server disconnected");
-//            // Handle server disconnected error
-//            clientCommunicator.buildUpConnections();
-//        }
+    public boolean storePlayerId() throws IOException {
+        if (!isServerConnected()) {
+            System.err.println("Server disconnected!");
+            clientCommunicator.buildUpConnections();
+            return false;
+        }
         this.playerId = clientCommunicator.recvPlayerId();
+        return true;
     }
 
     public void storeNewBoard() throws IOException, ClassNotFoundException {
