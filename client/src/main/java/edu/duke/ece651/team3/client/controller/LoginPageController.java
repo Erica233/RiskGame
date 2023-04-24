@@ -38,17 +38,18 @@ public class LoginPageController {
     int playerId;
     Stage stage;
     Game gameEntity;
+    MongoClient mongoClient;
+    MongoDatabase database;
 
     public LoginPageController(int id, Stage _stage, Game _gameEntity) {
         this.playerId = id;
         this.stage = _stage;
         this.gameEntity = _gameEntity;
-
+        this.mongoClient = ConnectDb.getMongoClient();
+        this.database = ConnectDb.connectToDb("riscDB");
     }
     @FXML
     void userLogin(MouseEvent event) throws IOException {
-        MongoClient mongoClient = ConnectDb.getMongoClient();
-        MongoDatabase database = ConnectDb.connectToDb("riscDB");
         MongoCollection<Document> accountsCo = database.getCollection("accountsCo");
 
         Bson filter = Filters.and(eq("username", username.getText()), eq("password", password.getText()));

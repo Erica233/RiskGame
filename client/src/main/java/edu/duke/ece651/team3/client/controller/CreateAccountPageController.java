@@ -43,13 +43,15 @@ public class CreateAccountPageController {
     Stage stage;
     Game gameEntity;
 
-    String userName; //The userName to be stored into the database
-    String passWord; //The passWord
+    MongoClient mongoClient;
+    MongoDatabase database;
 
     public CreateAccountPageController(int id, Stage _stage, Game _gameEntity) {
         this.playerId = id;
         this.stage = _stage;
         this.gameEntity = _gameEntity;
+        this.mongoClient = ConnectDb.getMongoClient();
+        this.database = ConnectDb.connectToDb("riscDB");
     }
 
     @FXML
@@ -58,8 +60,6 @@ public class CreateAccountPageController {
     }
     @FXML
     void onDoneButton(MouseEvent event) throws IOException {
-        MongoClient mongoClient = ConnectDb.getMongoClient();
-        MongoDatabase database = ConnectDb.connectToDb("riscDB");
         MongoCollection<Document> accountsCo = database.getCollection("accountsCo");
 
         Bson filter = Filters.eq("username", username.getText());
