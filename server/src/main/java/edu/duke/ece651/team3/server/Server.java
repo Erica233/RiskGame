@@ -133,52 +133,8 @@ public class Server {
         // Send a ping to confirm a successful connection
         database = mongoClient.getDatabase("test_luxin");
 
-//            RiskGameBoard riskGameBoard = new RiskGameBoard();
-        CodecRegistry pojoCodecRegistry = CodecRegistries.fromProviders(PojoCodecProvider.builder().automatic(true).build());
-
         // get a handle to the MongoDB collection
         collection = database.getCollection("test_luxin");
-
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        ObjectOutputStream out = new ObjectOutputStream(bos);
-
-        RiskGameBoard riskGameBoard = new RiskGameBoard();
-        riskGameBoard.initE2Map();
-        out.writeObject(riskGameBoard);
-        out.flush();
-
-        // transfer serialized string to BSON
-        byte[] bytes = bos.toByteArray();
-        Document doc = new Document("data", bytes);
-
-        // store the document into MongoDB 中
-        collection.insertOne(doc);
-
-
-        // retrieve the inserted object from the collection
-        Document doc_retr = collection.find().first();
-        System.out.println("curr doc is: " + doc_retr);
-
-        // Read the data from the document
-//        System.out.println(doc_retr.get("data") + " It is instance of byte[]? " + doc_retr.get("data") instanceof byte[]);
-//        byte[] bytes_retr = (byte[]) doc_retr.get("data");
-
-        Binary temp = (Binary) doc_retr.get("data");
-        byte[] bytes_retr = temp.getData();
-
-        // deseralization
-        ByteArrayInputStream bis = new ByteArrayInputStream(bytes_retr);
-        ObjectInputStream in = new ObjectInputStream(bis);
-        RiskGameBoard riskGameBoard_retr = (RiskGameBoard) in.readObject();
-        System.out.println("The player0's first territory should be a: "
-                + riskGameBoard_retr.getAllPlayers().get(0).getOwnedTerritories().get(0).getUnits().get(0).getUnitName());
-
-        // close all streams
-        bos.close();
-        out.close();
-        in.close();
-        bis.close();
-
 
         //run game
         int portNum = 12345;
@@ -315,7 +271,7 @@ public class Server {
      * This method sends the board to all clients on the board
      * @throws IOException
      */
-    public void sendBoardToAllClients() throws IOException {
+    public void sendBoardToAllClients() throws Exception {
         // insert the RiskGameBoard object into the collection
         // register a codec for the RiskGameBoard class
 //        CodecRegistry pojoCodecRegistry = CodecRegistries.fromProviders(PojoCodecProvider.builder().automatic(true).build());
@@ -337,6 +293,44 @@ public class Server {
 //        } else {
 //            System.out.println("Board not found.");
 //        }
+
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        ObjectOutputStream out = new ObjectOutputStream(bos);
+
+        RiskGameBoard riskGameBoard = new RiskGameBoard();
+        riskGameBoard.initE2Map();
+        out.writeObject(riskGameBoard);
+        out.flush();
+
+        // transfer serialized string to BSON
+        byte[] bytes = bos.toByteArray();
+        Document doc = new Document("data", bytes);
+
+        // store the document into MongoDB 中
+        collection.insertOne(doc);
+
+
+        // retrieve the inserted object from the collection
+        Document doc_retr = collection.find().first();
+//        System.out.println("curr doc is: " + doc_retr);
+
+
+        Binary temp = (Binary) doc_retr.get("data");
+        byte[] bytes_retr = temp.getData();
+
+        // deseralization
+        ByteArrayInputStream bis = new ByteArrayInputStream(bytes_retr);
+        ObjectInputStream in = new ObjectInputStream(bis);
+        RiskGameBoard riskGameBoard_retr = (RiskGameBoard) in.readObject();
+        System.out.println("The player0's first territory should be a: "
+                + riskGameBoard_retr.getAllPlayers().get(0).getOwnedTerritories().get(0).getUnits().get(1).getUnitName());
+
+        // close all streams
+        bos.close();
+        out.close();
+        in.close();
+        bis.close();
+
         objectsToClients.get(0).writeObject(riscBoard);
         objectsToClients.get(1).writeObject(riscBoard);
         objectsToClients.get(0).reset();
