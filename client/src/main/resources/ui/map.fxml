@@ -10,6 +10,11 @@
 
 <AnchorPane prefHeight="600.0" prefWidth="554.4" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.duke.ece651.team3.client.controller.MapController">
    <children>
+      <ImageView fitHeight="600.0" fitWidth="554.0">
+         <image>
+            <Image url="@../pic/textureleft.png" />
+         </image>
+      </ImageView>
     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="400.0" prefWidth="565.2" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <Group fx:id="DarkBay" layoutX="451.0" layoutY="321.0" onMouseClicked="#showTerrInfo">
@@ -141,7 +146,7 @@
             </Group>
             <Group fx:id="Drone" layoutX="120.0" layoutY="253.0" onMouseClicked="#showTerrInfo">
                <children>
-                  <ImageView fitHeight="108.0" fitWidth="132.0">
+                  <ImageView fitHeight="108.0" fitWidth="132.0" layoutX="-1.0" layoutY="-1.0">
                      <image>
                         <Image url="@../pic/DroneB.png" />
                      </image>
@@ -188,6 +193,31 @@
                   <Text fx:id="terrInfo" layoutX="170.0" layoutY="58.0" strokeType="OUTSIDE" strokeWidth="0.0" text="" wrappingWidth="250.1435829509453" AnchorPane.leftAnchor="170.0" AnchorPane.rightAnchor="52.0" AnchorPane.topAnchor="50.0" />
                </children>
             </AnchorPane>
+            <ImageView fitHeight="87.0" fitWidth="199.0" layoutX="178.0" layoutY="19.0">
+               <image>
+                  <Image url="@../pic/risc.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="32.0" fitWidth="221.0" layoutX="166.0" layoutY="91.0">
+               <image>
+                  <Image url="@../pic/conquer.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="39.0" fitWidth="223.0" layoutX="165.0" layoutY="470.0" AnchorPane.leftAnchor="165.0" AnchorPane.rightAnchor="166.39999999999998">
+               <image>
+                  <Image url="@../pic/click_map.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="39.0" fitWidth="131.0" layoutX="121.0" layoutY="498.0">
+               <image>
+                  <Image url="@../pic/for_more.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="23.0" fitWidth="196.0" layoutX="247.0" layoutY="509.0">
+               <image>
+                  <Image url="@../pic/information.png" />
+               </image>
+            </ImageView>
          </children>
       </AnchorPane>
    </children>
