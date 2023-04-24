@@ -42,7 +42,7 @@ public class ClientCommunicator {
     public boolean isServerConnected() {
 
         try {
-            Socket testSocket = new Socket(hostname, portNum);
+            new Socket(hostname, portNum);
 //            socket.sendUrgentData(0xFF);
 //            sendTryConnect();
             return true;
