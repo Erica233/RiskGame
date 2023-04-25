@@ -84,6 +84,7 @@ public class DonePageController {
 //        th.start();
 
         gameResult = gameEntity.recvGameResult();
+
         if (gameResult == 0 || gameResult == 1) {
             ShowViews.showGameView(stage, "/ui/resultPage.fxml", gameEntity);
         } else {
