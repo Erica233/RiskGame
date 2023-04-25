@@ -17,6 +17,7 @@ import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.UpdateOptions;
 import com.mongodb.client.model.Updates;
+import org.bson.types.ObjectId;
 
 
 /**
@@ -39,6 +40,8 @@ public class Server {
     int turn; // This is the counter for recording which turn it is now
 
     HashMap<Integer, String> eventResults = new HashMap<>();
+    ObjectId currBoard_id;
+
     /**
      * Constructs Server with port number
      * @param _portNum
@@ -51,7 +54,6 @@ public class Server {
         this.objectsFromClients = new ArrayList<>();
         this.riscBoard = new RiskGameBoard();
         setUpActionsLists();
-
     }
 
     /**
@@ -297,24 +299,24 @@ public class Server {
         printActionsMap();
 
         riscBoard.executeUpgrades(actionsMap);
-        updateToMongoDB(boardName);
+        updateToMongoDB();
 
         executeMoves();
-        updateToMongoDB(boardName);
+        updateToMongoDB();
 
         riscBoard.executeAttacks(actionsMap);
-        updateToMongoDB(boardName);
+        updateToMongoDB();
 
         turnResults = riscBoard.updateCombatResult();
-        updateToMongoDB(boardName);
+        updateToMongoDB();
 
         eventResults = executeEvent(actionsMap);
-        updateToMongoDB(boardName);
+        updateToMongoDB();
 
         //sendTurnResults(turnResults);
         if(riscBoard.checkWin() == 2){
             riscBoard.addAfterEachTurn();
-            updateToMongoDB(boardName);
+            updateToMongoDB();
         }
         return riscBoard.checkWin();
     }
@@ -413,19 +415,21 @@ public class Server {
         // transfer serialized string to BSON
         byte[] bytes = bos.toByteArray();
 
-        Bson filter = Filters.eq("boardname", boardName);
+        Bson filter = Filters.eq("boardname", "board");
         Bson update = Updates.set("board", bytes);
         UpdateOptions options = new UpdateOptions().upsert(true);
         System.out.println(boardCollection.updateOne(filter, update, options));
 
 
+        //Get the board id
         Document doc = boardCollection.find(filter).first();
-        Object board_id = doc.get("_id");
-        System.out.println("The current board id is: " + board_id.toString());
+        currBoard_id = (ObjectId) doc.get("_id");
+        System.out.println("The current board id is: " + currBoard_id);
+
 
         //Update the user
         Bson filter_user = Filters.eq("username", userName);
-        Bson update_user = Updates.set("board_id", board_id);
+        Bson update_user = Updates.set("board_id", currBoard_id);
         UpdateOptions options_user = new UpdateOptions().upsert(true);
         System.out.println(userCollection.updateOne(filter_user, update_user, options_user));
 
@@ -437,7 +441,7 @@ public class Server {
      * This method stores the board into the mongo database
      * @throws Exception
      */
-    public void updateToMongoDB(String boardName) throws Exception{
+    public void updateToMongoDB() throws Exception{
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         ObjectOutputStream out = new ObjectOutputStream(bos);
 
@@ -446,8 +450,10 @@ public class Server {
 
         // transfer serialized string to BSON
         byte[] bytes = bos.toByteArray();
+//        ObjectId board_objId = new ObjectId(currBoard_id);
+        System.out.println(currBoard_id + "The class is: " + currBoard_id.getClass());
 
-        Bson filter = Filters.eq("boardname", boardName);
+        Bson filter = Filters.eq("_id", currBoard_id);
         Bson update = Updates.set("board", bytes);
         UpdateOptions options = new UpdateOptions().upsert(true);
         System.out.println(boardCollection.updateOne(filter, update, options));
@@ -464,11 +470,11 @@ public class Server {
         Bson filter = Filters.eq("username",  username);
         Document currUser = userCollection.find(filter).first();
 
-        Object board_id =  currUser.get("board_id");
+        currBoard_id = (ObjectId) currUser.get("board_id");
+//        ObjectId board_objId = new ObjectId(board_id);
 
-        Bson boardFilter = Filters.eq("_id",  board_id);
+        Bson boardFilter = Filters.eq("_id",  currBoard_id);
         Document currBoard = boardCollection.find(boardFilter).first();
-
 
         Binary temp = (Binary) currBoard.get("board");
         System.out.println("curr doc is: " + currBoard);
@@ -492,7 +498,7 @@ public class Server {
 
         //update userID
         Bson filter_user = Filters.eq("username", username);
-        Bson update_user = Updates.set("board_id", board_id);
+        Bson update_user = Updates.set("board_id", currBoard_id);
         UpdateOptions options_user = new UpdateOptions().upsert(true);
         System.out.println(userCollection.updateOne(filter_user, update_user, options_user));
 
@@ -504,10 +510,10 @@ public class Server {
     public void useExtractBoardOrNewBoard(String username, String boardName) throws Exception {
         Bson filter = Filters.eq("username",  username);
         Document doc = userCollection.find(filter).first();
-        String board_id = doc.get("board_id").toString();
+        ObjectId board_id = (ObjectId) doc.get("board_id");
         System.out.println("The current board id is: " + board_id.toString());
 
-        if(board_id.equals("")){
+        if(board_id.equals(new ObjectId("000000000000000000000000"))){
             InitialBoardAndSetUsers(username, boardName);
         }
         else {
