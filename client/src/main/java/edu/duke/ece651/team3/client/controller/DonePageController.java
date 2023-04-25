@@ -85,9 +85,8 @@ public class DonePageController {
             }
 
         });
-
-
-
+        th.setDaemon(true);
+        th.start();
     }
 
     /**

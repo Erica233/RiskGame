@@ -35,7 +35,7 @@
                      </padding>
                      <children>
                         <Group />
-                        <Button fx:id="nextButton" blendMode="MULTIPLY" layoutX="164.0" layoutY="407.0" mnemonicParsing="false" onAction="#onCheckValidEvent" prefHeight="40.0" prefWidth="95.0" text="Next">
+                        <Button fx:id="nextButton" blendMode="MULTIPLY" layoutX="164.0" layoutY="407.0" mnemonicParsing="false" onAction="#onCheckValidEvent" prefHeight="40.0" prefWidth="95.0" text="Next" AnchorPane.bottomAnchor="48.0">
                            <font>
                               <Font size="20.0" />
                            </font>
@@ -62,8 +62,8 @@
                         <Group fx:id="sourceChoice1" layoutY="39.0" />
                         <Group fx:id="SourceChoice" layoutX="-1.0" layoutY="4.0" />
                         <Group fx:id="SourceChoice1" layoutX="-1.0" layoutY="27.0" />
-                        <ChoiceBox fx:id="choice_source" blendMode="MULTIPLY" layoutX="164.0" layoutY="344.0" prefHeight="26.0" prefWidth="95.0" />
-                        <Label fx:id="SourceTerr" layoutX="31.0" layoutY="345.0" prefHeight="26.0" prefWidth="121.0" text="Source Territory " />
+                        <ChoiceBox fx:id="choice_source" blendMode="MULTIPLY" layoutX="164.0" layoutY="342.0" prefHeight="28.0" prefWidth="95.0" />
+                        <Label fx:id="SourceTerr" layoutX="31.0" layoutY="343.0" prefHeight="26.0" prefWidth="121.0" text="Source Territory " />
                         <Label layoutX="47.0" layoutY="160.0" prefHeight="106.0" prefWidth="197.0" text="Note that the EVENT will cost 2 units food resource and 2 units tech resource" textFill="#4261d0" wrapText="true">
                            <font>
                               <Font size="15.0" />
@@ -75,17 +75,12 @@
                               <Font size="20.0" />
                            </font>
                         </Button>
-                        <ImageView fitHeight="64.0" fitWidth="133.0" layoutX="148.0" layoutY="396.0">
+                        <ImageView fitHeight="64.0" fitWidth="133.0" layoutX="148.0" layoutY="397.0">
                            <image>
                               <Image url="@../pic/frame.png" />
                            </image>
                         </ImageView>
                         <ImageView fitHeight="64.0" fitWidth="133.0" layoutX="31.0" layoutY="396.0">
-                           <image>
-                              <Image url="@../pic/frame.png" />
-                           </image>
-                        </ImageView>
-                        <ImageView fitHeight="40.0" fitWidth="133.0" layoutX="148.0" layoutY="337.0">
                            <image>
                               <Image url="@../pic/frame.png" />
                            </image>
