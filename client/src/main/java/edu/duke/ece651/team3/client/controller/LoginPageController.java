@@ -60,17 +60,6 @@ public class LoginPageController {
                 @Override
                 protected Object call() throws Exception {
                     try {
-                        //check if it is a new game
-//                        MongoCollection<Document> boardsCo = database.getCollection("boardsCo");
-//                        Bson bfilter = Filters.and(eq("username", username.getText()));
-//                        Document boardDoc = boardsCo.find(bfilter).first();
-//                        if (boardDoc == null) {
-//                            //new game
-//
-//                        } else {
-//                            //continue old game
-//
-//                        }
                         //start game
                         gameEntity = new Game();
                         gameEntity.storePlayerId();
