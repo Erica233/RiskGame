@@ -291,8 +291,8 @@ public class Server {
         String username2 = "er";
         String boardName = "fm_er";
 
-        useExtractBoardOrNewBoard(username1, boardName);
-        useExtractBoardOrNewBoard(username2, boardName);
+        useExtractBoardOrNewBoard(username1);
+        useExtractBoardOrNewBoard(username2);
 
         sendBoardToAllClients();
         recvActionsFromAllClients();
@@ -405,7 +405,7 @@ public class Server {
      * This method stores the board into the mongo database
      * @throws Exception
      */
-    public void InitialBoardAndSetUsers(String userName, String boardName) throws Exception{
+    public void InitialBoardAndSetUsers(String userName) throws Exception{
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         ObjectOutputStream out = new ObjectOutputStream(bos);
 
@@ -507,14 +507,14 @@ public class Server {
 
     }
 
-    public void useExtractBoardOrNewBoard(String username, String boardName) throws Exception {
+    public void useExtractBoardOrNewBoard(String username) throws Exception {
         Bson filter = Filters.eq("username",  username);
         Document doc = userCollection.find(filter).first();
         ObjectId board_id = (ObjectId) doc.get("board_id");
         System.out.println("The current board id is: " + board_id.toString());
 
         if(board_id.equals(new ObjectId("000000000000000000000000"))){
-            InitialBoardAndSetUsers(username, boardName);
+            InitialBoardAndSetUsers(username);
         }
         else {
             extractFromMongDB(username);
