@@ -18,49 +18,26 @@
             <Image url="@../pic/textureleft.png" />
          </image>
       </ImageView>
+      <ImageView fitHeight="507.0" fitWidth="309.0" layoutX="27.0" layoutY="40.0" AnchorPane.bottomAnchor="50.0" AnchorPane.rightAnchor="34.0">
+         <image>
+            <Image url="@../pic/paper.png" />
+         </image>
+      </ImageView>
       <AnchorPane layoutX="39.0" layoutY="45.0" prefHeight="507.0" prefWidth="290.0" AnchorPane.bottomAnchor="28.0" AnchorPane.leftAnchor="39.0" AnchorPane.rightAnchor="41.0" AnchorPane.topAnchor="45.0">
          <padding>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </padding>
          <children>
-            <ImageView fitHeight="501.0" fitWidth="271.0" layoutY="-4.0" AnchorPane.rightAnchor="0.0">
-               <image>
-                  <Image url="@../pic/paper.png" />
-               </image>
-            </ImageView>
-            <Button fx:id="nextButton" layoutX="92.0" layoutY="384.0" mnemonicParsing="false" onMouseClicked="#goToActionPage" prefHeight="40.0" prefWidth="111.0" text="Next">
+            <Button fx:id="nextButton" blendMode="MULTIPLY" layoutX="92.0" layoutY="393.0" mnemonicParsing="false" onMouseClicked="#goToActionPage" prefHeight="40.0" prefWidth="111.0" text="Next" AnchorPane.bottomAnchor="84.0">
                <font>
                   <Font size="20.0" />
                </font>
             </Button>
-            <RadioButton fx:id="move" layoutX="58.0" layoutY="141.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="160.0" text="Move">
-               <toggleGroup>
-                  <ToggleGroup fx:id="Action" />
-               </toggleGroup>
-               <font>
-                  <Font size="19.0" />
-               </font>
-            </RadioButton>
-            <RadioButton fx:id="attack" layoutX="58.0" layoutY="191.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="183.0" text="Attack" toggleGroup="$Action">
-               <font>
-                  <Font size="19.0" />
-               </font>
-            </RadioButton>
-            <RadioButton fx:id="upgrade" layoutX="58.0" layoutY="241.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="183.0" text="Upgrade" toggleGroup="$Action">
-               <font>
-                  <Font size="19.0" />
-               </font>
-            </RadioButton>
-            <RadioButton fx:id="eventButton" layoutX="60.0" layoutY="291.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="183.0" text="Event" toggleGroup="$Action">
-               <font>
-                  <Font size="19.0" />
-               </font>
-            </RadioButton>
-            <RadioButton fx:id="done" layoutX="58.0" layoutY="341.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="183.0" text="Done" toggleGroup="$Action">
-               <font>
-                  <Font size="19.0" />
-               </font>
-            </RadioButton>
+            <ImageView fitHeight="65.0" fitWidth="154.0" layoutX="75.0" layoutY="380.0">
+               <image>
+                  <Image url="@../pic/frame.png" />
+               </image>
+            </ImageView>
             <Group fx:id="choicePrompt">
                <children>
                   <Label fx:id="playerColor" alignment="CENTER" contentDisplay="CENTER" layoutX="33.0" layoutY="23.0" prefHeight="128.0" prefWidth="227.0" text="You are the Orange Player What would you like to do?" textAlignment="CENTER" wrapText="true">
@@ -68,16 +45,69 @@
                         <Font size="20.0" />
                      </font>
                   </Label>
+                  <RadioButton fx:id="move" blendMode="MULTIPLY" layoutX="52.0" layoutY="110.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="160.0" text="Move">
+                     <toggleGroup>
+                        <ToggleGroup fx:id="Action" />
+                     </toggleGroup>
+                     <font>
+                        <Font size="19.0" />
+                     </font>
+                  </RadioButton>
+                  <RadioButton fx:id="attack" blendMode="MULTIPLY" layoutX="52.0" layoutY="160.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="183.0" text="Attack" toggleGroup="$Action">
+                     <font>
+                        <Font size="19.0" />
+                     </font>
+                  </RadioButton>
+                  <RadioButton fx:id="upgrade" blendMode="MULTIPLY" layoutX="52.0" layoutY="210.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="183.0" text="Upgrade" toggleGroup="$Action">
+                     <font>
+                        <Font size="19.0" />
+                     </font>
+                  </RadioButton>
+                  <RadioButton fx:id="eventButton" blendMode="MULTIPLY" layoutX="54.0" layoutY="260.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="183.0" text="Event" toggleGroup="$Action">
+                     <font>
+                        <Font size="19.0" />
+                     </font>
+                  </RadioButton>
+                  <RadioButton fx:id="done" blendMode="MULTIPLY" layoutX="52.0" layoutY="310.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="183.0" text="Done" toggleGroup="$Action">
+                     <font>
+                        <Font size="19.0" />
+                     </font>
+                  </RadioButton>
+                  <ImageView fitHeight="48.0" fitWidth="47.0" layoutX="41.0" layoutY="107.0">
+                     <image>
+                        <Image url="@../pic/circleframe.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="48.0" fitWidth="47.0" layoutX="41.0" layoutY="206.0">
+                     <image>
+                        <Image url="@../pic/circleframe.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="48.0" fitWidth="47.0" layoutX="41.0" layoutY="155.0">
+                     <image>
+                        <Image url="@../pic/circleframe.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="48.0" fitWidth="47.0" layoutX="42.0" layoutY="256.0">
+                     <image>
+                        <Image url="@../pic/circleframe.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="48.0" fitWidth="47.0" layoutX="41.0" layoutY="306.0">
+                     <image>
+                        <Image url="@../pic/circleframe.png" />
+                     </image>
+                  </ImageView>
                </children>
             </Group>
-            <Label fx:id="waitInfo" alignment="CENTER" contentDisplay="CENTER" layoutX="50.0" layoutY="381.0" prefHeight="40.0" prefWidth="191.0" text="Waiting for the other player..." textAlignment="CENTER" visible="false">
+            <Label fx:id="waitInfo" alignment="CENTER" contentDisplay="CENTER" layoutX="50.0" layoutY="381.0" prefHeight="40.0" prefWidth="191.0" text="Waiting for the other player..." textAlignment="CENTER" visible="false" AnchorPane.bottomAnchor="136.0" AnchorPane.topAnchor="341.0">
                <font>
                   <Font size="14.0" />
                </font>
             </Label>
          </children>
       </AnchorPane>
-      <ImageView fitHeight="179.0" fitWidth="138.0" layoutX="280.0" layoutY="476.0" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="-10.0">
+      <ImageView fitHeight="179.0" fitWidth="138.0" layoutX="280.0" layoutY="476.0" visible="false" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="-10.0">
          <image>
             <Image url="@../pic/archer.png" />
          </image>

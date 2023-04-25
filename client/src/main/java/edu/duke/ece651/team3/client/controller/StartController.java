@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.event.ActionEvent;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -39,6 +40,9 @@ public class StartController implements Initializable {
         Stage currStage = (Stage) quitButton.getScene().getWindow();
         currStage.close();
     }
+
+
+
 
     /**
      * if user click the start button, connect to the server and start the game
