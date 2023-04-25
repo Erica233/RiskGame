@@ -31,8 +31,8 @@ public class Server {
     private HashMap<Integer, ArrayList<Action>> actionsMap; //player ID and all attack actions this player has
     HashMap<String, Integer> turnResults = new HashMap<>();
 
-    static MongoCollection<Document> collection; //The collection that stores all stages of RiskGameBoard
-    static MongoCollection<Document> users; //The collection that stores all stages of RiskGameBoard
+    static MongoCollection<Document> boardCollection; //The collection that stores all stages of RiskGameBoard
+    static MongoCollection<Document> userCollection; //The collection that stores all stages of RiskGameBoard
     static MongoDatabase database;
 
 
@@ -129,8 +129,8 @@ public class Server {
         MongoClient mongoClient = ConnectDb.getMongoClient();
         database = ConnectDb.connectToDb("riscDB");
         // get a handle to the MongoDB collection
-        collection = database.getCollection("boardsCo");
-        users = database.getCollection("accountsCo");
+        boardCollection = database.getCollection("boardsCo");
+        userCollection = database.getCollection("accountsCo");
 
         //run game
         int portNum = 12345;
@@ -413,10 +413,10 @@ public class Server {
         Bson filter = Filters.eq("boardname", boardName);
         Bson update = Updates.set("board", bytes);
         UpdateOptions options = new UpdateOptions().upsert(true);
-        System.out.println(collection.updateOne(filter, update, options));
+        System.out.println(boardCollection.updateOne(filter, update, options));
 
 
-        Document doc = collection.find(filter).first();
+        Document doc = boardCollection.find(filter).first();
         Object board_id = doc.get("_id");
         System.out.println("The current board id is: " + board_id.toString());
 
@@ -424,7 +424,7 @@ public class Server {
         Bson filter_user = Filters.eq("username", userName);
         Bson update_user = Updates.set("board_id", board_id);
         UpdateOptions options_user = new UpdateOptions().upsert(true);
-        System.out.println(users.updateOne(filter_user, update_user, options_user));
+        System.out.println(userCollection.updateOne(filter_user, update_user, options_user));
 
         bos.close();
         out.close();
@@ -447,7 +447,7 @@ public class Server {
         Bson filter = Filters.eq("boardname", boardName);
         Bson update = Updates.set("board", bytes);
         UpdateOptions options = new UpdateOptions().upsert(true);
-        System.out.println(collection.updateOne(filter, update, options));
+        System.out.println(boardCollection.updateOne(filter, update, options));
 
         //To test:
         System.out.println("now each player have " + riscBoard.getAllPlayers().get(0).getOwnedTerritories().get(0).getUnits().get(0).getNumUnits()
@@ -457,7 +457,7 @@ public class Server {
 
 
         Bson filter_test = Filters.eq("boardname",  boardName);
-        Document board_retr = collection.find(filter_test).first();
+        Document board_retr = boardCollection.find(filter_test).first();
 
         Binary temp = (Binary) board_retr.get("board");
         System.out.println("curr doc is: " + board_retr);
@@ -486,7 +486,7 @@ public class Server {
 
     public void extractFromMongDB(String username, String boardName) throws IOException, ClassNotFoundException {
         Bson filter = Filters.eq("boardname",  boardName);
-        Document board_retr = collection.find(filter).first();
+        Document board_retr = boardCollection.find(filter).first();
 
         Binary temp = (Binary) board_retr.get("board");
         System.out.println("curr doc is: " + board_retr);
@@ -515,7 +515,7 @@ public class Server {
 
     public void useExtractBoardOrNewBoard(String username, String boardName) throws Exception {
         Bson filter = Filters.eq("boardname",  boardName);
-        FindIterable<Document> doc_retr = collection.find(filter);
+        FindIterable<Document> doc_retr = boardCollection.find(filter);
 
         //If the doc_retr does not contain the current element
         if(!doc_retr.iterator().hasNext()){
