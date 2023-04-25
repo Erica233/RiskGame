@@ -48,9 +48,7 @@ public class App extends Application {
   public void start(Stage primaryStage) throws IOException {
     this.stage = primaryStage;
     Thread.setDefaultUncaughtExceptionHandler(new ErrorReporter());
-    //Game gameEntity = new Game();
     startView(this.stage, "/ui/start.fxml", null);
-
   }
 
   public static void main(String[] args) {

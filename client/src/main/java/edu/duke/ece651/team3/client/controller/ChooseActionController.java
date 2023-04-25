@@ -31,6 +31,9 @@ public class ChooseActionController {
     @FXML
     private Label waitInfo;
 
+    @FXML
+    private RadioButton eventButton;
+
     private String color;
     private int playerId;
     private Stage stage;
@@ -60,8 +63,15 @@ public class ChooseActionController {
         else if(attack.isSelected()){
             ShowViews.showGameView(stage, "/ui/attackPage.fxml", gameEntity);
         }
+        else if(eventButton.isSelected()){
+            ShowViews.showGameView(stage, "/ui/eventPage.fxml", gameEntity);
+        }
         else if(done.isSelected()){
             waitInfo.setVisible(true);
+            if(!gameEntity.isServerConnect()){
+                System.out.println("The server is disconnected!");
+                ShowViews.showGameView(stage, "/ui/serverDisconnectPage.fxml", gameEntity);
+            }
             Thread th = new Thread(new Task() {
                 @Override
                 protected Object call() throws Exception {

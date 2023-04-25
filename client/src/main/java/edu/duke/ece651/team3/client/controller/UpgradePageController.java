@@ -8,8 +8,10 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -38,6 +40,8 @@ public class UpgradePageController {
     private Label playerColor;
     @FXML
     private Button nextButton;
+    @FXML
+    private Button backButton;
 
     private int playerID;
     private HashMap<Unit, ChoiceBox<Integer>> eachLevelUnitNum; //The Unit and its choices
@@ -49,6 +53,10 @@ public class UpgradePageController {
         this.gameEntity = _gameEntity;
         this.stage = _stage;
         this.playerID = id;
+    }
+
+    public void onBackButton(MouseEvent mouseEvent) throws IOException {
+        ShowViews.showGameView(stage, "/ui/whole.fxml", gameEntity);
     }
 
     /**

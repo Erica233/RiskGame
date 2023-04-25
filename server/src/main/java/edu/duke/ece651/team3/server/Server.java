@@ -1,13 +1,22 @@
 package edu.duke.ece651.team3.server;
 
-import com.mongodb.client.MongoClient;
-import com.mongodb.client.MongoDatabase;
 import edu.duke.ece651.team3.shared.*;
 
 import java.io.*;
 import java.util.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+
+import org.bson.Document;
+import org.bson.conversions.Bson;
+import org.bson.types.Binary;
+
+import com.mongodb.client.*;
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.UpdateOptions;
+import com.mongodb.client.model.Updates;
 
 
 /**
@@ -18,13 +27,22 @@ public class Server {
     private final ArrayList<Socket> clientSockets;
     private final ArrayList<ObjectOutputStream> objectsToClients;
     private final ArrayList<ObjectInputStream> objectsFromClients;
-    private final RiskGameBoard riscBoard;
+    private RiskGameBoard riscBoard; //delete final to use in datbase
 //    private HashMap<Integer, ArrayList<Action>> movesMap; //player ID and all move actions this player has
 //    private HashMap<Integer, ArrayList<Action>> attacksMap; //player ID and all attack actions this player has
     private HashMap<Integer, ArrayList<Action>> actionsMap; //player ID and all attack actions this player has
     HashMap<String, Integer> turnResults = new HashMap<>();
 
+    static MongoCollection<Document> collection; //The collection that stores all stages of RiskGameBoard
+    static MongoDatabase database;
 
+    ByteArrayOutputStream bos;
+    ObjectOutputStream out;
+
+
+    int turn; // This is the counter for recording which turn it is now
+
+    HashMap<Integer, String> eventResults = new HashMap<>();
     /**
      * Constructs Server with port number
      * @param _portNum
@@ -37,6 +55,12 @@ public class Server {
         this.objectsFromClients = new ArrayList<>();
         this.riscBoard = new RiskGameBoard();
         setUpActionsLists();
+
+        //For data storage
+        turn = 0;
+        bos = new ByteArrayOutputStream();
+        out = new ObjectOutputStream(bos);
+
     }
 
     /**
@@ -112,7 +136,9 @@ public class Server {
 
     public static void main(String[] args) {
         MongoClient mongoClient = ConnectDb.getMongoClient();
-        MongoDatabase database = ConnectDb.connectToDb("riscDB");
+        database = ConnectDb.connectToDb("testBoard");
+        // get a handle to the MongoDB collection
+        collection = database.getCollection("test_Apr25");
 
         //run game
         int portNum = 12345;
@@ -141,20 +167,125 @@ public class Server {
         //sendBoardToAllClients();
         do {
 //            try {
-                result = runOneTurn();
-                if (result == 2) {
-                    System.out.println("game continues");
-                }
-                sendBoardToAllClients();
-                sendTurnResults(turnResults);
-                sendEndGameInfo(result);
-                if (result == 0 || result == 1) {
-                    System.out.println("Player " + result + " is the winner!");
-                    System.out.println("Game Ends!");
-                    return;
-                }
+            result = runOneTurn();
+            ++ turn;
+            if (result == 2) {
+                System.out.println("game continues");
+            }
+            sendBoardToAllClients();
+            sendTurnResults(turnResults);
+            sendEventResults(eventResults);
+            sendEndGameInfo(result);
+            if (result == 0 || result == 1) {
+                System.out.println("Player " + result + " is the winner!");
+                System.out.println("Game Ends!");
+                return;
+            }
         } while (true);
+    }
 
+
+    ArrayList<String> getAllEventName(){
+        ArrayList<String> economics = new ArrayList<>();
+        economics.add(0, "Economic Recession");
+        economics.add(1, "Oil Crisis");
+        economics.add(2, "Dot Com Bubble");
+        economics.add(3, "Financial Crisis");
+        economics.add(4, "Economic Depression");
+        economics.add(5, "Economic Growth");
+        economics.add(6, "The Roaring Period");
+        economics.add(7, "Economic Expansion");
+        economics.add(8, "Technology Boom");
+        economics.add(9, "Industry Revolution");
+        return economics;
+    }
+
+    String getInfor(int num, Action myEvent, int playerId){
+        ArrayList<String> economics = getAllEventName();
+        String res = null;
+        if(num >= 0 && num <= 9){
+            num = num/2;//0-4
+            Territory t = riscBoard.getAllPlayers().get(playerId).findOwnedTerritoryByName(myEvent.getSrcName());
+            if(t.getFood()-4-num >= 0){
+                t.setFood(t.getFood()-4-num);
+            }
+            else if(t.getFood()-4-num < 0){
+                t.setFood(0);
+            }
+            if(t.getTech()-4-num >=0){
+                t.setTech(t.getTech()-4-num);
+            }
+            else if(t.getTech()-4-num < 0){
+                t.setTech(0);
+            }
+            return "Last random event is " + economics.get(num)+ ".\nYou lose " + (2+num) +" food resources and "+
+                    (2+num) +" technology resources.";
+        }
+        else if(num >= 10 && num <= 19){
+            num = num/2;//5-9
+            Territory t = riscBoard.getAllPlayers().get(playerId).findOwnedTerritoryByName(myEvent.getSrcName());
+            t.setFood(t.getFood()-5+num);
+            t.setTech(t.getTech()-5+num);
+            return "Last random event is " + economics.get(num)+ ".\nYou get " + (num-3) +" food resources and "+
+                    (num-3) +" technology resources.";
+        }
+        else if(num >= 20 && num <= 25){
+            Territory t = riscBoard.getAllPlayers().get(playerId).findOwnedTerritoryByName(myEvent.getSrcName());
+            t.setFood(t.getFood()-2);
+            t.setTech(t.getTech()-2);
+            t.getUnits().get(num-20).setNumUnits(t.getUnits().get(num-20).getNumUnits()+1);
+            return "Last random event is getting new unit.\nYou get 1 level " + (num-20) +"unit";
+        }
+        else if(num >= 26 && num <= 31) {
+            Territory t = riscBoard.getAllPlayers().get(playerId).findOwnedTerritoryByName(myEvent.getSrcName());
+            t.setFood(t.getFood()-2);
+            t.setTech(t.getTech()-2);
+            if(t.getUnits().get(num-26).getNumUnits()<1){
+                t.getUnits().get(num-26).setNumUnits(0);
+            }
+            else{t.getUnits().get(num-26).setNumUnits(t.getUnits().get(num-26).getNumUnits()-1);}
+            return "Last random event is losing new unit.\nYou lose 1 level " + (num-26) +"unit";
+        }
+        else if(num >= 32 && num <= 37) {
+            Territory t = riscBoard.getAllPlayers().get(playerId).findOwnedTerritoryByName(myEvent.getSrcName());
+            t.setFood(t.getFood()-2);
+            t.setTech(t.getTech()-2);
+            t.getUnits().get(num-32).setNumUnits(t.getUnits().get(num-32).getNumUnits()+2);
+            return "Last random event is getting new unit.\nYou get 2 level " + (num-32) +"unit";
+        }
+        else if(num >= 38 && num <= 43) {
+            Territory t = riscBoard.getAllPlayers().get(playerId).findOwnedTerritoryByName(myEvent.getSrcName());
+            t.setFood(t.getFood()-2);
+            t.setTech(t.getTech()-2);
+            if(t.getUnits().get(num-38).getNumUnits()<2){
+                t.getUnits().get(num-38).setNumUnits(0);
+            }
+            else {
+                t.getUnits().get(num - 38).setNumUnits(t.getUnits().get(num - 38).getNumUnits() - 2);
+            }
+            return "Last random event is losing new unit.\nYou lose 2 level " + (num-38) +"unit";
+        }
+        return res;
+    }
+
+    /**
+     *
+     */
+    public HashMap<Integer, String> executeEvent(HashMap<Integer, ArrayList<Action>> actionsMap){
+        HashMap<Integer, String> res = new HashMap<>();
+        res.put(0, null);
+        res.put(1, null);
+        for(int i = 0; i < actionsMap.keySet().size(); i++){
+            for(int j = 0; j < actionsMap.get(i).size(); j++){
+                if(actionsMap.get(i).get(j).isEventType()){
+                    Action myEvent = actionsMap.get(i).get(j);
+                    int num = new Random().nextInt(44);//0-43
+                    res.put(i, getInfor(num, myEvent, i));
+                    break;
+                }
+            }
+        }
+        return res;
     }
 
     /**
@@ -164,17 +295,32 @@ public class Server {
      * @throws ClassNotFoundException
      */
     public int runOneTurn() throws Exception {
+        if(turn == 0){
+            useExtractBoardOrNewBoard();
+        }
         sendBoardToAllClients();
         recvActionsFromAllClients();
         printActionsMap();
+
         riscBoard.executeUpgrades(actionsMap);
+        updateToMongoDB();
+
         executeMoves();
+        updateToMongoDB();
+
         riscBoard.executeAttacks(actionsMap);
+        updateToMongoDB();
+
         turnResults = riscBoard.updateCombatResult();
+        updateToMongoDB();
+
+        eventResults = executeEvent(actionsMap);
+        updateToMongoDB();
 
         //sendTurnResults(turnResults);
         if(riscBoard.checkWin() == 2){
             riscBoard.addAfterEachTurn();
+            updateToMongoDB();
         }
         return riscBoard.checkWin();
     }
@@ -191,6 +337,20 @@ public class Server {
         objectsToClients.get(1).reset();
         System.out.println("send turn results to all clients!\n");
     }
+
+    /**
+     * send event results to all clients
+     * @param eventResults
+     * @throws IOException
+     */
+    public void sendEventResults(HashMap<Integer, String> eventResults) throws IOException {
+        objectsToClients.get(0).writeObject(eventResults);
+        objectsToClients.get(1).writeObject(eventResults);
+        objectsToClients.get(0).reset();
+        objectsToClients.get(1).reset();
+        System.out.println("send event results to all clients!\n");
+    }
+
 
     /**
      * send end game signal to clients,
@@ -246,10 +406,83 @@ public class Server {
     }
 
     /**
+     * This method stores the board into the mongo database
+     * @throws Exception
+     */
+    public void updateToMongoDB() throws Exception{
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        ObjectOutputStream out = new ObjectOutputStream(bos);
+
+        out.writeObject(riscBoard);
+        out.flush();
+
+        // transfer serialized string to BSON
+        byte[] bytes = bos.toByteArray();
+        String currName = riscBoard.getAllPlayers().get(0).getColor()
+                + riscBoard.getAllPlayers().get(1).getColor();
+
+        Bson filter = Filters.eq("users", currName);
+        Bson update = Updates.set(currName, bytes);
+        UpdateOptions options = new UpdateOptions().upsert(true);
+        System.out.println(collection.updateOne(filter, update, options));
+
+
+        bos.close();
+        out.close();
+    }
+
+    public void extractFromMongDB() throws IOException, ClassNotFoundException {
+        String name = riscBoard.getAllPlayers().get(0).getColor()
+                + riscBoard.getAllPlayers().get(1).getColor();
+        Bson filter = Filters.eq("users",  name);
+        FindIterable<Document> doc_retr = collection.find(filter);
+
+        for (Document d : doc_retr) {
+            Binary temp = (Binary) d.get(name);
+            System.out.println("curr doc is: " + d);
+            byte[] bytes_retr = temp.getData();
+
+            String name_tese = (String) d.get("users");
+            System.out.println("The current users is: " + name_tese);
+
+            // deseralization
+            ByteArrayInputStream bis = new ByteArrayInputStream(bytes_retr);
+            ObjectInputStream in = new ObjectInputStream(bis);
+            riscBoard = (RiskGameBoard) in.readObject();
+            System.out.println("The player0's first territory should be a: "
+                    + riscBoard.getAllPlayers().get(0).getOwnedTerritories().get(0).getUnits().get(1).getUnitName());
+
+            //Test current board by territories
+            System.out.println("Orange has  " + riscBoard.getAllPlayers().get(0).getOwnedTerritories().size() +
+                    ", and blue has " + riscBoard.getAllPlayers().get(1).getOwnedTerritories().size());
+            //Delete the current board in the database
+//            collection.deleteOne(d);
+            in.close();
+            bis.close();
+            return; //Only one called this name
+        }
+
+    }
+
+    public void useExtractBoardOrNewBoard() throws Exception {
+        Bson filter = Filters.eq("users",  riscBoard.getAllPlayers().get(0).getColor()
+                + riscBoard.getAllPlayers().get(1).getColor());
+        FindIterable<Document> doc_retr = collection.find(filter);
+
+        //If the doc_retr does not contain the current element
+        if(!doc_retr.iterator().hasNext()){
+            updateToMongoDB();
+        }
+        else {
+            extractFromMongDB();
+        }
+    }
+
+    /**
      * This method sends the board to all clients on the board
      * @throws IOException
      */
-    public void sendBoardToAllClients() throws IOException {
+    public void sendBoardToAllClients() throws Exception {
         objectsToClients.get(0).writeObject(riscBoard);
         objectsToClients.get(1).writeObject(riscBoard);
         objectsToClients.get(0).reset();
@@ -273,7 +506,6 @@ public class Server {
      * @throws Exception
      */
     public void initGame() throws Exception {
-        //if new game, init map;
         riscBoard.initE2Map();
         assignPlayerIdToClients();
         //sendBoardToAllClients();

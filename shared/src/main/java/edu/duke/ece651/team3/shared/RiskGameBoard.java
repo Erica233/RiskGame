@@ -382,6 +382,11 @@ public class RiskGameBoard implements Board, Serializable {
         }
     }
 
+    public void executeEvent(Action action, int playerId){
+        Player currPlayer = getAllPlayers().get(playerId);
+        currPlayer.executeEvent(action);
+    }
+
     /**
      * This method executes all upgrades for all players
      * @param actionsMap includes all the information about Action

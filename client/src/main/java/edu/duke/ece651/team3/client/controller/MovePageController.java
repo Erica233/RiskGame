@@ -7,9 +7,11 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.util.*;
 
 public class MovePageController {
@@ -36,6 +38,8 @@ public class MovePageController {
     @FXML
     private Button nextButton;
     @FXML
+    private Button backButton;
+    @FXML
     private AnchorPane contextBox;
 
     private int playerID;
@@ -57,6 +61,11 @@ public class MovePageController {
         this.gameEntity = _gameEntity;
         this.playerID = id;
         this.stage = _stage;
+    }
+
+    @FXML
+    public void onBackButton(MouseEvent mouseEvent) throws IOException {
+        ShowViews.showGameView(stage, "/ui/whole.fxml", gameEntity);
     }
 
     /**
