@@ -136,9 +136,9 @@ public class Server {
 
     public static void main(String[] args) {
         MongoClient mongoClient = ConnectDb.getMongoClient();
-        database = ConnectDb.connectToDb("testBoard");
+        database = ConnectDb.connectToDb("riscDB");
         // get a handle to the MongoDB collection
-        collection = database.getCollection("test_Apr25");
+        collection = database.getCollection("boardsCo");
 
         //run game
         int portNum = 12345;
