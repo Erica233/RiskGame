@@ -39,6 +39,8 @@ public class Server {
     ByteArrayOutputStream bos;
     ObjectOutputStream out;
 
+    HashMap<Integer, String> users; //playerId: username
+
 
     int turn; // This is the counter for recording which turn it is now
 
@@ -55,6 +57,7 @@ public class Server {
         this.objectsFromClients = new ArrayList<>();
         this.riscBoard = new RiskGameBoard();
         setUpActionsLists();
+        this.users = new HashMap<>();
 
         //For data storage
         turn = 0;
@@ -507,10 +510,18 @@ public class Server {
      */
     public void initGame() throws Exception {
         riscBoard.initE2Map();
+        recvUsernames();
         assignPlayerIdToClients();
         //sendBoardToAllClients();
     }
 
+    public void recvUsernames() throws IOException, ClassNotFoundException {
+        for (int id = 0; id < 2; id++) {
+            String username = (String) objectsFromClients.get(id).readObject();
+            users.put(id, username);
+            objectsFromClients.get(id).readObject();
+        }
+    }
 
     /**
      * The test map

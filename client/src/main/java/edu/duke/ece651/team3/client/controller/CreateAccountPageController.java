@@ -68,6 +68,7 @@ public class CreateAccountPageController {
             Document newAccount = new Document();
             newAccount.put("username", username.getText());
             newAccount.put("password", password.getText());
+            newAccount.put("board_id", "");
             accountsCo.insertOne(newAccount);
 
             ShowViews.showStartView(stage, "/ui/loginPage.fxml", gameEntity);

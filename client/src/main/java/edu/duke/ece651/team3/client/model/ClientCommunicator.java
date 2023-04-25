@@ -95,6 +95,11 @@ public class ClientCommunicator {
         objectToServer.writeObject("D");
     }
 
+    public void sendString(String s) throws IOException {
+        objectToServer.writeObject(s);
+        objectToServer.reset();
+    }
+
     /**
      * This method receives the player id from the server
      * @throws IOException
