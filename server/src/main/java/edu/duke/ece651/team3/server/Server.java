@@ -1,12 +1,26 @@
 package edu.duke.ece651.team3.server;
 
+import ch.qos.logback.classic.Level;
+import ch.qos.logback.classic.LoggerContext;
+import com.mongodb.client.*;
+import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.UpdateOptions;
+import com.mongodb.client.model.Updates;
+import com.mongodb.client.result.UpdateResult;
 import edu.duke.ece651.team3.shared.*;
 
 import java.io.*;
-import java.sql.SQLOutput;
 import java.util.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+
+import org.bson.Document;
+import org.bson.conversions.Bson;
+import org.bson.types.Binary;
+import org.slf4j.LoggerFactory;
+
+import static com.mongodb.client.model.Filters.eq;
+import static com.mongodb.client.model.Filters.exists;
 
 
 /**
@@ -17,12 +31,25 @@ public class Server {
     private final ArrayList<Socket> clientSockets;
     private final ArrayList<ObjectOutputStream> objectsToClients;
     private final ArrayList<ObjectInputStream> objectsFromClients;
-    private final RiskGameBoard riscBoard;
+    private RiskGameBoard riscBoard;
+    private RiskGameBoard riscBoard_retr; //The retrived riskGameBoard
+
 //    private HashMap<Integer, ArrayList<Action>> movesMap; //player ID and all move actions this player has
 //    private HashMap<Integer, ArrayList<Action>> attacksMap; //player ID and all attack actions this player has
     private HashMap<Integer, ArrayList<Action>> actionsMap; //player ID and all attack actions this player has
     HashMap<String, Integer> turnResults = new HashMap<>();
     HashMap<Integer, String> eventResults = new HashMap<>();
+
+    static MongoCollection<Document> collection; //The collection that stores all stages of RiskGameBoard
+
+    static MongoDatabase database;
+
+    ByteArrayOutputStream bos;
+    ObjectOutputStream out;
+
+
+    int turn; // This is the counter for recording which turn it is now
+
     /**
      * Constructs Server with port number
      * @param _portNum
@@ -35,6 +62,12 @@ public class Server {
         this.objectsFromClients = new ArrayList<>();
         this.riscBoard = new RiskGameBoard();
         setUpActionsLists();
+
+        //For data storage
+        turn = 0;
+        bos = new ByteArrayOutputStream();
+        out = new ObjectOutputStream(bos);
+
     }
 
     /**
@@ -108,7 +141,21 @@ public class Server {
         }
     }
 
-    public static void main(String[] args) {
+    public static void createMongoConnect(){
+        // Create a new client and connect to the server
+        MongoClient mongoClient = ConnectDb.getMongoClient();
+        ((LoggerContext) LoggerFactory.getILoggerFactory()).getLogger("org.mongodb.driver").setLevel(Level.ERROR);
+        // Send a ping to confirm a successful connection
+        database = mongoClient.getDatabase("testBoard");
+
+        // get a handle to the MongoDB collection
+        collection = database.getCollection("test");
+    }
+
+
+    public static void main(String[] args) throws Exception {
+        createMongoConnect();
+        //run game
         int portNum = 12345;
         try {
             Server server = new Server(portNum);
@@ -117,8 +164,6 @@ public class Server {
             System.out.println("Both clients connect to the Server successfully!\n");
             server.initGame();
             server.runGame();
-
-
             server.closePipes();
         } catch (IOException e) {
             System.err.println(e.getMessage());
@@ -134,25 +179,21 @@ public class Server {
      */
     public void runGame() throws Exception {
         int result = -1;
-        //sendBoardToAllClients();
         do {
-//            try {
-                result = runOneTurn();
-                if (result == 2) {
-                    System.out.println("game continues");
-                }
-                sendBoardToAllClients();
-                sendTurnResults(turnResults);
-                sendEventResults(eventResults);
-                sendEndGameInfo(result);
-                if (result == 0 || result == 1) {
-                    System.out.println("Player " + result + " is the winner!");
-                    System.out.println("Game Ends!");
-                    return;
-                }
-//            } catch (Exception e) {
-//                System.err.println(e.getMessage());
-//            }
+            result = runOneTurn();
+            ++ turn; //increase the turn when entering the runGame
+            if (result == 2) {
+                System.out.println("game continues");
+            }
+            sendBoardToAllClients();
+            sendTurnResults(turnResults);
+            sendEventResults(eventResults);
+            sendEndGameInfo(result);
+            if (result == 0 || result == 1) {
+                System.out.println("Player " + result + " is the winner!");
+                System.out.println("Game Ends!");
+                return;
+            }
         } while (true);
 
     }
@@ -268,6 +309,9 @@ public class Server {
      * @throws ClassNotFoundException
      */
     public int runOneTurn() throws Exception {
+        if(turn == 0){
+            useExtractBoardOrNewBoard();
+        }
         sendBoardToAllClients();
         recvActionsFromAllClients();
         printActionsMap();
@@ -276,6 +320,8 @@ public class Server {
         riscBoard.executeAttacks(actionsMap);
         turnResults = riscBoard.updateCombatResult();
         eventResults = executeEvent(actionsMap);
+        storeToMongoDB();
+
         //sendTurnResults(turnResults);
         if(riscBoard.checkWin() == 2){
             riscBoard.addAfterEachTurn();
@@ -364,10 +410,96 @@ public class Server {
     }
 
     /**
+     * This method stores the board into the mongo database
+     * @throws Exception
+     */
+    public void storeToMongoDB() throws Exception{
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        ObjectOutputStream out = new ObjectOutputStream(bos);
+
+        out.writeObject(riscBoard);
+        out.flush();
+
+        // transfer serialized string to BSON
+        byte[] bytes = bos.toByteArray();
+//        Document doc = new Document();
+//        doc.put("board_test", bytes);
+//        doc.put("users", riscBoard.getAllPlayers().get(0).getColor()
+//                + riscBoard.getAllPlayers().get(1).getColor());
+//        System.out.println(riscBoard.getAllPlayers().get(0).getColor()
+//                + riscBoard.getAllPlayers().get(1).getColor());
+//
+//        // store the document into MongoDB
+//        collection.insertOne(doc);
+
+        //Try update
+//        Bson query  =  Filters.eq("users",  riscBoard.getAllPlayers().get(0).getColor()
+//                + riscBoard.getAllPlayers().get(1).getColor());
+//        Bson updates  = Updates.set("board_test", bytes);
+//        collection.updateOne(query, updates);
+
+        Bson filter = Filters.eq("users",  riscBoard.getAllPlayers().get(0).getColor()
+                + riscBoard.getAllPlayers().get(1).getColor());
+        Bson update = Updates.set("board_test", bytes);
+        UpdateOptions options = new UpdateOptions().upsert(true);
+        System.out.println(collection.updateOne(filter, update, options));
+
+
+        bos.close();
+        out.close();
+    }
+
+    public void extractFromMongDB() throws IOException, ClassNotFoundException {
+        Bson filter = Filters.eq("users",  riscBoard.getAllPlayers().get(0).getColor()
+                + riscBoard.getAllPlayers().get(1).getColor());
+        FindIterable<Document> doc_retr = collection.find(filter);
+
+        for (Document d : doc_retr) {
+            Binary temp = (Binary) d.get("board_test");
+            System.out.println("curr doc is: " + d);
+            byte[] bytes_retr = temp.getData();
+
+            String name = (String) d.get("users");
+            System.out.println("The current users is: " + name);
+
+            // deseralization
+            ByteArrayInputStream bis = new ByteArrayInputStream(bytes_retr);
+            ObjectInputStream in = new ObjectInputStream(bis);
+            riscBoard = (RiskGameBoard) in.readObject();
+            System.out.println("The player0's first territory should be a: "
+                    + riscBoard.getAllPlayers().get(0).getOwnedTerritories().get(0).getUnits().get(1).getUnitName());
+
+            //Test current board by territories
+            System.out.println("Orange has  " + riscBoard.getAllPlayers().get(0).getOwnedTerritories().size() +
+                    ", and blue has " + riscBoard.getAllPlayers().get(1).getOwnedTerritories().size());
+            //Delete the current board in the database
+//            collection.deleteOne(d);
+            in.close();
+            bis.close();
+            return; //Only one called this name
+        }
+
+    }
+
+    public void useExtractBoardOrNewBoard() throws Exception {
+        Bson filter = Filters.eq("users",  riscBoard.getAllPlayers().get(0).getColor()
+                + riscBoard.getAllPlayers().get(1).getColor());
+        FindIterable<Document> doc_retr = collection.find(filter);
+
+        //If the doc_retr does not contain the current element
+        if(!doc_retr.iterator().hasNext()){
+            storeToMongoDB();
+        }
+        else {
+            extractFromMongDB();
+        }
+    }
+
+    /**
      * This method sends the board to all clients on the board
      * @throws IOException
      */
-    public void sendBoardToAllClients() throws IOException {
+    public void sendBoardToAllClients() throws Exception {
         objectsToClients.get(0).writeObject(riscBoard);
         objectsToClients.get(1).writeObject(riscBoard);
         objectsToClients.get(0).reset();

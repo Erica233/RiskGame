@@ -4,13 +4,18 @@ import edu.duke.ece651.team3.shared.*;
 
 import java.io.*;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class ClientCommunicator {
-    private final Socket socket;
-    private final ObjectInputStream objectFromServer;
-    private final ObjectOutputStream objectToServer;
+    private static Socket socket;
+    private ObjectInputStream objectFromServer;
+    private ObjectOutputStream objectToServer;
+    private static final int TIMEOUT = 5000;
+
+    String hostname;
+    int portNum;
 
     /**
      * Constructs the Client with the hostname and the port number
@@ -19,10 +24,44 @@ public class ClientCommunicator {
      * @throws IOException
      */
     public ClientCommunicator(String _hostname, int _portNum) throws IOException {
-        this.socket = new Socket(_hostname, _portNum);
+        this.hostname = _hostname;
+        this.portNum = _portNum;
+        buildUpConnections();
+    }
+
+    public void buildUpConnections() throws IOException {
+        this.socket = new Socket(hostname, portNum);
         this.objectFromServer = new ObjectInputStream(socket.getInputStream());
         this.objectToServer = new ObjectOutputStream(socket.getOutputStream());
     }
+
+    /**
+     * This method checks whether the server is still connected.
+     * @return true if the server is still connected
+     */
+    public boolean isServerConnected() {
+
+        try {
+            new Socket(hostname, portNum);
+//            socket.sendUrgentData(0xFF);
+//            sendTryConnect();
+            return true;
+        } catch (IOException e) {
+            return false;
+        }
+    }
+
+    /**
+     * This method reconnects the server if the server is disconnected.
+     */
+    public void handleServerDisconnect(){
+        if (!isServerConnected()) {
+            System.err.println("Server disconnected");
+            // Handle server disconnected error
+            return;
+        }
+    }
+
 
     /**
      * receives end game signal,
@@ -36,6 +75,14 @@ public class ClientCommunicator {
         int gameResult = objectFromServer.readInt();
         //System.out.println("Game result is :" + gameResult);
         return gameResult;
+    }
+
+    /**
+     * This method tries to send the player id to the server.
+     * It is used for testing whether the server is still connected
+     */
+    public void sendTryConnect() throws IOException {
+        this.objectToServer.writeObject(-1);
     }
 
     /**

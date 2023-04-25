@@ -37,6 +37,14 @@ public class Game {
         }
 
     }
+    public boolean isServerConnect() throws IOException {
+        if (!clientCommunicator.isServerConnected()) {
+            System.err.println("Server disconnected!");
+//            clientCommunicator.buildUpConnections();
+            return false;
+        }
+        return true;
+    }
 
     public void storePlayerId() throws IOException {
         this.playerId = clientCommunicator.recvPlayerId();

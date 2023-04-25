@@ -2,6 +2,8 @@ package edu.duke.ece651.team3.client.controller;
 
 import edu.duke.ece651.team3.client.ShowViews;
 import edu.duke.ece651.team3.client.model.Game;
+import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -49,14 +51,42 @@ public class DonePageController {
      */
     @FXML
     public void onGameResults(ActionEvent ae) throws Exception {
-        gameResult = gameEntity.recvGameResult();
-        if (gameResult == 0 || gameResult == 1) {
-            ShowViews.showGameView(stage, "/ui/resultPage.fxml", gameEntity);
-        } else {
-            gameEntity.storeNewBoard();
-            gameEntity.clearActionList();
-            ShowViews.showGameView(stage, "/ui/whole.fxml", gameEntity);
+        if(!gameEntity.isServerConnect()){
+            System.out.println("The server is disconnected!");
+            ShowViews.showGameView(stage, "/ui/serverDisconnectPage.fxml", gameEntity);
         }
+        Thread th = new Thread(new Task() {
+            @Override
+            protected Object call() throws Exception {
+                try {
+                    gameResult = gameEntity.recvGameResult();
+                    Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                if (gameResult == 0 || gameResult == 1) {
+                                    ShowViews.showGameView(stage, "/ui/resultPage.fxml", gameEntity);
+                                } else {
+                                    gameEntity.storeNewBoard();
+                                    gameEntity.clearActionList();
+                                    ShowViews.showGameView(stage, "/ui/whole.fxml", gameEntity);
+                                }
+
+                            } catch (IOException | ClassNotFoundException e) {
+                                throw new RuntimeException(e);
+                            }
+                        }
+                    });
+
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+                return null;
+            }
+
+        });
+
+
 
     }
 
