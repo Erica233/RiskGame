@@ -1,7 +1,14 @@
 package edu.duke.ece651.team3.client.controller;
 
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Filters;
 import edu.duke.ece651.team3.client.ShowViews;
 import edu.duke.ece651.team3.client.model.Game;
+import edu.duke.ece651.team3.shared.ConnectDb;
+import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -10,60 +17,97 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import org.bson.Document;
+import org.bson.conversions.Bson;
 
 import java.io.IOException;
+
+import static com.mongodb.client.model.Filters.eq;
 
 public class LoginPageController {
     @FXML
     private PasswordField password;
-
     @FXML
     private Button loginButton;
     @FXML
     private Label errorLogin;
     @FXML
     private TextField username;
-
     @FXML
     private Button createAccountButton;
 
-    int playerId;
     Stage stage;
     Game gameEntity;
+    MongoClient mongoClient;
+    MongoDatabase database;
 
-    public LoginPageController(int id, Stage _stage, Game _gameEntity) {
-        this.playerId = id;
+    public LoginPageController(Stage _stage, Game _gameEntity) {
         this.stage = _stage;
         this.gameEntity = _gameEntity;
-
+        this.mongoClient = ConnectDb.getMongoClient();
+        this.database = ConnectDb.connectToDb("riscDB");
     }
     @FXML
     void userLogin(MouseEvent event) throws IOException {
-        checkLogin();
+        MongoCollection<Document> accountsCo = database.getCollection("accountsCo");
+        Bson filter = Filters.and(eq("username", username.getText()), eq("password", password.getText()));
+        Document account = accountsCo.find(filter).first();
+        if (account == null) {
+            errorLogin.setText("Login failed: \nusername and password are not matched!");
+        } else {
+            errorLogin.setText("Waiting other players...");
+            Thread th = new Thread(new Task() {
+                @Override
+                protected Object call() throws Exception {
+                    try {
+                        //check if it is a new game
+//                        MongoCollection<Document> boardsCo = database.getCollection("boardsCo");
+//                        Bson bfilter = Filters.and(eq("username", username.getText()));
+//                        Document boardDoc = boardsCo.find(bfilter).first();
+//                        if (boardDoc == null) {
+//                            //new game
+//
+//                        } else {
+//                            //continue old game
+//
+//                        }
+                        //start game
+                        gameEntity = new Game();
+                        gameEntity.storePlayerId();
+                        int playerID = gameEntity.getPlayerId();
+                        System.out.println("playerId=" + playerID);
+                        if (playerID != 0 && playerID != 1) {
+                            throw new Exception("Failed to receive valid playerId!");
+                        }
+                        gameEntity.storeNewBoard();
+                        System.out.println("A new turn: updated new board as below!");
+                        System.out.println(gameEntity.getRiskGameBoard().displayBoard());
+                        Platform.runLater(new Runnable() {
+                            @Override
+                            public void run() {
+                                try {
+                                    ShowViews.showGameView(stage, "/ui/whole.fxml", gameEntity);
+                                } catch (IOException e) {
+                                    throw new RuntimeException(e);
+                                }
+                            }
+                        });
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    } catch (ClassNotFoundException | IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                    return null;
+                }
+            });
+            th.setDaemon(true);
+            th.start();
+        }
+
     }
 
     @FXML
     void onCreateAccountButton(MouseEvent event) throws IOException {
-        ShowViews.showGameView(stage, "/ui/createAccountPage.fxml", gameEntity);
-    }
-
-
-    @FXML
-    void checkLogin() throws IOException {
-        if(playerId == 0 && username.getText().equals("orange") && password.getText().equals("1234")){
-            errorLogin.setText("Success!");
-            ShowViews.showGameView(stage, "/ui/whole.fxml", gameEntity);
-        }
-        else if(playerId == 1 && username.getText().equals("blue") && password.getText().equals("4321")){
-            errorLogin.setText("Success!");
-            ShowViews.showGameView(stage, "/ui/whole.fxml", gameEntity);
-        }
-        else if(username.getText().isEmpty() && password.getText().isEmpty()){
-            errorLogin.setText("Please Enter Both Username and the Password!");
-        }
-        else{
-            errorLogin.setText("Wrong Username or Password!");
-        }
-
+        ShowViews.showStartView(stage, "/ui/createAccountPage.fxml", gameEntity);
     }
 }

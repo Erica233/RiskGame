@@ -12,6 +12,28 @@ import java.net.URL;
 import java.util.HashMap;
 
 public class ShowViews {
+    public static void showStartView(Stage stage, String xmlPath, Game game) throws IOException {
+        URL xmlResource = ShowViews.class.getResource(xmlPath);
+        FXMLLoader loader = new FXMLLoader(xmlResource);
+
+        HashMap<Class<?>,Object> controllers = new HashMap<>();
+
+        controllers.put(StartController.class, new StartController(stage, game));
+        controllers.put(LoginPageController.class, new LoginPageController(stage, game));
+        controllers.put(CreateAccountPageController.class, new CreateAccountPageController(stage, game));
+
+        //TODO: add new controller
+        loader.setControllerFactory((c) -> {
+            return controllers.get(c);
+        });
+
+        Scene scene = new Scene(loader.load(), 924, 600);
+
+        stage.setTitle("RISC Game");
+        stage.setScene(scene);
+        stage.show();
+    }
+
     public static void showGameView(Stage stage, String xmlPath, Game game) throws IOException {
         URL xmlResource = ShowViews.class.getResource(xmlPath);
         FXMLLoader loader = new FXMLLoader(xmlResource);
@@ -24,8 +46,8 @@ public class ShowViews {
         controllers.put(UpgradePageController.class, new UpgradePageController(game.getPlayerId(), stage, game));
         controllers.put(DonePageController.class, new DonePageController(game.getPlayerId(), stage, game));
         controllers.put(ResultPageController.class, new ResultPageController(game.getPlayerId(), stage, game));
-        controllers.put(LoginPageController.class, new LoginPageController(game.getPlayerId(), stage, game));
-        controllers.put(CreateAccountPageController.class, new CreateAccountPageController(game.getPlayerId(), stage, game));
+        controllers.put(LoginPageController.class, new LoginPageController(stage, game));
+        controllers.put(CreateAccountPageController.class, new CreateAccountPageController(stage, game));
         controllers.put(ServerDisconnectPage.class, new ServerDisconnectPage(game.getPlayerId(), stage, game));
         controllers.put(StartController.class, new StartController(stage, game));
         controllers.put(EventController.class, new EventController(game.getPlayerId(), stage, game));

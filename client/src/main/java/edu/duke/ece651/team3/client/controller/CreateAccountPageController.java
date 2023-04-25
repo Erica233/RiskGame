@@ -1,7 +1,12 @@
 package edu.duke.ece651.team3.client.controller;
 
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Filters;
 import edu.duke.ece651.team3.client.ShowViews;
 import edu.duke.ece651.team3.client.model.Game;
+import edu.duke.ece651.team3.shared.ConnectDb;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -9,6 +14,9 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import org.bson.Document;
+import org.bson.conversions.Bson;
+import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
 
 import java.io.IOException;
 
@@ -25,37 +33,23 @@ public class CreateAccountPageController {
     @FXML
     private Label errorLogin;
 
-    @FXML
-    private PasswordField re_password;
+//    @FXML
+//    private PasswordField re_password;
 
     @FXML
     private TextField username;
 
-    int playerId;
     Stage stage;
     Game gameEntity;
 
-    String userName; //The userName to be stored into the database
-    String passWord; //The passWord
+    MongoClient mongoClient;
+    MongoDatabase database;
 
-    public CreateAccountPageController(int id, Stage _stage, Game _gameEntity) {
-        this.playerId = id;
+    public CreateAccountPageController(Stage _stage, Game _gameEntity) {
         this.stage = _stage;
         this.gameEntity = _gameEntity;
-    }
-
-    /**
-     * This method checks whether the password and re-enter password is the same
-     * //TODO: after adding the database, check whether the user has already been in the system
-     * @throws IOException
-     */
-    public void checkValid() throws IOException {
-        if(password.getText().equals(re_password.getText())){
-            ShowViews.showGameView(stage, "/ui/whole.fxml", gameEntity);
-        }
-        else{
-            errorLogin.setText("Two passwords are not matching!");
-        }
+        this.mongoClient = ConnectDb.getMongoClient();
+        this.database = ConnectDb.connectToDb("riscDB");
     }
 
     @FXML
@@ -64,8 +58,19 @@ public class CreateAccountPageController {
     }
     @FXML
     void onDoneButton(MouseEvent event) throws IOException {
-        checkValid();
-        //TODO: Store the data into the database here
+        MongoCollection<Document> accountsCo = database.getCollection("accountsCo");
 
+        Bson filter = Filters.eq("username", username.getText());
+        Document account = accountsCo.find(filter).first();
+        if (account != null) {
+            errorLogin.setText("Cannot create new account: \nusername occupied!");
+        } else {
+            Document newAccount = new Document();
+            newAccount.put("username", username.getText());
+            newAccount.put("password", password.getText());
+            accountsCo.insertOne(newAccount);
+
+            ShowViews.showStartView(stage, "/ui/loginPage.fxml", gameEntity);
+        }
     }
 }

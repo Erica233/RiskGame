@@ -1,11 +1,5 @@
 package edu.duke.ece651.team3.server;
 
-import ch.qos.logback.classic.Level;
-import ch.qos.logback.classic.LoggerContext;
-import com.mongodb.client.*;
-import com.mongodb.client.model.Filters;
-import com.mongodb.client.model.UpdateOptions;
-import com.mongodb.client.model.Updates;
 import edu.duke.ece651.team3.shared.*;
 
 import java.io.*;
@@ -16,10 +10,13 @@ import java.net.Socket;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.bson.types.Binary;
-import org.slf4j.LoggerFactory;
 
-import static com.mongodb.client.model.Filters.eq;
-import static com.mongodb.client.model.Filters.exists;
+import com.mongodb.client.*;
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.UpdateOptions;
+import com.mongodb.client.model.Updates;
 
 
 /**
@@ -37,7 +34,6 @@ public class Server {
     HashMap<String, Integer> turnResults = new HashMap<>();
 
     static MongoCollection<Document> collection; //The collection that stores all stages of RiskGameBoard
-
     static MongoDatabase database;
 
     ByteArrayOutputStream bos;
@@ -138,20 +134,12 @@ public class Server {
         }
     }
 
-    public static void createMongoConnect(){
-        // Create a new client and connect to the server
+    public static void main(String[] args) {
         MongoClient mongoClient = ConnectDb.getMongoClient();
-        ((LoggerContext) LoggerFactory.getILoggerFactory()).getLogger("org.mongodb.driver").setLevel(Level.ERROR);
-        // Send a ping to confirm a successful connection
-        database = mongoClient.getDatabase("testBoard");
-
+        database = ConnectDb.connectToDb("riscDB");
         // get a handle to the MongoDB collection
-        collection = database.getCollection("test_Apr25");
-    }
+        collection = database.getCollection("boardsCo");
 
-
-    public static void main(String[] args) throws Exception {
-        createMongoConnect();
         //run game
         int portNum = 12345;
         try {
@@ -519,7 +507,6 @@ public class Server {
      */
     public void initGame() throws Exception {
         riscBoard.initE2Map();
-//        updateToMongoDB();
         assignPlayerIdToClients();
         //sendBoardToAllClients();
     }
