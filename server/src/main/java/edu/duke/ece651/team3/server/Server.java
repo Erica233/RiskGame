@@ -31,8 +31,6 @@ public class Server {
     private final ArrayList<ObjectOutputStream> objectsToClients;
     private final ArrayList<ObjectInputStream> objectsFromClients;
     private RiskGameBoard riscBoard; //delete final to use in datbase
-//    private HashMap<Integer, ArrayList<Action>> movesMap; //player ID and all move actions this player has
-//    private HashMap<Integer, ArrayList<Action>> attacksMap; //player ID and all attack actions this player has
     private HashMap<Integer, ArrayList<Action>> actionsMap; //player ID and all attack actions this player has
     HashMap<String, Integer> turnResults = new HashMap<>();
 
@@ -61,7 +59,6 @@ public class Server {
         setUpActionsLists();
 
         //For data storage
-        turn = 0;
         bos = new ByteArrayOutputStream();
         out = new ObjectOutputStream(bos);
 
@@ -176,11 +173,8 @@ public class Server {
      */
     public void runGame() throws Exception {
         int result = -1;
-        //sendBoardToAllClients();
         do {
-//            try {
             result = runOneTurn();
-            ++ turn;
             if (result == 2) {
                 System.out.println("game continues");
             }
@@ -307,9 +301,7 @@ public class Server {
      * @throws ClassNotFoundException
      */
     public int runOneTurn() throws Exception {
-        if(turn == 0){
-            useExtractBoardOrNewBoard();
-        }
+        useExtractBoardOrNewBoard();
         sendBoardToAllClients();
         recvActionsFromAllClients();
         printActionsMap();
@@ -434,7 +426,7 @@ public class Server {
                 + riscBoard.getAllPlayers().get(1).getColor();
 
         Bson filter = Filters.eq("users", currName);
-        Bson update = Updates.set(currName, bytes);
+        Bson update = Updates.set("board", bytes);
         UpdateOptions options = new UpdateOptions().upsert(true);
         System.out.println(collection.updateOne(filter, update, options));
 
@@ -450,7 +442,7 @@ public class Server {
         FindIterable<Document> doc_retr = collection.find(filter);
 
         for (Document d : doc_retr) {
-            Binary temp = (Binary) d.get(name);
+            Binary temp = (Binary) d.get("board");
             System.out.println("curr doc is: " + d);
             byte[] bytes_retr = temp.getData();
 
