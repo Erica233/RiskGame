@@ -11,7 +11,5 @@ public class App {
     return "Hello from the server for "+ MyName.getName();
   }
   public static void main(String[] args) {
-//    App a = new App();
-//    System.out.println(a.getMessage());
   }
 }

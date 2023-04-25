@@ -24,6 +24,8 @@ public class DonePageController {
 
     @FXML
     private Label gameResultText;
+    @FXML
+    private Label eventResult;
 
     @FXML
     private Button quitButton;
@@ -100,6 +102,11 @@ public class DonePageController {
             playerColor.setText("You are the Blue Player. Your last turn results are:");
         }
         HashMap<String, Integer> turnResultsMap = gameEntity.recvTurnResults();
+        System.out.println("Has received turnResultMap?");
+        HashMap<Integer, String> eventResultsMap = gameEntity.recvEventResults();
+        System.out.println("Has received eventResultMap?");
+        eventResult.setText(eventResultsMap.get(playerId));
+
         String occupyResults = "\nYou occupy: \n";
         String loseResults = "\nYou lose: \n";
         if (turnResultsMap.size() == 0) {

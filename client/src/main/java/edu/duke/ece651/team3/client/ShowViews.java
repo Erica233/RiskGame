@@ -28,6 +28,7 @@ public class ShowViews {
         controllers.put(CreateAccountPageController.class, new CreateAccountPageController(game.getPlayerId(), stage, game));
         controllers.put(ServerDisconnectPage.class, new ServerDisconnectPage(game.getPlayerId(), stage, game));
         controllers.put(StartController.class, new StartController(stage, game));
+        controllers.put(EventController.class, new EventController(game.getPlayerId(), stage, game));
         //TODO: add new controller
         loader.setControllerFactory((c) -> {
             return controllers.get(c);

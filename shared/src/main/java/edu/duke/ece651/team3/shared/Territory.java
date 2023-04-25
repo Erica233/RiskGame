@@ -331,6 +331,14 @@ public class Territory implements Serializable, Comparable<Territory> {
     }
 
     /**
+     * This method decreases the resources by 2
+     */
+    public void decreaseResource(){
+        this.food = this.food - 2;
+        this.tech = this.tech - 2;
+    }
+
+    /**
      * checks if the territory is valid to add
      *
      * @param allTerritories

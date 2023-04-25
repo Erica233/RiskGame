@@ -31,9 +31,7 @@ public class Server {
     private final ArrayList<Socket> clientSockets;
     private final ArrayList<ObjectOutputStream> objectsToClients;
     private final ArrayList<ObjectInputStream> objectsFromClients;
-    private RiskGameBoard riscBoard;
-    private RiskGameBoard riscBoard_retr; //The retrived riskGameBoard
-
+    private final RiskGameBoard riscBoard;
 //    private HashMap<Integer, ArrayList<Action>> movesMap; //player ID and all move actions this player has
 //    private HashMap<Integer, ArrayList<Action>> attacksMap; //player ID and all attack actions this player has
     private HashMap<Integer, ArrayList<Action>> actionsMap; //player ID and all attack actions this player has
@@ -49,6 +47,7 @@ public class Server {
 
     int turn; // This is the counter for recording which turn it is now
 
+    HashMap<Integer, String> eventResults = new HashMap<>();
     /**
      * Constructs Server with port number
      * @param _portNum
@@ -179,6 +178,23 @@ public class Server {
     public void runGame() throws Exception {
         int result = -1;
         do {
+//            try {
+                result = runOneTurn();
+                if (result == 2) {
+                    System.out.println("game continues");
+                }
+                sendBoardToAllClients();
+                sendTurnResults(turnResults);
+                sendEventResults(eventResults);
+                sendEndGameInfo(result);
+                if (result == 0 || result == 1) {
+                    System.out.println("Player " + result + " is the winner!");
+                    System.out.println("Game Ends!");
+                    return;
+                }
+//            } catch (Exception e) {
+//                System.err.println(e.getMessage());
+//            }
             result = runOneTurn();
             ++ turn; //increase the turn when entering the runGame
             if (result == 2) {
@@ -194,6 +210,110 @@ public class Server {
             }
         } while (true);
 
+    }
+
+
+    ArrayList<String> getAllEventName(){
+        ArrayList<String> economics = new ArrayList<>();
+        economics.add(0, "Economic Recession");
+        economics.add(1, "Oil Crisis");
+        economics.add(2, "Dot Com Bubble");
+        economics.add(3, "Financial Crisis");
+        economics.add(4, "Economic Depression");
+        economics.add(5, "Economic Growth");
+        economics.add(6, "The Roaring Period");
+        economics.add(7, "Economic Expansion");
+        economics.add(8, "Technology Boom");
+        economics.add(9, "Industry Revolution");
+        return economics;
+    }
+
+    String getInfor(int num, Action myEvent, int playerId){
+        ArrayList<String> economics = getAllEventName();
+        String res = null;
+        if(num >= 0 && num <= 9){
+            num = num/2;//0-4
+            Territory t = riscBoard.getAllPlayers().get(playerId).findOwnedTerritoryByName(myEvent.getSrcName());
+            if(t.getFood()-4-num >= 0){
+                t.setFood(t.getFood()-4-num);
+            }
+            else if(t.getFood()-4-num < 0){
+                t.setFood(0);
+            }
+            if(t.getTech()-4-num >=0){
+                t.setTech(t.getTech()-4-num);
+            }
+            else if(t.getTech()-4-num < 0){
+                t.setTech(0);
+            }
+            return "Last random event is " + economics.get(num)+ ".\nYou lose " + (2+num) +" food resources and "+
+                    (2+num) +" technology resources.";
+        }
+        else if(num >= 10 && num <= 19){
+            num = num/2;//5-9
+            Territory t = riscBoard.getAllPlayers().get(playerId).findOwnedTerritoryByName(myEvent.getSrcName());
+            t.setFood(t.getFood()-5+num);
+            t.setTech(t.getTech()-5+num);
+            return "Last random event is " + economics.get(num)+ ".\nYou get " + (num-3) +" food resources and "+
+                    (num-3) +" technology resources.";
+        }
+        else if(num >= 20 && num <= 25){
+            Territory t = riscBoard.getAllPlayers().get(playerId).findOwnedTerritoryByName(myEvent.getSrcName());
+            t.setFood(t.getFood()-2);
+            t.setTech(t.getTech()-2);
+            t.getUnits().get(num-20).setNumUnits(t.getUnits().get(num-20).getNumUnits()+1);
+            return "Last random event is getting new unit.\nYou get 1 level " + (num-20) +"unit";
+        }
+        else if(num >= 26 && num <= 31) {
+            Territory t = riscBoard.getAllPlayers().get(playerId).findOwnedTerritoryByName(myEvent.getSrcName());
+            t.setFood(t.getFood()-2);
+            t.setTech(t.getTech()-2);
+            if(t.getUnits().get(num-26).getNumUnits()<1){
+                t.getUnits().get(num-26).setNumUnits(0);
+            }
+            else{t.getUnits().get(num-26).setNumUnits(t.getUnits().get(num-26).getNumUnits()-1);}
+            return "Last random event is losing new unit.\nYou lose 1 level " + (num-26) +"unit";
+        }
+        else if(num >= 32 && num <= 37) {
+            Territory t = riscBoard.getAllPlayers().get(playerId).findOwnedTerritoryByName(myEvent.getSrcName());
+            t.setFood(t.getFood()-2);
+            t.setTech(t.getTech()-2);
+            t.getUnits().get(num-32).setNumUnits(t.getUnits().get(num-32).getNumUnits()+2);
+            return "Last random event is getting new unit.\nYou get 2 level " + (num-32) +"unit";
+        }
+        else if(num >= 38 && num <= 43) {
+            Territory t = riscBoard.getAllPlayers().get(playerId).findOwnedTerritoryByName(myEvent.getSrcName());
+            t.setFood(t.getFood()-2);
+            t.setTech(t.getTech()-2);
+            if(t.getUnits().get(num-38).getNumUnits()<2){
+                t.getUnits().get(num-38).setNumUnits(0);
+            }
+            else {
+                t.getUnits().get(num - 38).setNumUnits(t.getUnits().get(num - 38).getNumUnits() - 2);
+            }
+            return "Last random event is losing new unit.\nYou lose 2 level " + (num-38) +"unit";
+        }
+        return res;
+    }
+
+    /**
+     *
+     */
+    public HashMap<Integer, String> executeEvent(HashMap<Integer, ArrayList<Action>> actionsMap){
+        HashMap<Integer, String> res = new HashMap<>();
+        res.put(0, null);
+        res.put(1, null);
+        for(int i = 0; i < actionsMap.keySet().size(); i++){
+            for(int j = 0; j < actionsMap.get(i).size(); j++){
+                if(actionsMap.get(i).get(j).isEventType()){
+                    Action myEvent = actionsMap.get(i).get(j);
+                    int num = new Random().nextInt(44);//0-43
+                    res.put(i, getInfor(num, myEvent, i));
+                    break;
+                }
+            }
+        }
+        return res;
     }
 
     /**
@@ -215,6 +335,7 @@ public class Server {
         turnResults = riscBoard.updateCombatResult();
         storeToMongoDB();
 
+        eventResults = executeEvent(actionsMap);
         //sendTurnResults(turnResults);
         if(riscBoard.checkWin() == 2){
             riscBoard.addAfterEachTurn();
@@ -234,6 +355,20 @@ public class Server {
         objectsToClients.get(1).reset();
         System.out.println("send turn results to all clients!\n");
     }
+
+    /**
+     * send event results to all clients
+     * @param eventResults
+     * @throws IOException
+     */
+    public void sendEventResults(HashMap<Integer, String> eventResults) throws IOException {
+        objectsToClients.get(0).writeObject(eventResults);
+        objectsToClients.get(1).writeObject(eventResults);
+        objectsToClients.get(0).reset();
+        objectsToClients.get(1).reset();
+        System.out.println("send event results to all clients!\n");
+    }
+
 
     /**
      * send end game signal to clients,
