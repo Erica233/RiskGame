@@ -285,10 +285,13 @@ public class Server {
      */
     public int runOneTurn() throws Exception {
         //TODO: "boardName of both users. i.e: fm_er"
-        String username = "test";
+        String username1 = "fm";
+        String username2 = "er";
         String boardName = "fm_er";
 
-        useExtractBoardOrNewBoard(username, boardName);
+        useExtractBoardOrNewBoard(username1, boardName);
+        useExtractBoardOrNewBoard(username2, boardName);
+
         sendBoardToAllClients();
         recvActionsFromAllClients();
         printActionsMap();
@@ -453,43 +456,22 @@ public class Server {
         System.out.println("now each player have " + riscBoard.getAllPlayers().get(0).getOwnedTerritories().get(0).getUnits().get(0).getNumUnits()
          + " Private");
 
-
-
-
-        Bson filter_test = Filters.eq("boardname",  boardName);
-        Document board_retr = boardCollection.find(filter_test).first();
-
-        Binary temp = (Binary) board_retr.get("board");
-        System.out.println("curr doc is: " + board_retr);
-        byte[] bytes_retr = temp.getData();
-
-        // deseralization
-        ByteArrayInputStream bis = new ByteArrayInputStream(bytes_retr);
-        ObjectInputStream in = new ObjectInputStream(bis);
-        riscBoard = (RiskGameBoard) in.readObject();
-
-        //Tests
-        System.out.println("now each player have " + riscBoard.getAllPlayers().get(0).getOwnedTerritories().get(0).getUnits().get(0).getNumUnits()
-                + " Private");
-        Object board_id = board_retr.get("_id");
-        System.out.println("The current board id is: " + board_id.toString());
-
-
-        in.close();
-        bis.close();
-
-
-
         bos.close();
         out.close();
     }
 
-    public void extractFromMongDB(String username, String boardName) throws IOException, ClassNotFoundException {
-        Bson filter = Filters.eq("boardname",  boardName);
-        Document board_retr = boardCollection.find(filter).first();
+    public void extractFromMongDB(String username) throws IOException, ClassNotFoundException {
+        Bson filter = Filters.eq("username",  username);
+        Document currUser = userCollection.find(filter).first();
 
-        Binary temp = (Binary) board_retr.get("board");
-        System.out.println("curr doc is: " + board_retr);
+        Object board_id =  currUser.get("board_id");
+
+        Bson boardFilter = Filters.eq("_id",  board_id);
+        Document currBoard = boardCollection.find(boardFilter).first();
+
+
+        Binary temp = (Binary) currBoard.get("board");
+        System.out.println("curr doc is: " + currBoard);
         byte[] bytes_retr = temp.getData();
 
         // deseralization
@@ -504,9 +486,15 @@ public class Server {
         System.out.println("Orange has  " + riscBoard.getAllPlayers().get(0).getOwnedTerritories().size() +
                 ", and blue has " + riscBoard.getAllPlayers().get(1).getOwnedTerritories().size());
 
-        Object board_id = board_retr.get("_id");
-        System.out.println("The current board id is: " + board_id.toString());
+        Object board_id_test = currBoard.get("_id");
+        System.out.println("The current board id is: " + board_id_test.toString());
 
+
+        //update userID
+        Bson filter_user = Filters.eq("username", username);
+        Bson update_user = Updates.set("board_id", board_id);
+        UpdateOptions options_user = new UpdateOptions().upsert(true);
+        System.out.println(userCollection.updateOne(filter_user, update_user, options_user));
 
         in.close();
         bis.close();
@@ -514,15 +502,16 @@ public class Server {
     }
 
     public void useExtractBoardOrNewBoard(String username, String boardName) throws Exception {
-        Bson filter = Filters.eq("boardname",  boardName);
-        FindIterable<Document> doc_retr = boardCollection.find(filter);
+        Bson filter = Filters.eq("username",  username);
+        Document doc = userCollection.find(filter).first();
+        String board_id = doc.get("board_id").toString();
+        System.out.println("The current board id is: " + board_id.toString());
 
-        //If the doc_retr does not contain the current element
-        if(!doc_retr.iterator().hasNext()){
+        if(board_id.equals("")){
             InitialBoardAndSetUsers(username, boardName);
         }
         else {
-            extractFromMongDB(username, boardName);
+            extractFromMongDB(username);
         }
     }
 
