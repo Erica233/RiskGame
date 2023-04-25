@@ -32,10 +32,8 @@ public class Server {
     HashMap<String, Integer> turnResults = new HashMap<>();
 
     static MongoCollection<Document> collection; //The collection that stores all stages of RiskGameBoard
+    static MongoCollection<Document> users; //The collection that stores all stages of RiskGameBoard
     static MongoDatabase database;
-
-    ByteArrayOutputStream bos;
-    ObjectOutputStream out;
 
 
     int turn; // This is the counter for recording which turn it is now
@@ -53,10 +51,6 @@ public class Server {
         this.objectsFromClients = new ArrayList<>();
         this.riscBoard = new RiskGameBoard();
         setUpActionsLists();
-
-        //For data storage
-        bos = new ByteArrayOutputStream();
-        out = new ObjectOutputStream(bos);
 
     }
 
@@ -136,6 +130,7 @@ public class Server {
         database = ConnectDb.connectToDb("riscDB");
         // get a handle to the MongoDB collection
         collection = database.getCollection("boardsCo");
+        users = database.getCollection("accountsCo");
 
         //run game
         int portNum = 12345;
@@ -401,6 +396,42 @@ public class Server {
      * This method stores the board into the mongo database
      * @throws Exception
      */
+    public void InitialBoardAndSetUsers(String userName) throws Exception{
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        ObjectOutputStream out = new ObjectOutputStream(bos);
+
+        out.writeObject(riscBoard);
+        out.flush();
+
+        // transfer serialized string to BSON
+        byte[] bytes = bos.toByteArray();
+        String currName = riscBoard.getAllPlayers().get(0).getColor()
+                + riscBoard.getAllPlayers().get(1).getColor();
+
+        Bson filter = Filters.eq("username", userName);
+        Bson update = Updates.set("board", bytes);
+        UpdateOptions options = new UpdateOptions().upsert(true);
+        System.out.println(collection.updateOne(filter, update, options));
+
+
+        Document doc = collection.find(filter).first();
+        Object board_id = doc.get("_id");
+        System.out.println("The current board id is: " + board_id.toString());
+
+        //Update the user
+        Bson filter_user = Filters.eq("username", userName);
+        Bson update_user = Updates.set("board_id", board_id);
+        UpdateOptions options_user = new UpdateOptions().upsert(true);
+        System.out.println(users.updateOne(filter_user, update_user, options_user));
+
+        bos.close();
+        out.close();
+    }
+
+    /**
+     * This method stores the board into the mongo database
+     * @throws Exception
+     */
     public void updateToMongoDB() throws Exception{
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         ObjectOutputStream out = new ObjectOutputStream(bos);
@@ -449,6 +480,10 @@ public class Server {
                     ", and blue has " + riscBoard.getAllPlayers().get(1).getOwnedTerritories().size());
             //Delete the current board in the database
 //            collection.deleteOne(d);
+
+            Object board_id = d.get("_id");
+            System.out.println("The current board id is: " + board_id.toString());
+
             in.close();
             bis.close();
             return; //Only one called this name
@@ -463,7 +498,7 @@ public class Server {
 
         //If the doc_retr does not contain the current element
         if(!doc_retr.iterator().hasNext()){
-            updateToMongoDB();
+            InitialBoardAndSetUsers("test");
         }
         else {
             extractFromMongDB();
