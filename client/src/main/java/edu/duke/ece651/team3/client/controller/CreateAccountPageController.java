@@ -39,15 +39,13 @@ public class CreateAccountPageController {
     @FXML
     private TextField username;
 
-    int playerId;
     Stage stage;
     Game gameEntity;
 
     MongoClient mongoClient;
     MongoDatabase database;
 
-    public CreateAccountPageController(int id, Stage _stage, Game _gameEntity) {
-        this.playerId = id;
+    public CreateAccountPageController(Stage _stage, Game _gameEntity) {
         this.stage = _stage;
         this.gameEntity = _gameEntity;
         this.mongoClient = ConnectDb.getMongoClient();
@@ -72,7 +70,7 @@ public class CreateAccountPageController {
             newAccount.put("password", password.getText());
             accountsCo.insertOne(newAccount);
 
-            ShowViews.showGameView(stage, "/ui/loginPage.fxml", gameEntity);
+            ShowViews.showStartView(stage, "/ui/loginPage.fxml", gameEntity);
         }
     }
 }

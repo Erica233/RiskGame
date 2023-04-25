@@ -108,6 +108,6 @@ public class LoginPageController {
 
     @FXML
     void onCreateAccountButton(MouseEvent event) throws IOException {
-        ShowViews.showGameView(stage, "/ui/createAccountPage.fxml", gameEntity);
+        ShowViews.showStartView(stage, "/ui/createAccountPage.fxml", gameEntity);
     }
 }

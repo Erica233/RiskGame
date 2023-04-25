@@ -20,6 +20,7 @@ public class ShowViews {
 
         controllers.put(StartController.class, new StartController(stage, game));
         controllers.put(LoginPageController.class, new LoginPageController(stage, game));
+        controllers.put(CreateAccountPageController.class, new CreateAccountPageController(stage, game));
 
         //TODO: add new controller
         loader.setControllerFactory((c) -> {
@@ -46,7 +47,7 @@ public class ShowViews {
         controllers.put(DonePageController.class, new DonePageController(game.getPlayerId(), stage, game));
         controllers.put(ResultPageController.class, new ResultPageController(game.getPlayerId(), stage, game));
         controllers.put(LoginPageController.class, new LoginPageController(stage, game));
-        controllers.put(CreateAccountPageController.class, new CreateAccountPageController(game.getPlayerId(), stage, game));
+        controllers.put(CreateAccountPageController.class, new CreateAccountPageController(stage, game));
         controllers.put(ServerDisconnectPage.class, new ServerDisconnectPage(game.getPlayerId(), stage, game));
         controllers.put(StartController.class, new StartController(stage, game));
         controllers.put(EventController.class, new EventController(game.getPlayerId(), stage, game));
