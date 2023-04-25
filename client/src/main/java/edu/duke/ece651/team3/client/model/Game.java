@@ -86,12 +86,12 @@ public class Game {
     }
 
     public HashMap<String, Integer> recvTurnResults() throws IOException, ClassNotFoundException {
-        HashMap<String, Integer> turnResults = clientCommunicator.recvTurnResults();
+        HashMap<String, Integer> turnResults = (HashMap<String, Integer>) clientCommunicator.recvTurnResults();
         return turnResults;
     }
 
     public HashMap<Integer, String> recvEventResults()throws IOException, ClassNotFoundException {
-        HashMap<Integer, String> eventResults = clientCommunicator.recvEventResults();
+        HashMap<Integer, String> eventResults =(HashMap<Integer, String>) clientCommunicator.recvEventResults();
         return eventResults;
     }
 

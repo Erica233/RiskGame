@@ -31,7 +31,7 @@ public class Server {
     private final ArrayList<Socket> clientSockets;
     private final ArrayList<ObjectOutputStream> objectsToClients;
     private final ArrayList<ObjectInputStream> objectsFromClients;
-    private final RiskGameBoard riscBoard;
+    private RiskGameBoard riscBoard; //delete final to use in datbase
 //    private HashMap<Integer, ArrayList<Action>> movesMap; //player ID and all move actions this player has
 //    private HashMap<Integer, ArrayList<Action>> attacksMap; //player ID and all attack actions this player has
     private HashMap<Integer, ArrayList<Action>> actionsMap; //player ID and all attack actions this player has
@@ -177,31 +177,17 @@ public class Server {
      */
     public void runGame() throws Exception {
         int result = -1;
+        //sendBoardToAllClients();
         do {
 //            try {
-                result = runOneTurn();
-                if (result == 2) {
-                    System.out.println("game continues");
-                }
-                sendBoardToAllClients();
-                sendTurnResults(turnResults);
-                sendEventResults(eventResults);
-                sendEndGameInfo(result);
-                if (result == 0 || result == 1) {
-                    System.out.println("Player " + result + " is the winner!");
-                    System.out.println("Game Ends!");
-                    return;
-                }
-//            } catch (Exception e) {
-//                System.err.println(e.getMessage());
-//            }
             result = runOneTurn();
-            ++ turn; //increase the turn when entering the runGame
+            ++ turn;
             if (result == 2) {
                 System.out.println("game continues");
             }
             sendBoardToAllClients();
             sendTurnResults(turnResults);
+            sendEventResults(eventResults);
             sendEndGameInfo(result);
             if (result == 0 || result == 1) {
                 System.out.println("Player " + result + " is the winner!");
@@ -209,7 +195,6 @@ public class Server {
                 return;
             }
         } while (true);
-
     }
 
 
@@ -333,9 +318,8 @@ public class Server {
         executeMoves();
         riscBoard.executeAttacks(actionsMap);
         turnResults = riscBoard.updateCombatResult();
-        storeToMongoDB();
-
         eventResults = executeEvent(actionsMap);
+        storeToMongoDB();
         //sendTurnResults(turnResults);
         if(riscBoard.checkWin() == 2){
             riscBoard.addAfterEachTurn();
