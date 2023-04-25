@@ -56,12 +56,10 @@ public class LoginPageController {
             errorLogin.setText("Login failed: \nusername and password are not matched!");
         } else {
             errorLogin.setText("Waiting other players...");
-        }
-        Thread th = new Thread(new Task() {
-            @Override
-            protected Object call() throws Exception {
-                try {
-                    if (account != null) {
+            Thread th = new Thread(new Task() {
+                @Override
+                protected Object call() throws Exception {
+                    try {
                         //check if it is a new game
 //                        MongoCollection<Document> boardsCo = database.getCollection("boardsCo");
 //                        Bson bfilter = Filters.and(eq("username", username.getText()));
@@ -73,7 +71,6 @@ public class LoginPageController {
 //                            //continue old game
 //
 //                        }
-
                         //start game
                         gameEntity = new Game();
                         gameEntity.storePlayerId();
@@ -95,17 +92,18 @@ public class LoginPageController {
                                 }
                             }
                         });
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    } catch (ClassNotFoundException | IOException e) {
+                        throw new RuntimeException(e);
                     }
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } catch (ClassNotFoundException | IOException e) {
-                    throw new RuntimeException(e);
+                    return null;
                 }
-                return null;
-            }
-        });
-        th.setDaemon(true);
-        th.start();
+            });
+            th.setDaemon(true);
+            th.start();
+        }
+
     }
 
     @FXML
