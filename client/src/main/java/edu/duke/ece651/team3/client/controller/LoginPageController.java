@@ -7,6 +7,8 @@ import com.mongodb.client.model.Filters;
 import edu.duke.ece651.team3.client.ShowViews;
 import edu.duke.ece651.team3.client.model.Game;
 import edu.duke.ece651.team3.shared.ConnectDb;
+import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -51,17 +53,61 @@ public class LoginPageController {
     @FXML
     void userLogin(MouseEvent event) throws IOException {
         MongoCollection<Document> accountsCo = database.getCollection("accountsCo");
-
         Bson filter = Filters.and(eq("username", username.getText()), eq("password", password.getText()));
         Document account = accountsCo.find(filter).first();
         if (account == null) {
             errorLogin.setText("Login failed: \nusername and password are not matched!");
         } else {
-            //start game
-
-            ShowViews.showGameView(stage, "/ui/whole.fxml", gameEntity);
+            errorLogin.setText("Waiting other players...");
         }
+        Thread th = new Thread(new Task() {
+            @Override
+            protected Object call() throws Exception {
+                try {
+                    if (account != null) {
+                        //check if it is a new game
+//                        MongoCollection<Document> boardsCo = database.getCollection("boardsCo");
+//                        Bson bfilter = Filters.and(eq("username", username.getText()));
+//                        Document boardDoc = boardsCo.find(bfilter).first();
+//                        if (boardDoc == null) {
+//                            //new game
+//
+//                        } else {
+//                            //continue old game
+//
+//                        }
 
+                        //start game
+                        gameEntity.storePlayerId();
+                        int playerID = gameEntity.getPlayerId();
+                        System.out.println("playerId=" + playerID);
+                        if (playerID != 0 && playerID != 1) {
+                            throw new Exception("Failed to receive valid playerId!");
+                        }
+                        gameEntity.storeNewBoard();
+                        System.out.println("A new turn: updated new board as below!");
+                        System.out.println(gameEntity.getRiskGameBoard().displayBoard());
+                        Platform.runLater(new Runnable() {
+                            @Override
+                            public void run() {
+                                try {
+                                    ShowViews.showGameView(stage, "/ui/whole.fxml", gameEntity);
+                                } catch (IOException e) {
+                                    throw new RuntimeException(e);
+                                }
+                            }
+                        });
+                    }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (ClassNotFoundException | IOException e) {
+                    throw new RuntimeException(e);
+                }
+                return null;
+            }
+        });
+        th.setDaemon(true);
+        th.start();
     }
 
     @FXML

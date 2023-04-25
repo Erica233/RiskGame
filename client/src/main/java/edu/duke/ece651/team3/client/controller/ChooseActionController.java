@@ -92,8 +92,6 @@ public class ChooseActionController {
         }
     }
 
-    //    @FXML
-
     /**
      * initialize the ChooseActionController
      * show the text of label playerColor

@@ -45,45 +45,48 @@ public class StartController implements Initializable {
      * @param ae
      */
     @FXML
-    public void onStartButton(ActionEvent ae){
-        waitInfo.setVisible(true);
-        Thread th = new Thread(new Task() {
-            @Override
-            protected Object call() throws Exception {
-                try {
-//                    Thread.sleep(5000);
-                    gameEntity = new Game();
-                    gameEntity.storePlayerId();
-                    int playerID = gameEntity.getPlayerId();
-                    System.out.println("playerId=" + playerID);
-                    if (playerID != 0 && playerID != 1) {
-                        throw new Exception("Failed to receive valid playerId!");
-                    }
-                    gameEntity.storeNewBoard();
-                    System.out.println("A new turn: updated new board as below!");
-                    System.out.println(gameEntity.getRiskGameBoard().displayBoard());
-                    Platform.runLater(new Runnable() {
-                        @Override
-                        public void run() {
-                            try {
-                                ShowViews.showGameView(stage, "/ui/loginPage.fxml", gameEntity);
-                            } catch (IOException e) {
-                                throw new RuntimeException(e);
-                            }
-                        }
-                    });
+    public void onStartButton(ActionEvent ae) throws IOException {
+        gameEntity = new Game();
+        ShowViews.showGameView(stage, "/ui/loginPage.fxml", gameEntity);
 
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } catch (ClassNotFoundException | IOException e) {
-                    throw new RuntimeException(e);
-                }
-                return null;
-            }
-
-        });
-        th.setDaemon(true);
-        th.start();
+//        waitInfo.setVisible(true);
+//        Thread th = new Thread(new Task() {
+//            @Override
+//            protected Object call() throws Exception {
+//                try {
+////                    Thread.sleep(5000);
+//                    gameEntity = new Game();
+//                    gameEntity.storePlayerId();
+//                    int playerID = gameEntity.getPlayerId();
+//                    System.out.println("playerId=" + playerID);
+//                    if (playerID != 0 && playerID != 1) {
+//                        throw new Exception("Failed to receive valid playerId!");
+//                    }
+//                    gameEntity.storeNewBoard();
+//                    System.out.println("A new turn: updated new board as below!");
+//                    System.out.println(gameEntity.getRiskGameBoard().displayBoard());
+//                    Platform.runLater(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            try {
+//                                ShowViews.showGameView(stage, "/ui/loginPage.fxml", gameEntity);
+//                            } catch (IOException e) {
+//                                throw new RuntimeException(e);
+//                            }
+//                        }
+//                    });
+//
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                } catch (ClassNotFoundException | IOException e) {
+//                    throw new RuntimeException(e);
+//                }
+//                return null;
+//            }
+//
+//        });
+//        th.setDaemon(true);
+//        th.start();
     }
 
     public void initialize(URL location, ResourceBundle resources) {

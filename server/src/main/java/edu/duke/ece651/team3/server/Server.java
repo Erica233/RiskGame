@@ -273,6 +273,7 @@ public class Server {
      * @throws Exception
      */
     public void initGame() throws Exception {
+        //if new game, init map;
         riscBoard.initE2Map();
         assignPlayerIdToClients();
         //sendBoardToAllClients();
