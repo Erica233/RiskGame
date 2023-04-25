@@ -55,11 +55,11 @@ public class DonePageController {
 //            System.out.println("The server is disconnected!");
 //            ShowViews.showGameView(stage, "/ui/serverDisconnectPage.fxml", gameEntity);
 //        }
-//        gameResult = gameEntity.recvGameResult();
+//
 //        Thread th = new Thread(new Task() {
 //            @Override
 //            protected Object call() throws Exception {
-//                //                    gameResult = gameEntity.recvGameResult();
+//                gameResult = gameEntity.recvGameResult();
 //                Platform.runLater(new Runnable() {
 //                    @Override
 //                    public void run() {
@@ -77,12 +77,11 @@ public class DonePageController {
 //                        }
 //                    }
 //                });
-//
 //                return null;
 //            }
-//
 //        });
-
+//        th.setDaemon(true);
+//        th.start();
 
         gameResult = gameEntity.recvGameResult();
         if (gameResult == 0 || gameResult == 1) {
@@ -92,10 +91,6 @@ public class DonePageController {
             gameEntity.clearActionList();
             ShowViews.showGameView(stage, "/ui/whole.fxml", gameEntity);
         }
-
-
-
-
     }
 
     /**

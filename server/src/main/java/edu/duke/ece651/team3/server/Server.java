@@ -6,7 +6,6 @@ import com.mongodb.client.*;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.UpdateOptions;
 import com.mongodb.client.model.Updates;
-import com.mongodb.client.result.UpdateResult;
 import edu.duke.ece651.team3.shared.*;
 
 import java.io.*;
@@ -147,7 +146,7 @@ public class Server {
         database = mongoClient.getDatabase("testBoard");
 
         // get a handle to the MongoDB collection
-        collection = database.getCollection("test");
+        collection = database.getCollection("test_Apr25");
     }
 
 
@@ -314,15 +313,26 @@ public class Server {
         sendBoardToAllClients();
         recvActionsFromAllClients();
         printActionsMap();
+
         riscBoard.executeUpgrades(actionsMap);
+        updateToMongoDB();
+
         executeMoves();
+        updateToMongoDB();
+
         riscBoard.executeAttacks(actionsMap);
+        updateToMongoDB();
+
         turnResults = riscBoard.updateCombatResult();
+        updateToMongoDB();
+
         eventResults = executeEvent(actionsMap);
-        storeToMongoDB();
+        updateToMongoDB();
+
         //sendTurnResults(turnResults);
         if(riscBoard.checkWin() == 2){
             riscBoard.addAfterEachTurn();
+            updateToMongoDB();
         }
         return riscBoard.checkWin();
     }
@@ -411,7 +421,7 @@ public class Server {
      * This method stores the board into the mongo database
      * @throws Exception
      */
-    public void storeToMongoDB() throws Exception{
+    public void updateToMongoDB() throws Exception{
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         ObjectOutputStream out = new ObjectOutputStream(bos);
 
@@ -420,25 +430,11 @@ public class Server {
 
         // transfer serialized string to BSON
         byte[] bytes = bos.toByteArray();
-//        Document doc = new Document();
-//        doc.put("board_test", bytes);
-//        doc.put("users", riscBoard.getAllPlayers().get(0).getColor()
-//                + riscBoard.getAllPlayers().get(1).getColor());
-//        System.out.println(riscBoard.getAllPlayers().get(0).getColor()
-//                + riscBoard.getAllPlayers().get(1).getColor());
-//
-//        // store the document into MongoDB
-//        collection.insertOne(doc);
+        String currName = riscBoard.getAllPlayers().get(0).getColor()
+                + riscBoard.getAllPlayers().get(1).getColor();
 
-        //Try update
-//        Bson query  =  Filters.eq("users",  riscBoard.getAllPlayers().get(0).getColor()
-//                + riscBoard.getAllPlayers().get(1).getColor());
-//        Bson updates  = Updates.set("board_test", bytes);
-//        collection.updateOne(query, updates);
-
-        Bson filter = Filters.eq("users",  riscBoard.getAllPlayers().get(0).getColor()
-                + riscBoard.getAllPlayers().get(1).getColor());
-        Bson update = Updates.set("board_test", bytes);
+        Bson filter = Filters.eq("users", currName);
+        Bson update = Updates.set(currName, bytes);
         UpdateOptions options = new UpdateOptions().upsert(true);
         System.out.println(collection.updateOne(filter, update, options));
 
@@ -448,17 +444,18 @@ public class Server {
     }
 
     public void extractFromMongDB() throws IOException, ClassNotFoundException {
-        Bson filter = Filters.eq("users",  riscBoard.getAllPlayers().get(0).getColor()
-                + riscBoard.getAllPlayers().get(1).getColor());
+        String name = riscBoard.getAllPlayers().get(0).getColor()
+                + riscBoard.getAllPlayers().get(1).getColor();
+        Bson filter = Filters.eq("users",  name);
         FindIterable<Document> doc_retr = collection.find(filter);
 
         for (Document d : doc_retr) {
-            Binary temp = (Binary) d.get("board_test");
+            Binary temp = (Binary) d.get(name);
             System.out.println("curr doc is: " + d);
             byte[] bytes_retr = temp.getData();
 
-            String name = (String) d.get("users");
-            System.out.println("The current users is: " + name);
+            String name_tese = (String) d.get("users");
+            System.out.println("The current users is: " + name_tese);
 
             // deseralization
             ByteArrayInputStream bis = new ByteArrayInputStream(bytes_retr);
@@ -486,7 +483,7 @@ public class Server {
 
         //If the doc_retr does not contain the current element
         if(!doc_retr.iterator().hasNext()){
-            storeToMongoDB();
+            updateToMongoDB();
         }
         else {
             extractFromMongDB();
@@ -522,6 +519,7 @@ public class Server {
      */
     public void initGame() throws Exception {
         riscBoard.initE2Map();
+//        updateToMongoDB();
         assignPlayerIdToClients();
         //sendBoardToAllClients();
     }
