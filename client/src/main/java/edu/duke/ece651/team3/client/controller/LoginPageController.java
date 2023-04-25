@@ -33,18 +33,15 @@ public class LoginPageController {
     private Label errorLogin;
     @FXML
     private TextField username;
-
     @FXML
     private Button createAccountButton;
 
-    int playerId;
     Stage stage;
     Game gameEntity;
     MongoClient mongoClient;
     MongoDatabase database;
 
-    public LoginPageController(int id, Stage _stage, Game _gameEntity) {
-        this.playerId = id;
+    public LoginPageController(Stage _stage, Game _gameEntity) {
         this.stage = _stage;
         this.gameEntity = _gameEntity;
         this.mongoClient = ConnectDb.getMongoClient();
@@ -78,6 +75,7 @@ public class LoginPageController {
 //                        }
 
                         //start game
+                        gameEntity = new Game();
                         gameEntity.storePlayerId();
                         int playerID = gameEntity.getPlayerId();
                         System.out.println("playerId=" + playerID);

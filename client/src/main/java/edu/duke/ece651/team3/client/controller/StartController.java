@@ -47,8 +47,8 @@ public class StartController implements Initializable {
      */
     @FXML
     public void onStartButton(ActionEvent ae) throws IOException {
-        gameEntity = new Game();
-        ShowViews.showGameView(stage, "/ui/loginPage.fxml", gameEntity);
+//        gameEntity = new Game();
+        ShowViews.showStartView(stage, "/ui/loginPage.fxml", gameEntity);
 
     }
 
