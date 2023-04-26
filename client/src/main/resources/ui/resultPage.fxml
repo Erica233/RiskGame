@@ -15,7 +15,7 @@
             <Image url="@../pic/endbg.png" />
          </image>
       </ImageView>
-      <Button fx:id="quitButton" alignment="CENTER" blendMode="ADD" contentDisplay="CENTER" layoutX="362.0" layoutY="376.0" mnemonicParsing="false" onAction="#onQuitButton" prefHeight="80.0" prefWidth="200.0" style="-fx-background-color: #000000;" text="OK" textAlignment="CENTER" textFill="#f8f8f8">
+      <Button fx:id="quitButton" alignment="CENTER" blendMode="ADD" contentDisplay="CENTER" layoutX="362.0" layoutY="376.0" mnemonicParsing="false" onAction="#onQuitButton" prefHeight="80.0" prefWidth="200.0" style="-fx-background-color: #000000; -fx-background-insets: 0;" text="OK" textAlignment="CENTER" textFill="#f8f8f8">
          <font>
             <Font size="36.0" />
          </font>

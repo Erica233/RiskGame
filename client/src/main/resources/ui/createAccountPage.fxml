@@ -1,56 +1,82 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.text.*?>
-<?import javafx.scene.image.*?>
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.Group?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="600.0" prefWidth="924.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.duke.ece651.team3.client.controller.CreateAccountPageController">
+<AnchorPane prefHeight="600.0" prefWidth="924.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.duke.ece651.team3.client.controller.CreateAccountPageController">
    <children>
       <SplitPane dividerPositions="0.6" prefHeight="600.0" prefWidth="924.0">
         <items>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                <children>
-                  <ImageView fitHeight="598.0" fitWidth="557.0" layoutX="-2.0" layoutY="-1.0">
+                  <ImageView fitHeight="601.0" fitWidth="555.0" layoutX="-6.0" layoutY="-3.0">
                      <image>
-                        <Image url="@../pic/login.jpeg" />
+                        <Image url="@../pic/login.png" />
                      </image>
                   </ImageView>
                </children>
             </AnchorPane>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                <children>
+                  <ImageView fitHeight="605.0" fitWidth="426.0" layoutX="-3.0" layoutY="-4.0">
+                     <image>
+                        <Image url="@../pic/login.jpeg" />
+                     </image>
+                  </ImageView>
                   <Label layoutX="61.0" layoutY="232.0" text="Username">
                      <font>
                         <Font size="19.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="username" layoutX="214.0" layoutY="231.0" prefHeight="18.0" prefWidth="126.0" promptText="Username" />
+                  <TextField fx:id="username" layoutX="214.0" layoutY="231.0" prefHeight="18.0" prefWidth="126.0" promptText="Username" style="-fx-background-insets: 0;" />
                   <Label layoutX="61.0" layoutY="287.0" text="Password">
                      <font>
                         <Font size="19.0" />
                      </font>
                   </Label>
-                  <PasswordField fx:id="password" layoutX="214.0" layoutY="286.0" prefHeight="27.0" prefWidth="126.0" promptText="Password" />
-                  <Button fx:id="doneButton" layoutX="225.0" layoutY="428.0" mnemonicParsing="false" onMouseClicked="#onDoneButton" prefHeight="41.0" prefWidth="105.0" text="Done">
-                     <font>
-                        <Font size="26.0" />
-                     </font>
-                  </Button>
-                  <Label fx:id="errorLogin" alignment="CENTER" contentDisplay="CENTER" layoutX="61.0" layoutY="169.0" prefHeight="49.0" prefWidth="244.0" textAlignment="CENTER" textFill="#ff0808" wrapText="true" />
-                  <ImageView fitHeight="91.0" fitWidth="105.0" layoutX="145.0" layoutY="72.0">
+                  <PasswordField fx:id="password" layoutX="214.0" layoutY="286.0" prefHeight="27.0" prefWidth="126.0" promptText="Password" style="-fx-background-insets: 0;" />
+                  <Group layoutX="114.0" layoutY="346.0">
+                     <children>
+                        <Button fx:id="doneButton" blendMode="MULTIPLY" layoutX="18.0" layoutY="14.0" mnemonicParsing="false" onMouseClicked="#onDoneButton" prefHeight="41.0" prefWidth="105.0" style="-fx-background-insets: 0;" text="Done">
+                           <font>
+                              <Font size="26.0" />
+                           </font>
+                        </Button>
+                        <ImageView fitHeight="77.0" fitWidth="146.0">
+                           <image>
+                              <Image url="@../pic/frame.png" />
+                           </image>
+                        </ImageView>
+                     </children>
+                  </Group>
+                  <Label fx:id="errorLogin" alignment="CENTER" contentDisplay="CENTER" layoutX="61.0" layoutY="169.0" prefHeight="49.0" prefWidth="244.0" textAlignment="CENTER" wrapText="true" />
+                  <ImageView fitHeight="91.0" fitWidth="105.0" layoutX="124.0" layoutY="70.0">
                      <image>
                         <Image url="@../pic/lock.png" />
                      </image>
                   </ImageView>
-                  <Button fx:id="backButton" layoutX="61.0" layoutY="428.0" mnemonicParsing="false" onMouseClicked="#onBackButton" prefHeight="41.0" prefWidth="105.0" text="Back">
-                     <font>
-                        <Font size="26.0" />
-                     </font>
-                  </Button>
+                  <Group layoutX="114.0" layoutY="416.0">
+                     <children>
+                        <Button fx:id="backButton" blendMode="MULTIPLY" layoutX="17.0" layoutY="14.0" mnemonicParsing="false" onMouseClicked="#onBackButton" prefHeight="41.0" prefWidth="105.0" style="-fx-background-insets: 0;" text="Back">
+                           <font>
+                              <Font size="26.0" />
+                           </font>
+                        </Button>
+                        <ImageView fitHeight="77.0" fitWidth="146.0">
+                           <image>
+                              <Image url="@../pic/frame.png" />
+                           </image>
+                        </ImageView>
+                     </children>
+                  </Group>
                </children>
             </AnchorPane>
         </items>

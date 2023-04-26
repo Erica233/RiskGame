@@ -20,12 +20,12 @@
             <Font size="96.0" />
          </font>
       </Label>
-      <Button fx:id="startButton" alignment="CENTER" blendMode="ADD" contentDisplay="CENTER" layoutX="216.0" layoutY="387.0" mnemonicParsing="false" onAction="#onStartButton" prefHeight="80.0" prefWidth="200.0" style="-fx-background-color: #000000;" text="START" textAlignment="CENTER" textFill="#f8f8f8">
+      <Button fx:id="startButton" alignment="CENTER" blendMode="ADD" contentDisplay="CENTER" layoutX="216.0" layoutY="387.0" mnemonicParsing="false" onAction="#onStartButton" prefHeight="80.0" prefWidth="200.0" style="-fx-background-color: #000000; -fx-background-insets: 0;" text="START" textAlignment="CENTER" textFill="#f8f8f8">
          <font>
             <Font size="36.0" />
          </font>
       </Button>
-      <Button fx:id="quitButton" alignment="CENTER" blendMode="ADD" contentDisplay="CENTER" layoutX="509.0" layoutY="385.0" mnemonicParsing="false" onAction="#onQuitButton" prefHeight="80.0" prefWidth="200.0" style="-fx-background-color: #000000;" text="QUIT" textAlignment="CENTER" textFill="#f8f8f8">
+      <Button fx:id="quitButton" alignment="CENTER" blendMode="ADD" contentDisplay="CENTER" layoutX="509.0" layoutY="385.0" mnemonicParsing="false" onAction="#onQuitButton" prefHeight="80.0" prefWidth="200.0" style="-fx-background-color: #000000; -fx-background-insets: 0;" text="QUIT" textAlignment="CENTER" textFill="#f8f8f8">
          <font>
             <Font size="36.0" />
          </font>

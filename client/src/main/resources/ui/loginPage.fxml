@@ -28,7 +28,7 @@
                <children>
                   <ImageView fitHeight="608.0" fitWidth="553.0">
                      <image>
-                        <Image url="@../../../../../../../Downloads/8b6bdf37-a4ad-4aee-bf02-43c48875fa96.jpeg" />
+                        <Image url="@../pic/login.jpeg" />
                      </image>
                   </ImageView>
                   <Label blendMode="COLOR_BURN" layoutX="61.0" layoutY="232.0" text="Username">
@@ -36,7 +36,7 @@
                         <Font size="19.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="username" accessibleRole="IMAGE_VIEW" layoutX="214.0" layoutY="231.0" prefHeight="18.0" prefWidth="126.0" promptText="Username" />
+                  <TextField fx:id="username" accessibleRole="IMAGE_VIEW" layoutX="214.0" layoutY="231.0" prefHeight="18.0" prefWidth="126.0" promptText="Username" style="-fx-background-insets: 0;" />
                   <Group layoutX="62.0" layoutY="295.0">
                      <children>
                         <Label blendMode="COLOR_BURN" layoutY="1.0" text="Password">
@@ -44,35 +44,35 @@
                               <Font size="19.0" />
                            </font>
                         </Label>
-                        <PasswordField fx:id="password" layoutX="151.0" prefHeight="27.0" prefWidth="126.0" promptText="Password" />
+                        <PasswordField fx:id="password" layoutX="151.0" prefHeight="27.0" prefWidth="126.0" promptText="Password" style="-fx-background-insets: 0;" />
                      </children>
                   </Group>
                   <Group layoutX="64.0" layoutY="369.0">
                      <children>
-                        <Button fx:id="loginButton" blendMode="MULTIPLY" layoutX="30.0" layoutY="19.0" mnemonicParsing="false" onMouseClicked="#userLogin" prefHeight="52.0" prefWidth="178.0" text="Login" textOverrun="CENTER_ELLIPSIS">
+                        <Button fx:id="loginButton" blendMode="MULTIPLY" layoutX="30.0" layoutY="19.0" mnemonicParsing="false" onMouseClicked="#userLogin" prefHeight="52.0" prefWidth="178.0" style="-fx-background-insets: 0;" text="Login" textOverrun="CENTER_ELLIPSIS">
                            <font>
                               <Font size="25.0" />
                            </font>
                         </Button>
-                        <ImageView blendMode="MULTIPLY" fitHeight="90.0" fitWidth="249.0">
+                        <ImageView blendMode="MULTIPLY" fitHeight="85.0" fitWidth="251.0" layoutY="2.0">
                            <image>
                               <Image url="@../pic/frame.png" />
                            </image>
                         </ImageView>
                      </children>
                   </Group>
-                  <Label fx:id="errorLogin" layoutX="102.0" layoutY="163.0" prefHeight="49.0" prefWidth="241.0" textAlignment="CENTER" textFill="#ff0808" wrapText="true" />
+                  <Label fx:id="errorLogin" layoutX="102.0" layoutY="163.0" prefHeight="49.0" prefWidth="241.0" textAlignment="CENTER" wrapText="true" />
                   <ImageView fitHeight="91.0" fitWidth="105.0" layoutX="128.0" layoutY="72.0">
                      <image>
                         <Image url="@../pic/lock.png" />
                      </image>
                   </ImageView>
-                  <Button fx:id="createAccountButton" blendMode="MULTIPLY" layoutX="98.0" layoutY="469.0" mnemonicParsing="false" onMouseClicked="#onCreateAccountButton" prefHeight="54.0" prefWidth="178.0" text="Create Account" textFill="#463636">
+                  <Button fx:id="createAccountButton" blendMode="MULTIPLY" layoutX="98.0" layoutY="469.0" mnemonicParsing="false" onMouseClicked="#onCreateAccountButton" prefHeight="54.0" prefWidth="178.0" style="-fx-background-insets: 0;" text="Create Account" textFill="#463636">
                      <font>
                         <Font size="20.0" />
                      </font>
                   </Button>
-                  <ImageView blendMode="MULTIPLY" fitHeight="87.0" fitWidth="249.0" layoutX="66.0" layoutY="452.0">
+                  <ImageView blendMode="MULTIPLY" fitHeight="87.0" fitWidth="255.0" layoutX="66.0" layoutY="452.0">
                      <image>
                         <Image url="@../pic/frame.png" />
                      </image>

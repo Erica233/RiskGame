@@ -24,7 +24,7 @@
                   <Image url="@../pic/frame.png" />
                </image>
             </ImageView>
-            <Button fx:id="okButton" alignment="CENTER" blendMode="ADD" cache="true" cacheHint="QUALITY" contentDisplay="CENTER" layoutX="36.0" layoutY="27.0" mnemonicParsing="false" onMouseClicked="#onOkButton" prefHeight="80.0" prefWidth="200.0" style="-fx-background-color: #000000;" text="OK" textAlignment="CENTER" textFill="WHITE">
+            <Button fx:id="okButton" alignment="CENTER" blendMode="ADD" cache="true" cacheHint="QUALITY" contentDisplay="CENTER" layoutX="36.0" layoutY="27.0" mnemonicParsing="false" onMouseClicked="#onOkButton" prefHeight="80.0" prefWidth="200.0" style="-fx-background-color: #000000; -fx-background-insets: 0;" text="OK" textAlignment="CENTER" textFill="WHITE">
                <font>
                   <Font size="36.0" />
                </font>

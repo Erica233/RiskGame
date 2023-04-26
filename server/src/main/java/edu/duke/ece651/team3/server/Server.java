@@ -438,7 +438,7 @@ public class Server {
         FindIterable<Document> doc_retr = collection.find(filter);
 
         for (Document d : doc_retr) {
-            Binary temp = (Binary) d.get(name);
+            Binary temp = (Binary) d.get("board");
             System.out.println("curr doc is: " + d);
             byte[] bytes_retr = temp.getData();
 
@@ -470,7 +470,7 @@ public class Server {
         FindIterable<Document> doc_retr = collection.find(filter);
 
         //If the doc_retr does not contain the current element
-        if(!doc_retr.iterator().hasNext()){
+        if(doc_retr.first() == null){
             updateToMongoDB();
         }
         else {

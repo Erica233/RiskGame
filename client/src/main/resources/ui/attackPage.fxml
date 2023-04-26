@@ -19,12 +19,12 @@
 
             <AnchorPane prefHeight="600.0" prefWidth="924.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
                <children>
-                  <ImageView fitHeight="600.0" fitWidth="361.0" AnchorPane.bottomAnchor="-40.0" AnchorPane.topAnchor="-10.0">
+                  <ImageView fitHeight="612.0" fitWidth="607.0" AnchorPane.bottomAnchor="-10.0" AnchorPane.rightAnchor="-220.0" AnchorPane.topAnchor="-10.0">
                      <image>
-                        <Image url="@../pic/textureright.png" />
+                        <Image url="@../pic/login.jpeg" />
                      </image>
                   </ImageView>
-                  <AnchorPane layoutX="23.0" layoutY="46.0" prefHeight="553.0" prefWidth="307.0" AnchorPane.bottomAnchor="10.0">
+                  <AnchorPane layoutX="49.0" layoutY="49.0" prefHeight="553.0" prefWidth="307.0" AnchorPane.bottomAnchor="0.0">
                      <padding>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </padding>
@@ -35,7 +35,7 @@
                            </image>
                         </ImageView>
                         <Group />
-                        <Button fx:id="nextButton" blendMode="MULTIPLY" layoutX="171.0" layoutY="412.0" mnemonicParsing="false" onAction="#onCheckValidAttack" prefHeight="40.0" prefWidth="87.0" text="Next">
+                        <Button fx:id="nextButton" blendMode="MULTIPLY" layoutX="171.0" layoutY="412.0" mnemonicParsing="false" onAction="#onCheckValidAttack" prefHeight="40.0" prefWidth="87.0" style="-fx-background-insets: 0;" text="Next">
                            <font>
                               <Font size="20.0" />
                            </font>
@@ -119,7 +119,7 @@
                               <Label fx:id="LV6_name" layoutX="36.0" layoutY="281.0" text="LV6" />
                            </children>
                         </Group>
-                        <Button fx:id="backButton" blendMode="MULTIPLY" layoutX="54.0" layoutY="413.0" mnemonicParsing="false" onMouseClicked="#onBackButton" prefHeight="28.0" prefWidth="87.0" text="Back">
+                        <Button fx:id="backButton" blendMode="MULTIPLY" layoutX="54.0" layoutY="413.0" mnemonicParsing="false" onMouseClicked="#onBackButton" prefHeight="28.0" prefWidth="87.0" style="-fx-background-insets: 0;" text="Back">
                            <font>
                               <Font size="20.0" />
                            </font>
