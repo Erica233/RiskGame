@@ -124,6 +124,11 @@ public class Game {
         System.out.println("send action list to server");
     }
 
+    public void sendString(String s) throws IOException {
+        clientCommunicator.sendString(s);
+        System.out.println("send string to server");
+    }
+
     /**
      * This method handles all actions to check whether it has the correct format
      * It checks whether the action is valid and store it into the action list

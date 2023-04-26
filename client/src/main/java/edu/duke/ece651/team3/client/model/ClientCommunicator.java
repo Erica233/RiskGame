@@ -12,7 +12,6 @@ public class ClientCommunicator {
     private static Socket socket;
     private ObjectInputStream objectFromServer;
     private ObjectOutputStream objectToServer;
-    private static final int TIMEOUT = 5000;
 
     String hostname;
     int portNum;
@@ -43,8 +42,6 @@ public class ClientCommunicator {
 
         try {
             new Socket(hostname, portNum);
-//            socket.sendUrgentData(0xFF);
-//            sendTryConnect();
             return true;
         } catch (IOException e) {
             return false;
@@ -95,6 +92,11 @@ public class ClientCommunicator {
         objectToServer.writeObject("D");
     }
 
+    public void sendString(String s) throws IOException {
+        objectToServer.writeObject(s);
+        //objectToServer.reset();
+    }
+
     /**
      * This method receives the player id from the server
      * @throws IOException
@@ -123,7 +125,6 @@ public class ClientCommunicator {
     public RiskGameBoard recvBoard() throws IOException, ClassNotFoundException {
 
         RiskGameBoard b = (RiskGameBoard) objectFromServer.readObject();
-//        System.out.println("received board from server"+b.displayBoard());
         return b;
     }
 

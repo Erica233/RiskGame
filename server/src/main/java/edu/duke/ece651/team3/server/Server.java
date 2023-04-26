@@ -17,6 +17,7 @@ import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.UpdateOptions;
 import com.mongodb.client.model.Updates;
+import org.bson.types.ObjectId;
 
 
 /**
@@ -28,21 +29,21 @@ public class Server {
     private final ArrayList<ObjectOutputStream> objectsToClients;
     private final ArrayList<ObjectInputStream> objectsFromClients;
     private RiskGameBoard riscBoard; //delete final to use in datbase
-//    private HashMap<Integer, ArrayList<Action>> movesMap; //player ID and all move actions this player has
-//    private HashMap<Integer, ArrayList<Action>> attacksMap; //player ID and all attack actions this player has
     private HashMap<Integer, ArrayList<Action>> actionsMap; //player ID and all attack actions this player has
     HashMap<String, Integer> turnResults = new HashMap<>();
 
-    static MongoCollection<Document> collection; //The collection that stores all stages of RiskGameBoard
+    static MongoCollection<Document> boardCollection; //The collection that stores all stages of RiskGameBoard
+    static MongoCollection<Document> userCollection; //The collection that stores all stages of RiskGameBoard
     static MongoDatabase database;
 
-    ByteArrayOutputStream bos;
-    ObjectOutputStream out;
+    HashMap<Integer, String> users; //playerId: username
 
 
     int turn; // This is the counter for recording which turn it is now
 
     HashMap<Integer, String> eventResults = new HashMap<>();
+    ObjectId currBoard_id;
+
     /**
      * Constructs Server with port number
      * @param _portNum
@@ -55,12 +56,11 @@ public class Server {
         this.objectsFromClients = new ArrayList<>();
         this.riscBoard = new RiskGameBoard();
         setUpActionsLists();
-
-        //For data storage
+        this.users = new HashMap<>();
         turn = 0;
-        bos = new ByteArrayOutputStream();
-        out = new ObjectOutputStream(bos);
-
+        if(riscBoard.getTurn() != 0){
+            riscBoard.setTurn(riscBoard.getTurn());
+        }
     }
 
     /**
@@ -138,7 +138,8 @@ public class Server {
         MongoClient mongoClient = ConnectDb.getMongoClient();
         database = ConnectDb.connectToDb("riscDB");
         // get a handle to the MongoDB collection
-        collection = database.getCollection("boardsCo");
+        boardCollection = database.getCollection("boardsCo");
+        userCollection = database.getCollection("accountsCo");
 
         //run game
         int portNum = 12345;
@@ -164,11 +165,10 @@ public class Server {
      */
     public void runGame() throws Exception {
         int result = -1;
-        //sendBoardToAllClients();
         do {
-//            try {
             result = runOneTurn();
             ++ turn;
+            riscBoard.setTurn(turn);
             if (result == 2) {
                 System.out.println("game continues");
             }
@@ -295,9 +295,14 @@ public class Server {
      * @throws ClassNotFoundException
      */
     public int runOneTurn() throws Exception {
-        if(turn == 0){
-            useExtractBoardOrNewBoard();
+        if(riscBoard.getTurn() == 0){
+            storeNewBoard();
         }
+
+        for (int id = 0; id < 2; id++) {
+            useExtractBoardOrNewBoard(users.get(id));
+        }
+
         sendBoardToAllClients();
         recvActionsFromAllClients();
         printActionsMap();
@@ -406,6 +411,50 @@ public class Server {
     }
 
     /**
+     * This method stores the board
+     * @throws IOException
+     */
+    public void storeNewBoard() throws IOException {
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        ObjectOutputStream out = new ObjectOutputStream(bos);
+
+        out.writeObject(riscBoard);
+        out.flush();
+
+        // transfer serialized string to BSON
+        byte[] bytes = bos.toByteArray();
+
+        Bson filter = Filters.eq("username",  users.get(0));
+        Document doc = userCollection.find(filter).first();
+        ObjectId board_id = (ObjectId) doc.get("board_id");
+        System.out.println("The current board id is: " + board_id.toString());
+
+        if(board_id.equals(new ObjectId("000000000000000000000000"))){
+            Bson filter_board = Filters.eq("board", bytes);
+            Bson update = Updates.set("board", bytes);
+            UpdateOptions options = new UpdateOptions().upsert(true);
+            System.out.println(boardCollection.updateOne(filter_board, update, options));
+
+            Document currBoard = boardCollection.find(filter_board).first();
+            currBoard_id = (ObjectId) currBoard.get("_id");
+        }
+        bos.close();
+        out.close();
+    }
+
+    /**
+     * This method initializes the user's board id
+     * @throws Exception
+     */
+    public void initUserWithBoard(String userName) throws Exception{
+        //Update the user
+        Bson filter_user = Filters.eq("username", userName);
+        Bson update_user = Updates.set("board_id", currBoard_id);
+        UpdateOptions options_user = new UpdateOptions().upsert(true);
+        System.out.println(userCollection.updateOne(filter_user, update_user, options_user));
+    }
+
+    /**
      * This method stores the board into the mongo database
      * @throws Exception
      */
@@ -418,63 +467,74 @@ public class Server {
 
         // transfer serialized string to BSON
         byte[] bytes = bos.toByteArray();
-        String currName = riscBoard.getAllPlayers().get(0).getColor()
-                + riscBoard.getAllPlayers().get(1).getColor();
+//        ObjectId board_objId = new ObjectId(currBoard_id);
+        System.out.println(currBoard_id + "The class is: " + currBoard_id.getClass());
 
-        Bson filter = Filters.eq("users", currName);
-        Bson update = Updates.set(currName, bytes);
+        Bson filter = Filters.eq("_id", currBoard_id);
+        Bson update = Updates.set("board", bytes);
         UpdateOptions options = new UpdateOptions().upsert(true);
-        System.out.println(collection.updateOne(filter, update, options));
+        System.out.println(boardCollection.updateOne(filter, update, options));
 
+        //To test:
+        System.out.println("now each player have " + riscBoard.getAllPlayers().get(0).getOwnedTerritories().get(0).getUnits().get(0).getNumUnits()
+         + " Private");
 
         bos.close();
         out.close();
     }
 
-    public void extractFromMongDB() throws IOException, ClassNotFoundException {
-        String name = riscBoard.getAllPlayers().get(0).getColor()
-                + riscBoard.getAllPlayers().get(1).getColor();
-        Bson filter = Filters.eq("users",  name);
-        FindIterable<Document> doc_retr = collection.find(filter);
+    public void extractFromMongDB(String username) throws IOException, ClassNotFoundException {
+        Bson filter = Filters.eq("username",  username);
+        Document currUser = userCollection.find(filter).first();
 
-        for (Document d : doc_retr) {
-            Binary temp = (Binary) d.get("board");
-            System.out.println("curr doc is: " + d);
-            byte[] bytes_retr = temp.getData();
+        currBoard_id = (ObjectId) currUser.get("board_id");
+//        ObjectId board_objId = new ObjectId(board_id);
 
-            String name_tese = (String) d.get("users");
-            System.out.println("The current users is: " + name_tese);
+        Bson boardFilter = Filters.eq("_id",  currBoard_id);
+        Document currBoard = boardCollection.find(boardFilter).first();
 
-            // deseralization
-            ByteArrayInputStream bis = new ByteArrayInputStream(bytes_retr);
-            ObjectInputStream in = new ObjectInputStream(bis);
-            riscBoard = (RiskGameBoard) in.readObject();
-            System.out.println("The player0's first territory should be a: "
-                    + riscBoard.getAllPlayers().get(0).getOwnedTerritories().get(0).getUnits().get(1).getUnitName());
+        Binary temp = (Binary) currBoard.get("board");
+        System.out.println("curr doc is: " + currBoard);
+        byte[] bytes_retr = temp.getData();
 
-            //Test current board by territories
-            System.out.println("Orange has  " + riscBoard.getAllPlayers().get(0).getOwnedTerritories().size() +
-                    ", and blue has " + riscBoard.getAllPlayers().get(1).getOwnedTerritories().size());
-            //Delete the current board in the database
-//            collection.deleteOne(d);
-            in.close();
-            bis.close();
-            return; //Only one called this name
-        }
+        // deseralization
+        ByteArrayInputStream bis = new ByteArrayInputStream(bytes_retr);
+        ObjectInputStream in = new ObjectInputStream(bis);
+        riscBoard = (RiskGameBoard) in.readObject();
+
+        //Tests
+        System.out.println("The player0's first territory should be a: "
+                + riscBoard.getAllPlayers().get(0).getOwnedTerritories().get(0).getUnits().get(1).getUnitName());
+        //Test current board by territories
+        System.out.println("Orange has  " + riscBoard.getAllPlayers().get(0).getOwnedTerritories().size() +
+                ", and blue has " + riscBoard.getAllPlayers().get(1).getOwnedTerritories().size());
+
+        Object board_id_test = currBoard.get("_id");
+        System.out.println("The current board id is: " + board_id_test.toString());
+
+
+        //update userID
+        Bson filter_user = Filters.eq("username", username);
+        Bson update_user = Updates.set("board_id", currBoard_id);
+        UpdateOptions options_user = new UpdateOptions().upsert(true);
+        System.out.println(userCollection.updateOne(filter_user, update_user, options_user));
+
+        in.close();
+        bis.close();
 
     }
 
-    public void useExtractBoardOrNewBoard() throws Exception {
-        Bson filter = Filters.eq("users",  riscBoard.getAllPlayers().get(0).getColor()
-                + riscBoard.getAllPlayers().get(1).getColor());
-        FindIterable<Document> doc_retr = collection.find(filter);
+    public void useExtractBoardOrNewBoard(String username) throws Exception {
+        Bson filter = Filters.eq("username",  username);
+        Document doc = userCollection.find(filter).first();
+        ObjectId board_id = (ObjectId) doc.get("board_id");
+        System.out.println("The current board id is: " + board_id.toString());
 
-        //If the doc_retr does not contain the current element
-        if(doc_retr.first() == null){
-            updateToMongoDB();
+        if(board_id.equals(new ObjectId("000000000000000000000000"))){
+            initUserWithBoard(username);
         }
         else {
-            extractFromMongDB();
+            extractFromMongDB(username);
         }
     }
 
@@ -507,10 +567,21 @@ public class Server {
      */
     public void initGame() throws Exception {
         riscBoard.initE2Map();
+
+        recvUsernames();
+        System.out.println("after recv username");
         assignPlayerIdToClients();
+
         //sendBoardToAllClients();
     }
 
+    public void recvUsernames() throws IOException, ClassNotFoundException {
+        for (int id = 0; id < 2; id++) {
+            String username = (String) objectsFromClients.get(id).readObject();
+            System.out.println("receive username from user: " + username);
+            users.put(id, username);
+        }
+    }
 
     /**
      * The test map
