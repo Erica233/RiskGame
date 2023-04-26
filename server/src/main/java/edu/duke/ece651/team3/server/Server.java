@@ -159,6 +159,35 @@ public class Server {
     }
 
     /**
+     * This method clears the board in the database, also the
+     */
+    public void clearDataBase(){
+        String p1 = users.get(0);
+        String p2 = users.get(1);
+
+        //Clear the board from the database, delete once since they have the same board
+        Bson filter_p1 = Filters.eq("username",  p1);
+        Document doc_p1 = userCollection.find(filter_p1).first();
+        assert doc_p1 != null;
+        ObjectId board_id = (ObjectId) doc_p1.get("board_id");
+        System.out.println("The current board id is: " + board_id.toString());
+
+        Bson board_filter = Filters.eq("_id", board_id);
+
+        if(!board_id.equals(new ObjectId("000000000000000000000000"))){
+            boardCollection.deleteOne(board_filter);
+        }
+
+        //Clear current turn's two player's board id
+        Bson filter_p2 = Filters.eq("username",  p2);
+        Bson update = Updates.set("board_id", new ObjectId("000000000000000000000000"));
+        UpdateOptions options = new UpdateOptions().upsert(true);
+
+        System.out.println(userCollection.updateOne(filter_p1, update, options));
+        System.out.println(userCollection.updateOne(filter_p2, update, options));
+    }
+
+    /**
      * run the whole game
      *
      * @throws Exception
@@ -166,6 +195,11 @@ public class Server {
     public void runGame() throws Exception {
         int result = -1;
         do {
+            //To check if it is the last turn
+            if(riscBoard.checkWin() == 0 || riscBoard.checkWin() == 1){
+                clearDataBase();
+                break;
+            }
             result = runOneTurn();
             ++ turn;
             riscBoard.setTurn(turn);
@@ -295,11 +329,10 @@ public class Server {
      * @throws ClassNotFoundException
      */
     public int runOneTurn() throws Exception {
-        //TODO: isEnd
         if(riscBoard.getTurn() == 0){
             storeNewBoard();
         }
-
+//        clearDataBase();//TODO: Testing
         for (int id = 0; id < 2; id++) {
             useExtractBoardOrNewBoard(users.get(id));
         }
@@ -476,10 +509,6 @@ public class Server {
         UpdateOptions options = new UpdateOptions().upsert(true);
         System.out.println(boardCollection.updateOne(filter, update, options));
 
-//        //To test:
-//        System.out.println("now each player have " + riscBoard.getAllPlayers().get(0).getOwnedTerritories().get(0).getUnits().get(0).getNumUnits()
-//         + " Private");
-
         bos.close();
         out.close();
     }
@@ -503,10 +532,7 @@ public class Server {
         ObjectInputStream in = new ObjectInputStream(bis);
         riscBoard = (RiskGameBoard) in.readObject();
 
-        //Tests
-//        System.out.println("The player0's first territory should be a: "
-//                + riscBoard.getAllPlayers().get(0).getOwnedTerritories().get(0).getUnits().get(1).getUnitName());
-        //Test current board by territories
+        //Test
         System.out.println("Brown has  " + riscBoard.getAllPlayers().get(0).getOwnedTerritories().size() +
                 ", and White has " + riscBoard.getAllPlayers().get(1).getOwnedTerritories().size());
 
