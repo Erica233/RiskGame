@@ -295,6 +295,7 @@ public class Server {
      * @throws ClassNotFoundException
      */
     public int runOneTurn() throws Exception {
+        //TODO: isEnd
         if(riscBoard.getTurn() == 0){
             storeNewBoard();
         }
@@ -475,9 +476,9 @@ public class Server {
         UpdateOptions options = new UpdateOptions().upsert(true);
         System.out.println(boardCollection.updateOne(filter, update, options));
 
-        //To test:
-        System.out.println("now each player have " + riscBoard.getAllPlayers().get(0).getOwnedTerritories().get(0).getUnits().get(0).getNumUnits()
-         + " Private");
+//        //To test:
+//        System.out.println("now each player have " + riscBoard.getAllPlayers().get(0).getOwnedTerritories().get(0).getUnits().get(0).getNumUnits()
+//         + " Private");
 
         bos.close();
         out.close();
@@ -503,11 +504,11 @@ public class Server {
         riscBoard = (RiskGameBoard) in.readObject();
 
         //Tests
-        System.out.println("The player0's first territory should be a: "
-                + riscBoard.getAllPlayers().get(0).getOwnedTerritories().get(0).getUnits().get(1).getUnitName());
+//        System.out.println("The player0's first territory should be a: "
+//                + riscBoard.getAllPlayers().get(0).getOwnedTerritories().get(0).getUnits().get(1).getUnitName());
         //Test current board by territories
-        System.out.println("Orange has  " + riscBoard.getAllPlayers().get(0).getOwnedTerritories().size() +
-                ", and blue has " + riscBoard.getAllPlayers().get(1).getOwnedTerritories().size());
+        System.out.println("Brown has  " + riscBoard.getAllPlayers().get(0).getOwnedTerritories().size() +
+                ", and White has " + riscBoard.getAllPlayers().get(1).getOwnedTerritories().size());
 
         Object board_id_test = currBoard.get("_id");
         System.out.println("The current board id is: " + board_id_test.toString());

@@ -188,10 +188,10 @@ public class UpgradePageController {
     public void initializeId() {
 
         if (playerID == 0) {
-            playerColor.setText("You are the Orange Player. You Chose UPGRADE");
+            playerColor.setText("You are the BROWN Player. You Chose UPGRADE");
 
         } else {
-            playerColor.setText("You are the Blue Player. You Chose UPGRADE");
+            playerColor.setText("You are the WHITE Player. You Chose UPGRADE");
         }
         System.out.println("set id" + playerColor);
     }

@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Group?>
 <?import javafx.scene.control.Button?>
@@ -10,7 +17,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="600.0" prefWidth="924.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.duke.ece651.team3.client.controller.DonePageController">
+<AnchorPane prefHeight="600.0" prefWidth="924.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.duke.ece651.team3.client.controller.DonePageController">
     <children>
         <SplitPane dividerPositions="0.6" prefHeight="400.0" prefWidth="647.0" AnchorPane.bottomAnchor="-10.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <items>
@@ -56,11 +63,6 @@
                                 <Group fx:id="choicePrompt">
                                     <children>
                                         <Label fx:id="playerColor" alignment="CENTER" contentDisplay="CENTER" layoutX="30.0" layoutY="23.0" prefHeight="106.0" prefWidth="222.0" text="You are the Orange Player" textAlignment="CENTER" wrapText="true">
-                                            <font>
-                                                <Font size="20.0" />
-                                            </font>
-                                        </Label>
-                                        <Label fx:id="Prompt" layoutX="58.0" layoutY="103.0" text="Here is Your Result">
                                             <font>
                                                 <Font size="20.0" />
                                             </font>

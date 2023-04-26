@@ -91,10 +91,10 @@ public class EventController {
     @FXML
     public void initializeId() {
         if (playerID == 0) {
-            playerColor.setText("You are the Orange Player. You Chose EVENT");
+            playerColor.setText("You are the BROWN Player. You Chose EVENT");
         }
         else {
-            playerColor.setText("You are the Blue Player. You Chose EVENT");
+            playerColor.setText("You are the WHITE Player. You Chose EVENT");
         }
         System.out.println("set id" + playerColor);
     }

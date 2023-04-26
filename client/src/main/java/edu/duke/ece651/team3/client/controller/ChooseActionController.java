@@ -110,9 +110,9 @@ public class ChooseActionController {
      */
     public void initialize() throws IOException, ClassNotFoundException {
         if (playerId == 0) {
-            playerColor.setText("You are the Orange Player. What would you like to do?");
+            playerColor.setText("You are the BROWN Player. What would you like to do?");
         } else {
-            playerColor.setText("You are the Blue Player. What would you like to do?");
+            playerColor.setText("You are the WHITE Player. What would you like to do?");
         }
         //gameEntity.storeNewBoard();
         System.out.println("A new turn: updated new board as below!");

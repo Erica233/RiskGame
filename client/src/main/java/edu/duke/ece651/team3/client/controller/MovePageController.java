@@ -216,9 +216,9 @@ public class MovePageController {
     @FXML
     public void initializeId() {
         if (playerID == 0) {
-            playerColor.setText("You are the Orange Player. You Chose MOVE");
+            playerColor.setText("You are the BROWN Player. You Chose MOVE");
         } else {
-            playerColor.setText("You are the Blue Player. You Chose MOVE");
+            playerColor.setText("You are the WHITE Player. You Chose MOVE");
         }
     }
 
