@@ -126,7 +126,7 @@ public class Game {
 
     public void sendString(String s) throws IOException {
         clientCommunicator.sendString(s);
-        System.out.println("send action list to server");
+        System.out.println("send string to server");
     }
 
     /**

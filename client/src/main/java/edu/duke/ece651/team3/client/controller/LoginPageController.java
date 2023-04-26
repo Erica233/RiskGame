@@ -62,13 +62,13 @@ public class LoginPageController {
                     try {
                         //start game
                         gameEntity = new Game();
+                        gameEntity.sendString(username.getText());
                         gameEntity.storePlayerId();
                         int playerID = gameEntity.getPlayerId();
                         System.out.println("playerId=" + playerID);
                         if (playerID != 0 && playerID != 1) {
                             throw new Exception("Failed to receive valid playerId!");
                         }
-                        gameEntity.sendString(username.getText());
                         gameEntity.storeNewBoard();
                         System.out.println("A new turn: updated new board as below!");
                         System.out.println(gameEntity.getRiskGameBoard().displayBoard());

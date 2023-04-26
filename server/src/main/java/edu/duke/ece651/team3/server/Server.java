@@ -290,13 +290,9 @@ public class Server {
      * @throws ClassNotFoundException
      */
     public int runOneTurn() throws Exception {
-        //TODO: "boardName of both users. i.e: fm_er"
-        String username1 = "fm";
-        String username2 = "er";
-        String boardName = "fm_er";
-
-        useExtractBoardOrNewBoard(username1);
-        useExtractBoardOrNewBoard(username2);
+        for (int id = 0; id < 2; id++) {
+            useExtractBoardOrNewBoard(users.get(id));
+        }
 
         sendBoardToAllClients();
         recvActionsFromAllClients();
@@ -554,16 +550,19 @@ public class Server {
      */
     public void initGame() throws Exception {
         riscBoard.initE2Map();
+
         recvUsernames();
+        System.out.println("after recv username");
         assignPlayerIdToClients();
+
         //sendBoardToAllClients();
     }
 
     public void recvUsernames() throws IOException, ClassNotFoundException {
         for (int id = 0; id < 2; id++) {
             String username = (String) objectsFromClients.get(id).readObject();
+            System.out.println("receive username from user: " + username);
             users.put(id, username);
-            objectsFromClients.get(id).readObject();
         }
     }
 

@@ -16,6 +16,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import org.bson.Document;
 import org.bson.conversions.Bson;
+import org.bson.types.ObjectId;
 import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
 
 import java.io.IOException;
@@ -68,7 +69,7 @@ public class CreateAccountPageController {
             Document newAccount = new Document();
             newAccount.put("username", username.getText());
             newAccount.put("password", password.getText());
-            newAccount.put("board_id", "");
+            newAccount.put("board_id", new ObjectId("000000000000000000000000"));
             accountsCo.insertOne(newAccount);
 
             ShowViews.showStartView(stage, "/ui/loginPage.fxml", gameEntity);

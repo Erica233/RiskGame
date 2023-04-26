@@ -94,7 +94,7 @@ public class ClientCommunicator {
 
     public void sendString(String s) throws IOException {
         objectToServer.writeObject(s);
-        objectToServer.reset();
+        //objectToServer.reset();
     }
 
     /**
