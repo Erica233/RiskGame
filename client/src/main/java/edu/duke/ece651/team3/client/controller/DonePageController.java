@@ -69,9 +69,9 @@ public class DonePageController {
      */
     public void initialize() throws IOException, ClassNotFoundException {
         if (playerId == 0) {
-            playerColor.setText("You are the Orange Player. Your last turn results are:");
+            playerColor.setText("You are the BROWN Player. Your last turn results are:");
         } else {
-            playerColor.setText("You are the Blue Player. Your last turn results are:");
+            playerColor.setText("You are the WHITE Player. Your last turn results are:");
         }
         HashMap<String, Integer> turnResultsMap = (HashMap<String, Integer>) gameEntity.recvTurnResults();
         System.out.println("Has received turnResultMap?" + turnResultsMap);

@@ -212,10 +212,10 @@ public class AttackPageController {
     public void initializeId() {
 
         if (playerID == 0) {
-            playerColor.setText("You are the Orange Player. You Chose ATTACK");
+            playerColor.setText("You are the BROWN Player. You Chose ATTACK");
 
         } else {
-            playerColor.setText("You are the Blue Player. You Chose ATTACK");
+            playerColor.setText("You are the WHITE Player. You Chose ATTACK");
         }
         System.out.println("set id" + playerColor);
     }
