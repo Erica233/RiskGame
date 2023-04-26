@@ -55,7 +55,7 @@ public class CreateAccountPageController {
 
     @FXML
     void onBackButton(MouseEvent event) throws IOException {
-        ShowViews.showGameView(stage, "/ui/loginPage.fxml", gameEntity);
+        ShowViews.showStartView(stage, "/ui/loginPage.fxml", gameEntity);
     }
     @FXML
     void onDoneButton(MouseEvent event) throws IOException {

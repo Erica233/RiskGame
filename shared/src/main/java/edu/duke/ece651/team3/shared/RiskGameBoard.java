@@ -9,6 +9,18 @@ import java.util.*;
 public class RiskGameBoard implements Board, Serializable {
     private final ArrayList<Player> allPlayers;
 
+
+
+
+    int turn;
+    public int getTurn() {
+        return turn;
+    }
+
+    public void setTurn(int turn) {
+        this.turn = turn;
+    }
+
     public RiskGameBoard() throws Exception {
         this.allPlayers = new ArrayList<>();
     }
