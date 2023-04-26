@@ -13,7 +13,12 @@
 
 <AnchorPane prefHeight="600.0" prefWidth="369.6" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.duke.ece651.team3.client.controller.ChooseActionController">
    <children>
-      <ImageView fitHeight="600.0" fitWidth="369.6">
+      <ImageView fitHeight="612.0" fitWidth="607.0" AnchorPane.bottomAnchor="-10.0" AnchorPane.rightAnchor="-220.0" AnchorPane.topAnchor="-10.0">
+         <image>
+            <Image url="@../pic/login.jpeg" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="600.0" fitWidth="369.6" visible="false">
          <image>
             <Image url="@../pic/textureleft.png" />
          </image>
@@ -28,12 +33,12 @@
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </padding>
          <children>
-            <Button fx:id="nextButton" blendMode="MULTIPLY" layoutX="92.0" layoutY="393.0" mnemonicParsing="false" onMouseClicked="#goToActionPage" prefHeight="40.0" prefWidth="111.0" text="Next" AnchorPane.bottomAnchor="84.0">
+            <Button fx:id="nextButton" blendMode="MULTIPLY" layoutX="92.0" layoutY="393.0" mnemonicParsing="false" onMouseClicked="#goToActionPage" prefHeight="40.0" prefWidth="111.0" style="-fx-background-insets: 0;" text="Next" AnchorPane.bottomAnchor="84.0">
                <font>
                   <Font size="20.0" />
                </font>
             </Button>
-            <ImageView fitHeight="65.0" fitWidth="154.0" layoutX="75.0" layoutY="380.0">
+            <ImageView blendMode="DARKEN" fitHeight="63.0" fitWidth="156.0" layoutX="73.0" layoutY="382.0">
                <image>
                   <Image url="@../pic/frame.png" />
                </image>

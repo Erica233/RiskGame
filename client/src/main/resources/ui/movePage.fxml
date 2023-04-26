@@ -19,23 +19,28 @@
 
             <AnchorPane prefHeight="600.0" prefWidth="924.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
                <children>
-                  <ImageView fitHeight="600.0" fitWidth="361.0" AnchorPane.bottomAnchor="-10.0" AnchorPane.topAnchor="-10.0">
+                  <ImageView fitHeight="612.0" fitWidth="607.0" AnchorPane.bottomAnchor="-10.0" AnchorPane.rightAnchor="-220.0" AnchorPane.topAnchor="-10.0">
+                     <image>
+                        <Image url="@../pic/login.jpeg" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="600.0" fitWidth="361.0" visible="false" AnchorPane.bottomAnchor="-10.0" AnchorPane.topAnchor="-10.0">
                      <image>
                         <Image url="@../pic/textureright.png" />
                      </image>
                   </ImageView>
-                  <ImageView fitHeight="547.0" fitWidth="318.0" AnchorPane.bottomAnchor="13.0" AnchorPane.rightAnchor="30.0">
+                  <ImageView fitHeight="547.0" fitWidth="318.0" layoutX="35.0" layoutY="27.0" AnchorPane.bottomAnchor="28.0" AnchorPane.rightAnchor="34.0">
                      <image>
                         <Image url="@../pic/paper.png" />
                      </image>
                   </ImageView>
-                  <AnchorPane fx:id="contextBox" layoutX="23.0" layoutY="46.0" prefHeight="507.0" prefWidth="298.0">
+                  <AnchorPane fx:id="contextBox" layoutX="49.0" layoutY="35.0" prefHeight="507.0" prefWidth="298.0">
                      <padding>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </padding>
                      <children>
                         <Group />
-                        <Button fx:id="nextButton" blendMode="MULTIPLY" layoutX="161.0" layoutY="429.0" mnemonicParsing="false" onAction="#onCheckValidMove" prefHeight="40.0" prefWidth="95.0" text="Next">
+                        <Button fx:id="nextButton" blendMode="MULTIPLY" layoutX="161.0" layoutY="429.0" mnemonicParsing="false" onAction="#onCheckValidMove" prefHeight="40.0" prefWidth="95.0" style="-fx-background-insets: 0;" text="Next">
                            <font>
                               <Font size="20.0" />
                            </font>
@@ -67,59 +72,59 @@
                         </Label>
                         <Group fx:id="LV0" layoutY="-20.0">
                            <children>
-                              <ChoiceBox fx:id="LV0_choice" blendMode="MULTIPLY" layoutX="65.0" layoutY="276.0" prefHeight="19.0" prefWidth="51.0" />
+                              <ChoiceBox fx:id="LV0_choice" blendMode="MULTIPLY" layoutX="65.0" layoutY="276.0" prefHeight="19.0" prefWidth="51.0" style="-fx-background-insets: 0;" />
                               <Label fx:id="LV0_name" layoutX="36.0" layoutY="281.0" text="LV0" />
                            </children>
                         </Group>
                         <Group fx:id="SourceChoice" layoutX="-1.0" layoutY="-10.0">
                            <children>
                               <Label fx:id="SourceTerr" blendMode="MULTIPLY" layoutX="36.0" layoutY="160.0" text="Source Territory" />
-                              <ChoiceBox fx:id="choice_source" blendMode="MULTIPLY" layoutX="162.0" layoutY="155.0" prefHeight="26.0" prefWidth="95.0" />
+                              <ChoiceBox fx:id="choice_source" blendMode="MULTIPLY" layoutX="162.0" layoutY="155.0" prefHeight="26.0" prefWidth="95.0" style="-fx-background-insets: 0;" />
                            </children>
                         </Group>
                         <Group fx:id="SourceChoice1" layoutX="-1.0" layoutY="27.0">
                            <children>
                               <Label fx:id="SourceTerr1" layoutX="36.0" layoutY="160.0" text="Destination Territory" />
-                              <ChoiceBox fx:id="choice_Dest" blendMode="MULTIPLY" layoutX="162.0" layoutY="155.0" prefHeight="26.0" prefWidth="95.0" />
+                              <ChoiceBox fx:id="choice_Dest" blendMode="MULTIPLY" layoutX="162.0" layoutY="155.0" prefHeight="26.0" prefWidth="95.0" style="-fx-background-insets: 0;" />
                            </children>
                         </Group>
                         <Group fx:id="LV1" layoutY="15.0">
                            <children>
-                              <ChoiceBox fx:id="LV1_choice" blendMode="MULTIPLY" layoutX="65.0" layoutY="276.0" prefHeight="19.0" prefWidth="51.0" />
+                              <ChoiceBox fx:id="LV1_choice" blendMode="MULTIPLY" layoutX="65.0" layoutY="276.0" prefHeight="19.0" prefWidth="51.0" style="-fx-background-insets: 0;" />
                               <Label fx:id="LV1_name" layoutX="36.0" layoutY="281.0" text="LV1" />
                            </children>
                         </Group>
                         <Group fx:id="LV2" layoutY="50.0">
                            <children>
-                              <ChoiceBox fx:id="LV2_choice" blendMode="MULTIPLY" layoutX="65.0" layoutY="276.0" prefHeight="19.0" prefWidth="51.0" />
+                              <ChoiceBox fx:id="LV2_choice" blendMode="MULTIPLY" layoutX="65.0" layoutY="276.0" prefHeight="19.0" prefWidth="51.0" style="-fx-background-insets: 0;" />
                               <Label fx:id="LV2_name" layoutX="36.0" layoutY="281.0" text="LV2" />
                            </children>
                         </Group>
                         <Group fx:id="LV3" layoutY="85.0">
                            <children>
-                              <ChoiceBox fx:id="LV3_choice" blendMode="MULTIPLY" layoutX="65.0" layoutY="276.0" prefHeight="19.0" prefWidth="51.0" />
+                              <ChoiceBox fx:id="LV3_choice" blendMode="MULTIPLY" layoutX="65.0" layoutY="276.0" prefHeight="19.0" prefWidth="51.0" style="-fx-background-insets: 0;" />
                               <Label fx:id="LV3_name" layoutX="36.0" layoutY="281.0" text="LV3" />
                            </children>
                         </Group>
                         <Group fx:id="LV4" layoutX="115.0" layoutY="-6.0">
                            <children>
-                              <ChoiceBox fx:id="LV4_choice" blendMode="MULTIPLY" layoutX="65.0" layoutY="276.0" prefHeight="19.0" prefWidth="51.0" />
+                              <ChoiceBox fx:id="LV4_choice" blendMode="MULTIPLY" layoutX="65.0" layoutY="276.0" prefHeight="19.0" prefWidth="51.0" style="-fx-background-insets: 0;" />
                               <Label fx:id="LV4_name" layoutX="36.0" layoutY="281.0" text="LV4" />
                            </children>
                         </Group>
                         <Group fx:id="LV5" layoutX="115.0" layoutY="29.0">
                            <children>
-                              <ChoiceBox fx:id="LV5_choice" blendMode="MULTIPLY" layoutX="65.0" layoutY="276.0" prefHeight="19.0" prefWidth="51.0" />
+                              <ChoiceBox fx:id="LV5_choice" blendMode="MULTIPLY" layoutX="65.0" layoutY="276.0" prefHeight="19.0" prefWidth="51.0" style="-fx-background-insets: 0;" />
                               <Label fx:id="LV5_name" layoutX="36.0" layoutY="281.0" text="LV5" />
                            </children>
                         </Group>
                         <Group fx:id="LV51" layoutX="115.0" layoutY="64.0">
                            <children>
-                              <ChoiceBox fx:id="LV6_choice" blendMode="MULTIPLY" layoutX="65.0" layoutY="276.0" prefHeight="19.0" prefWidth="51.0" />
+                              <ChoiceBox fx:id="LV6_choice" blendMode="MULTIPLY" layoutX="65.0" layoutY="276.0" prefHeight="19.0" prefWidth="51.0" style="-fx-background-insets: 0;" />
                               <Label fx:id="LV6_name" layoutX="36.0" layoutY="281.0" text="LV6" />
                            </children>
                         </Group>
-                        <Button fx:id="backButton" blendMode="MULTIPLY" layoutX="54.0" layoutY="430.0" mnemonicParsing="false" onMouseClicked="#onBackButton" prefHeight="28.0" prefWidth="87.0" text="Back">
+                        <Button fx:id="backButton" blendMode="MULTIPLY" layoutX="54.0" layoutY="430.0" mnemonicParsing="false" onMouseClicked="#onBackButton" prefHeight="28.0" prefWidth="87.0" style="-fx-background-insets: 0;" text="Back">
                            <font>
                               <Font size="20.0" />
                            </font>

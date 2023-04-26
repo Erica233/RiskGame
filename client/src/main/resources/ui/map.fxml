@@ -12,10 +12,15 @@
    <children>
       <ImageView fitHeight="600.0" fitWidth="554.0">
          <image>
+            <Image url="@../pic/login.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="600.0" fitWidth="554.0" visible="false">
+         <image>
             <Image url="@../pic/textureleft.png" />
          </image>
       </ImageView>
-    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="400.0" prefWidth="565.2" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+    <AnchorPane layoutY="47.0" minHeight="0.0" minWidth="0.0" prefHeight="400.0" prefWidth="565.2" AnchorPane.bottomAnchor="-47.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="47.0">
          <children>
             <Group fx:id="DarkBay" layoutX="451.0" layoutY="321.0" onMouseClicked="#showTerrInfo">
                <children>
@@ -186,29 +191,14 @@
                   </Text>
                </children>
             </Group>
-            <ImageView fitHeight="87.0" fitWidth="199.0" layoutX="178.0" layoutY="19.0">
+            <ImageView fitHeight="87.0" fitWidth="199.0" layoutX="178.0" layoutY="21.0">
                <image>
                   <Image url="@../pic/risc.png" />
                </image>
             </ImageView>
-            <ImageView fitHeight="32.0" fitWidth="221.0" layoutX="166.0" layoutY="91.0">
+            <ImageView fitHeight="32.0" fitWidth="221.0" layoutX="167.0" layoutY="106.0">
                <image>
                   <Image url="@../pic/conquer.png" />
-               </image>
-            </ImageView>
-            <ImageView fitHeight="39.0" fitWidth="223.0" layoutX="157.0" layoutY="470.0" AnchorPane.leftAnchor="157.0" AnchorPane.rightAnchor="174.39999999999998">
-               <image>
-                  <Image url="@../pic/click_map.png" />
-               </image>
-            </ImageView>
-            <ImageView fitHeight="39.0" fitWidth="131.0" layoutX="113.0" layoutY="498.0">
-               <image>
-                  <Image url="@../pic/for_more.png" />
-               </image>
-            </ImageView>
-            <ImageView fitHeight="23.0" fitWidth="196.0" layoutX="239.0" layoutY="509.0">
-               <image>
-                  <Image url="@../pic/information.png" />
                </image>
             </ImageView>
             <AnchorPane fx:id="wholeInfoBox" layoutX="41.0" layoutY="55.0" prefHeight="385.0" prefWidth="474.0" style="-fx-background-color: rgba(211, 211, 211, 0.8);" visible="false" AnchorPane.leftAnchor="41.0" AnchorPane.rightAnchor="41.0">
@@ -216,7 +206,7 @@
                   <Text fx:id="terrName" layoutX="67.0" layoutY="58.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="250.1435829509453" AnchorPane.leftAnchor="170.0" AnchorPane.rightAnchor="52.0" AnchorPane.topAnchor="25.0" />
                   <Button fx:id="hideInfoButton" layoutX="397.0" layoutY="330.0" mnemonicParsing="false" onAction="#hideTerrInfo" prefHeight="26.0" prefWidth="43.0" style="-fx-background-color: rgb(169,169,169, 0.8);" text="OK" AnchorPane.leftAnchor="340.0" AnchorPane.rightAnchor="89.0" />
                   <Text fx:id="terrInfo" layoutX="170.0" layoutY="58.0" strokeType="OUTSIDE" strokeWidth="0.0" text="" wrappingWidth="250.1435829509453" AnchorPane.leftAnchor="120.0" AnchorPane.rightAnchor="52.0" AnchorPane.topAnchor="50.0" />
-                  <ImageView fitHeight="660.0" fitWidth="684.0" layoutX="-91.0" layoutY="-135.0" AnchorPane.bottomAnchor="-140.0" AnchorPane.leftAnchor="-91.0" AnchorPane.rightAnchor="-121.0" AnchorPane.topAnchor="-135.0">
+                  <ImageView fitHeight="655.0" fitWidth="684.0" layoutX="-91.0" layoutY="-135.0" visible="false" AnchorPane.bottomAnchor="-135.0" AnchorPane.leftAnchor="-91.0" AnchorPane.rightAnchor="-121.0" AnchorPane.topAnchor="-135.0">
                      <image>
                         <Image url="@../pic/frame.png" />
                      </image>
@@ -228,6 +218,25 @@
                   <Image url="@../pic/archer.png" />
                </image>
             </ImageView>
+            <Group layoutX="112.0" layoutY="114.0">
+               <children>
+                  <ImageView fitHeight="39.0" fitWidth="223.0" layoutX="44.0" visible="false">
+                     <image>
+                        <Image url="@../pic/click_map.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="39.0" fitWidth="131.0" layoutY="28.0" visible="false">
+                     <image>
+                        <Image url="@../pic/for_more.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="23.0" fitWidth="196.0" layoutX="126.0" layoutY="39.0" visible="false">
+                     <image>
+                        <Image url="@../pic/information.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Group>
          </children>
       </AnchorPane>
    </children>
