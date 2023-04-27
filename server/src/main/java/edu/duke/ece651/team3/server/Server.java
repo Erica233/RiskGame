@@ -195,11 +195,11 @@ public class Server {
     public void runGame() throws Exception {
         int result = -1;
         do {
-            //To check if it is the last turn
-//            if(riscBoard.checkWin() == 0 || riscBoard.checkWin() == 1){
-//                clearDataBase();
-//                break;
-//            }
+            if (riscBoard.checkWin() == 0 || riscBoard.checkWin() == 1) {
+                System.out.println("Player " + result + " is the winner!");
+                System.out.println("Game Ends!");
+                return;
+            }
             result = runOneTurn();
             ++ turn;
             riscBoard.setTurn(turn);
