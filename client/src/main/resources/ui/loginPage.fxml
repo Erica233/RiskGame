@@ -61,7 +61,7 @@
                         </ImageView>
                      </children>
                   </Group>
-                  <Label fx:id="errorLogin" layoutX="102.0" layoutY="163.0" prefHeight="49.0" prefWidth="241.0" textAlignment="CENTER" wrapText="true" />
+                  <Label fx:id="errorLogin" layoutX="62.0" layoutY="163.0" prefHeight="49.0" prefWidth="241.0" textAlignment="CENTER" wrapText="true" />
                   <ImageView fitHeight="91.0" fitWidth="105.0" layoutX="128.0" layoutY="72.0">
                      <image>
                         <Image url="@../pic/lock.png" />

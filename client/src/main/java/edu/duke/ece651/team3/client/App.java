@@ -7,12 +7,11 @@ import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoDatabase;
 import edu.duke.ece651.team3.client.controller.StartController;
 import edu.duke.ece651.team3.client.model.Game;
-import edu.duke.ece651.team3.shared.*;
+import edu.duke.ece651.team3.shared.ConnectDb;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import org.bson.Document;
 
 import java.io.IOException;
 import java.net.URL;

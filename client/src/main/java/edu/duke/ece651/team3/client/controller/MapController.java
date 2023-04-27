@@ -9,11 +9,15 @@ import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.image.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.text.Text;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -51,11 +55,19 @@ public class MapController {
     private Text terrName;
     @FXML
     private AnchorPane wholeInfoBox;
+    @FXML
+    private Group stopMusic;
 
     private Game gameEntity;
     private HashMap<String, String> hashName;
     private HashMap<String, String> hashLetter;
     private HashSet<Group> groups;
+    private MediaPlayer mediaPlayer;
+
+    @FXML
+    public void setStopMusic(){
+        mediaPlayer.stop();
+    }
 
     /**
      * click territory then show the information about this territory
@@ -268,5 +280,15 @@ public class MapController {
     public void initialize() {
         collectGroups();
         setMap();
+        String musicFile = "./src/main/resources/bgm/bgm.mp3";
+        Media sound = new Media(new File(musicFile).toURI().toString());
+        mediaPlayer = new MediaPlayer(sound);
+        mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
+        mediaPlayer.play();
+    }
+
+    @FXML
+    public void onMusicButton(ActionEvent ae){
+        mediaPlayer.stop();
     }
 }
