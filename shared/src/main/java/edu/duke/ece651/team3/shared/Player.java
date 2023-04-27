@@ -13,7 +13,11 @@ public class Player implements Serializable {
     private final String color;
     private final int totNumUnits;
     private final ArrayList<Territory> ownedTerritories;
+    String username;
 
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
     /**
      * This constructor builds up the player with 3 input paremeters

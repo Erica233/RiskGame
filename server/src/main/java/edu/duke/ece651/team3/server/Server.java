@@ -555,7 +555,8 @@ public class Server {
         System.out.println("after recv username");
         assignPlayerIdToClients();
 
-        //sendBoardToAllClients();
+        riscBoard.getAllPlayers().get(0).setUsername(users.get(0));
+        riscBoard.getAllPlayers().get(1).setUsername(users.get(1));
     }
 
     public void recvUsernames() throws IOException, ClassNotFoundException {
