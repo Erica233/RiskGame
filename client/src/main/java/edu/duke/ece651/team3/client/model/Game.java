@@ -23,7 +23,6 @@ public class Game {
         System.out.println("Create ClientCommunicator-" + clientCommunicator + " successfully!");
         this.inputHandler = new InputHandler();
         this.actionsList = new ArrayList<>();
-
     }
 
     public static void main(String[] args) {
