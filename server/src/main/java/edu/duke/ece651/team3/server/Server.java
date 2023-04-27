@@ -196,10 +196,10 @@ public class Server {
         int result = -1;
         do {
             //To check if it is the last turn
-            if(riscBoard.checkWin() == 0 || riscBoard.checkWin() == 1){
-                clearDataBase();
-                break;
-            }
+//            if(riscBoard.checkWin() == 0 || riscBoard.checkWin() == 1){
+//                clearDataBase();
+//                break;
+//            }
             result = runOneTurn();
             ++ turn;
             riscBoard.setTurn(turn);
@@ -332,9 +332,14 @@ public class Server {
         if(riscBoard.getTurn() == 0){
             storeNewBoard();
         }
+
 //        clearDataBase();//TODO: Testing
         for (int id = 0; id < 2; id++) {
             useExtractBoardOrNewBoard(users.get(id));
+        }
+        if(riscBoard.checkWin() == 0 || riscBoard.checkWin() == 1){
+            clearDataBase();
+            return riscBoard.checkWin();
         }
 
         sendBoardToAllClients();
