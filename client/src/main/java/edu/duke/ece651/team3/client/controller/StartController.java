@@ -7,8 +7,11 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -49,10 +52,15 @@ public class StartController implements Initializable {
 //        gameEntity = new Game();
         ShowViews.showStartView(stage, "/ui/loginPage.fxml", gameEntity);
 
-//        String ssound = "bgm.mp3";
+        //String ssound = "@../bgm/bgm.mp3";
 //        Media sound = new Media(ssound);
 //        MediaPlayer mediaPlayer = new MediaPlayer(sound);
 //        mediaPlayer.play();
+        String musicFile = "./src/main/resources/bgm/bgm.mp3";
+
+        Media sound = new Media(new File(musicFile).toURI().toString());
+        MediaPlayer mediaPlayer = new MediaPlayer(sound);
+        mediaPlayer.play();
 
     }
 
