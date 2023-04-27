@@ -1,13 +1,12 @@
 package edu.duke.ece651.team3.client.controller;
+
 import edu.duke.ece651.team3.client.ShowViews;
 import edu.duke.ece651.team3.client.model.Game;
-import javafx.application.Platform;
-import javafx.concurrent.Task;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.*;
-import javafx.event.ActionEvent;
-import javafx.scene.image.ImageView;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -47,9 +46,7 @@ public class StartController implements Initializable {
      */
     @FXML
     public void onStartButton(ActionEvent ae) throws IOException {
-//        gameEntity = new Game();
         ShowViews.showStartView(stage, "/ui/loginPage.fxml", gameEntity);
-
     }
 
     public void initialize(URL location, ResourceBundle resources) {

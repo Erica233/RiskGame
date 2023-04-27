@@ -10,7 +10,7 @@
 
 <AnchorPane prefHeight="600.0" prefWidth="554.4" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.duke.ece651.team3.client.controller.MapController">
    <children>
-      <ImageView fitHeight="600.0" fitWidth="554.0">
+      <ImageView fitHeight="600.0" fitWidth="579.0" AnchorPane.leftAnchor="-10.0" AnchorPane.rightAnchor="-15.0">
          <image>
             <Image url="@../pic/login.png" />
          </image>
@@ -20,6 +20,20 @@
             <Image url="@../pic/textureleft.png" />
          </image>
       </ImageView>
+      <Group fx:id="stopMusic" layoutX="421.0" onMouseClicked="#setStopMusic">
+         <children>
+            <ImageView fitHeight="32.0" fitWidth="94.0" layoutX="8.0">
+               <image>
+                  <Image url="@../pic/click_to.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="32.0" fitWidth="110.0" layoutY="22.0">
+               <image>
+                  <Image url="@../pic/stop_music.png" />
+               </image>
+            </ImageView>
+         </children>
+      </Group>
     <AnchorPane layoutY="47.0" minHeight="0.0" minWidth="0.0" prefHeight="400.0" prefWidth="565.2" AnchorPane.bottomAnchor="-47.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="47.0">
          <children>
             <Group fx:id="DarkBay" layoutX="451.0" layoutY="321.0" onMouseClicked="#showTerrInfo">
@@ -191,12 +205,31 @@
                   </Text>
                </children>
             </Group>
-            <ImageView fitHeight="87.0" fitWidth="199.0" layoutX="178.0" layoutY="21.0">
+            <Group layoutX="153.0" layoutY="98.0">
+               <children>
+                  <ImageView fitHeight="32.0" fitWidth="99.0">
+                     <image>
+                        <Image url="@../pic/for_more.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="20.0" fitWidth="151.0" layoutX="99.0" layoutY="9.0">
+                     <image>
+                        <Image url="@../pic/information.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Group>
+            <ImageView fitHeight="32.0" fitWidth="184.0" layoutX="186.0" layoutY="74.0">
+               <image>
+                  <Image url="@../pic/click_map.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="87.0" fitWidth="199.0" layoutX="179.0" layoutY="-13.0">
                <image>
                   <Image url="@../pic/risc.png" />
                </image>
             </ImageView>
-            <ImageView fitHeight="32.0" fitWidth="221.0" layoutX="167.0" layoutY="106.0">
+            <ImageView fitHeight="32.0" fitWidth="221.0" layoutX="167.0" layoutY="42.0" visible="false">
                <image>
                   <Image url="@../pic/conquer.png" />
                </image>

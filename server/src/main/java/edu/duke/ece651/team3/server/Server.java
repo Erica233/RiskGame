@@ -333,7 +333,6 @@ public class Server {
             storeNewBoard();
         }
 
-//        clearDataBase();//TODO: Testing
         for (int id = 0; id < 2; id++) {
             useExtractBoardOrNewBoard(users.get(id));
         }

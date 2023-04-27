@@ -20,7 +20,7 @@
 
 <AnchorPane prefHeight="600.0" prefWidth="369.6" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.duke.ece651.team3.client.controller.ChooseActionController">
    <children>
-      <ImageView fitHeight="612.0" fitWidth="607.0" AnchorPane.bottomAnchor="-10.0" AnchorPane.rightAnchor="-220.0" AnchorPane.topAnchor="-10.0">
+      <ImageView fitHeight="612.0" fitWidth="607.0" AnchorPane.bottomAnchor="-10.0" AnchorPane.leftAnchor="-10.0" AnchorPane.rightAnchor="-220.0" AnchorPane.topAnchor="-10.0">
          <image>
             <Image url="@../pic/login.jpeg" />
          </image>

@@ -1,6 +1,5 @@
 package edu.duke.ece651.team3.client;
 
-//import edu.duke.ece651.team3.client.controller.*;
 import edu.duke.ece651.team3.client.controller.*;
 import edu.duke.ece651.team3.client.model.Game;
 import javafx.fxml.FXMLLoader;

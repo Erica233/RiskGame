@@ -9,7 +9,6 @@ import edu.duke.ece651.team3.client.model.Game;
 import edu.duke.ece651.team3.shared.ConnectDb;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -100,4 +99,5 @@ public class LoginPageController {
     void onCreateAccountButton(MouseEvent event) throws IOException {
         ShowViews.showStartView(stage, "/ui/createAccountPage.fxml", gameEntity);
     }
+
 }
