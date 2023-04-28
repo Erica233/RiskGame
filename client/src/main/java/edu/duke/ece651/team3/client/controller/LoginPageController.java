@@ -15,10 +15,13 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 
+import java.io.File;
 import java.io.IOException;
 
 import static com.mongodb.client.model.Filters.eq;
@@ -35,10 +38,17 @@ public class LoginPageController {
     @FXML
     private Button createAccountButton;
 
+
     Stage stage;
     Game gameEntity;
     MongoClient mongoClient;
     MongoDatabase database;
+    private MediaPlayer mediaPlayer;
+
+    @FXML
+    public void setStopMusic(){
+        mediaPlayer.stop();
+    }
 
     public LoginPageController(Stage _stage, Game _gameEntity) {
         this.stage = _stage;
@@ -98,6 +108,15 @@ public class LoginPageController {
     @FXML
     void onCreateAccountButton(MouseEvent event) throws IOException {
         ShowViews.showStartView(stage, "/ui/createAccountPage.fxml", gameEntity);
+    }
+
+    @FXML
+    public void initialize() {
+        String musicFile = "./src/main/resources/bgm/bgm.mp3";
+        Media sound = new Media(new File(musicFile).toURI().toString());
+        mediaPlayer = new MediaPlayer(sound);
+        mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
+        mediaPlayer.play();
     }
 
 }

@@ -20,7 +20,7 @@
             <Image url="@../pic/textureleft.png" />
          </image>
       </ImageView>
-      <Group fx:id="stopMusic" layoutX="421.0" onMouseClicked="#setStopMusic">
+      <Group fx:id="stopMusic" layoutX="421.0" visible="false">
          <children>
             <ImageView fitHeight="32.0" fitWidth="94.0" layoutX="8.0">
                <image>
