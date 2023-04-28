@@ -22,6 +22,20 @@
                         <Image url="@../pic/login.png" />
                      </image>
                   </ImageView>
+                  <Group fx:id="stopMusic" layoutX="420.0" layoutY="1.0" onMouseClicked="#setStopMusic">
+                     <children>
+                        <ImageView fitHeight="32.0" fitWidth="94.0" layoutX="8.0">
+                           <image>
+                              <Image url="@../pic/click_to.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fitHeight="32.0" fitWidth="110.0" layoutY="22.0">
+                           <image>
+                              <Image url="@../pic/stop_music.png" />
+                           </image>
+                        </ImageView>
+                     </children>
+                  </Group>
                </children>
             </AnchorPane>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
