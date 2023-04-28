@@ -1,23 +1,23 @@
 package edu.duke.ece651.team3.server;
 
-import edu.duke.ece651.team3.shared.*;
-
-import java.io.*;
-import java.util.*;
-import java.net.ServerSocket;
-import java.net.Socket;
-
-import org.bson.Document;
-import org.bson.conversions.Bson;
-import org.bson.types.Binary;
-
-import com.mongodb.client.*;
 import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.UpdateOptions;
 import com.mongodb.client.model.Updates;
+import edu.duke.ece651.team3.shared.*;
+import org.bson.Document;
+import org.bson.conversions.Bson;
+import org.bson.types.Binary;
 import org.bson.types.ObjectId;
+
+import java.io.*;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Random;
 
 
 /**
@@ -268,7 +268,7 @@ public class Server {
             t.setFood(t.getFood()-2);
             t.setTech(t.getTech()-2);
             t.getUnits().get(num-20).setNumUnits(t.getUnits().get(num-20).getNumUnits()+1);
-            return "Last random event is getting new unit.\nYou get 1 level " + (num-20) +"unit";
+            return "Last random event is getting new unit.\nYou get 1 level " + (num-20) +" unit";
         }
         else if(num >= 26 && num <= 31) {
             Territory t = riscBoard.getAllPlayers().get(playerId).findOwnedTerritoryByName(myEvent.getSrcName());
@@ -278,14 +278,14 @@ public class Server {
                 t.getUnits().get(num-26).setNumUnits(0);
             }
             else{t.getUnits().get(num-26).setNumUnits(t.getUnits().get(num-26).getNumUnits()-1);}
-            return "Last random event is losing new unit.\nYou lose 1 level " + (num-26) +"unit";
+            return "Last random event is losing new unit.\nYou lose 1 level " + (num-26) +" unit";
         }
         else if(num >= 32 && num <= 37) {
             Territory t = riscBoard.getAllPlayers().get(playerId).findOwnedTerritoryByName(myEvent.getSrcName());
             t.setFood(t.getFood()-2);
             t.setTech(t.getTech()-2);
             t.getUnits().get(num-32).setNumUnits(t.getUnits().get(num-32).getNumUnits()+2);
-            return "Last random event is getting new unit.\nYou get 2 level " + (num-32) +"unit";
+            return "Last random event is getting new unit.\nYou get 2 level " + (num-32) +" unit";
         }
         else if(num >= 38 && num <= 43) {
             Territory t = riscBoard.getAllPlayers().get(playerId).findOwnedTerritoryByName(myEvent.getSrcName());
@@ -297,7 +297,7 @@ public class Server {
             else {
                 t.getUnits().get(num - 38).setNumUnits(t.getUnits().get(num - 38).getNumUnits() - 2);
             }
-            return "Last random event is losing new unit.\nYou lose 2 level " + (num-38) +"unit";
+            return "Last random event is losing new unit.\nYou lose 2 level " + (num-38) +" unit";
         }
         return res;
     }
