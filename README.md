@@ -27,10 +27,10 @@ login page:
 game:  
 <img width="923" alt="Screenshot 2023-05-15 at 12 21 13 am" src="https://github.com/Erica233/RiskGame/assets/64255604/0e3c2e84-ac49-4ed0-b40c-8135883701ae">  
 <img width="923" alt="Screenshot 2023-05-15 at 12 22 08 am" src="https://github.com/Erica233/RiskGame/assets/64255604/a0708cea-3ab3-4114-a3f6-b7883efc3d5d">  
-
-game ends:  
 <img width="923" alt="Screenshot 2023-05-15 at 12 23 12 am" src="https://github.com/Erica233/RiskGame/assets/64255604/c9c12ed2-be8d-40aa-a0a5-a5674217e8b8">  
 
+game ends:  
+<img width="367" alt="Screenshot 2023-05-15 at 12 26 02 am" src="https://github.com/Erica233/RiskGame/assets/64255604/397664dc-faa4-4cae-9e82-beaaeb29ce1b">  
 
 
 ## Getting started
