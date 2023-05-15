@@ -8,6 +8,10 @@
 
 [Detailed coverage](https://lz211.pages.oit.duke.edu/ece651_riscgame/dashboard.html)
 
+## Demo
+
+[Demo Video](https://drive.google.com/file/d/1_fmmPCbS2iGBF_B4opu26KP-pqDhdpGI/view?usp=share_link)
+
 
 ## Getting started
 
