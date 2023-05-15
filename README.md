@@ -12,6 +12,9 @@
 
 [Demo Video](https://drive.google.com/file/d/1_fmmPCbS2iGBF_B4opu26KP-pqDhdpGI/view?usp=share_link)
 
+## Task Lists
+[Task breakdown](https://docs.google.com/spreadsheets/d/1zG2oJKU5XYzHSjs1UwM4--SBnq04ciz_KPfs69PMHbM/edit?usp=share_link)
+
 
 ## Getting started
 
